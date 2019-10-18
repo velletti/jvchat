@@ -1281,43 +1281,80 @@ class tx_vjchat_db {
 	function getRoomStatus($roomId, $statusLabel) {
 
 		$roomId = intval($roomId);
-		$res = $this->db->exec_SELECTquery('*','tx_vjchat_room', 'uid = '.$roomId);
 
-		$row = $this->db->sql_fetch_assoc($res);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_vjchat_room') ;
 
-		return $row[$statusLabel];
+        $rows = $queryBuilder
+            ->select($statusLabel)
+            ->from('tx_vjchat_room')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((intval($roomId)) , Connection::PARAM_INT ))
+            )
+            ->setMaxResults(1)
+            ->execute();
 
+
+        return $rows->fetchColumn(0) ;
 	}
 	
 	function setMessageStyle($user, $style) {
-		$res = $this->db->exec_UPDATEquery('fe_users', 'uid = '.(intval($user['uid'])), array('tx_vjchat_chatstyle' => $style));
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('fe_users') ;
 
-		return $this->db->sql_affected_rows();
+        return $queryBuilder
+            ->update('fe_users')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((intval($user['uid'])) , Connection::PARAM_INT ))
+            )
+            ->set('tx_vjchat_chatstyle', $style  )
+            ->execute();
+
 	}
 	
 	function setUserlistSnippet($roomId, $userId, $snippet) {
-		$roomId = intval($roomId);
-		$userId = intval($userId);
-		$res = $this->db->exec_UPDATEquery('tx_vjchat_room_feusers_mm', 'uid_local = '.$roomId.' AND uid_foreign = '.$userId, array('userlistsnippet' => $snippet));
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_vjchat_room_feusers_mm') ;
 
-		return $this->db->sql_affected_rows();
+        return $queryBuilder
+            ->update('tx_vjchat_room_feusers_mm')
+            ->where(
+                $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter((intval($roomId)) , Connection::PARAM_INT ))
+            )->andWhere(
+                $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter((intval($userId)) , Connection::PARAM_INT ))
+            )
+            ->set('userlistsnippet',$snippet  )
+            ->execute();
 	}
 		
 	function setTooltipSnippet($roomId, $userId, $snippet) {
-		$roomId = intval($roomId);
-		$userId = intval($userId);
-		$res = $this->db->exec_UPDATEquery('tx_vjchat_room_feusers_mm', 'uid_local = '.$roomId.' AND uid_foreign = '.$userId, array('tooltipsnippet' => $snippet));
-		return $this->db->sql_affected_rows();
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_vjchat_room_feusers_mm') ;
+
+        return $queryBuilder
+            ->update('tx_vjchat_room_feusers_mm')
+            ->where(
+                $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter((intval($roomId)) , Connection::PARAM_INT ))
+            )->andWhere(
+                $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter((intval($userId)) , Connection::PARAM_INT ))
+            )
+            ->set('tooltipsnippet', $snippet  )
+            ->execute();
 	}
 	
 	function getSnippets($roomId, $userId) {
-		$roomId = intval($roomId);
-		$userId = intval($userId);
-		$res = $this->db->exec_SELECTquery('userlistsnippet,tooltipsnippet','tx_vjchat_room_feusers_mm', 'uid_local = '.$roomId.' AND uid_foreign = '.$userId);
-		if(!$res) {
-			//print '#'.__LINE__.' - '.($this->db->debug_lastBuiltQuery);
-		}
-		return $this->db->sql_fetch_assoc($res);
+
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_vjchat_room_feusers_mm') ;
+
+        $rows = $queryBuilder
+            ->select('userlistsnippet','tooltipsnippet')
+            ->from('tx_vjchat_room_feusers_mm')
+            ->where(
+                $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter((intval($roomId)) , Connection::PARAM_INT ))
+            )->andWhere(
+                $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter((intval($userId)) , Connection::PARAM_INT ))
+            )
+            ->setMaxResults(1)
+            ->execute();
+
+
+		return $rows->fetch() ;
 	}
 
     function debugQuery($query) {

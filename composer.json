@@ -1,0 +1,57 @@
+{
+    "name": "velletti/vjchat",
+    "description": "The vjchat compatible for TYPO3 LTS 8 ",
+    "type": "typo3-cms-extension",
+    "non-feature-branches": ["development"],
+    "support": {
+        "issues": "https://github.com/velletti/vjchat/issues"
+    },
+    "keywords": [
+        "TYPO3 CMS",
+        "vjchat",
+        "Chat Room"
+    ],
+    "config": {
+      "preferred-install": "dist"
+    },
+    "minimum-stability": "dev",
+    "prefer-stable": true,
+    "homepage": "https://velletti.de",
+    "license": "GPL-2.0-or-later",
+    "autoload": {
+        "psr-4": {
+            "JVE\\vjchat\\": "classes/"
+        },
+        "classmap": [
+            "pi1"
+        ]
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "FluidTYPO3\\Vhs\\Tests\\": "Tests/"
+        }
+    },
+
+    "require": {
+        "php": ">=7.0.0",
+        "typo3/cms-core": "^8.7 || ^9 || dev-master",
+        "typo3/cms-extbase": "^8.7 || ^9 || dev-master",
+        "typo3/cms-fluid": "^8.7 || ^9 || dev-master",
+        "typo3/cms-frontend": "^8.7 || ^9 || dev-master",
+        "typo3/cms-backend": "^8.7 || ^9 || dev-master"
+    },
+    "replace": {
+        "vjchat": "self.version",
+        "typo3-ter/vjchat": "self.version"
+    },
+
+    "scripts": {
+
+    },
+    "extra": {
+        "typo3/cms": {
+          "cms-package-dir": "{$vendor-dir}/typo3/cms",
+          "web-dir": "build/web"
+        }
+    }
+}

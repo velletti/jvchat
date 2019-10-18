@@ -12,14 +12,17 @@ CREATE TABLE tx_vjchat_entry (
 	starttime int(11) DEFAULT '0' NOT NULL,
 	endtime int(11) DEFAULT '0' NOT NULL,
 	entry text NOT NULL,
-	feuser blob NOT NULL,
+	feuser INT(11) NOT NULL,
 	tofeuser int(11) DEFAULT '0' NOT NULL,	
-	room blob NOT NULL,
+	room INT(11) NOT NULL,
   style tinyint(4) unsigned DEFAULT '0' NOT NULL,
 	
 	PRIMARY KEY (uid),
-	KEY parent (pid)
+	KEY parent (pid),
+	INDEX room (room, crdate)
+
 );
+
 
 
 
@@ -47,14 +50,14 @@ CREATE TABLE tx_vjchat_room (
 	moderators blob NOT NULL,
     experts blob NOT NULL,
     groupaccess blob NOT NULL,
-	superusergroup blob NOT NULL,
+	superusergroup  int(11) NOT NULL,
     bannedusers blob NOT NULL,
     welcomemessage text NOT NULL,
     showuserinfo_experts blob NOT NULL,
     showuserinfo_moderators blob NOT NULL,
     showuserinfo_users blob NOT NULL,
 	showuserinfo_superusers blob NOT NULL,
-	page blob NOT NULL,
+	page  int(11) NOT NULL,
 	image blob NOT NULL,
 	owner int(11) DEFAULT '0' NOT NULL,
 	private SMALLINT(4) DEFAULT '0' NOT NULL,
@@ -73,7 +76,7 @@ CREATE TABLE tx_vjchat_session (
     tstamp int(11) DEFAULT '0' NOT NULL,
     crdate int(11) DEFAULT '0' NOT NULL,
     cruser_id int(11) DEFAULT '0' NOT NULL,
-	sorting int(11) unsigned DEFAULT '0' NOT NULL,	
+	  sorting int(11) unsigned DEFAULT '0' NOT NULL,
     deleted SMALLINT(4) DEFAULT '0' NOT NULL,
     hidden SMALLINT(4) DEFAULT '0' NOT NULL,
     starttime int(11) DEFAULT '0' NOT NULL,
@@ -120,9 +123,9 @@ CREATE TABLE tx_vjchat_messages (
 	starttime int(11) DEFAULT '0' NOT NULL,
 	endtime int(11) DEFAULT '0' NOT NULL,
 	entry text NOT NULL,
-	feuser blob NOT NULL,
+	feuser  int(11) NOT NULL,
 	tofeuser int(11) DEFAULT '0' NOT NULL,
-	room blob NOT NULL,
+	room  int(11) NOT NULL,
   style SMALLINT(4) unsigned DEFAULT '0' NOT NULL,
 
 	PRIMARY KEY (uid),

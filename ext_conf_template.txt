@@ -1,0 +1,65 @@
+	# cat=basic; type=int; label=Entries: PID for Chat Entries; new entries are stored on this page
+	pids.entries = 
+
+	# cat=basic; type=int; label=Sessions: PID for Chat Sessions; new sessions that were created within the chat are stored here
+	pids.sessions = 
+
+	# cat=basic; type=int; label=Rooms: PID for Chat Rooms; 
+	pids.rooms = 
+
+	# cat=basic; type=string; label=Server Time: This value fixes the server time that is displayed during the chat (e.g. "+1 hour")
+	# serverTimeOffset = +1 hour
+
+	serverTimeOffset = 0 hour
+
+	# cat=basic; type=string; label=time Format for messages f.e.: %d.%M | %H:%i  or something else ..
+	timeFormat = %H:%I
+
+	# cat=basic; type=string; label=Firstname If option showFullnames is activated, this Fieldname 1 will be used, maybe togester with fieldname 2
+	usernameField1 = firstname
+	# cat=basic; type=string; label=Lastname If option showFullnames is activated, this Fieldname 2 will be used, maybe togester with fieldname 1
+	usernameField2 = lastname
+
+
+	# cat=basic; type=string; label=Emoticons: Path to emoticons
+	emoticonsPath = typo3conf/ext/vjchat/pi1/emoticons/
+
+	# cat=basic; type=boolean; label=Show parameter description: If activated the 'help' command shows also a description for each parameter
+	showParameterDescription = 1
+
+	# cat=basic; type=boolean; label=Hide private rooms by default: Sets the hidden flag for new private rooms by default
+	hidePrivateRooms = 1
+
+	# cat=basic; type=boolean; label=Delete private rooms if empty: If set, private rooms will always be flagged as 'deleted' when there is no user in.
+	deletePrivateRoomsIfEmpty = 1
+
+	# cat=basic; type=boolean; label=Show that a User has Birthday when entering the Chat. Needs the fields tx_nem_dateofbirth_show and tx_nem_dateofbirth
+	showBirthday = 0
+
+	# cat=basic; type=boolean; label=Hide superusers: Sets the hidden flag to a superuser when entering a chat room
+	hideSuperusers = 0
+
+	# cat=basic; type=boolean; label=Private messages: Enable/disable private messages (/msg)
+	allowPrivateMessages = 1
+
+	# cat=basic; type=boolean; label=Private rooms: Enable/disable private rooms (/newroom)
+	allowPrivateRooms = 1
+
+	# cat=basic; type=boolean; label=PMs for superuser: Defines if the superuser can read private messages
+	superuserCanReadPMs = 0
+	
+	# cat=basic; type=boolean; label=Make sessions: Allows moderators to create sessions from a room (/makesession)
+	createSessions = 0
+
+	# cat=basic; type=boolean; label=Change room status: Allows moderators to change the room status (/switchroomstatus hidden, private)
+	moderatorsAllowSwitchRoomStatus = 0
+
+	# cat=basic; type=int; label=Auto Delete Entries: Delete ALL messages that are older than this value (seconds) of any room! If you are using sessions you should disable this option by setting value to 0 (otherwise entries of sessions will be deleted as well) and use the command /cleanup or /cleanuproom to delete unused entries manually.
+	autoDeleteEntries = 0
+
+	# cat=basic; type=int; label=Max Get Entries: To avoid tunning out of memory get only max 100 Entries per ajax request. If server has more memory, you can enhence this
+	maxGetEntries = 100
+
+
+	# cat=basic; type=int; label=Maximum user idle time (seconds): When a user does not fetch any messages during this period of time it is assumed that the user has left the chat and a message is shown.
+	maxAwayTime = 15

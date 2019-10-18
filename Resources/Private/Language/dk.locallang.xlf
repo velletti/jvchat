@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" target-language="dk" datatype="plaintext" original="messages" date="2016-07-22T08:55:26Z" product-name="vjchat">
+		<header/>
+		<body>
+			<trans-unit id="after_welcome_message" xml:space="preserve">
+				<source>Hvis du har brug for hjælp, så skriv '/help'</source>
+			</trans-unit>
+			<trans-unit id="back" xml:space="preserve">
+				<source>Tilbage</source>
+			</trans-unit>
+			<trans-unit id="back_to_rooms" xml:space="preserve">
+				<source>Tilbage til oversigt over chatrum</source>
+			</trans-unit>
+			<trans-unit id="back_to_sessions" xml:space="preserve">
+				<source>Tilbage til sessioner</source>
+			</trans-unit>
+			<trans-unit id="command_ban" xml:space="preserve">
+				<source>Tilføj bruger til listen over brugere der er nægtet adgang.</source>
+			</trans-unit>
+			<trans-unit id="command_ban_ok" xml:space="preserve">
+				<source>%s var nægtet adgang af %s.</source>
+			</trans-unit>
+			<trans-unit id="command_ban_reason" xml:space="preserve">
+				<source>Grund: '%s'</source>
+			</trans-unit>
+			<trans-unit id="command_cleanup" xml:space="preserve">
+				<source>Slet alle entries af dette rum som ikkke tilhører en session.</source>
+			</trans-unit>
+			<trans-unit id="command_cleanupall" xml:space="preserve">
+				<source>Slet alle entries af alle rum som ikkke tilhører en session.</source>
+			</trans-unit>
+			<trans-unit id="command_error_user_not_found" xml:space="preserve">
+				<source>Brugeren '%1%s ' blev ikke fundet</source>
+			</trans-unit>
+			<trans-unit id="command_header" xml:space="preserve">
+				<source>Velkommen til vores Chat.<br /><br />Et lille tip: Tryk CTRL+RETURN for at sende beskeder på flerer linier.<br /><br />Du kan bruge følgende kommandoer under chat:<br /></source>
+			</trans-unit>
+			<trans-unit id="command_help" xml:space="preserve">
+				<source>Viser dette skærmbillede.</source>
+			</trans-unit>
+			<trans-unit id="command_kick" xml:space="preserve">
+				<source>Fjern en bruger midlertidigt fra en rum, med en optional grund. Med kommandoen '/redeem' kan du fortryde handlingen.</source>
+			</trans-unit>
+			<trans-unit id="command_kick_ok" xml:space="preserve">
+				<source>%s blev smidt ud af %s i %d minutter.</source>
+			</trans-unit>
+			<trans-unit id="command_kick_param_time" xml:space="preserve">
+				<source>Brugeren vil blive nægtet adgang i dette antal minutter.</source>
+			</trans-unit>
+			<trans-unit id="command_kick_reason" xml:space="preserve">
+				<source>Grund: '%s'</source>
+			</trans-unit>
+			<trans-unit id="command_makeexpert" xml:space="preserve">
+				<source>Tilføj en bruger til listen over eksperter</source>
+			</trans-unit>
+			<trans-unit id="command_makesession" xml:space="preserve">
+				<source>Opretter en session.</source>
+			</trans-unit>
+			<trans-unit id="command_makesession_param_firstid" xml:space="preserve">
+				<source>Id på den første besked</source>
+			</trans-unit>
+			<trans-unit id="command_makesession_param_lastid" xml:space="preserve">
+				<source>Id på den sidste besked</source>
+			</trans-unit>
+			<trans-unit id="command_makesession_param_name" xml:space="preserve">
+				<source>Et navn for denne session</source>
+			</trans-unit>
+			<trans-unit id="command_makeuser" xml:space="preserve">
+				<source>Fjerner en bruger fra listen over eksperter</source>
+			</trans-unit>
+			<trans-unit id="command_not_found" xml:space="preserve">
+				<source>Kommandoen '%s' findes ikke. Skriv '/help' for liste over kommandoer.</source>
+			</trans-unit>
+			<trans-unit id="command_param_reason" xml:space="preserve">
+				<source>En grund</source>
+			</trans-unit>
+			<trans-unit id="command_param_userid" xml:space="preserve">
+				<source>BrugerId eller Brugernavn</source>
+			</trans-unit>
+			<trans-unit id="command_parameter_wrong" xml:space="preserve">
+				<source>Parameteret %s er forkert. Det burde være %s</source>
+			</trans-unit>
+			<trans-unit id="command_quit" xml:space="preserve">
+				<source>Forlad rummet med en optional besked.</source>
+			</trans-unit>
+			<trans-unit id="command_quit_ok" xml:space="preserve">
+				<source>%s forlader rummet.</source>
+			</trans-unit>
+			<trans-unit id="command_quit_reason" xml:space="preserve">
+				<source>Grund: '%s'</source>
+			</trans-unit>
+			<trans-unit id="command_redeem" xml:space="preserve">
+				<source>Fjerner bruger fra liste over brugere der er nægtet adgang.</source>
+			</trans-unit>
+			<trans-unit id="command_redeem_ok" xml:space="preserve">
+				<source>%s har fået sin adgang tilbage af %s.</source>
+			</trans-unit>
+			<trans-unit id="command_redeem_reason" xml:space="preserve">
+				<source>Grund: '%s'</source>
+			</trans-unit>
+			<trans-unit id="command_roomlist" xml:space="preserve">
+				<source>Viser alle online brugere i et rum.</source>
+			</trans-unit>
+			<trans-unit id="command_smileys" xml:space="preserve">
+				<source>Viser alle tilgængelige emoticons med deres tilsvarende kode.</source>
+			</trans-unit>
+			<trans-unit id="command_title" xml:space="preserve">
+				<source>--== Chat Kommandoer ==--</source>
+			</trans-unit>
+			<trans-unit id="command_who" xml:space="preserve">
+				<source>Viser brugernavn på alle brugere i det nuværende rum.</source>
+			</trans-unit>
+			<trans-unit id="command_whois" xml:space="preserve">
+				<source>Detaljeret information om en bruger.</source>
+			</trans-unit>
+			<trans-unit id="enter_chat" xml:space="preserve">
+				<source>Åben chat</source>
+			</trans-unit>
+			<trans-unit id="entries_not_found" xml:space="preserve">
+				<source>Ingen beskeder.</source>
+			</trans-unit>
+			<trans-unit id="error_access_denied" xml:space="preserve">
+				<source>Handling ikke tilladt. Adgang nægtet.</source>
+			</trans-unit>
+			<trans-unit id="error_banned" xml:space="preserve">
+				<source>Du er blevet nægtet adgang til dette rum.</source>
+			</trans-unit>
+			<trans-unit id="error_kicked" xml:space="preserve">
+				<source>Du er blevet nægtet adgang til dette rum i %s minutter.</source>
+			</trans-unit>
+			<trans-unit id="error_room_access_denied" xml:space="preserve">
+				<source>Du har ikke tilladelse til at åbne dette chatrum. Vær venlig at logge ind.</source>
+			</trans-unit>
+			<trans-unit id="error_room_full" xml:space="preserve">
+				<source>Rummet er fyldt. Maksimum antal brugere er nået.</source>
+			</trans-unit>
+			<trans-unit id="error_room_not_found" xml:space="preserve">
+				<source>Rummet blev ikke fundet. Der er formentlig fjernet.</source>
+			</trans-unit>
+			<trans-unit id="experts" xml:space="preserve">
+				<source>Ekspert(er) online:</source>
+			</trans-unit>
+			<trans-unit id="hide_message" xml:space="preserve">
+				<source>Skjul besked</source>
+			</trans-unit>
+			<trans-unit id="leave_chat" xml:space="preserve">
+				<source>Forlad chat</source>
+			</trans-unit>
+			<trans-unit id="max_user" xml:space="preserve">
+				<source>Maximum brugerantal</source>
+			</trans-unit>
+			<trans-unit id="moderators" xml:space="preserve">
+				<source>Moderator(er) online:</source>
+			</trans-unit>
+			<trans-unit id="new_message" xml:space="preserve">
+				<source>Ny besked</source>
+			</trans-unit>
+			<trans-unit id="no_user_in_chat" xml:space="preserve">
+				<source>Ingen bruger i chat rum.</source>
+			</trans-unit>
+			<trans-unit id="session_not_found" xml:space="preserve">
+				<source>Sessionen blev ikke fundet. Den er formentlig flyttet.</source>
+			</trans-unit>
+			<trans-unit id="sessions" xml:space="preserve">
+				<source>sessioner</source>
+			</trans-unit>
+			<trans-unit id="sessions_not_found" xml:space="preserve">
+				<source>Ingen sessioner</source>
+			</trans-unit>
+			<trans-unit id="store_message" xml:space="preserve">
+				<source>Gem besked</source>
+			</trans-unit>
+			<trans-unit id="submit_message" xml:space="preserve">
+				<source>Send</source>
+			</trans-unit>
+			<trans-unit id="system_name" xml:space="preserve">
+				<source>*</source>
+			</trans-unit>
+			<trans-unit id="user_enters_chat" xml:space="preserve">
+				<source>%s er i chat.</source>
+			</trans-unit>
+			<trans-unit id="user_in_chat" xml:space="preserve">
+				<source>bruger i chat rum.</source>
+			</trans-unit>
+			<trans-unit id="user_leaves_chat" xml:space="preserve">
+				<source>%s forlader chat.</source>
+			</trans-unit>
+			<trans-unit id="command_setstatus" xml:space="preserve">
+				<source>Ændre status for bruger (f.eks. 'hidden')</source>
+			</trans-unit>
+			<trans-unit id="commit_message" xml:space="preserve">
+				<source>Send besked</source>
+			</trans-unit>
+			<trans-unit id="error_commit" xml:space="preserve">
+				<source>En fejl er opstået. Måske er beskeden allerede sendt.</source>
+			</trans-unit>
+			<trans-unit id="message_committed" xml:space="preserve">
+				<source>Besked #%d er sendt</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

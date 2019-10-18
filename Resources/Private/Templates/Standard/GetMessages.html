@@ -1,0 +1,144 @@
+<f:layout name="Ajax" />
+
+<f:section name="main">
+    <f:variable name="userName"><f:render section="userNameUnlinked" arguments="{showFullNames: showFullNames, user: entryUser , extConf: extConf}"/></f:variable>
+    <f:variable name="user2Name"><f:render section="userNameUnlinked" arguments="{showFullNames: showFullNames, user: recipient , extConf: extConf}"/></f:variable>
+    <f:format.raw>
+        <f:spaceless>
+
+            <f:comment><!-- Hidden or private message: From User To User OR needs moderation
+            entry.uid: {entry.uid} | involved : {involved} | entry.tofeuserid : {entry.tofeuserid}<br>
+            --> </f:comment>
+            <f:if condition="{entry.hidden}">
+                <f:then>
+                    <f:if condition="{entry.tofeuserid}">
+                        <f:then>
+                            <f:comment><!-- Private message From User To User --> </f:comment>
+                            <f:if condition="{involved} && {entry.tofeuserid} == {user.uid}">
+                                <div class="tx-vjchat-private">
+                                    <div class="tx-vjchat-hidden" id="tx-vjchat-entry-{entry.uid}">
+                                        Private Msg for: {entry.tofeuserid}:{user2Name}<br>
+                                        <f:render section="message" arguments="{_all}"></f:render>
+                                    </div>
+                                </div>
+                            </f:if>
+
+                        </f:then>
+                        <f:else>
+                            <f:if condition="{needsModeration}">
+                                <f:comment><!-- Hidden message: needs moderation --> </f:comment>
+
+                                <div class="tx-vjchat-commit" id="tx-vjchat-entry-commitlink-{entry.uid}">
+                                    <a class="tx-vjchat-actionlink" onClick="javascript:chat_instance.commitEntry('{entry.uid}');">
+                                        <f:translate key="commit_message"></f:translate>
+                                    </a> |
+                                    <a class="tx-vjchat-actionlink" onClick="javascript:chat_instance.hideEntry('{entry.uid}');">
+                                        <f:translate key="hide_message"></f:translate>
+                                    </a>
+                                    <span id="tx-vjchat-storelink-{entry.uid}">|
+                                        <a class="tx-vjchat-actionlink" onClick="javascript:chat_instance.storeEntry('{entry.uid}');">
+                                            <f:translate key="store_message"></f:translate>
+                                        </a>
+                                    </span>
+                                </div>
+
+
+                                <div class="tx-vjchat-hidden" id="tx-vjchat-entry-{entry.uid}">
+                                    <f:render section="message" arguments="{_all}"></f:render>
+                                </div>
+                            </f:if>
+                        </f:else>
+                    </f:if>
+                </f:then>
+                <f:else>
+                    <f:comment><!-- normal message --> </f:comment>
+                    <f:render section="message" arguments="{_all}"></f:render>
+                </f:else>
+            </f:if>
+
+
+
+        </f:spaceless>
+    </f:format.raw>
+</f:section>
+
+<f:section name="message">
+    <f:format.raw>
+        <f:spaceless>
+            <div id="cid{mid}" class="tx-vjchat-message-style-{entryStyle} {groupstyles} {f:if(condition: '{ownMsg}' , then: 'tx-vjchat-message-ownMsg')}">
+                <div class="tx-vjchat-{userType}">
+                    <span id="msg-{entry.uid}" class="tx-vjchat-time"><f:format.date format="{timeFormat}">{time}</f:format.date></span><span class="tx-vjchat-user tx-vjchat-userid-{entry.uid}">
+                        <f:render section="userName" arguments="{showFullNames: showFullNames, user: entryUser , entry: entry , extConf: extConf, ownMsg: ownMsg}"/>
+                    </span>&gt;&nbsp;<span class="tx-vjchat-entry">{entryText}</span>
+                </div>
+            </div>
+        </f:spaceless>
+    </f:format.raw>
+</f:section>
+
+<f:section name="userName">
+    <f:spaceless>
+        <f:if condition="{user}">
+            <f:then>
+                <f:if condition="{showFullNames} || 1==1">
+                    <f:then>
+                        <f:variable name="Button"></f:variable>
+                        <f:if condition="{ownMsg}">
+                            <f:else>
+                                <f:variable name="Button"><span class="btn btn-sm btn-primary btn-outline-primary"> &nbsp;&gt;&nbsp; </span></f:variable>
+
+                                <f:if condition="{extConf.allowPrivateRooms}">
+                                    <script type="application/javascript">
+                                        var id = '{entry.uid}' ;
+                                        var userid = '#{user.uid}' ;
+                                        var username = '{user.{usernameField1}} {user.{usernameField2}}' ;
+                                        $('#tx-vjchat-msg-user-' + id + " span.btn").bind("click", function(evt) {
+                                            evt.preventDefault();
+                                            var name = chat_instance.talkToNewRoomName.replace(/\%s/, username);
+                                            var command = "/newroom "+name ;
+                                            chat_instance.sendMessage(command);
+                                            command = "/recentinvite "+userid+" ";
+                                            chat_instance.sendMessage(command);
+                                        });
+
+                                    </script>
+
+
+                                </f:if>
+                            </f:else>
+                        </f:if>
+                        <span id="tx-vjchat-msg-user-{entry.uid}" class="tx-vjchat-link-user" data-content="user-{user.uid}" >
+                            <f:format.raw>{Button}</f:format.raw> {user.{extConf.usernameField1}}<f:if condition="{usernameField2}"> {user.{extConf.usernameField2}}</f:if>
+                        </span>
+
+
+                    </f:then>
+                    <f:else>
+                        <a href="/user/{user.username}" target="_blank" title="UserProfile">{user.username}  </a>
+                    </f:else>
+                </f:if>
+            </f:then>
+            <f:else>
+                <f:translate key="system_name">ChatBot</f:translate>
+            </f:else>
+        </f:if>
+    </f:spaceless>
+</f:section>
+
+<f:section name="userNameUnlinked">
+    <f:spaceless>
+        <f:if condition="{user}">
+            <f:then>
+                <f:if condition="{showFullNames}">
+                    <f:then>
+                        {user.{extConf.usernameField1}}<f:if condition="{usernameField2}"> {user.{extConf.usernameField2}}</f:if>
+                    </f:then>
+                    <f:else>
+                        {user.username}
+                    </f:else>
+                </f:if>
+            </f:then>
+        </f:if>
+    </f:spaceless>
+</f:section>
+

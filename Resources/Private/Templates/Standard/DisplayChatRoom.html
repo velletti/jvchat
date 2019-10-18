@@ -1,0 +1,149 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+    <div class="p-2 tx-vjchat-chat-intro" id="tx-vjchat-config" {dataString -> f:format.raw()} >
+        <f:if condition="{room.name}">
+            <h2>{room.name}</h2>
+        </f:if>
+        <f:if condition="{room.image}">
+            <p class="hidden-xs"><img src="uploads/tx_vjchat/{room.image}" alt="logo" ></p>
+        </f:if>
+        <f:if condition="{room.description}">
+            <f:then>
+                <p class="hidden-xs">{room.description}</p>
+            </f:then>
+            <f:else>
+                <p class="hidden-xs">{room.description}</p>
+            </f:else>
+
+        </f:if>
+        <p class="hidden-xs">{user.uid}: {user.username} ({roomData.userCount} <f:translate key="user_in_chat"></f:translate> )</p>
+
+        <f:if condition="{marker.isFull}">
+            <f:else>
+                <div id="tx-vjchat-showUserlist" class="hidden-sm hidden-md hidden-lg navbar-default" style="margin-right: -20px;">
+
+                    <button class="navbar-toggle collapsed" style="margin:0;" aria-expanded="false" aria-controls="collapsed" type="button" data-toggle="collapse" data-target="#tx-vjchat-userlist">
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                            <span class="icon-bar"></span>
+                    </button>
+                    <span class="left" style="margin: 4px 20px 0 0 ;">Show Userlist</span>
+                </div>
+            </f:else>
+        </f:if>
+    </div>
+
+
+
+
+    <f:if condition="{marker.isFull}">
+        <f:then>
+            <f:render section="roomIsFull" arguments="{_all}"></f:render>
+        </f:then>
+
+        <f:else>
+
+
+
+            <div id="tx-vjchat-loadinginfo">
+                <img src="/typo3conf/ext/connect_template/Resources/Public/Images/loading-big.gif" height="30" width="30">
+                <f:format.raw>{marker.LOADING_MESSAGE}</f:format.raw>
+            </div>
+
+            <div id="tx-vjchat-container" class="container">
+                <div id="tx-vjchat-content" class="row">
+                    <div id="tx-vjchat-userlist" class="collapse in col-sm-3" style="height:auto;" aria-expanded="true"></div>
+
+                    <div id="tx-vjchat-messages" class="col-xs-12 col-sm-9" style="height: 100%; display:none;"></div>
+                </div>
+
+                <div id="tx-vjchat-tools-container" class="row" style="display:none;">
+                    <div id="tx-vjchat-format">
+                        <f:format.raw>{marker.CHATBUTTONS}</f:format.raw>
+                    </div>
+                    <div id="tx-vjchat-style" style="display:none;"><f:format.raw>{marker.STYLES}</f:format.raw></div>
+                    <div id="tx-vjchat-emoticons" style="display:none;"><f:format.raw>{marker.EMOTICONS}</f:format.raw></div>
+                </div>
+
+                <div id="tx-vjchat-input-container" class="row" style="display:none;">
+                    <textarea id="txvjchatnewMessage" name="txvjchatnewMessage" rows="3" cols="40"></textarea>
+                    <f:if condition="{marker.LABEL_SUBMIT}">
+                        <button onClick="chat_instance.submitMessage()">{marker.LABEL_SUBMIT}</button>
+                    </f:if>
+                </div>
+            </div>
+            <div style="display:none; height: 0;">
+                <div id="tx-vjchat-storedMessages" style="display:none; height: 10em;"></div>
+                <div id="tx-vjchat-user-detail" style="display:none; position: absolute; top: 0px; left: 0px; z-index: 1000; margin: 0;">
+                    <div id="tx-vjchat-user-detail-caption"></div>
+                    <div id="tx-vjchat-user-detail-body"></div>
+                </div>
+            </div>
+
+            <f:render section="javascriptShort"  arguments="{_all}"></f:render>
+
+
+        </f:else>
+    </f:if>
+
+</f:section>
+
+<f:section name="javascriptShort">
+    <script language="JavaScript" type="text/javascript">
+        $(window).on("load" , function() {
+            var chat_instance = new tx_vjchat_pi1_js_chat();
+
+            chat_instance.init();
+            chat_instance.run();
+
+            $('#tx-vjchat-container').show();
+
+            $('#tx-vjchat-messages').show();
+            $('#tx-vjchat-userlist').show();
+            $('#tx-vjchat-tools-container').show();
+            $('#tx-vjchat-input-container').show();
+            $('#tx-vjchat-loadinginfo').hide();
+            $('#txvjchatnewMessage').focus();
+
+            if ( $(window).width() < 767 ) {
+                $('#tx-vjchat-userlist').removeClass("in").attr("aria-expanded" , "false").css('height' , '2px') ;
+            }
+            tx_vjchat_resize() ;
+
+            $(window).bind("resize", tx_vjchat_resize);
+            $('#tx-vjchat-showUserlist button').click( function() {
+                event.preventDefault() ;
+                if( $('#tx-vjchat-userlist').attr("aria-expanded" ) ==  "true") {
+                    $('#tx-vjchat-userlist').addClass("in").attr("aria-expanded" , "false").css('height' , '2px') ;
+                }  else {
+                    $('#tx-vjchat-userlist').removeClass("in").attr("aria-expanded" , "true").css('height' , 'auto') ;
+                }
+                tx_vjchat_resize() ;
+            } );
+        }) ;
+
+    </script>
+</f:section>
+
+<f:section name="roomIsFull">
+    <script language="JavaScript" type="text/javascript">
+        var chat_instance = new tx_vjchat_pi1_js_chat();
+        var roomId = {marker.CHATROOM_ID} ;
+        var checkFullTime = {marker.RELOAD_TIME} ;
+        var scriptUrl = "{marker.SCRIPTURL}" ;
+        var chatbuttonskeys = {marker.CHATBUTTONS_KEYS} ;
+
+        chat_instance.configuration = {
+            roomId : roomId,
+            scriptUrl : scriptUrl,
+            checkFullTime: checkFullTime ,
+            globalInstanceName : "chat_instance",
+            checkFullStatusElement : $('tx-vjchat-full-jsstatus')
+        } ;
+
+        chat_instance.init();
+        chat_instance.checkFull();
+    </script>
+</f:section>
+

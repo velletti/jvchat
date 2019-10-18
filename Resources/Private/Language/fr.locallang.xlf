@@ -1,0 +1,356 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xliff version="1.0">
+	<file source-language="en" target-language="fr" datatype="plaintext" original="messages" date="2016-07-22T08:55:26Z" product-name="vjchat">
+		<header/>
+		<body>
+			<trans-unit id="session_not_found" xml:space="preserve">
+				<source>La session n 'a pas été trouvée. Elle a probablement été supprimée.</source>
+			</trans-unit>
+			<trans-unit id="sessions_not_found" xml:space="preserve">
+				<source>Aucune session disponible.</source>
+			</trans-unit>
+			<trans-unit id="entries_not_found" xml:space="preserve">
+				<source>Aucun message.</source>
+			</trans-unit>
+			<trans-unit id="new_message" xml:space="preserve">
+				<source>Nouveau message</source>
+			</trans-unit>
+			<trans-unit id="submit_message" xml:space="preserve">
+				<source>Envoyer</source>
+			</trans-unit>
+			<trans-unit id="back_to_rooms" xml:space="preserve">
+				<source>Retour à l 'aperçu du salon</source>
+			</trans-unit>
+			<trans-unit id="back_to_sessions" xml:space="preserve">
+				<source>Retour à l 'aperçu de la session</source>
+			</trans-unit>
+			<trans-unit id="user_in_chat" xml:space="preserve">
+				<source>Des utilisateurs participent à la discussion.</source>
+			</trans-unit>
+			<trans-unit id="no_user_in_chat" xml:space="preserve">
+				<source>Le salon de discussion est vide.</source>
+			</trans-unit>
+			<trans-unit id="max_user" xml:space="preserve">
+				<source>Nombre maximum de participants : </source>
+			</trans-unit>
+			<trans-unit id="error_access_denied" xml:space="preserve">
+				<source>Vous n 'êtes pas autorisé à effectuer cette action.</source>
+			</trans-unit>
+			<trans-unit id="error_room_access_denied" xml:space="preserve">
+				<source>Vous n 'êtes pas autorisé à entrer dans ce salon ni à voir ces entrées. Veuillez ouvrir une session.</source>
+			</trans-unit>
+			<trans-unit id="error_room_full" xml:space="preserve">
+				<source>Le salon est plein. Le nombre maximum d 'utilisateurs a été atteint. Vous pourrez entrer automatiquement dans le salon dès qu 'une place se libère. Sinon, veuillez réessayer plus tard.</source>
+			</trans-unit>
+			<trans-unit id="error_room_not_found" xml:space="preserve">
+				<source>Impossible de trouver le salon. Il a probablement été supprimé.</source>
+			</trans-unit>
+			<trans-unit id="error_kicked" xml:space="preserve">
+				<source>Vous avez été verrouillé pour ce salon. Encore %d minutes.</source>
+			</trans-unit>
+			<trans-unit id="error_banned" xml:space="preserve">
+				<source>Vous avez été verrouillé pour ce salon.</source>
+			</trans-unit>
+			<trans-unit id="error_not_invited" xml:space="preserve">
+				<source>Ce salon de discussion est privé et son accès n 'est possible que sur invitation.</source>
+			</trans-unit>
+			<trans-unit id="message_committed" xml:space="preserve">
+				<source>Le message #%d a été autorisé</source>
+			</trans-unit>
+			<trans-unit id="error_commit" xml:space="preserve">
+				<source>Impossible d 'autoriser le message. Il a peut-être déjà été autorisé.</source>
+			</trans-unit>
+			<trans-unit id="enter_chat" xml:space="preserve">
+				<source>Participer à la discussion</source>
+			</trans-unit>
+			<trans-unit id="leave_chat" xml:space="preserve">
+				<source>Quitter la discussion</source>
+			</trans-unit>
+			<trans-unit id="new_window" xml:space="preserve">
+				<source>Nouvelle fenêtre</source>
+			</trans-unit>
+			<trans-unit id="close_window" xml:space="preserve">
+				<source>Terminer la discussion</source>
+			</trans-unit>
+			<trans-unit id="sessions" xml:space="preserve">
+				<source>Consigner les sessions</source>
+			</trans-unit>
+			<trans-unit id="experts" xml:space="preserve">
+				<source>Expert(s) en ligne :</source>
+			</trans-unit>
+			<trans-unit id="superusers" xml:space="preserve">
+				<source>Superutilisateur en ligne : </source>
+			</trans-unit>
+			<trans-unit id="moderators" xml:space="preserve">
+				<source>Animateur(s) en ligne :</source>
+			</trans-unit>
+			<trans-unit id="users" xml:space="preserve">
+				<source>Utilisateur en ligne : </source>
+			</trans-unit>
+			<trans-unit id="system_name" xml:space="preserve">
+				<source>*</source>
+			</trans-unit>
+			<trans-unit id="hide_message" xml:space="preserve">
+				<source>Masquer le message</source>
+			</trans-unit>
+			<trans-unit id="commit_message" xml:space="preserve">
+				<source>Déverrouiller le message</source>
+			</trans-unit>
+			<trans-unit id="store_message" xml:space="preserve">
+				<source>Rétablir le message</source>
+			</trans-unit>
+			<trans-unit id="user_enters_chat" xml:space="preserve">
+				<source>%s est entré dans le salon.</source>
+			</trans-unit>
+			<trans-unit id="user_leaves_chat" xml:space="preserve">
+				<source>%s quitte le salon.</source>
+			</trans-unit>
+			<trans-unit id="after_welcome_message" xml:space="preserve">
+				<source>Pour obtenir de l 'aide, entrez :  '/help '</source>
+			</trans-unit>
+			<trans-unit id="command_title" xml:space="preserve">
+				<source>--== Commandes de discussion ==--</source>
+			</trans-unit>
+			<trans-unit id="command_header" xml:space="preserve">
+				<source>Bienvenue dans notre salon de discussion. Astuce : appuyez sur CTRL+ENTREE afin de créer un saut de ligne. Les commandes suivantes sont disponibles pendant la discussion :<br/></source>
+			</trans-unit>
+			<trans-unit id="command_help" xml:space="preserve">
+				<source>Affiche les commandes possibles.</source>
+			</trans-unit>
+			<trans-unit id="command_msg" xml:space="preserve">
+				<source>Envoie un message privé.</source>
+			</trans-unit>
+			<trans-unit id="command_roomlist" xml:space="preserve">
+				<source>Indique à l 'utilisateur les autres salons de discussion.</source>
+			</trans-unit>
+			<trans-unit id="command_smileys" xml:space="preserve">
+				<source>Affiche les icônes disponibles avec leurs raccourcis respectifs.</source>
+			</trans-unit>
+			<trans-unit id="command_who" xml:space="preserve">
+				<source>Affiche la liste des utilisateurs participant à la discussion.</source>
+			</trans-unit>
+			<trans-unit id="command_whois" xml:space="preserve">
+				<source>Affiche les détails d 'un utilisateur.</source>
+			</trans-unit>
+			<trans-unit id="command_kick" xml:space="preserve">
+				<source>Supprime un utilisateur pour une période déterminée. Cette action peut être annulée avec la commande  '/redeem '.</source>
+			</trans-unit>
+			<trans-unit id="command_kick_param_time" xml:space="preserve">
+				<source>Nombre de minutes pendant lesquelles l 'utilisateur est verrouillé.</source>
+			</trans-unit>
+			<trans-unit id="command_kick_ok" xml:space="preserve">
+				<source>%s a été supprimé de %s pendant %d minutes.</source>
+			</trans-unit>
+			<trans-unit id="command_kick_reason" xml:space="preserve">
+				<source>Raison :  '%s '</source>
+			</trans-unit>
+			<trans-unit id="command_ban" xml:space="preserve">
+				<source>Supprime un utilisateur du salon pour une période indéterminée.</source>
+			</trans-unit>
+			<trans-unit id="command_ban_ok" xml:space="preserve">
+				<source>%s a été verrouillé de %s.</source>
+			</trans-unit>
+			<trans-unit id="command_ban_reason" xml:space="preserve">
+				<source>Raison :  '%s '</source>
+			</trans-unit>
+			<trans-unit id="command_redeem" xml:space="preserve">
+				<source>Déverrouille un utilisateur pour le salon actuel.</source>
+			</trans-unit>
+			<trans-unit id="command_redeem_ok" xml:space="preserve">
+				<source>%s a été déverrouillé de %s.</source>
+			</trans-unit>
+			<trans-unit id="command_redeem_reason" xml:space="preserve">
+				<source>Raison :  '%s '</source>
+			</trans-unit>
+			<trans-unit id="command_restart" xml:space="preserve">
+				<source>Démarre le chargement de la discussion avec de nouveaux messages.</source>
+			</trans-unit>
+			<trans-unit id="command_stop" xml:space="preserve">
+				<source>Arrête le chargement de la discussion (mode Archive).</source>
+			</trans-unit>
+			<trans-unit id="command_quit" xml:space="preserve">
+				<source>Quitter le salon avec un message facultatif.</source>
+			</trans-unit>
+			<trans-unit id="command_quit_ok" xml:space="preserve">
+				<source>%s quitte le salon.</source>
+			</trans-unit>
+			<trans-unit id="command_quit_reason" xml:space="preserve">
+				<source>Raison :  '%s '</source>
+			</trans-unit>
+			<trans-unit id="command_makesession" xml:space="preserve">
+				<source>Crée un protocole de discussion.</source>
+			</trans-unit>
+			<trans-unit id="command_makesession_param_name" xml:space="preserve">
+				<source>Un nom pour le protocole.</source>
+			</trans-unit>
+			<trans-unit id="command_makesession_param_firstid" xml:space="preserve">
+				<source>ID du premier message</source>
+			</trans-unit>
+			<trans-unit id="command_makesession_param_lastid" xml:space="preserve">
+				<source>ID du dernier message</source>
+			</trans-unit>
+			<trans-unit id="command_makeexpert" xml:space="preserve">
+				<source>Place un utilisateur sur la liste des experts</source>
+			</trans-unit>
+			<trans-unit id="command_makeuser" xml:space="preserve">
+				<source>Supprime un utilisateur de la liste des experts</source>
+			</trans-unit>
+			<trans-unit id="command_cleanup" xml:space="preserve">
+				<source>Supprime toutes les entrées de ce salon qui n 'appartiennent pas à une session.</source>
+			</trans-unit>
+			<trans-unit id="command_cleanupall" xml:space="preserve">
+				<source>Supprime toutes les entrées de tous les salons qui n 'appartiennent à aucune session.</source>
+			</trans-unit>
+			<trans-unit id="command_setstatus" xml:space="preserve">
+				<source>Modifie le statut de l 'utilisateur (par ex.  'hidden ')</source>
+			</trans-unit>
+			<trans-unit id="command_error_user_not_found" xml:space="preserve">
+				<source>Utilisateur  '%1%s ' introuvable</source>
+			</trans-unit>
+			<trans-unit id="command_parameter_wrong" xml:space="preserve">
+				<source>Paramètre %s incorrect. Devrait être %s</source>
+			</trans-unit>
+			<trans-unit id="command_not_found" xml:space="preserve">
+				<source>Commande  '%s ' introuvable. Veuillez saisir  '/help ' afin d 'obtenir une liste des commandes possibles.</source>
+			</trans-unit>
+			<trans-unit id="command_param_userid" xml:space="preserve">
+				<source>#ID utilisateur ou nom d 'utilisateur</source>
+			</trans-unit>
+			<trans-unit id="command_param_roomid" xml:space="preserve">
+				<source>ID salon</source>
+			</trans-unit>
+			<trans-unit id="command_param_reason" xml:space="preserve">
+				<source>Une raison</source>
+			</trans-unit>
+			<trans-unit id="command_param_status" xml:space="preserve">
+				<source>Par exemple  'hidden '</source>
+			</trans-unit>
+			<trans-unit id="command_param_message" xml:space="preserve">
+				<source>Un message</source>
+			</trans-unit>
+			<trans-unit id="command_newroom" xml:space="preserve">
+				<source>Crée un nouveau salon privé. Les utilisateurs peuvent ensuite être invités à l 'aide de /invite.</source>
+			</trans-unit>
+			<trans-unit id="command_newroom_param_name" xml:space="preserve">
+				<source>Nom du salon</source>
+			</trans-unit>
+			<trans-unit id="command_newroom_param_description" xml:space="preserve">
+				<source>Une description plus précise du salon.</source>
+			</trans-unit>
+			<trans-unit id="command_newroom_room_default_title" xml:space="preserve">
+				<source>Salon privé de %s</source>
+			</trans-unit>
+			<trans-unit id="command_newroom_room_default_description" xml:space="preserve">
+				<source>Pour entrer dans ce salon de discussion privé, vous devez disposer d 'une invitation de %s.</source>
+			</trans-unit>
+			<trans-unit id="command_newroom_ok" xml:space="preserve">
+				<source>Un nouveau salon *%s* a été créé.</source>
+			</trans-unit>
+			<trans-unit id="command_invite" xml:space="preserve">
+				<source>Invite un utilisateur dans un salon privé.</source>
+			</trans-unit>
+			<trans-unit id="command_invite_default_message" xml:space="preserve">
+				<source>*%s* invite *%s* dans son salon de discussion *%s*.</source>
+			</trans-unit>
+			<trans-unit id="command_invite_enter_room" xml:space="preserve">
+				<source>Entrer dans le salon</source>
+			</trans-unit>
+			<trans-unit id="command_invite_enter_room_ok" xml:space="preserve">
+				<source>*%s* peut maintenant entrer dans ce salon. L 'invitation a été envoyée.</source>
+			</trans-unit>
+			<trans-unit id="command_invite_user_not_online" xml:space="preserve">
+				<source>*%s* ne se trouve dans aucun salon. L 'invitation n 'a pas été envoyée.</source>
+			</trans-unit>
+			<trans-unit id="command_recent_invite" xml:space="preserve">
+				<source>Invite un utilisateur dans le dernier salon créé.</source>
+			</trans-unit>
+			<trans-unit id="command_setroomstatus" xml:space="preserve">
+				<source>Modifie le statut du salon (par ex.  'hidden", 'private ')</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.bold" xml:space="preserve">
+				<source>Gras [b]texte[/b] ou *texte*</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.italic" xml:space="preserve">
+				<source>Italique [i]texte[/i]</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.underlined" xml:space="preserve">
+				<source>Souligné [u]texte[/u]</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.stroke" xml:space="preserve">
+				<source>Barré [s]texte[/s]</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.email" xml:space="preserve">
+				<source>E-mail [email]texte[/email]</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.http" xml:space="preserve">
+				<source>URL [url]texte[/url]</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.clock_on" xml:space="preserve">
+				<source>Afficher l 'heure</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.clock_off" xml:space="preserve">
+				<source>Masquer l \'heure</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.usercolor_on" xml:space="preserve">
+				<source>Colorer le nom de l 'utilisateur</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.usercolor_off" xml:space="preserve">
+				<source>Ne pas colorer le nom de l \'utilisateur</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.smilies_on" xml:space="preserve">
+				<source>Afficher les émoticônes</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.smilies_off" xml:space="preserve">
+				<source>Masquer les émoticônes</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.colors_on" xml:space="preserve">
+				<source>Afficher les styles de message</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.colors_off" xml:space="preserve">
+				<source>Masquer les styles de message</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.help" xml:space="preserve">
+				<source>Aide - Affiche les commandes de discussion disponibles</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.autofocus_on" xml:space="preserve">
+				<source>Autofocus : place la fenêtre en avant-plan lorsque de nouveaux messages sont disponibles.</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.autofocus_off" xml:space="preserve">
+				<source>Désactiver l \'autofocus.</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.enablesound_on" xml:space="preserve">
+				<source>Son activé</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.enablesound_off" xml:space="preserve">
+				<source>Son désactivé</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.restart" xml:space="preserve">
+				<source>Démarre le chargement de la discussion avec de nouveaux messages. (Quitter le mode Archive)</source>
+			</trans-unit>
+			<trans-unit id="chatbutton.stop" xml:space="preserve">
+				<source>Arrête le chargement de la discussion (mode Archive) afin de pouvoir lire les entrées existantes.</source>
+			</trans-unit>
+			<trans-unit id="privateMsgUsernamens" xml:space="preserve">
+				<source>MP de %s à %s</source>
+			</trans-unit>
+			<trans-unit id="userlistPMInfo" xml:space="preserve">
+				<source>Envoyer un message privé à  '%s '</source>
+			</trans-unit>
+			<trans-unit id="userlistPRInfo" xml:space="preserve">
+				<source>Ouvrir un nouveau salon et inviter  '%s '.</source>
+			</trans-unit>
+			<trans-unit id="talktoroomname" xml:space="preserve">
+				<source>Salon privé avec %s</source>
+			</trans-unit>
+			<trans-unit id="closed" xml:space="preserve">
+				<source>Clos</source>
+			</trans-unit>
+			<trans-unit id="loading_message" xml:space="preserve">
+				<source>L 'interface de discussion est en cours de chargement...</source>
+			</trans-unit>
+			<trans-unit id="snippetsError" xml:space="preserve">
+				<source>Une erreur s'est produite. Vous devez recharger la fenêtre de discussion. Voulez-vous la recharger maintenant ?</source>
+			</trans-unit>
+		</body>
+	</file>
+</xliff>

@@ -79,9 +79,10 @@ class tx_vjchat_chat {
 			// j.v. 22.7.2016 .php geht nciht mehr nun in resources/ ...  als xlf
 			$this->lang->includeLLFile("EXT:vjchat/Resources/Private/Language/locallang.xlf");
 		} else {
-			$this->lang->includeLLFile("EXT:vjchat/Resources/Private/Language/"  . $this->env['LLKey'] . ".locallang.xlf");
+			$this->lang->includeLLFile("EXT:vjchat/Resources/Private/Language/"  . $this->env['LLKey'] . ".locallang.xlf"  );
 		}
-        /** @var tx_vjchat_db db */
+
+	        /** @var tx_vjchat_db db */
 		$this->db = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_vjchat_db');
 		$this->db->lang = $this->lang;
 
@@ -344,6 +345,21 @@ class tx_vjchat_chat {
 					'rights' => $this->extConf['allowPrivateRooms'] ? '1111' : '0001',
 				),
 
+            'talkTo' => array(
+                'callback' => '_talkTo',
+                'hidefeedback' => '1',
+                'hideinhelp' => '1',
+                'description' => $this->lang->getLL('command_talkto'),
+                'parameters' => array(
+                    'name' => array(
+                        'regExp' =>'/.(.*)/i',
+                        'description' => $this->lang->getLL('command_talkto_param_name'),
+                        'required' => 0,
+                    ),
+                ),
+                'rights' => $this->extConf['allowPrivateRooms'] ? '1111' : '0001',
+            ),
+
 				'recentinvite' => array(
 					'callback' => '_recentinvite',
                     'hidefeedback' => '1',
@@ -572,6 +588,11 @@ class tx_vjchat_chat {
 
             $renderer->assign("time" , $time ) ;
             $renderer->assign("timeFormat" , $timeFormat ) ;
+
+            // 2019 j.v. : the translation setting in rendering Template is not setup Correctly .
+            // as workaround do translation in php ..
+            $this->extConf['LLL']['command_invite'] = $this->lang->getLL('command_invite')  ;
+
 
             $renderer->assign("message" , $message ) ;
             $renderer->assign("showFullNames" , $this->room->showFullNames() ) ;
@@ -1438,7 +1459,7 @@ class tx_vjchat_chat {
 		return $this->db->setMessageStyle($this->user, $params[1]) ? 'Style '.$params[1].'.' : '<span class="tx-vjchat-error">ERROR</span>';
 	}
 
-	function _newroom($params) {
+	function _newroom($params , $returnRoom = false , $members = 0 ) {
 
 		$username = $this->getUsername();
 
@@ -1466,7 +1487,7 @@ class tx_vjchat_chat {
 		$newRoom->page = $this->room->page;
 		$newRoom->mode = $this->room->mode;
 		$newRoom->bannedusers = $this->room->bannedusers;
-		$newRoom->members = 0;
+		$newRoom->members = $members ;
 		$newRoom->image = '';
 		$newRoom->maxusercount = $this->room->maxusercount;
 
@@ -1486,13 +1507,18 @@ class tx_vjchat_chat {
 				.$this->lang->getLL('command_invite_enter_room') . " (id: " . $roomId  . ")" .'</a>' ;
 			// $msg .= '<script language="JavaScript" type="text/javascript">openChatWindow('.$roomId. ');</script>';
 
+            if ( $returnRoom ) {
+                $newRoom->uid =$roomId ;
+                $this->db->putMessage($this->room->uid, $msg, 0, $this->user, true, 0, 0 );
+                return $newRoom ;
+            }
+
 		} else {
 			$msg = "Error creating room." ;
 		}
 		// echo "<br>Line: " . __LINE__ . " : " . " File: " . __FILE__ . '<br>$roomId : ' . var_export($roomId, TRUE) . "<hr>";
 
 
-		$this->db->putMessage($this->room->uid, $msg, 0, $this->user, true, 0, $this->user['uid']);
 
 		return $msg;
 	}
@@ -1506,6 +1532,27 @@ class tx_vjchat_chat {
 
 		return $this->_do_invite($user, $this->room , $params);
 	}
+
+    function _talkTo($params) {
+	    $user = $this->getFeUserByInput($params[1]);
+
+        if(!$user) {
+            return sprintf($this->lang->getLL('command_error_user_not_found'), $params[1]);
+        }
+        if(!$this->user) {
+            return sprintf($this->lang->getLL('command_error_user_not_found'), $this->user['uid']);
+        }
+        $room = $this->db->getLatestPrivateRoomOfUsers($this->user['uid'] , $user['uid']) ;
+
+
+        if ( !$room) {
+            $room = $this->_newroom($params , true, $user['uid']) ;
+
+        }
+
+        return  $this->_do_invite($user, $room , $params);
+
+    }
 	
 	function _do_invite($user, $room , $params = null ) {
 		$this->db->addMemberToRoom($room, $user['uid']);

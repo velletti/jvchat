@@ -65,11 +65,22 @@
 <f:section name="message">
     <f:format.raw>
         <f:spaceless>
-            <div id="cid{mid}" class="tx-vjchat-message-style-{entryStyle} {groupstyles} {f:if(condition: '{ownMsg}' , then: 'tx-vjchat-message-ownMsg')}">
-                <div class="tx-vjchat-{userType}">
-                    <span id="msg-{entry.uid}" class="tx-vjchat-time"><f:format.date format="{timeFormat}">{time}</f:format.date></span><span class="tx-vjchat-user tx-vjchat-userid-{entry.uid}">
-                        <f:render section="userName" arguments="{showFullNames: showFullNames, user: entryUser , entry: entry , extConf: extConf, ownMsg: ownMsg}"/>
-                    </span>&gt;&nbsp;<span class="tx-vjchat-entry">{entryText}</span>
+            <div id="cid{mid}" class="tx-vjchat-message tx-vjchat-message-style-{entryStyle} {groupstyles} {f:if(condition: '{ownMsg}' , then: 'tx-vjchat-message-ownMsg')}">
+                <div class="tx-vjchat-type-{userType}">
+                    <f:if condition="{ownMsg}">
+                        <f:then>
+                            <span class="tx-vjchat-entry-text">{entryText}</span> &lt;&nbsp;
+                            <span id="msg-{entry.uid}" class="tx-vjchat-time"><f:format.date format="{timeFormat}">{time}</f:format.date></span><span class="tx-vjchat-user tx-vjchat-userid-{entry.uid}">
+                                <f:render section="userName" arguments="{showFullNames: showFullNames, user: entryUser , entry: entry , extConf: extConf, ownMsg: ownMsg}"/>
+                            </span>
+                        </f:then>
+                        <f:else>
+                            <span id="msg-{entry.uid}" class="tx-vjchat-time"><f:format.date format="{timeFormat}">{time}</f:format.date></span><span class="tx-vjchat-user tx-vjchat-userid-{entry.uid}">
+                                <f:render section="userName" arguments="{showFullNames: showFullNames, user: entryUser , entry: entry , extConf: extConf, ownMsg: ownMsg}"/>
+                            </span> &gt;&nbsp;<span class="tx-vjchat-entry-text">{entryText}</span>
+                        </f:else>
+                    </f:if>
+
                 </div>
             </div>
         </f:spaceless>
@@ -85,9 +96,12 @@
                         <f:variable name="Button"></f:variable>
                         <f:if condition="{ownMsg}">
                             <f:else>
-                                <f:variable name="Button"><span class="btn btn-sm btn-primary btn-outline-primary"> &nbsp;&gt;&nbsp; </span></f:variable>
-
                                 <f:if condition="{extConf.allowPrivateRooms}">
+                                    <f:variable name="Button"><span class=" btn btn-sm  btn-default" title="{extConf.LLL.command_invite}">&nbsp;
+                                        <span class="fa fa-lock"></span>&nbsp;
+                                    </span></f:variable>
+
+
                                     <script type="application/javascript">
                                         var id = '{entry.uid}' ;
                                         var userid = '#{user.uid}' ;
@@ -107,6 +121,7 @@
                                 </f:if>
                             </f:else>
                         </f:if>
+
                         <span id="tx-vjchat-msg-user-{entry.uid}" class="tx-vjchat-link-user" data-content="user-{user.uid}" >
                             <f:format.raw>{Button}</f:format.raw> {user.{extConf.usernameField1}}<f:if condition="{usernameField2}"> {user.{extConf.usernameField2}}</f:if>
                         </span>

@@ -132,6 +132,31 @@ class tx_vjchat_db {
         }
         return $rooms;
 	}
+
+    function getLatestPrivateRoomOfUsers($ownerId , $userId) {
+
+        $ownerId = intval($ownerId);
+        $userId = intval($userId);
+
+        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        $queryBuilder = $this->connectionPool->getConnectionForTable('tx_vjchat_room')->createQueryBuilder();
+        $expr = $queryBuilder->expr();
+        $rows = $queryBuilder->select('*')
+            ->from('tx_vjchat_room')
+            ->where( $expr->eq('owner', $queryBuilder->createNamedParameter(($ownerId) , Connection::PARAM_INT )))
+            ->andWhere($expr->eq('private', 1 ))
+            ->andWhere($expr->inSet('members' , $queryBuilder->createNamedParameter(($userId) , Connection::PARAM_INT )))
+            ->orderBy('uid' , "DESC")
+            ->setMaxResults(1)
+            ->execute() ;
+        ;
+        if ( $row =  $rows->fetch()  ) {
+            $room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_vjchat_room');
+            $room->fromArray($row);
+            return  $room;
+        }
+        return false ;
+    }
 	
 	function createNewRoom($room) {
 		$data = $room->toArray();
@@ -150,24 +175,29 @@ class tx_vjchat_db {
 
 	function getUniqueRoomName($roomName) {
 
-		$i = 0;
-		$oldRoomName = $roomName;
+        $roomName = trim(strip_tags($roomName));
 
-		while(true) {
-			$res = $this->db->exec_SELECTquery('*','tx_vjchat_room', 'name = \''.$roomName.'\' '.$this->enableFields('tx_vjchat_room'));
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_vjchat_room') ;
 
-			// if name is not unique append #i
-			if($this->db->sql_num_rows($res)) {
-				$i++;
-				$roomName = $oldRoomName.' #'.$i;
-			}
-			// name is unique, quit
-			else {
-				break;
-			}
-		}
+        $rows = $queryBuilder
+            ->select('uid' , 'name')
+            ->from('tx_vjchat_room')
+            ->where(
+                $queryBuilder->expr()->eq('name', $queryBuilder->createNamedParameter($roomName , Connection::PARAM_STR))
+            )
+            ->orderBy("uid" , "DESC")
+            ->setMaxResults(1)
+            ->execute();
 
-		return $roomName;
+
+        $row =  $rows->fetch() ;
+        if( is_array($row)) {
+            trim($row['name']) . "#" . ( $row['uid'] + 1 ) ;
+        } else {
+            return $roomName ."#1";
+        }
+
+
 
 	}
 	
@@ -177,12 +207,25 @@ class tx_vjchat_db {
 	}
 	
 	function getSession($sessionId) {
+        $sessionId = intval($sessionId);
 
-		$sessionId = intval($sessionId);
-		$res = $this->db->exec_SELECTquery('*','tx_vjchat_session', 'uid = '.$sessionId);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_vjchat_session') ;
 
-		if(!$row = $this->db->sql_fetch_assoc($res))
-			return false;
+        $rows = $queryBuilder
+            ->select('*')
+            ->from('tx_vjchat_session')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((intval($sessionId)) , Connection::PARAM_INT ))
+            )
+            ->setMaxResults(1)
+            ->execute();
+
+
+        $row =  $rows->fetch() ;
+        if( ! $row ) {
+            return false;
+        }
+
 
 		$session = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_vjchat_session');
 		$session->fromArray($row);
@@ -191,13 +234,21 @@ class tx_vjchat_db {
 	
 	function getSessionsCountOfRoom($roomId) {
 
-		$roomId = intval($roomId);
+        $roomId = intval($roomId);
 
-		$where = ' room = '.$roomId;
-		$where .= $this->enableFields('tx_vjchat_session');
-		$res = $this->db->exec_SELECTquery('*','tx_vjchat_session', $where);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_vjchat_session') ;
 
-		return $this->db->sql_num_rows($res);
+        $rows = $queryBuilder
+            ->select('uid')
+            ->from('tx_vjchat_session')
+            ->where(
+                $queryBuilder->expr()->eq('room', $queryBuilder->createNamedParameter((intval($roomId)) , Connection::PARAM_INT ))
+            )
+            ->execute()->fetchAll();
+
+
+        return count($rows) ;
+
 	}
 	
 	function getSessionsOfRoom($roomId) {
@@ -207,13 +258,21 @@ class tx_vjchat_db {
 		if(!$roomId)
 			return array();
 
-		$where = ' room = '.$roomId;
-		$where .= $this->enableFields('tx_vjchat_session');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_vjchat_session') ;
 
-		$res = $this->db->exec_SELECTquery('*','tx_vjchat_session', $where, '', 'sorting');
+        $queryBuilder
+            ->select('*')
+            ->from('tx_vjchat_session')
+            ->where(
+                $queryBuilder->expr()->eq('room', $queryBuilder->createNamedParameter((intval($roomId)) , Connection::PARAM_INT ))
+            )
+            ->orderBy('sorting') ;
+
+        $rows = $queryBuilder->execute() ;
 
 		$sessions = array();
-		while($row = $this->db->sql_fetch_assoc($res)) {
+		while($row = $rows->fetch() ) {
+            /** @var tx_vjchat_session $session */
 			$session = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_vjchat_session');
 			$session->fromArray($row);
 			$sessions[] = $session;
@@ -229,10 +288,20 @@ class tx_vjchat_db {
 
 	function getEntriesOfSession($session) {
 
-		$res = $this->db->exec_SELECTquery('*','tx_vjchat_entry', '(uid >= '.(intval($session->startid)).') AND (uid <= '.(intval($session->endid)).') AND (room = '.$session->room.') AND cruser_id = feuser '.$this->enableFields('tx_vjchat_entry'), '', 'uid');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_vjchat_entry') ;
+        $queryBuilder->select('*')->from('tx_vjchat_entry')
+            ->where( $queryBuilder->expr()->eq('room', $queryBuilder->createNamedParameter( intval($session->room) , Connection::PARAM_INT )) )
+            ->andWhere($queryBuilder->expr()->eq('cruser_id', 'feuser'))
+            ->andWhere($queryBuilder->expr()->gte('uid', $queryBuilder->createNamedParameter( intval($session->startid) , Connection::PARAM_INT )))
+            ->andWhere($queryBuilder->expr()->lte('uid', $queryBuilder->createNamedParameter( intval($session->endid) , Connection::PARAM_INT )))
+            ->orderBy("uid")
+        ;
+
+        // $this->debugQuery($queryBuilder) ;
+        $rows = $queryBuilder->execute() ;
 
 		$entries = array();
-		while($row = $this->db->sql_fetch_assoc($res)) {
+		while( $row = $rows->fetch() ) {
 			$entry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_vjchat_entry');
 			$entry->fromArray($row);
 			$entries[] = $entry;
@@ -375,8 +444,6 @@ class tx_vjchat_db {
          //   ->andWhere( $queryBuilder->expr()->eq('deleted', 0 ))
             ->setMaxResults(1)  ;
 
-        // die (  "Query LastRun : " . $roomQuery->getSQL() ) ;
-
         $row = $roomQuery->execute()->fetch() ;
         if ( ! $row ) {
             return false ;
@@ -514,32 +581,37 @@ class tx_vjchat_db {
 	function getLatestEntryId($room, $time) {
 
 		$time = intval($time);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_vjchat_entry') ;
+        $queryBuilder->select('*')->from('tx_vjchat_entry')
+            ->where( $queryBuilder->expr()->eq('room', $queryBuilder->createNamedParameter( intval($room->uid) , Connection::PARAM_INT )) )
+            ->orderBy("uid" , "ASC")
+            ->andWhere($queryBuilder->expr()->gte('crdate', $queryBuilder->createNamedParameter( intval($time) , Connection::PARAM_INT )))
+            ->setMaxResults(1)
+        ;
+        // get also Hidden Entries .
+        $queryBuilder->getRestrictions()->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-		$where = ' room = '.(intval($room->uid)).' AND crdate >= '.$time. ' AND deleted = 0';
+        $row = $queryBuilder->execute()->fetch() ;
 
-		$res = $this->db->exec_SELECTquery('min(uid)','tx_vjchat_entry', $where, '');
+        if( $row ) {
+            return ( $row['uid'] - 1) ;
+        }
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_vjchat_entry') ;
+        $queryBuilder->select('*')->from('tx_vjchat_entry')
+            ->where( $queryBuilder->expr()->eq('room', $queryBuilder->createNamedParameter( intval($room->uid) , Connection::PARAM_INT )) )
+            ->orderBy("uid" , "ASC")
+            ->setMaxResults(1)
+        ;
+        $queryBuilder->getRestrictions()->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-		if(!$res)
-			print '#'.__LINE__.' - '.($this->db->debug_lastBuiltQuery);
-
-		while($row = $this->db->sql_fetch_row($res)) {
-			if($row[0])
-				return $row[0]-1;
-		}
-
-		$where = ' room = '.$room->uid.' AND deleted = 0';
-		$res = $this->db->exec_SELECTquery('max(uid)','tx_vjchat_entry', $where, '');
-
-		if(!$res)
-			print '#'.__LINE__.' - '.($this->db->debug_lastBuiltQuery);
-
-		while($row = $this->db->sql_fetch_row($res)) {
-			if($row[0])
-				return $row[0];
-		}
-
-		return 0;
-
+        // $this->debugQuery($queryBuilder) ;
+        $row = $queryBuilder->execute()->fetch() ;
+        if( $row ) {
+            return ( $row['uid'] - 1) ;
+        }
+        return 0 ;
 	}
 	
 	function makeSession($roomId, $name, $description = '', $hidden = 1, $start = -1, $end = -1) {
@@ -566,22 +638,27 @@ class tx_vjchat_db {
 			'hidden' => $hidden,
 			'room' => $roomId
 		);
-		$res = $this->db->exec_INSERTquery('tx_vjchat_session', $data);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_vjchat_session') ;
+        $queryBuilder->insert('tx_vjchat_session')->values($data)->execute() ;
+
 
 		return 'makesession success';
 	}
 	
 	function getFeUserByName($username) {
-		if(!$username)
-			return NULL;
+        $username = trim(strip_tags($username));
+		if(!$username) {
+            return NULL;
+        }
 
-		$res = $this->db->exec_SELECTquery('*','fe_users', ' username = '.$this->db->fullQuoteStr($username,'fe_users'));
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_vjchat_entry') ;
+        $queryBuilder->select('*')->from('fe_users')
+            ->where( $queryBuilder->expr()->eq('username',
+                $queryBuilder->createNamedParameter( $username , Connection::PARAM_STR )) )
+        ;
 
-		if(!$res)
-			print '#'.__LINE__.' - '.($this->db->debug_lastBuiltQuery);
+        return $queryBuilder->execute()->fetch() ;
 
-
-		return $this->db->sql_fetch_assoc($res);
 	}
 
 
@@ -671,14 +748,12 @@ class tx_vjchat_db {
         $queryBuilder->select('*')->from('tx_vjchat_room_feusers_mm')
             ->where( $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter( intval($roomId) , Connection::PARAM_INT )) )
             ->andWhere( $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter( intval($userId) , Connection::PARAM_INT )) ) ;
+        //$this->debugQuery( $queryBuilder ) ;
         $row = $queryBuilder->execute()->fetch() ;
-        if( $row && in_array( $statusLabel , $row)) {
+        if( $row && array_key_exists( $statusLabel , $row)) {
             return $row[$statusLabel];
         }
-
         return false;
-
-
     }
 
     /*  *************** users member status ******************************* */
@@ -802,12 +877,15 @@ class tx_vjchat_db {
 
         if($newList != $list) {
             $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_vjchat_room') ;
-            return $queryBuilder->update('tx_vjchat_room')
+            $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
+
+            $queryBuilder->update('tx_vjchat_room')
                 ->where(
                     $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(intval($room->uid) , Connection::PARAM_INT ))
                 )
-                ->set( $field , $newList )
-                ->execute();
+                ->set( $field , $newList ) ;
+            // $this->debugQuery($queryBuilder) ;
+            return $queryBuilder->execute();
 
         }
         return 0;
@@ -1027,21 +1105,34 @@ class tx_vjchat_db {
 		$roomId = intval($roomId);
 		$userId = intval($userId);
 
-		$res = $this->db->exec_SELECTquery('*','tx_vjchat_room_feusers_mm',' uid_local = '.$roomId.' AND uid_foreign = '.$userId.' AND tstamp > '.$this->getTime());
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_vjchat_room_feusers_mm') ;
+        $queryBuilder->select('*')->from('tx_vjchat_room_feusers_mm')
+            ->where( $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter( intval($roomId) , Connection::PARAM_INT )) )
+            ->andWhere( $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter( intval($userId) , Connection::PARAM_INT )) )
+            ->andWhere( $queryBuilder->expr()->gt('tstamp', $queryBuilder->createNamedParameter( intval($this->getTime()) , Connection::PARAM_INT )) ) ;
 
-		if($row = $this->db->sql_fetch_assoc($res))
-			return round(($row['tstamp'] - $this->getTime()) / 60);
+        // $this->debugQuery( $queryBuilder ) ;
+        $row = $queryBuilder->execute()->fetch() ;
+        if( $row ) {
+            return round(($row['tstamp'] - $this->getTime()) / 60);
+        }
 
 		return false;
 	}
 	
 	function deleteRoom($roomId) {
+        $roomId = intval($roomId);
 
-		$roomId = intval($roomId);
-		$res = $this->db->exec_UPDATEquery('tx_vjchat_room', 'uid = '.$roomId, array('deleted' => 1));
-		if(!$res)
-			print '#'.__LINE__.' - '.($this->db->debug_lastBuiltQuery);
-		return $this->db->sql_affected_rows();
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_vjchat_room') ;
+
+        return $queryBuilder
+            ->update('tx_vjchat_room')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(intval($roomId) , Connection::PARAM_INT ))
+            )
+            ->set('deleted', 1 )
+            ->execute();
+
 	}
 	
 	/** Removes all entries that are not in a session and all entries that are marked hidden or deleted
@@ -1070,44 +1161,73 @@ class tx_vjchat_db {
 		else
 			$list = '(0)';
 
-		$res = $this->db->exec_DELETEquery('tx_vjchat_entry', '((uid NOT IN '.$list.') OR (hidden = 1) OR (deleted = 1)) AND room = '.(intval($room->uid)).' AND tstamp < '.($this->getTime() - $time));
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable( 'tx_vjchat_entry' ) ;
+        $queryBuilder->getRestrictions()->removeAll() ;
 
-		return $this->db->sql_affected_rows();
+        $expr = $queryBuilder->expr();
+        $queryBuilder->delete('tx_vjchat_entry')
+            ->where( $expr->notIn( 'uid', $queryBuilder->createNamedParameter($list , Connection::PARAM_STR )  ) )
+            ->orWhere( $expr->eq( 'hidden', $queryBuilder->createNamedParameter(1 , Connection::PARAM_INT )  ) )
+            ->orWhere( $expr->eq( 'deleted', $queryBuilder->createNamedParameter(1 , Connection::PARAM_INT )  ) )
+            ->andWhere( $expr->eq( 'room', $queryBuilder->createNamedParameter(intval($room->uid) , Connection::PARAM_INT ) ) )
+            ->andWhere( $expr->lt( 'tstamp', $queryBuilder->createNamedParameter(intval(($this->getTime() - $time)) , Connection::PARAM_INT )  ))
+
+        ;
+
+        // $this->debugQuery( $queryBuilder ) ;
+        return $queryBuilder->execute() ;
 
 	}
 
 	function getSessions() {
-		$res = $this->db->exec_SELECTquery('*','tx_vjchat_session', '', '', 'sorting');
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_vjchat_session') ;
 
-		if(!$res)
-			print '#'.__LINE__.' - '.($this->db->debug_lastBuiltQuery);
+        $queryBuilder
+            ->select('*')
+            ->from('tx_vjchat_session')
+            ->orderBy('sorting') ;
 
-		$sessions = array();
-		while($row = $this->db->sql_fetch_assoc($res)) {
-			$session = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_vjchat_session');
-			$session->fromArray($row);
-			$sessions[] = $session;
-		}
+        $rows = $queryBuilder->execute() ;
 
-		return $sessions;
+        $sessions = array();
+        while($row = $rows->fetch() ) {
+            /** @var tx_vjchat_session $session */
+            $session = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_vjchat_session');
+            $session->fromArray($row);
+            $sessions[] = $session;
+        }
+
+        return $sessions;
 
 	}
 	
 	function setUserStatus($room, $user, $statusLabel) {
-		$users = $this->getFeUsersOfRoom($room, true);
+		// $users = $this->getFeUsersOfRoom($room, true);
 
-		$newStatus = array();
+		$newStatus = 0;
 
 		switch($statusLabel) {
 			case 'hidden':
 				$status = $this->getUserStatus($room->uid, $user['uid'], 'invisible');
-
-				$newStatus['invisible'] = $status ? '0' : '1';
+				$newStatus = $status ? '0' : '1';
+                break;
+            default:
+                return false ;
 		}
 
-		$res =  $this->db->exec_UPDATEquery('tx_vjchat_room_feusers_mm', 'uid_local = '.(intval($room->uid)).' AND uid_foreign = '.(intval($user['uid'])), $newStatus);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_vjchat_room_feusers_mm') ;
 
-		return $this->db->sql_affected_rows();
+        $queryBuilder
+            ->update('tx_vjchat_room_feusers_mm')
+            ->where(
+                $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(intval($room->uid ), Connection::PARAM_INT ))
+            )->andWhere(
+                $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter(intval($user['uid']) , Connection::PARAM_INT ))
+            )
+            ->set('invisible', $newStatus ) ;
+         // $this->debugQuery( $queryBuilder ) ;
+
+        return $queryBuilder->execute();
 
 	}
 
@@ -1253,7 +1373,8 @@ class tx_vjchat_db {
     }
 	
 	function setRoomStatus($room, $statusLabel) {
-		$users = $this->getFeUsersOfRoom($room, true);
+
+	    // $users = $this->getFeUsersOfRoom($room, true);
 
 		$newStatus = array();
 
@@ -1266,12 +1387,27 @@ class tx_vjchat_db {
 				$status = $this->getRoomStatus($room->uid, 'private');
 				$newStatus['private'] = $status ? '0' : '1';
 				break;
+            default:
+                // wrong label given so return
+                return 0 ;
 		}
 
-		$res =  $this->db->exec_UPDATEquery('tx_vjchat_room', 'uid = '.(intval($room->uid)), $newStatus);
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_vjchat_room') ;
+        $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-		if($this->db->sql_affected_rows()) {
-				return $newStatus[$statusLabel] ? 'on' : 'off';
+        $queryBuilder
+            ->update('tx_vjchat_room')
+            ->where(
+                $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($room->uid , Connection::PARAM_INT ))
+            )
+            ->set($statusLabel, $newStatus[$statusLabel] ) ;
+
+        // $this->debugQuery($queryBuilder) ;
+
+        $result = $queryBuilder->execute();
+
+		if($result) {
+            return $newStatus[$statusLabel] ? 'on' : 'off';
 		}
 
 		return 0;
@@ -1283,6 +1419,9 @@ class tx_vjchat_db {
 		$roomId = intval($roomId);
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_vjchat_room') ;
+        // get also Hidden Entries !
+        $queryBuilder->getRestrictions()->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         $rows = $queryBuilder
             ->select($statusLabel)

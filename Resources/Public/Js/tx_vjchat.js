@@ -79,6 +79,8 @@ function tx_vjchat_pi1_js_chat() {
 		this.refreshUserlistTime 	= initConfig.data('refreshuserlisttime');
 		this.allowPrivateMessages	= initConfig.data('allowprivatemessages');
 		this.allowPrivateRooms		= initConfig.data('allowprivaterooms');
+		this.privateMsgCode			= initConfig.data('privatemsgcode');
+		this.privateRoomCode		= initConfig.data('privateroomcode');
 
 		this.inputElement 			= $('#txvjchatnewMessage');
 		this.messagesElement 		= $('#tx-vjchat-messages');
@@ -100,7 +102,6 @@ function tx_vjchat_pi1_js_chat() {
 			this.chatbuttonsoff[i] = $(containerName) ? $(containerName).html() : '';
 		}
 
-
 		if(Cookie.get('tx-vjchat-emoticons_visible') != null) {
 			var show = (Cookie.get('tx-vjchat-emoticons_visible') == '1');
 			this.setEmoticons(show);
@@ -108,12 +109,6 @@ function tx_vjchat_pi1_js_chat() {
 		else
 			this.setEmoticons(this.showEmoticons);
 
-		if(Cookie.get('tx-vjchat-style_visible') != null) {
-			var show = (Cookie.get('tx-vjchat-style_visible') == '1');
-			this.setStyle(show);
-		}
-		else
-			this.setStyle(this.showStyles);
 
 		if(Cookie.get('tx_vjchat_showtime') != null) {
 			var show = Cookie.get('tx_vjchat_showtime') == '1';
@@ -123,14 +118,6 @@ function tx_vjchat_pi1_js_chat() {
 			this.setAllTime(this.showTime );
 
 
-		if(Cookie.get('tx_vjchat_autofocus') != null) {
-			var show = Cookie.get('tx_vjchat_autofocus') == '1';
-			this.setAutoFocus(show);
-		}
-		else
-			this.setAutoFocus(this.autoFocus);
-
-		 ;
 		self = this;
 		chat_instance = this;
 
@@ -202,20 +189,10 @@ function tx_vjchat_pi1_js_chat() {
 
 
 
-
-
-
 	this.openChatWindow = function(chatId) {
 		tx_vjchat_openNewChatWindow(this.newWindowUrl, chatId);
 	}
 
-	this.helpInNewWindow = function() {
-		var message = encodeURI("/help");
-		var url = this.scriptUrl+'?r='+this.roomId+'&a=sm&charset='+this.charset+'&l='+this.lang+'&m='+message;
-
-		var vHWindow = window.open(url,"helpwindow", this.popupJSWindowParams);
-		vHWindow.focus();
-	}
 
 	/* ==================================================== = = = = = = */
 	/* SECTION III:		MESSAGES	  								*/
@@ -663,6 +640,7 @@ function tx_vjchat_pi1_js_chat() {
 		var style = parts[3];
 
 		userList["userid-"+id] = value;
+
 		/*
 		 create a node like:
 		 <div class="tx-vjchat-userlist-item tx-vjchat-userlist-[moderator|user|expert|superuse]">
@@ -675,14 +653,20 @@ function tx_vjchat_pi1_js_chat() {
 			+ parts[4] +'</span>' ;
 		if(this.userId != id) {
 			if(this.allowPrivateMessages ) {
-				userObj += ' <span class="tx-vjchat-pm-link">[PM]</span> ' ;
+				if( this.privateMsgCode) {
+					userObj += ' ' + this.privateMsgCode ;
+				} else {
+					userObj += ' <span class="tx-vjchat-pm-link">[PM]</span> ' ;
+				}
 			}
 			if( this.allowPrivateRooms) {
-				userObj += ' <span class="tx-vjchat-pr-link">[PR]</span> ' ;
+				if( this.privateRoomCode) {
+					userObj += ' ' + this.privateRoomCode ;
+				} else {
+					userObj += ' <span class="tx-vjchat-pr-link">[PR]</span> ' ;
+				}
 			}
 		}
-
-
 
 		jQuery('<div/>', {
 			class: "tx-vjchat-userlist-item tx-vjchat-userlist-" +type ,
@@ -705,10 +689,7 @@ function tx_vjchat_pi1_js_chat() {
 		if( this.allowPrivateRooms ) {
 			$('#userid-' + id + " .tx-vjchat-pr-link").bind("click", function(evt) {
 				var name = self.talkToNewRoomName.replace(/\%s/, username);
-				var command = "/newroom "+name ;
-				self.sendMessage(command);
-				command = "/recentinvite "+username+" ";
-				self.sendMessage(command);
+				var command = "/talkTo "+username+" "+name ;
 			});
 		}
 
@@ -724,25 +705,6 @@ function tx_vjchat_pi1_js_chat() {
 	/* SECTION V:		TOOLS										*/
 	/* --------------------------------------------- - - - - - - */
 
-	this.setMessageStyle = function(number) {
-
-		var element = $("tx-vjchat-style-btn-"+number);
-
-		if(!element)
-			return;
-
-		var container = $("tx-vjchat-style");
-
-		for(var i=0; i<container.childNodes.length;i++) {
-			container.childNodes[i].style.border = "none";
-		}
-
-		element.style.border = "1px solid black";
-
-		this.sendMessageToServer("/setstyle "+number);
-
-
-	}
 
 	this.toggleEmoticons = function() {
 		//this.toggleElement(this.emoticonsElement);
@@ -766,20 +728,6 @@ function tx_vjchat_pi1_js_chat() {
 		this.setChatButton('tx-vjchat-button-emoticons', on);
 	}
 
-	this.toggleStyle = function() {
-		this.setStyle(this.stylesElement.css('visibility') == 'hidden');
-	}
-
-	this.setStyle = function(on) {
-		if(on && this.stylesElement.css('visibility') == 'hidden')
-			this.stylesElement.css('visibility' ,'visible' );
-
-		if(!on && this.stylesElement.css('visibility') == 'visible' ) {
-			this.stylesElement.css('visibility' , 'hidden' );
-		}
-		Cookie.set("tx-vjchat-style_visible", on ? '1' : '0', 100);
-		this.setChatButton('tx-vjchat-button-styles', on);
-	}
 
 	this.toggleAllTime = function() {
 		this.setAllTime(!this.showTime);
@@ -797,17 +745,6 @@ function tx_vjchat_pi1_js_chat() {
 		this.setChatButton('tx-vjchat-button-clock', on);
 	}
 
-	this.toggleAutoFocus = function() {
-		this.setAutoFocus(!this.autoFocus);
-	}
-
-	this.setAutoFocus = function(on) {
-
-		this.autoFocus = on;
-		Cookie.set("tx_vjchat_autofocus", on ? '1' : '0', 100);
-		this.setChatButton('tx-vjchat-button-autofocus', on);
-
-	}
 
 	this.setChatButton = function(name, on) {
 		if(on)

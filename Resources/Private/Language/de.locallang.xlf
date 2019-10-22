@@ -1,369 +1,378 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" target-language="de" datatype="plaintext" original="messages" date="2016-07-22T08:55:26Z" product-name="vjchat">
+	<file source-language="de" datatype="plaintext" original="messages" date="2016-07-22T08:55:26Z" product-name="vjchat">
 		<header/>
 		<body>
 
 			<trans-unit id="pi1_title">
+				<source>Ajax Chat</source>
 				<target>Ajax Chat</target>
 			</trans-unit>
 			<trans-unit id="pi1_plus_wiz_description">
 				<target>Fügt ein Chat-Fenster auf der Seite ein</target>
 			</trans-unit>
 
-			<trans-unit id="session_not_found" xml:space="preserve">
+			<trans-unit id="session_not_found">
 				<target>Die Sitzung wurde nicht gefunden. Möglicherweise wurde sie entfernt.</target>
 			</trans-unit>
-			<trans-unit id="sessions_not_found" xml:space="preserve">
+			<trans-unit id="sessions_not_found">
 				<target>Keine Sitzungen vorhanden.</target>
 			</trans-unit>
-			<trans-unit id="entries_not_found" xml:space="preserve">
+			<trans-unit id="entries_not_found">
 				<target>Keine Nachrichten.</target>
 			</trans-unit>
-			<trans-unit id="new_message" xml:space="preserve">
+			<trans-unit id="new_message">
 				<target>Neue Nachricht</target>
 			</trans-unit>
-			<trans-unit id="submit_message" xml:space="preserve">
+			<trans-unit id="submit_message">
 				<target>Senden</target>
 			</trans-unit>
-			<trans-unit id="back_to_rooms" xml:space="preserve">
+			<trans-unit id="back_to_rooms">
 				<target>Zurück zur Raumübersicht</target>
 			</trans-unit>
-			<trans-unit id="back_to_sessions" xml:space="preserve">
+			<trans-unit id="back_to_sessions">
 				<target>Zurück zur Sitzungsübersicht</target>
 			</trans-unit>
 
 
-			<trans-unit id="user_in_chat" xml:space="preserve">
+			<trans-unit id="user_in_chat">
 				<source>user in chat room.</source>
 				<target>User befinden sich im Chat.</target>
 			</trans-unit>
-			<trans-unit id="no_user_in_chat" xml:space="preserve">
+			<trans-unit id="no_user_in_chat">
 				<source>No user in chat room.</source>
 				<target>Der Chatraum ist leer.</target>
 			</trans-unit>
-			<trans-unit id="max_user" xml:space="preserve">
+			<trans-unit id="max_user">
 				<target>Maximale Anzahl von Teilnehmern: </target>
 			</trans-unit>
-			<trans-unit id="error_access_denied" xml:space="preserve">
+			<trans-unit id="error_access_denied">
 				<target>Sie sind nicht autorisiert, diese Aktion durchzuführen.</target>
 			</trans-unit>
-			<trans-unit id="error_room_access_denied" xml:space="preserve">
+			<trans-unit id="error_room_access_denied">
 				<target>Sie sind nicht berechtigt, diesen Raum zu betreten oder Einträge einzusehen. Bitte melden Sie sich an.</target>
 			</trans-unit>
-			<trans-unit id="error_room_full" xml:space="preserve">
+			<trans-unit id="error_room_full">
 				<target>Der Raum ist voll. Die maximale Anzahl von Nutzern wurde erreicht. Sie werden automatisch in dem Raum eintreten, sobald ein Platz frei wird. Oder versuchen Sie es später erneut.</target>
 			</trans-unit>
-			<trans-unit id="error_room_not_found" xml:space="preserve">
+			<trans-unit id="error_room_not_found">
 				<target>Der Raum konnte nicht gefunden werden. Möglicherweise wurde er entfernt.</target>
 			</trans-unit>
-			<trans-unit id="error_kicked" xml:space="preserve">
+			<trans-unit id="error_kicked">
 				<target>Sie wurden für diesen Raum gesperrt. Noch %d Minuten.</target>
 			</trans-unit>
-			<trans-unit id="error_banned" xml:space="preserve">
+			<trans-unit id="error_banned">
 				<target>Sie wurden für diesen Raum gesperrt.</target>
 			</trans-unit>
-			<trans-unit id="error_not_invited" xml:space="preserve">
+			<trans-unit id="error_not_invited">
 				<target>Dies ist ein privater Chatraum und kann nur nach einer Einladung betreten werden.</target>
 			</trans-unit>
-			<trans-unit id="message_committed" xml:space="preserve">
+			<trans-unit id="message_committed">
 				<target>Nachricht #%d wurde freigegeben</target>
 			</trans-unit>
-			<trans-unit id="error_commit" xml:space="preserve">
+			<trans-unit id="error_commit">
 				<target>Nachricht konnte nicht freigegeben werden. Vielleicht bereits freigegeben.</target>
 			</trans-unit>
-			<trans-unit id="enter_chat" xml:space="preserve">
+			<trans-unit id="enter_chat">
 				<target>Chat beitreten</target>
 			</trans-unit>
-			<trans-unit id="leave_chat" xml:space="preserve">
+			<trans-unit id="leave_chat">
 				<target>Chat verlassen</target>
 			</trans-unit>
-			<trans-unit id="new_window" xml:space="preserve">
+			<trans-unit id="new_window">
 				<target>Neues Fenster</target>
 			</trans-unit>
-			<trans-unit id="close_window" xml:space="preserve">
+			<trans-unit id="close_window">
 				<target>Chat Beenden</target>
 			</trans-unit>
-			<trans-unit id="sessions" xml:space="preserve">
+			<trans-unit id="sessions">
 				<target>Sitzungen protokolliert</target>
 			</trans-unit>
-			<trans-unit id="experts" xml:space="preserve">
+			<trans-unit id="experts">
 				<target>Experte(n) online:</target>
 			</trans-unit>
-			<trans-unit id="superusers" xml:space="preserve">
+			<trans-unit id="superusers">
 				<target>Superuser online:</target>
 			</trans-unit>
-			<trans-unit id="moderators" xml:space="preserve">
+			<trans-unit id="moderators">
 				<target>Moderator(en) online:</target>
 			</trans-unit>
-			<trans-unit id="users" xml:space="preserve">
+			<trans-unit id="users">
 				<target>User online:</target>
 			</trans-unit>
-			<trans-unit id="system_name" xml:space="preserve">
+			<trans-unit id="system_name">
 				<target>*</target>
 			</trans-unit>
-			<trans-unit id="hide_message" xml:space="preserve">
+			<trans-unit id="hide_message">
 				<target>Nachricht verstecken</target>
 			</trans-unit>
-			<trans-unit id="commit_message" xml:space="preserve">
+			<trans-unit id="commit_message">
 				<target>Nachricht freischalten</target>
 			</trans-unit>
-			<trans-unit id="store_message" xml:space="preserve">
+			<trans-unit id="store_message">
 				<target>Nachricht zurückstellen</target>
 			</trans-unit>
-			<trans-unit id="user_enters_chat" xml:space="preserve">
+			<trans-unit id="user_enters_chat">
 				<target>Geburtstagskind %s betritt den Raum.</target>
 			</trans-unit>
-			<trans-unit id="user_leaves_chat" xml:space="preserve">
+			<trans-unit id="user_leaves_chat">
 				<target>%s verlässt den Raum.</target>
 			</trans-unit>
-			<trans-unit id="after_welcome_message" xml:space="preserve">
+			<trans-unit id="after_welcome_message">
 				<target>Für Hilfe geben Sie bitte ein: '/help'</target>
 			</trans-unit>
-			<trans-unit id="command_title" xml:space="preserve">
+			<trans-unit id="command_title">
 				<target>--== Chat Befehle ==--</target>
 			</trans-unit>
-			<trans-unit id="command_header" xml:space="preserve">
-				<target>Willkommen zu unserem Chat. Tipp: Drücken STRG+ENTER, um einen Zeilenumbruch zu erzeugen. Folgende Befehle stehen während des Chats zu Verfügung:<br/></target>
+			<trans-unit id="command_header">
+				<target>Willkommen zu unserem Chat. Tipp: Drücken SHIFT+ENTER, um einen Zeilenumbruch zu erzeugen. Folgende Befehle stehen während des Chats zu Verfügung:<br/></target>
 			</trans-unit>
-			<trans-unit id="command_help" xml:space="preserve">
+			<trans-unit id="command_help">
 				<target>Zeigt die möglichen Befehle an.</target>
 			</trans-unit>
-			<trans-unit id="command_msg" xml:space="preserve">
+			<trans-unit id="command_msg">
 				<target>Sendet eine private Nachricht.</target>
 			</trans-unit>
-			<trans-unit id="command_roomlist" xml:space="preserve">
+			<trans-unit id="command_roomlist">
 				<target>Zeigt die User der anderen Chaträume.</target>
 			</trans-unit>
-			<trans-unit id="command_smileys" xml:space="preserve">
+			<trans-unit id="command_smileys">
 				<target>Zeigt die verfügbaren Icons mit den jeweiligen Shortcuts.</target>
 			</trans-unit>
-			<trans-unit id="command_who" xml:space="preserve">
+			<trans-unit id="command_who">
 				<target>Zeigt eine Liste über die am Chat teilnehmenden Nutzer.</target>
 			</trans-unit>
-			<trans-unit id="command_whois" xml:space="preserve">
+			<trans-unit id="command_whois">
 				<target>Zeigt Details über einen Nutzer.</target>
 			</trans-unit>
-			<trans-unit id="command_kick" xml:space="preserve">
+			<trans-unit id="command_kick">
 				<target>Entfernt einen Nutzer für eine bestimmte Zeit. Mit '/redeem' kann diese Aktion rückgängig gemacht werden.</target>
 			</trans-unit>
-			<trans-unit id="command_kick_param_time" xml:space="preserve">
+			<trans-unit id="command_kick_param_time">
 				<target>Anzahl der Minuten für die der Nutzer gesperrt wird.</target>
 			</trans-unit>
-			<trans-unit id="command_kick_ok" xml:space="preserve">
+			<trans-unit id="command_kick_ok">
 				<target>%s wurde entfernt von %s für %d Minuten.</target>
 			</trans-unit>
-			<trans-unit id="command_kick_reason" xml:space="preserve">
+			<trans-unit id="command_kick_reason">
 				<target>Grund: '%s'</target>
 			</trans-unit>
-			<trans-unit id="command_ban" xml:space="preserve">
+			<trans-unit id="command_ban">
 				<target>Entfernt einen Nutzer vom Raum für unbestimmte Zeit.</target>
 			</trans-unit>
-			<trans-unit id="command_ban_ok" xml:space="preserve">
+			<trans-unit id="command_ban_ok">
 				<target>%s wurde gesperrt von %s.</target>
 			</trans-unit>
-			<trans-unit id="command_ban_reason" xml:space="preserve">
+			<trans-unit id="command_ban_reason">
 				<target>Grund: '%s'</target>
 			</trans-unit>
-			<trans-unit id="command_redeem" xml:space="preserve">
+			<trans-unit id="command_redeem">
 				<target>Entsperrt einen Nutzer für den aktuellen Raum.</target>
 			</trans-unit>
-			<trans-unit id="command_redeem_ok" xml:space="preserve">
+			<trans-unit id="command_redeem_ok">
 				<target>%s wurde entsperrt von %s.</target>
 			</trans-unit>
-			<trans-unit id="command_redeem_reason" xml:space="preserve">
+			<trans-unit id="command_redeem_reason">
 				<target>Grund: '%s'</target>
 			</trans-unit>
-			<trans-unit id="command_restart" xml:space="preserve">
+			<trans-unit id="command_restart">
 				<target>Started das Neuladen des Chats mit neuen Nachrichten.</target>
 			</trans-unit>
-			<trans-unit id="command_stop" xml:space="preserve">
+			<trans-unit id="command_stop">
 				<target>Stoppt das Neuladen des Chats (Archiv Modus).</target>
 			</trans-unit>
-			<trans-unit id="command_quit" xml:space="preserve">
+			<trans-unit id="command_quit">
 				<target>Den Raum mit einer optionalen Nachricht verlassen.</target>
 			</trans-unit>
-			<trans-unit id="command_quit_ok" xml:space="preserve">
+			<trans-unit id="command_quit_ok">
 				<target>%s verlässt den Raum.</target>
 			</trans-unit>
-			<trans-unit id="command_quit_reason" xml:space="preserve">
+			<trans-unit id="command_quit_reason">
 				<target>Grund: '%s'</target>
 			</trans-unit>
-			<trans-unit id="command_makesession" xml:space="preserve">
+			<trans-unit id="command_makesession">
 				<target>Erstellt ein Chat-Protokoll.</target>
 			</trans-unit>
-			<trans-unit id="command_makesession_param_name" xml:space="preserve">
+			<trans-unit id="command_makesession_param_name">
 				<target>Ein Name für das Protokoll.</target>
 			</trans-unit>
-			<trans-unit id="command_makesession_param_firstid" xml:space="preserve">
+			<trans-unit id="command_makesession_param_firstid">
 				<target>Id der ersten Nachricht</target>
 			</trans-unit>
-			<trans-unit id="command_makesession_param_lastid" xml:space="preserve">
+			<trans-unit id="command_makesession_param_lastid">
 				<target>Id der letzten Nachricht</target>
 			</trans-unit>
-			<trans-unit id="command_makeexpert" xml:space="preserve">
+			<trans-unit id="command_makeexpert">
 				<target>Setzt einen Nutzer auf die Experten-Liste</target>
 			</trans-unit>
-			<trans-unit id="command_makeuser" xml:space="preserve">
+			<trans-unit id="command_makeuser">
 				<target>Entfernt einen Nutzer von der Experten-Liste</target>
 			</trans-unit>
-			<trans-unit id="command_cleanup" xml:space="preserve">
+			<trans-unit id="command_cleanup">
 				<target>Löscht alle Einträge dieses Raumes, die nicht zu einer Session gehören.</target>
 			</trans-unit>
-			<trans-unit id="command_cleanupall" xml:space="preserve">
+			<trans-unit id="command_cleanupall">
 				<target>Löscht alle Einträge aller Raumes die zu keiner Session gehören.</target>
 			</trans-unit>
-			<trans-unit id="command_setstatus" xml:space="preserve">
+			<trans-unit id="command_setstatus">
 				<target>Ändert den Status des Nutzer (z.B. 'hidden')</target>
 			</trans-unit>
-			<trans-unit id="command_error_user_not_found" xml:space="preserve">
+			<trans-unit id="command_error_user_not_found">
 				<target>User '%s ' nicht gefunden</target>
 			</trans-unit>
-			<trans-unit id="command_parameter_wrong" xml:space="preserve">
+			<trans-unit id="command_parameter_wrong">
 				<target>Parameter %s falsch. Sollte sein %s</target>
 			</trans-unit>
-			<trans-unit id="command_not_found" xml:space="preserve">
+			<trans-unit id="command_not_found">
 				<target>Befehl '%s ' nicht gefunden. Geben Sie '/help', um eine Liste möglicher Befehle zu erhalten.</target>
 			</trans-unit>
-			<trans-unit id="command_param_userid" xml:space="preserve">
+			<trans-unit id="command_param_userid">
 				<target>#UserId oder Username</target>
 			</trans-unit>
-			<trans-unit id="command_param_roomid" xml:space="preserve">
+			<trans-unit id="command_param_roomid">
 				<target>RaumId</target>
 			</trans-unit>
-			<trans-unit id="command_param_reason" xml:space="preserve">
+			<trans-unit id="command_param_reason">
 				<target>Ein Grund</target>
 			</trans-unit>
-			<trans-unit id="command_param_status" xml:space="preserve">
+			<trans-unit id="command_param_status">
 				<target>Zum Beispiel 'hidden'</target>
 			</trans-unit>
-			<trans-unit id="command_param_message" xml:space="preserve">
+			<trans-unit id="command_param_message">
 				<target>Eine Nachricht</target>
 			</trans-unit>
-			<trans-unit id="command_newroom" xml:space="preserve">
+			<trans-unit id="command_talkto">
 				<target>Erstellt einen neuen privaten Raum. Benutzer können anschließend mit /invite eingeladen werden.</target>
 			</trans-unit>
-			<trans-unit id="command_newroom_param_name" xml:space="preserve">
+			<trans-unit id="command_talkto_param_name">
+				<target>UID des Benutzers beginnend mit #</target>
+			</trans-unit>
+
+			<trans-unit id="command_newroom">
+				<target>Erstellt einen neuen privaten Raum. Benutzer können anschließend mit /invite eingeladen werden.</target>
+			</trans-unit>
+			<trans-unit id="command_newroom_param_name">
 				<target>Name für den Raum</target>
 			</trans-unit>
-			<trans-unit id="command_newroom_param_description" xml:space="preserve">
+			<trans-unit id="command_newroom_param_description">
 				<target>Eine nähere Beschreibung für den Raum.</target>
 			</trans-unit>
-			<trans-unit id="command_newroom_room_default_title" xml:space="preserve">
+			<trans-unit id="command_newroom_room_default_title">
 				<target>Privater Raum von %s</target>
 			</trans-unit>
-			<trans-unit id="command_newroom_room_default_description" xml:space="preserve">
+			<trans-unit id="command_newroom_room_default_description">
 				<target>Um diesen privaten Chatraum zu betreten, benötigen Sie eine Einladung von %s.</target>
 			</trans-unit>
-			<trans-unit id="command_newroom_ok" xml:space="preserve">
+			<trans-unit id="command_newroom_ok">
 				<target>Ein neuer Raum *%s* wurde erstellt.</target>
 			</trans-unit>
-			<trans-unit id="command_invite" xml:space="preserve">
+			<trans-unit id="command_invite">
+				<source>Lädt einen User in einen privaten Raum ein.</source>
 				<target>Lädt einen User in einen privaten Raum ein.</target>
 			</trans-unit>
-			<trans-unit id="command_invite_default_message" xml:space="preserve">
+			<trans-unit id="command_invite_default_message">
 				<target>*%s* lädt *%s* in seinen oder ihren Chatraum *%s* ein.</target>
 			</trans-unit>
-			<trans-unit id="command_invite_enter_room" xml:space="preserve">
+			<trans-unit id="command_invite_enter_room">
 				<target>Raum betreten</target>
 			</trans-unit>
-			<trans-unit id="command_invite_enter_room_ok" xml:space="preserve">
+			<trans-unit id="command_invite_enter_room_ok">
 				<target>*%s* darf diesen Raum nun betreten. Die Einladung wurde gesendet.</target>
 			</trans-unit>
-			<trans-unit id="command_invite_user_not_online" xml:space="preserve">
+			<trans-unit id="command_invite_user_not_online">
 				<target>*%s* ist in keinem Raum. Die Einladung wurde nicht gesendet.</target>
 			</trans-unit>
-			<trans-unit id="command_recent_invite" xml:space="preserve">
+			<trans-unit id="command_recent_invite">
 				<target>Lädt einen Nutzer in den zuletzt erstellten Raum ein.</target>
 			</trans-unit>
-			<trans-unit id="command_setroomstatus" xml:space="preserve">
+			<trans-unit id="command_setroomstatus">
 				<target>Ändert den Status eines Raumes (e.g. 'hidden','private')</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.bold" xml:space="preserve">
+			<trans-unit id="chatbutton.bold">
 				<target>Fett [b]text[/b] oder *text*</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.italic" xml:space="preserve">
+			<trans-unit id="chatbutton.italic">
 				<target>Kursiv [i]text[/i]</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.underlined" xml:space="preserve">
+			<trans-unit id="chatbutton.underlined">
 				<target>Unterstrichen [u]text[/u]</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.stroke" xml:space="preserve">
+			<trans-unit id="chatbutton.stroke">
 				<target>Durchgestrichen [s]text[/s]</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.email" xml:space="preserve">
+			<trans-unit id="chatbutton.email">
 				<target>E-Mail [email]text[/email]</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.http" xml:space="preserve">
+			<trans-unit id="chatbutton.http">
 				<target>Web-URL [url]text[/url]</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.clock_on" xml:space="preserve">
+			<trans-unit id="chatbutton.clock_on">
 				<target>Uhrzeit zeigen</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.clock_off" xml:space="preserve">
+			<trans-unit id="chatbutton.clock_off">
 				<target>Uhrzeit verstecken</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.usercolor_on" xml:space="preserve">
+			<trans-unit id="chatbutton.usercolor_on">
 				<target>Benutzernamen färben</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.usercolor_off" xml:space="preserve">
+			<trans-unit id="chatbutton.usercolor_off">
 				<target>Benutzernamen nicht färben</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.smilies_on" xml:space="preserve">
+			<trans-unit id="chatbutton.smilies_on">
 				<target>Smilies zeigen</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.smilies_off" xml:space="preserve">
+			<trans-unit id="chatbutton.smilies_off">
 				<target>Smilies verstecken</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.colors_on" xml:space="preserve">
+			<trans-unit id="chatbutton.colors_on">
 				<target>Nachrichtenstile zeigen</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.colors_off" xml:space="preserve">
+			<trans-unit id="chatbutton.colors_off">
 				<target>Nachrichtenstile verstecken</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.help" xml:space="preserve">
+			<trans-unit id="chatbutton.help">
 				<target>Hilfe - Zeigt die verfügbaren Chat-Befehle an</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.autofocus_on" xml:space="preserve">
+			<trans-unit id="chatbutton.autofocus_on">
 				<target>Autofokus: bringt das Fenster nach vorn, wenn neue Nachrichten vorhanden sind.</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.autofocus_off" xml:space="preserve">
+			<trans-unit id="chatbutton.autofocus_off">
 				<target>Autofokus ausschalten.</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.enablesound_on" xml:space="preserve">
+			<trans-unit id="chatbutton.enablesound_on">
 				<target>Sound an</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.enablesound_off" xml:space="preserve">
+			<trans-unit id="chatbutton.enablesound_off">
 				<target>Sound off</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.restart" xml:space="preserve">
+			<trans-unit id="chatbutton.restart">
 				<target>Started das Neuladen des Chats mit neuen Nachrichten. (Archiv modus verlassen)</target>
 			</trans-unit>
-			<trans-unit id="chatbutton.stop" xml:space="preserve">
+			<trans-unit id="chatbutton.stop">
 				<target>Stoppt das Neuladen des Chats (Archiv Modus) um bestehende Einträge lesen zu können.</target>
 			</trans-unit>
-			<trans-unit id="privateMsgUsernamens" xml:space="preserve">
+			<trans-unit id="privateMsgUsernamens">
 				<target>PM von %s an %s</target>
 			</trans-unit>
-			<trans-unit id="userlistPMInfo" xml:space="preserve">
+			<trans-unit id="userlistPMInfo">
 				<target>Eine private Nachricht an '%s' schicken</target>
 			</trans-unit>
-			<trans-unit id="userlistPRInfo" xml:space="preserve">
+			<trans-unit id="userlistPRInfo">
 				<target>Einen neuen Raum öffnen und '%s' einladen.</target>
 			</trans-unit>
-			<trans-unit id="talktoroomname" xml:space="preserve">
+			<trans-unit id="talktoroomname">
 				<target>Privater Raum mit %s</target>
 			</trans-unit>
-			<trans-unit id="closed" xml:space="preserve">
+			<trans-unit id="closed">
 				<target>Geschlossen</target>
 			</trans-unit>
-			<trans-unit id="loading_message" xml:space="preserve">
+			<trans-unit id="loading_message">
 				<target>Die Chat-Oberfläche wird geladen...</target>
 			</trans-unit>
-			<trans-unit id="snippetsError" xml:space="preserve">
+			<trans-unit id="snippetsError">
 				<target>Es ist ein Fehler aufgetreten. Sie sollten das Chat-Fenster neu laden. Möchten Sie es jetzt neu laden?</target>
 			</trans-unit>
-			<trans-unit id="UploadImage.help" xml:space="preserve">
+			<trans-unit id="UploadImage.help">
 				<target>Bild aus Album im Chat anzeigen</target>
 			</trans-unit>
 		</body>

@@ -3,352 +3,352 @@
 	<file source-language="en" target-language="it" datatype="plaintext" original="messages" date="2016-07-22T08:55:26Z" product-name="vjchat">
 		<header/>
 		<body>
-			<trans-unit id="session_not_found" xml:space="preserve">
+			<trans-unit id="session_not_found">
 				<source>Impossibile trovare la sessione. Probabilmente è stata rimossa.</source>
 			</trans-unit>
-			<trans-unit id="sessions_not_found" xml:space="preserve">
+			<trans-unit id="sessions_not_found">
 				<source>Nessuna sessione disponibile.</source>
 			</trans-unit>
-			<trans-unit id="entries_not_found" xml:space="preserve">
+			<trans-unit id="entries_not_found">
 				<source>Nessun messaggio.</source>
 			</trans-unit>
-			<trans-unit id="new_message" xml:space="preserve">
+			<trans-unit id="new_message">
 				<source>Nuovo messaggio</source>
 			</trans-unit>
-			<trans-unit id="submit_message" xml:space="preserve">
+			<trans-unit id="submit_message">
 				<source>Invia</source>
 			</trans-unit>
-			<trans-unit id="back_to_rooms" xml:space="preserve">
+			<trans-unit id="back_to_rooms">
 				<source>Torna alla panoramica delle stanze</source>
 			</trans-unit>
-			<trans-unit id="back_to_sessions" xml:space="preserve">
+			<trans-unit id="back_to_sessions">
 				<source>Torna alla panoramica delle sessioni</source>
 			</trans-unit>
-			<trans-unit id="user_in_chat" xml:space="preserve">
+			<trans-unit id="user_in_chat">
 				<source>Lo user si trova nella chat.</source>
 			</trans-unit>
-			<trans-unit id="no_user_in_chat" xml:space="preserve">
+			<trans-unit id="no_user_in_chat">
 				<source>La chat room è vuota.</source>
 			</trans-unit>
-			<trans-unit id="max_user" xml:space="preserve">
+			<trans-unit id="max_user">
 				<source>Numero massimo di partecipanti: </source>
 			</trans-unit>
-			<trans-unit id="error_access_denied" xml:space="preserve">
+			<trans-unit id="error_access_denied">
 				<source>Non sei autorizzato ad eseguire questa operazione.</source>
 			</trans-unit>
-			<trans-unit id="error_room_access_denied" xml:space="preserve">
+			<trans-unit id="error_room_access_denied">
 				<source>Non sei autorizzato ad accedere a questa stanza oppure a visualizzare le registrazioni. Effettua il login.</source>
 			</trans-unit>
-			<trans-unit id="error_room_full" xml:space="preserve">
+			<trans-unit id="error_room_full">
 				<source>La stanza è piena. È stato raggiunto il numero massimo di utenti. Accederai automaticamente nella stanza non appena si libererà un posto. Oppure ritenta più tardi.</source>
 			</trans-unit>
-			<trans-unit id="error_room_not_found" xml:space="preserve">
+			<trans-unit id="error_room_not_found">
 				<source>Impossibile trovare la stanza. Probabilmente è stata rimossa.</source>
 			</trans-unit>
-			<trans-unit id="error_kicked" xml:space="preserve">
+			<trans-unit id="error_kicked">
 				<source>Sei stato bloccato per questa stanza. Ancora %d minuti.</source>
 			</trans-unit>
-			<trans-unit id="error_banned" xml:space="preserve">
+			<trans-unit id="error_banned">
 				<source>Sei stato bloccato per questa stanza.</source>
 			</trans-unit>
-			<trans-unit id="error_not_invited" xml:space="preserve">
+			<trans-unit id="error_not_invited">
 				<source>Questa è una chat room privata e a cui si può accedere solo con un invito.</source>
 			</trans-unit>
-			<trans-unit id="message_committed" xml:space="preserve">
+			<trans-unit id="message_committed">
 				<source>Il messaggio #%d è stato pubblicato</source>
 			</trans-unit>
-			<trans-unit id="error_commit" xml:space="preserve">
+			<trans-unit id="error_commit">
 				<source>Impossibile pubblicare il messaggio. probabilmente è già stato pubblicato.</source>
 			</trans-unit>
-			<trans-unit id="enter_chat" xml:space="preserve">
+			<trans-unit id="enter_chat">
 				<source>Accedi alla chat</source>
 			</trans-unit>
-			<trans-unit id="leave_chat" xml:space="preserve">
+			<trans-unit id="leave_chat">
 				<source>Abbandona la chat</source>
 			</trans-unit>
-			<trans-unit id="new_window" xml:space="preserve">
+			<trans-unit id="new_window">
 				<source>Nuova finestra</source>
 			</trans-unit>
-			<trans-unit id="close_window" xml:space="preserve">
+			<trans-unit id="close_window">
 				<source>Chiudi chat</source>
 			</trans-unit>
-			<trans-unit id="sessions" xml:space="preserve">
+			<trans-unit id="sessions">
 				<source>Protocolla sessioni</source>
 			</trans-unit>
-			<trans-unit id="experts" xml:space="preserve">
+			<trans-unit id="experts">
 				<source>Esperti online:</source>
 			</trans-unit>
-			<trans-unit id="superusers" xml:space="preserve">
+			<trans-unit id="superusers">
 				<source>Superuser online:</source>
 			</trans-unit>
-			<trans-unit id="moderators" xml:space="preserve">
+			<trans-unit id="moderators">
 				<source>Moderatori online:</source>
 			</trans-unit>
-			<trans-unit id="users" xml:space="preserve">
+			<trans-unit id="users">
 				<source>User online:</source>
 			</trans-unit>
-			<trans-unit id="system_name" xml:space="preserve">
+			<trans-unit id="system_name">
 				<source>*</source>
 			</trans-unit>
-			<trans-unit id="hide_message" xml:space="preserve">
+			<trans-unit id="hide_message">
 				<source>Nascondi messaggio</source>
 			</trans-unit>
-			<trans-unit id="commit_message" xml:space="preserve">
+			<trans-unit id="commit_message">
 				<source>Pubblica messaggio</source>
 			</trans-unit>
-			<trans-unit id="store_message" xml:space="preserve">
+			<trans-unit id="store_message">
 				<source>Ripristina messaggio</source>
 			</trans-unit>
-			<trans-unit id="user_enters_chat" xml:space="preserve">
+			<trans-unit id="user_enters_chat">
 				<source>%s accede alla stanza.</source>
 			</trans-unit>
-			<trans-unit id="user_leaves_chat" xml:space="preserve">
+			<trans-unit id="user_leaves_chat">
 				<source>%s abbandona la stanza.</source>
 			</trans-unit>
-			<trans-unit id="after_welcome_message" xml:space="preserve">
+			<trans-unit id="after_welcome_message">
 				<source>Se hai bisogno di aiuto immetti un:  '/help '</source>
 			</trans-unit>
-			<trans-unit id="command_title" xml:space="preserve">
+			<trans-unit id="command_title">
 				<source>--== Comandi chat ==--</source>
 			</trans-unit>
-			<trans-unit id="command_header" xml:space="preserve">
+			<trans-unit id="command_header">
 				<source>Benvenuti nella nostra chat. Suggerimento: per creare un salto di riga premi CTRL+INVIO. Nella chat sono disponibili i seguenti comandi:<br/></source>
 			</trans-unit>
-			<trans-unit id="command_help" xml:space="preserve">
+			<trans-unit id="command_help">
 				<source>Mostra comandi disponibili.</source>
 			</trans-unit>
-			<trans-unit id="command_msg" xml:space="preserve">
+			<trans-unit id="command_msg">
 				<source>Invia un messaggio privato.</source>
 			</trans-unit>
-			<trans-unit id="command_roomlist" xml:space="preserve">
+			<trans-unit id="command_roomlist">
 				<source>Mostra gli user delle altre chat room.</source>
 			</trans-unit>
-			<trans-unit id="command_smileys" xml:space="preserve">
+			<trans-unit id="command_smileys">
 				<source>Mostra le icone disponibili con il rispettivo shortcut.</source>
 			</trans-unit>
-			<trans-unit id="command_who" xml:space="preserve">
+			<trans-unit id="command_who">
 				<source>Mostra un elenco degli utenti che partecipano alla chat.</source>
 			</trans-unit>
-			<trans-unit id="command_whois" xml:space="preserve">
+			<trans-unit id="command_whois">
 				<source>Mostra i dettagli di un utente.</source>
 			</trans-unit>
-			<trans-unit id="command_kick" xml:space="preserve">
+			<trans-unit id="command_kick">
 				<source>Rimuovi un utente per un determinato tempo. Questa operazione può essere annullata con  '/redeem '.</source>
 			</trans-unit>
-			<trans-unit id="command_kick_param_time" xml:space="preserve">
+			<trans-unit id="command_kick_param_time">
 				<source>Numero di minuti per cui è bloccato l 'utente.</source>
 			</trans-unit>
-			<trans-unit id="command_kick_ok" xml:space="preserve">
+			<trans-unit id="command_kick_ok">
 				<source>%s è stato rimosso da %s per %d minuti.</source>
 			</trans-unit>
-			<trans-unit id="command_kick_reason" xml:space="preserve">
+			<trans-unit id="command_kick_reason">
 				<source>Motivo:  '%s '</source>
 			</trans-unit>
-			<trans-unit id="command_ban" xml:space="preserve">
+			<trans-unit id="command_ban">
 				<source>Rimuove un utente dalla stanza per un periodo indefinito.</source>
 			</trans-unit>
-			<trans-unit id="command_ban_ok" xml:space="preserve">
+			<trans-unit id="command_ban_ok">
 				<source>%s è stato bloccata da %s.</source>
 			</trans-unit>
-			<trans-unit id="command_ban_reason" xml:space="preserve">
+			<trans-unit id="command_ban_reason">
 				<source>Motivo:  '%s '</source>
 			</trans-unit>
-			<trans-unit id="command_redeem" xml:space="preserve">
+			<trans-unit id="command_redeem">
 				<source>Blocca un utente per la stanza corrente.</source>
 			</trans-unit>
-			<trans-unit id="command_redeem_ok" xml:space="preserve">
+			<trans-unit id="command_redeem_ok">
 				<source>%s è stato bloccato da %s.</source>
 			</trans-unit>
-			<trans-unit id="command_redeem_reason" xml:space="preserve">
+			<trans-unit id="command_redeem_reason">
 				<source>Motivo:  '%s '</source>
 			</trans-unit>
-			<trans-unit id="command_restart" xml:space="preserve">
+			<trans-unit id="command_restart">
 				<source>Avvia il ricaricamento chat con i nuovi messaggi.</source>
 			</trans-unit>
-			<trans-unit id="command_stop" xml:space="preserve">
+			<trans-unit id="command_stop">
 				<source>Stoppa il ricaricamento della chat (modalità archivio).</source>
 			</trans-unit>
-			<trans-unit id="command_quit" xml:space="preserve">
+			<trans-unit id="command_quit">
 				<source>Abbandona la stanza con un messaggio opzionale.</source>
 			</trans-unit>
-			<trans-unit id="command_quit_ok" xml:space="preserve">
+			<trans-unit id="command_quit_ok">
 				<source>%s abbandona la stanza.</source>
 			</trans-unit>
-			<trans-unit id="command_quit_reason" xml:space="preserve">
+			<trans-unit id="command_quit_reason">
 				<source>Motivo:  '%s '</source>
 			</trans-unit>
-			<trans-unit id="command_makesession" xml:space="preserve">
+			<trans-unit id="command_makesession">
 				<source>Crea un protocollo chat.</source>
 			</trans-unit>
-			<trans-unit id="command_makesession_param_name" xml:space="preserve">
+			<trans-unit id="command_makesession_param_name">
 				<source>Un nome per il protocollo.</source>
 			</trans-unit>
-			<trans-unit id="command_makesession_param_firstid" xml:space="preserve">
+			<trans-unit id="command_makesession_param_firstid">
 				<source>ID del primo messaggio</source>
 			</trans-unit>
-			<trans-unit id="command_makesession_param_lastid" xml:space="preserve">
+			<trans-unit id="command_makesession_param_lastid">
 				<source>ID dell 'ultimo messaggio</source>
 			</trans-unit>
-			<trans-unit id="command_makeexpert" xml:space="preserve">
+			<trans-unit id="command_makeexpert">
 				<source>Imposta un utente nell 'elenco degli esperti</source>
 			</trans-unit>
-			<trans-unit id="command_makeuser" xml:space="preserve">
+			<trans-unit id="command_makeuser">
 				<source>Rimuove un utente dall 'elenco degli esperti</source>
 			</trans-unit>
-			<trans-unit id="command_cleanup" xml:space="preserve">
+			<trans-unit id="command_cleanup">
 				<source>Cancella tutte le registrazioni di questa stanza che non appartengono a una sessione.</source>
 			</trans-unit>
-			<trans-unit id="command_cleanupall" xml:space="preserve">
+			<trans-unit id="command_cleanupall">
 				<source>Cancella tutte le registrazioni di tutte le stanze che non appartengono a nessuna sessione.</source>
 			</trans-unit>
-			<trans-unit id="command_setstatus" xml:space="preserve">
+			<trans-unit id="command_setstatus">
 				<source>Cambia lo stato dell 'utente (es.  'hidden ')</source>
 			</trans-unit>
-			<trans-unit id="command_error_user_not_found" xml:space="preserve">
+			<trans-unit id="command_error_user_not_found">
 				<source>Impossibile trovare lo user  '%1%s '</source>
 			</trans-unit>
-			<trans-unit id="command_parameter_wrong" xml:space="preserve">
+			<trans-unit id="command_parameter_wrong">
 				<source>Parametro %s sbagliato. Deve essere %s</source>
 			</trans-unit>
-			<trans-unit id="command_not_found" xml:space="preserve">
+			<trans-unit id="command_not_found">
 				<source>Impossibile trovare il comando  '%s '. Per ottenere un elenco dei comandi disponibili, immettere  '/help '.</source>
 			</trans-unit>
-			<trans-unit id="command_param_userid" xml:space="preserve">
+			<trans-unit id="command_param_userid">
 				<source>#ID oppure nome user</source>
 			</trans-unit>
-			<trans-unit id="command_param_roomid" xml:space="preserve">
+			<trans-unit id="command_param_roomid">
 				<source>ID stanza</source>
 			</trans-unit>
-			<trans-unit id="command_param_reason" xml:space="preserve">
+			<trans-unit id="command_param_reason">
 				<source>Un motivo</source>
 			</trans-unit>
-			<trans-unit id="command_param_status" xml:space="preserve">
+			<trans-unit id="command_param_status">
 				<source>Ad esempio  'hidden '</source>
 			</trans-unit>
-			<trans-unit id="command_param_message" xml:space="preserve">
+			<trans-unit id="command_param_message">
 				<source>Un messaggio</source>
 			</trans-unit>
-			<trans-unit id="command_newroom" xml:space="preserve">
+			<trans-unit id="command_newroom">
 				<source>Crea una nuova stanza privata. L 'utente può quindi effettuare degli invito con /invite.</source>
 			</trans-unit>
-			<trans-unit id="command_newroom_param_name" xml:space="preserve">
+			<trans-unit id="command_newroom_param_name">
 				<source>Nome della stanza</source>
 			</trans-unit>
-			<trans-unit id="command_newroom_param_description" xml:space="preserve">
+			<trans-unit id="command_newroom_param_description">
 				<source>Una descrizione dettagliata per la stanza.</source>
 			</trans-unit>
-			<trans-unit id="command_newroom_room_default_title" xml:space="preserve">
+			<trans-unit id="command_newroom_room_default_title">
 				<source>Stanza privata di %s</source>
 			</trans-unit>
-			<trans-unit id="command_newroom_room_default_description" xml:space="preserve">
+			<trans-unit id="command_newroom_room_default_description">
 				<source>Per accedere a questa chat room privata è necessario un invito di %s.</source>
 			</trans-unit>
-			<trans-unit id="command_newroom_ok" xml:space="preserve">
+			<trans-unit id="command_newroom_ok">
 				<source>È stata creata una nuova stanza *%s*.</source>
 			</trans-unit>
-			<trans-unit id="command_invite" xml:space="preserve">
+			<trans-unit id="command_invite">
 				<source>Carica uno user in una stanza privata.</source>
 			</trans-unit>
-			<trans-unit id="command_invite_default_message" xml:space="preserve">
+			<trans-unit id="command_invite_default_message">
 				<source>*%s* lädt *%s* nel suo/sua chat room *%s*.</source>
 			</trans-unit>
-			<trans-unit id="command_invite_enter_room" xml:space="preserve">
+			<trans-unit id="command_invite_enter_room">
 				<source>Accedi alla stanza</source>
 			</trans-unit>
-			<trans-unit id="command_invite_enter_room_ok" xml:space="preserve">
+			<trans-unit id="command_invite_enter_room_ok">
 				<source>*%s* può ora accedere a questa stanza. L 'invito è stato inviato.</source>
 			</trans-unit>
-			<trans-unit id="command_invite_user_not_online" xml:space="preserve">
+			<trans-unit id="command_invite_user_not_online">
 				<source>*%s* non è in nessuna stanza. L 'invito non è stato inviato.</source>
 			</trans-unit>
-			<trans-unit id="command_recent_invite" xml:space="preserve">
+			<trans-unit id="command_recent_invite">
 				<source>Carica un utente nell 'ultima stanza creata.</source>
 			</trans-unit>
-			<trans-unit id="command_setroomstatus" xml:space="preserve">
+			<trans-unit id="command_setroomstatus">
 				<source>Cambia lo stato di una stanza (ad es.  'hidden", 'private ')</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.bold" xml:space="preserve">
+			<trans-unit id="chatbutton.bold">
 				<source>Grassetto [b]text[/b] oppure *text*</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.italic" xml:space="preserve">
+			<trans-unit id="chatbutton.italic">
 				<source>Corsivo [i]text[/i]</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.underlined" xml:space="preserve">
+			<trans-unit id="chatbutton.underlined">
 				<source>Sottolineato [u]text[/u]</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.stroke" xml:space="preserve">
+			<trans-unit id="chatbutton.stroke">
 				<source>Barrato [s]text[/s]</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.email" xml:space="preserve">
+			<trans-unit id="chatbutton.email">
 				<source>e-mail [email]text[/email]</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.http" xml:space="preserve">
+			<trans-unit id="chatbutton.http">
 				<source>web-uRL [url]text[/url]</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.clock_on" xml:space="preserve">
+			<trans-unit id="chatbutton.clock_on">
 				<source>Mostra ora</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.clock_off" xml:space="preserve">
+			<trans-unit id="chatbutton.clock_off">
 				<source>Nascondi ora</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.usercolor_on" xml:space="preserve">
+			<trans-unit id="chatbutton.usercolor_on">
 				<source>Nomi utente colorati</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.usercolor_off" xml:space="preserve">
+			<trans-unit id="chatbutton.usercolor_off">
 				<source>Nomi utente non colorati</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.smilies_on" xml:space="preserve">
+			<trans-unit id="chatbutton.smilies_on">
 				<source>Mostra smilies</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.smilies_off" xml:space="preserve">
+			<trans-unit id="chatbutton.smilies_off">
 				<source>Nascondi smilies</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.colors_on" xml:space="preserve">
+			<trans-unit id="chatbutton.colors_on">
 				<source>Mostra stile messaggio</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.colors_off" xml:space="preserve">
+			<trans-unit id="chatbutton.colors_off">
 				<source>Nascondi stile messaggio</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.help" xml:space="preserve">
+			<trans-unit id="chatbutton.help">
 				<source>? - Mostra i comandi chat disponibili</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.autofocus_on" xml:space="preserve">
+			<trans-unit id="chatbutton.autofocus_on">
 				<source>Auto focus: quando ci sono nuovi messaggi porta la finestra in primo piano.</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.autofocus_off" xml:space="preserve">
+			<trans-unit id="chatbutton.autofocus_off">
 				<source>Spegni auto focus.</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.enablesound_on" xml:space="preserve">
+			<trans-unit id="chatbutton.enablesound_on">
 				<source>Suono on</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.enablesound_off" xml:space="preserve">
+			<trans-unit id="chatbutton.enablesound_off">
 				<source>Suono off</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.restart" xml:space="preserve">
+			<trans-unit id="chatbutton.restart">
 				<source>Avvia il ricaricamento della chat con i nuovi messaggi (abbandona modalità archivio)</source>
 			</trans-unit>
-			<trans-unit id="chatbutton.stop" xml:space="preserve">
+			<trans-unit id="chatbutton.stop">
 				<source>Per poter leggere le registrazioni esistenti, stoppa il ricaricamento della chat (modalità archivio).</source>
 			</trans-unit>
-			<trans-unit id="privateMsgUsernamens" xml:space="preserve">
+			<trans-unit id="privateMsgUsernamens">
 				<source>PM di %s a %s</source>
 			</trans-unit>
-			<trans-unit id="userlistPMInfo" xml:space="preserve">
+			<trans-unit id="userlistPMInfo">
 				<source>Invia un messaggio privato a  '%s '</source>
 			</trans-unit>
-			<trans-unit id="userlistPRInfo" xml:space="preserve">
+			<trans-unit id="userlistPRInfo">
 				<source>Apri una nuova stanza e invita  '%s '.</source>
 			</trans-unit>
-			<trans-unit id="talktoroomname" xml:space="preserve">
+			<trans-unit id="talktoroomname">
 				<source>Stanza privata con %s</source>
 			</trans-unit>
-			<trans-unit id="closed" xml:space="preserve">
+			<trans-unit id="closed">
 				<source>Chiuso</source>
 			</trans-unit>
-			<trans-unit id="loading_message" xml:space="preserve">
+			<trans-unit id="loading_message">
 				<source>Caricamento in corso dell 'interfaccia chat...</source>
 			</trans-unit>
-			<trans-unit id="snippetsError" xml:space="preserve">
+			<trans-unit id="snippetsError">
 				<source>Si è verificato un errore. Devi ricaricare la finestra della chat. Desideri ricaricarla ora?</source>
 			</trans-unit>
 		</body>

@@ -19,6 +19,7 @@
         </f:if>
         <p class="hidden-xs">{user.uid}: {user.username} ({roomData.userCount} <f:translate key="user_in_chat"></f:translate> )</p>
 
+
         <f:if condition="{marker.isFull}">
             <f:else>
                 <div id="tx-vjchat-showUserlist" class="hidden-sm hidden-md hidden-lg navbar-default" style="margin-right: -20px;">
@@ -60,16 +61,36 @@
 
                 <div id="tx-vjchat-tools-container" class="row" style="display:none;">
                     <div id="tx-vjchat-format">
-                        <f:format.raw>{marker.CHATBUTTONS}</f:format.raw>
+
+                        <i class="btn btn-default fa fa-bold" id="tx-vjchat-button-b" onClick="javascript:chat_instance.addSelText('[b]','[/b]');" title="{f:translate(key: 'chatbutton.bold')}"></i>
+                        <i class="btn btn-default fa fa-italic" id="tx-vjchat-button-i" onClick="javascript:chat_instance.addSelText('[i]','[/i]');" title="{f:translate(key: 'chatbutton.italic')}"></i>
+                        <i class="btn btn-default fa fa-underline" id="tx-vjchat-button-u" onClick="javascript:chat_instance.addSelText('[u]','[/u]');" title="{f:translate(key: 'chatbutton.underlined')}"></i>
+                        <i class="btn btn-default fa fa-strikethrough" id="tx-vjchat-button-s" onClick="javascript:chat_instance.addSelText('[s]','[/s]');" title="{f:translate(key: 'chatbutton.stroke')}"></i>
+                        <f:if condition="{roomData.enableTime}">
+                            <i class="btn btn-default fas fa-clock" id="tx-vjchat-button-c" onClick="javascript:chat_instance.toggleAllTime();" title="{f:translate(key: 'chatbutton.clock_on')}"></i>
+
+                        </f:if>
+                        <f:if condition="{roomData.enableEmoticons}">
+                            <i class="btn btn-default fas fa-smile" id="tx-vjchat-button-smilies" onClick="javascript:chat_instance.toggleEmoticons();" title="{f:translate(key: 'chatbutton.smilies_on')}"></i>
+                        </f:if>
+
+                        <i class="btn btn-default fas fa-play" style="display:none" id="tx-vjchat-button-start-on" onClick="javascript:chat_instance.chat_instance.start();" title="{f:translate(key: 'chatbutton.start')}"></i>
+                        <i class="btn btn-default fas fa-stop" id="tx-vjchat-button-start" onClick="javascript:chat_instance.start();" title="{f:translate(key: 'chatbutton.stop')}"></i>
+                        <i class="btn btn-default fa fa-question" id="tx-vjchat-button-help" onClick="javascript:chat_instance.sendMessage('/help');" title="{f:translate(key: 'chatbutton.help')}"></i>
+
+                        <f:if condition="{roomData.enableImageUpload}">
+                            <i class="btn btn-default fa fa-images" id="tx-vjchat-button-image" onClick="javascript:chat_instance.uploadImg();" title="{f:translate(key: 'UploadImage.help')}"></i>
+                        </f:if>
+
+
                     </div>
-                    <div id="tx-vjchat-style" style="display:none;"><f:format.raw>{marker.STYLES}</f:format.raw></div>
                     <div id="tx-vjchat-emoticons" style="display:none;"><f:format.raw>{marker.EMOTICONS}</f:format.raw></div>
                 </div>
 
                 <div id="tx-vjchat-input-container" class="row" style="display:none;">
                     <textarea id="txvjchatnewMessage" name="txvjchatnewMessage" rows="3" cols="40"></textarea>
-                    <f:if condition="{marker.LABEL_SUBMIT}">
-                        <button onClick="chat_instance.submitMessage()">{marker.LABEL_SUBMIT}</button>
+                    <f:if condition="{confFLEX.showSendButton}">
+                        <button onClick="chat_instance.submitMessage()">{f:translate(key: 'submit_message')}</button>
                     </f:if>
                 </div>
             </div>

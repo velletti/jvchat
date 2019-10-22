@@ -241,6 +241,8 @@ class tx_vjchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	}
 	
 	function displayChatRoom($roomId) {
+
+
 		$this->db->cleanUpRooms();
         /** @var tx_vjchat_room $room */
 		if(!$room = $this->db->getRoom($roomId)) {
@@ -250,12 +252,10 @@ class tx_vjchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		if($this->db->extCONF['autoDeleteEntries']) {
             $this->db->deleteEntries($this->db->extCONF['autoDeleteEntries']);
         }
-		//$rooms = $this->db->cleanUpUserInRoom( $room->uid , 123 , false , "aasdf adfs %s asdfsadf " ) ;
 
-        //    var_dump($rooms) ;
-        // echo "<hr> __LINE__ " . __LINE__ ;
+       // $debug = $this->db->changeRoomMembership( $this->db->getRoom(394) , 128927 , 'members' , true   ) ;
+        // var_dump($debug) ;
         // die;
-
 		$roomData = $this->getRoomData($room);
 		$this->cObj->data = $roomData ;
 		if(!$this->conf['FLEX']['showDescriptionInChat'])
@@ -352,11 +352,13 @@ class tx_vjchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
         if( $this->db->extCONF['allowPrivateRooms'] ) {
             $dataString .= ' data-allowPrivateRooms="true"' ;
+            $dataString .= ' data-privateroomcode="'. $this->conf['privateRoomCode'] . '"' ;
         } else {
             $dataString .= ' data-allowPrivateRooms="false"' ;
         }
         if( $this->db->extCONF['allowPrivateMessages'] ) {
             $dataString .= ' data-allowPrivateMessages="true"' ;
+            $dataString .= ' data-privatemsgcode="'. $this->conf['privateMsgCode'] . '"' ;
         } else {
             $dataString .= ' data-allowPrivateMessages="false"' ;
         }
@@ -408,7 +410,7 @@ class tx_vjchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
             $marker['SUBMIT_MESSAGE'] = $this->pi_getLL('submit_message');
             $marker['LABEL_NEW_MESSAGE'] = $this->pi_getLL('new_message');
 
-
+/*
             if(!$this->conf['FLEX']['showFormatting'])
                 $marker['CHATBUTTONS'] = false ;
             else {
@@ -417,15 +419,8 @@ class tx_vjchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
                 $this->cObj->data['enableTime'] = $this->conf['FLEX']['showTime'];
                 $marker['CHATBUTTONS'] =  $this->cObj->cObjGet($this->conf['chatbuttons.']);
             }
+*/
             $marker['EMOTICONS'] = tx_vjchat_lib::getEmoticonsForChatRoom();
-            $marker['STYLES'] = $this->getStylingContainer();
-
-            if($this->conf['FLEX']['showSendButton']) {
-                $marker['LABEL_SUBMIT'] = $this->pi_getLL('submit_message');
-            }
-            else {
-                $marker['LABEL_SUBMIT'] = false ;
-            }
 
 
             if($this->conf['useSnippets']) {
@@ -457,6 +452,7 @@ class tx_vjchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
         $renderer->assign("marker" , $marker ) ;
         $renderer->assign("room" , $room ) ;
         $renderer->assign("roomData" , $roomData ) ;
+        $renderer->assign("confFLEX" , $this->conf['FLEX'] ) ;
 
         $renderer->assign("dataString" , $dataString ) ;
         $content = $renderer->render();
@@ -470,6 +466,11 @@ class tx_vjchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$theValue['showUserCount'] = $this->conf['FLEX']['maxUserCount'];
 		$theValue['sessionCount'] = $this->db->getSessionsCountOfRoom($room->uid);
 		$theValue['isFull'] = $this->db->isRoomFull($room) && !tx_vjchat_lib::isSuperuser($room, $this->user) && !$this->db->isMemberOfRoom($room->uid, $this->user['uid']);
+
+
+        $theValue['enableEmoticons'] = $this->conf['FLEX']['showEmoticons'];
+        $theValue['enableTime'] = $this->conf['FLEX']['showTime'];
+        $theValue['enableImageUpload'] = $this->conf['enableImageUpload'];
 
 		$conf = $this->conf['views.'][$this->conf['tsRooms'].'.'];
 

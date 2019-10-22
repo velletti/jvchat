@@ -471,6 +471,7 @@ class tx_vjchat_lib {
      * @param array $settings
      * @param string $templateDefault
      * @param string $format
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException if the extension name is not valid
      * @return \TYPO3\CMS\Fluid\View\StandaloneView
      */
 	static function getRenderer( $settings= array()  , $templateDefault='DisplayChatRoom' , $format="html") {
@@ -481,8 +482,19 @@ class tx_vjchat_lib {
         /** @var \TYPO3\CMS\Extbase\MVC\Controller\ControllerContext $controllerContext */
         $controllerContext = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\MVC\\Controller\\ControllerContext');
 
-        $controllerContext->setRequest(\TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\MVC\\Request'));
+        /** @var \TYPO3\CMS\Extbase\MVC\Request $request */
+        $request = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\MVC\\Request') ;
+        try {
+            $request->setControllerExtensionName("vjchat") ;
+            $request->setControllerName('Pi1') ;
+        }
+        catch (Exception $e) {
+            // ignore it
+        }
+        $controllerContext->setRequest($request);
+
         $renderer->setControllerContext($controllerContext);
+
 
         $layoutPaths = $settings['layoutPaths'] ;
         if(!$layoutPaths || count($layoutPaths) < 1) {

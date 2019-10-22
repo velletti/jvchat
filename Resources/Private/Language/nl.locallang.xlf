@@ -3,199 +3,199 @@
 	<file source-language="en" target-language="nl" datatype="plaintext" original="messages" date="2016-07-22T08:55:26Z" product-name="vjchat">
 		<header/>
 		<body>
-			<trans-unit id="session_not_found" xml:space="preserve">
+			<trans-unit id="session_not_found">
 				<source>Sessie niet gevonden. Waarschijnlijk is deze verwijderd.</source>
 			</trans-unit>
-			<trans-unit id="sessions_not_found" xml:space="preserve">
+			<trans-unit id="sessions_not_found">
 				<source>Geen sessies gevonden.</source>
 			</trans-unit>
-			<trans-unit id="entries_not_found" xml:space="preserve">
+			<trans-unit id="entries_not_found">
 				<source>Geen berichten gevonden.</source>
 			</trans-unit>
-			<trans-unit id="back" xml:space="preserve">
+			<trans-unit id="back">
 				<source>Terug</source>
 			</trans-unit>
-			<trans-unit id="new_message" xml:space="preserve">
+			<trans-unit id="new_message">
 				<source>Nieuw Bericht</source>
 			</trans-unit>
-			<trans-unit id="submit_message" xml:space="preserve">
+			<trans-unit id="submit_message">
 				<source>Verstuurd</source>
 			</trans-unit>
-			<trans-unit id="back_to_rooms" xml:space="preserve">
+			<trans-unit id="back_to_rooms">
 				<source>Terug naar de ruimtes</source>
 			</trans-unit>
-			<trans-unit id="back_to_sessions" xml:space="preserve">
+			<trans-unit id="back_to_sessions">
 				<source>Terug naar de sessies</source>
 			</trans-unit>
-			<trans-unit id="user_in_chat" xml:space="preserve">
+			<trans-unit id="user_in_chat">
 				<source>gebruikers in de chat ruimte.</source>
 			</trans-unit>
-			<trans-unit id="no_user_in_chat" xml:space="preserve">
+			<trans-unit id="no_user_in_chat">
 				<source>Geen gebruikers in de chat ruimte.</source>
 			</trans-unit>
-			<trans-unit id="max_user" xml:space="preserve">
+			<trans-unit id="max_user">
 				<source>Maximale gebruikers</source>
 			</trans-unit>
-			<trans-unit id="error_access_denied" xml:space="preserve">
+			<trans-unit id="error_access_denied">
 				<source>Actie niet toegestaan. Toegang geweigerd.</source>
 			</trans-unit>
-			<trans-unit id="error_room_access_denied" xml:space="preserve">
+			<trans-unit id="error_room_access_denied">
 				<source>Je hebt geen toegang tot de chat ruimte. Log eerst in.</source>
 			</trans-unit>
-			<trans-unit id="error_room_full" xml:space="preserve">
+			<trans-unit id="error_room_full">
 				<source>Ruimte is vol. Maximaal aantal gebruikers is bereikt.</source>
 			</trans-unit>
-			<trans-unit id="error_room_not_found" xml:space="preserve">
+			<trans-unit id="error_room_not_found">
 				<source>Ruimte niet gevonden. Waarschijnlijk is deze verwijderd.</source>
 			</trans-unit>
-			<trans-unit id="error_kicked" xml:space="preserve">
+			<trans-unit id="error_kicked">
 				<source>Je bent gebanned in deze ruimte voor %d minuten.</source>
 			</trans-unit>
-			<trans-unit id="error_banned" xml:space="preserve">
+			<trans-unit id="error_banned">
 				<source>Je bent gebanned voor deze ruimte.</source>
 			</trans-unit>
-			<trans-unit id="message_committed" xml:space="preserve">
+			<trans-unit id="message_committed">
 				<source>Bericht #%d is goedgekeurd</source>
 			</trans-unit>
-			<trans-unit id="error_commit" xml:space="preserve">
+			<trans-unit id="error_commit">
 				<source>Er is een error opgetreden. Waarschijnlijk is het bericht al goedgekeurd.</source>
 			</trans-unit>
-			<trans-unit id="enter_chat" xml:space="preserve">
+			<trans-unit id="enter_chat">
 				<source>Enter Chat</source>
 			</trans-unit>
-			<trans-unit id="leave_chat" xml:space="preserve">
+			<trans-unit id="leave_chat">
 				<source>Verlaat Chat</source>
 			</trans-unit>
-			<trans-unit id="sessions" xml:space="preserve">
+			<trans-unit id="sessions">
 				<source>sessies</source>
 			</trans-unit>
-			<trans-unit id="experts" xml:space="preserve">
+			<trans-unit id="experts">
 				<source>Expert(s) online:</source>
 			</trans-unit>
-			<trans-unit id="moderators" xml:space="preserve">
+			<trans-unit id="moderators">
 				<source>Moderator(s) online:</source>
 			</trans-unit>
-			<trans-unit id="system_name" xml:space="preserve">
+			<trans-unit id="system_name">
 				<source>*</source>
 			</trans-unit>
-			<trans-unit id="hide_message" xml:space="preserve">
+			<trans-unit id="hide_message">
 				<source>Verberg bericht</source>
 			</trans-unit>
-			<trans-unit id="commit_message" xml:space="preserve">
+			<trans-unit id="commit_message">
 				<source>Keur bericht goed</source>
 			</trans-unit>
-			<trans-unit id="store_message" xml:space="preserve">
+			<trans-unit id="store_message">
 				<source>Sla bericht op</source>
 			</trans-unit>
-			<trans-unit id="user_enters_chat" xml:space="preserve">
+			<trans-unit id="user_enters_chat">
 				<source>%s komt binnen in de chat.</source>
 			</trans-unit>
-			<trans-unit id="user_leaves_chat" xml:space="preserve">
+			<trans-unit id="user_leaves_chat">
 				<source>%s verlaat de chat.</source>
 			</trans-unit>
-			<trans-unit id="after_welcome_message" xml:space="preserve">
+			<trans-unit id="after_welcome_message">
 				<source>Voor hulp type: '/help'</source>
 			</trans-unit>
-			<trans-unit id="command_title" xml:space="preserve">
+			<trans-unit id="command_title">
 				<source>--== Chat Commando's ==--</source>
 			</trans-unit>
-			<trans-unit id="command_header" xml:space="preserve">
+			<trans-unit id="command_header">
 				<source>Welkom op onze chat. Tip: Druk op CTRL+RETURN om meerdere regels te versturen. De volgende commando's zijn beschikbaar tijdens de chat:<br/></source>
 			</trans-unit>
-			<trans-unit id="command_help" xml:space="preserve">
+			<trans-unit id="command_help">
 				<source>Laat dit scherm zien.</source>
 			</trans-unit>
-			<trans-unit id="command_smileys" xml:space="preserve">
+			<trans-unit id="command_smileys">
 				<source>Laat alle smilies zien met bijbehorende code.</source>
 			</trans-unit>
-			<trans-unit id="command_roomlist" xml:space="preserve">
+			<trans-unit id="command_roomlist">
 				<source>Laat alle gebruikers zin in de andere ruimtes.</source>
 			</trans-unit>
-			<trans-unit id="command_who" xml:space="preserve">
+			<trans-unit id="command_who">
 				<source>Laat alle gebruikers zien in deze ruimte.</source>
 			</trans-unit>
-			<trans-unit id="command_whois" xml:space="preserve">
+			<trans-unit id="command_whois">
 				<source>Gedetailleerde informatie over een gebruiker.</source>
 			</trans-unit>
-			<trans-unit id="command_kick" xml:space="preserve">
+			<trans-unit id="command_kick">
 				<source>Verwijderd een gebruiker tijdelijk van de chat. Eventueel met een reden. Door middel van /redeem kan dit ongedaan worden gemaakt.</source>
 			</trans-unit>
-			<trans-unit id="command_kick_param_time" xml:space="preserve">
+			<trans-unit id="command_kick_param_time">
 				<source>De gebruiker zal deze tijd worden gebanned in minuten.</source>
 			</trans-unit>
-			<trans-unit id="command_kick_ok" xml:space="preserve">
+			<trans-unit id="command_kick_ok">
 				<source>%s is gebanned door %s voor %d minuten.</source>
 			</trans-unit>
-			<trans-unit id="command_kick_reason" xml:space="preserve">
+			<trans-unit id="command_kick_reason">
 				<source>Reden: '%s'</source>
 			</trans-unit>
-			<trans-unit id="command_ban" xml:space="preserve">
+			<trans-unit id="command_ban">
 				<source>Voeg gebruiker toe aan de ban lijst.</source>
 			</trans-unit>
-			<trans-unit id="command_ban_ok" xml:space="preserve">
+			<trans-unit id="command_ban_ok">
 				<source>%s is gebanned door %s.</source>
 			</trans-unit>
-			<trans-unit id="command_ban_reason" xml:space="preserve">
+			<trans-unit id="command_ban_reason">
 				<source>Reden: '%s'</source>
 			</trans-unit>
-			<trans-unit id="command_redeem" xml:space="preserve">
+			<trans-unit id="command_redeem">
 				<source>Activeer gebruiker die gekicked was of verwijder een gebruiker van de ban lijst.</source>
 			</trans-unit>
-			<trans-unit id="command_redeem_ok" xml:space="preserve">
+			<trans-unit id="command_redeem_ok">
 				<source>%s is bevrijdt door %s.</source>
 			</trans-unit>
-			<trans-unit id="command_redeem_reason" xml:space="preserve">
+			<trans-unit id="command_redeem_reason">
 				<source>Reden: '%s'</source>
 			</trans-unit>
-			<trans-unit id="command_quit" xml:space="preserve">
+			<trans-unit id="command_quit">
 				<source>Verlaat de huidige ruimte. Eventueel met een reden.</source>
 			</trans-unit>
-			<trans-unit id="command_quit_ok" xml:space="preserve">
+			<trans-unit id="command_quit_ok">
 				<source>%s verlaat de chat.</source>
 			</trans-unit>
-			<trans-unit id="command_quit_reason" xml:space="preserve">
+			<trans-unit id="command_quit_reason">
 				<source>Reden: '%s'</source>
 			</trans-unit>
-			<trans-unit id="command_makesession" xml:space="preserve">
+			<trans-unit id="command_makesession">
 				<source>Maakt een sessie.</source>
 			</trans-unit>
-			<trans-unit id="command_makesession_param_name" xml:space="preserve">
+			<trans-unit id="command_makesession_param_name">
 				<source>Een naam voor de sessie</source>
 			</trans-unit>
-			<trans-unit id="command_makesession_param_firstid" xml:space="preserve">
+			<trans-unit id="command_makesession_param_firstid">
 				<source>Id van het eerste bericht</source>
 			</trans-unit>
-			<trans-unit id="command_makesession_param_lastid" xml:space="preserve">
+			<trans-unit id="command_makesession_param_lastid">
 				<source>Id van het laatste bericht</source>
 			</trans-unit>
-			<trans-unit id="command_makeexpert" xml:space="preserve">
+			<trans-unit id="command_makeexpert">
 				<source>Voeg een gebruiker toe aan de Expert lijst</source>
 			</trans-unit>
-			<trans-unit id="command_makeuser" xml:space="preserve">
+			<trans-unit id="command_makeuser">
 				<source>Verwijderd een gebruiker van de Expert lijst</source>
 			</trans-unit>
-			<trans-unit id="command_cleanup" xml:space="preserve">
+			<trans-unit id="command_cleanup">
 				<source>Verwijderd alle berichten in deze ruimte die geen sessie hebben.</source>
 			</trans-unit>
-			<trans-unit id="command_cleanupall" xml:space="preserve">
+			<trans-unit id="command_cleanupall">
 				<source>Verwijderd alle berichten in alle ruimtes die geen sessie hebben.</source>
 			</trans-unit>
-			<trans-unit id="command_setstatus" xml:space="preserve">
+			<trans-unit id="command_setstatus">
 				<source>Veranderd de status van een gebruiker. (bijvoorbeeld. 'hidden')</source>
 			</trans-unit>
-			<trans-unit id="command_error_user_not_found" xml:space="preserve">
+			<trans-unit id="command_error_user_not_found">
 				<source>Gebruiker '%s' is niet gevonden</source>
 			</trans-unit>
-			<trans-unit id="command_parameter_wrong" xml:space="preserve">
+			<trans-unit id="command_parameter_wrong">
 				<source>Parameter %s is verkeerd. Het zou %s moeten zijn.</source>
 			</trans-unit>
-			<trans-unit id="command_not_found" xml:space="preserve">
+			<trans-unit id="command_not_found">
 				<source>%s commando is niet gevonden. Gebruik de help functie d.m.v het '/help' commando</source>
 			</trans-unit>
-			<trans-unit id="command_param_userid" xml:space="preserve">
+			<trans-unit id="command_param_userid">
 				<source>#UserId of Gebruikersnaam</source>
 			</trans-unit>
-			<trans-unit id="command_param_reason" xml:space="preserve">
+			<trans-unit id="command_param_reason">
 				<source>Een reden</source>
 			</trans-unit>
 		</body>

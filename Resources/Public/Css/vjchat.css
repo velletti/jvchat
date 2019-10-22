@@ -1,0 +1,332 @@
+/* FRAME AND MAIN CONTAINERS */
+
+div#tx-vjchat-container .navbar-default {
+    margin: 1px;
+    position: absolute ;
+    left: 0;
+    top: 0 ;
+}
+
+div#tx-vjchat-container {
+    min-height: 30px;
+}
+
+div#tx-vjchat-content {
+    min-height: 30px;
+    height: auto;
+    position: relative;
+    margin-top: 8px;
+}
+
+
+div#tx-vjchat-loadinginfo {
+    position: absolute;
+    width: 250px;
+    height: 2em;
+    padding: 2em;
+    border: 1px solid #CFCFCF;
+    background-color: #fff;
+    left:50%;
+    margin-left:-120px;
+    margin-top: 5%;
+    text-align: center;
+    z-index: 1000;
+    filter:alpha(opacity=80);
+    -moz-opacity:0.8;
+    -khtml-opacity: 0.8;
+    opacity: 0.8;
+}
+
+div#tx-vjchat-messages {
+    border: 1px solid #CFCFCF;
+    overflow: auto;
+    background-color: #F1F1F1;
+}
+
+div#tx-vjchat-userlist {
+    padding: 0;
+    overflow: auto;
+    border: #CFCFCF solid 1px;
+    color: #000;
+    background-color: #FFF;
+}
+
+div#tx-vjchat-tools-container {
+}
+
+div#tx-vjchat-format,
+div#tx-vjchat-format a,
+div#tx-vjchat-format img {
+    margin: 0;
+    padding: 0;
+    cursor: pointer;
+}
+
+div#tx-vjchat-emoticons {
+    padding: 0.2em 0 0 0.2em;
+    height: 20px;
+}
+
+#tx-vjchat-emoticons img {
+    margin: 0 0.1em;
+    cursor:pointer;
+}
+
+div#tx-vjchat-style {
+    padding: 0.2em 0.2em 0.2em 0.265em;
+}
+
+div#tx-vjchat-input-container {
+    clear:both;
+}
+
+textarea#txvjchatnewMessage {
+    width: 99%;
+    height: 6em;
+    border: #CFCFCF solid 1px;
+    margin: 0;
+}
+
+
+/* MESSAGE ITEMS */
+
+.tx-vjchat-entry {
+    clear: both;
+}
+.tx-vjchat-message {
+    border: 4px solid #F1F1F1;
+    background-color: #fff;
+    padding: 6px 12px;
+    border-radius: 16px;
+    display: inline-block;
+}
+
+.tx-vjchat-message.tx-vjchat-message-ownMsg {
+    float: right;
+    padding-right: 16px
+}
+.tx-vjchat-message-ownMsg .tx-vjchat-entry-text {
+    float: left;
+}
+.tx-vjchat-message SPAN * {
+    padding: 1px 2px;
+}
+
+div.tx-vjchat-moderator {
+    color: #666666;
+    background-color: #C0E1F4;
+}
+
+div.tx-vjchat-expert {
+    color: #99221a;
+}
+.tx-vjchat-superuser {
+    color: #608174;
+    background-color: #FFFFFF;
+}
+
+div.tx-vjchat-entry span.tx-vjchat-user {
+    font-weight: bold;
+}
+
+div.tx-vjchat-system,
+div.tx-vjchat-system .tx-vjchat-entry {
+    color: #9E9E9E;
+    font-size: 0.9em;
+    font-style: italic;
+}
+div.tx-vjchat-hidden {
+    background-color: #F2F2F2;
+    color: #333333;
+}
+
+div.tx-vjchat-committed {
+    background-color: #B8F2AE;
+}
+
+span.tx-vjchat-time {
+    font-size: 8pt;
+    color: #9E9E9E;
+}
+
+span.tx-vjchat-bold {
+    font-weight: bold;
+}
+
+span.tx-vjchat-underlined {
+    text-decoration: underline;
+}
+
+span.tx-vjchat-italic {
+    font-style: italic;
+}
+
+span.tx-vjchat-stroke {
+    text-decoration: line-through;
+}
+
+p.tx-vjchat-error {
+    font-weight: bold;
+    color: #f00;
+}
+
+a.tx-vjchat-actionlink {
+    cursor:pointer;
+    font-size: 8pt;
+    color: #337236;
+}
+
+a.tx-vjchat-actionlink:hover {
+    color: #0F3D11;
+    text-decoration: underline;
+}
+
+
+/* HELP AND COMMAND OUTPUT */
+
+
+.tx-vjchat-ok {
+    color: #447174;
+    background-color: #F5F5F5;
+}
+
+.tx-vjchat-error {
+    color: #99221a;
+}
+
+div.tx-vjchat-cmd-smileys-text {
+    width: 5em;
+    height: 1.2em;
+    float: left;
+    background-color: #F0F0F0;
+    margin-bottom: 0.625em;
+    text-align: right;
+    padding-right: 0.625em;
+}
+
+div.tx-vjchat-cmd-smileys-image {
+    width: 4em;
+    height: 1.2em;
+    float: left;
+    background-color: #F0F0F0;
+    margin-bottom: 0.625em;
+}
+
+div.tx-vjchat-cmd-help,
+div.tx-vjchat-cmd-help * {
+    font-size: 0.95em;
+    background-color: #F0F0F0;
+}
+
+span.tx-vjchat-cmd-help-link {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+div.tx-vjchat-cmd-help-command div.tx-vjchat-cmd-help-command-title {
+    width: 9em;
+    float: left;
+    clear: left;
+    font-weight: bold;
+}
+
+
+div.tx-vjchat-cmd-help-command span.tx-vjchat-cmd-help-parameter-descr {
+    display: block;
+    margin-left: 11em;
+}
+
+/* USERLIST ITEMS */
+
+#tx-vjchat-userlist * {
+
+}
+
+#tx-vjchat-userlist .tx-vjchat-link-box {
+    display: block;
+    width: 50px;
+    float: right;
+}
+
+
+#tx-vjchat-userlist .tx-vjchat-pr-link,
+#tx-vjchat-userlist .tx-vjchat-pm-link {
+    cursor: pointer;
+}
+
+#tx-vjchat-userlist .tx-vjchat-userlist-moderator {
+    color: #C0E1F4;
+}
+
+#tx-vjchat-userlist .tx-vjchat-userlist-expert {
+    color: #ECECEE;
+}
+
+
+#tx-vjchat-userlist .tx-vjchat-userlist-superuser {
+    background-color: #ECECEE;
+}
+
+#tx-vjchat-userlist .tx-vjchat-userlist-username {
+    font-weight: bold;
+    cursor: pointer;
+    float:left;
+}
+
+
+#tx-vjchat-userlist .tx-vjchat-userlist-owner,
+#tx-vjchat-userlist .tx-vjchat-userlist-moderator,
+#tx-vjchat-userlist .tx-vjchat-userlist-superuser {
+    font-weight: bold;
+    font-style: italic;
+}
+
+#tx-vjchat-userlist .tx-vjchat-userlist-item img,
+#tx-vjchat-user-detail img {
+    float: left;
+    margin-right: 2px;
+}
+
+#tx-vjchat-userlist .tx-vjchat-userlist-item {
+    clear: both;
+    height: 36px;
+    border-bottom: 1px solid #FBFBFB;
+    vertical-align: center;
+}
+
+#tx-vjchat-userlist .tx-vjchat-userlist-item:hover {
+    opacity: 0.9;
+}
+
+#tx-vjchat-user-detail {
+    border: 1px solid #CFCFCF;
+    background-color: #ECECEE;
+    width: 12em;
+    padding: 0.8em;
+    filter:alpha(opacity=80);
+    z-index: 10000;
+    -moz-opacity:0.8;
+    -khtml-opacity: 0.8;
+    opacity: 0.8;
+}
+
+
+#tx-vjchat-user-detail * {
+    font-size: 0.8em;
+    padding: 0;
+    margin: 0;
+}
+
+#tx-vjchat-user-detail #tx-vjchat-user-detail-caption {
+    font-size: 0.8em;
+    font-weight: bold;
+}
+
+.tx-vjchat-rooms-short a img {
+    margin-right: 0.2em !important;
+    padding: 0 !important;
+    border: 0;
+}
+LI.tx-vjchat-cmd-roomlist-user {
+    background: none;
+}

@@ -473,7 +473,11 @@ plugin.tx_vjchat_pi1 {
 	# USERLIST LABELS /stdWrap
 	userlistPMContent = &nbsp;PM&nbsp;
 	userlistPRContent = &nbsp;PR&nbsp;
-	
+
+	# use ' .. using " in this code will not work !
+	privateRoomCode = <span class='btn btn-default tx-vjchat-pr-link'><span class='fas fa-user-plus'></span></span>
+	privateMsgCode = <span class='btn btn-default tx-vjchat-pm-link'><span class='fa fa-comment-alt'></span></span>
+
 	###############################################################################################################
 	# Snippets are a new feature for customizing the userlist and tooltip
 	###############################################################################################################
@@ -493,8 +497,8 @@ plugin.tx_vjchat_pi1 {
 		# 10.file = uploads/tx_feusers_img/0000/uid_353_19997f.jpg
         10.file {
 			import.field = userpath
-			width = 14c
-			height = 21c
+			width = 22c
+			height = 33c
 		}
 		10.if.isTrue.field = tx_nem_image
 
@@ -518,6 +522,8 @@ plugin.tx_vjchat_pi1 {
 		30.dataWrap = {field:username}
 		
 	}
+
+
 	
 	# TOOLTIP SNIPPET
 	# This snippet is generated upon entering chat and stored in db for ajax recall 
@@ -554,82 +560,7 @@ plugin.tx_vjchat_pi1 {
 
 	}
 
-	###############################################################################################################
-	# Message Styles
-	###############################################################################################################
-	
-	# message styles 
-	messageStyles {
 
-		# default style selector
-		# .tx-vjchat-message-style-0
-		default = IMAGE
-		default {
-			params = id="tx-vjchat-style-btn-{field:number}" style="cursor:pointer;" onclick="javascript:chat_instance.setMessageStyle({field:number});"
-			stdWrap.insertData = 1
-			
-			file = GIFBUILDER
-			file {
-				XY = 28,8
-				backColor = #000000
-			}
-		}
-		
-		# define special styles (as much as you need starting with 1,2,3...)
-		# make sure to define equivalent css with .tx-vjchat-message-style-[NUMBER]
-		1 < .default
-		1.file.backColor = #000055
-
-		2 < .default
-		2.file.backColor = #008000
-
-		3 < .default
-		3.file.backColor = #FF0000
-
-		4 < .default
-		4.file.backColor = #800000
-
-		5 < .default
-		5.file.backColor = #800080
-
-		6 < .default
-		6.file.backColor = #FF5500
-
-		7 < .default
-		7.file.backColor = #FFFF00
-
-		8 < .default
-		8.file.backColor = #00FF00
-
-		9 < .default
-		9.file.backColor = #008080
-
-		10 < .default
-		10.file.backColor = #00FFFF
-
-		11 < .default
-		11.file.backColor = #0000FF
-
-		12 < .default
-		12.file.backColor = #FF00FF
-
-		13 < .default
-		13.file.backColor = #7F7F7F
-
-		14 < .default
-		14.file.backColor = #D2D2D2
-	
-	}
-	
-	###############################################################################################################
-	# USER COLORS
-	###############################################################################################################
-	
-	# every user will have one random color from the following list 
-	userColors = #1c8ec9,#000000,#3636B2,#2A8C2A,#C33B3B,#C73232,#80267F,#66361F,#D9A641,#3DCC3D,#1A5555,#2F8C74,#4545E6,#B037B0,#4C4C4C,#959595,#CCCCCC,#AAAAA,#FF221A
-	
-	
-	
 	###############################################################################################################
 	# CHAT BUTTON BAR
 	###############################################################################################################
@@ -670,25 +601,6 @@ plugin.tx_vjchat_pi1 {
 			emptyTitleHandling = useAlt			
 		}
 
-/* temporary removed since xss risk
-		50 = IMAGE
-		50 {
-			file = EXT:vjchat/pi1/icons/icon_email.gif
-			height = 30m
-			params = id="tx-vjchat-button-email" onClick="javascript:chat_instance.addSelText('[email]','[/email]');"
-			altText.data = LLL:EXT:vjchat/pi1/locallang.php:chatbutton.email
-			emptyTitleHandling = useAlt
-		}
-		60 = IMAGE
-		60 {
-			file = EXT:vjchat/pi1/icons/icon_http.gif
-			height = 30m
-			params = id="tx-vjchat-button-http" onClick="javascript:chat_instance.addSelText('[url]','[/url]');"
-			altText.data = LLL:EXT:vjchat/pi1/locallang.php:chatbutton.http			
-			emptyTitleHandling = useAlt			
-		}
-*/
-
 		70 = IMAGE
 		70 {
 			file = EXT:vjchat/pi1/icons/icon_clock.gif
@@ -699,16 +611,6 @@ plugin.tx_vjchat_pi1 {
 			stdWrap.wrap = <span id="tx-vjchat-button-clock-container">|</span>
 			stdWrap.if.isTrue.field = enableTime
 		}																
-		80 = IMAGE
-		80 {
-			file = EXT:vjchat/pi1/icons/icon_usercolors.gif
-			height = 30m
-			params = id="tx-vjchat-button-usercolors" onClick="javascript:chat_instance.toggleUserColor();"
-			altText.data = LLL:EXT:vjchat/pi1/locallang.php:chatbutton.usercolor_on
-			emptyTitleHandling = useAlt			
-			stdWrap.wrap = <span id="tx-vjchat-button-usercolors-container">|</span>
-			stdWrap.if.isTrue.field = enableUsercolors			
-		}
 		90 = IMAGE
 		90 {
 			file = EXT:vjchat/pi1/icons/icon_smilies.gif
@@ -719,51 +621,7 @@ plugin.tx_vjchat_pi1 {
 			stdWrap.wrap = <span id="tx-vjchat-button-emoticons-container">|</span>
 			stdWrap.if.isTrue.field = enableEmoticons			
 		}
-		100 = IMAGE
-		100 {
-			file = EXT:vjchat/pi1/icons/icon_colors.gif
-			height = 30m
-			params = id="tx-vjchat-button-styles" onClick="javascript:chat_instance.toggleStyle();"
-			altText.data = LLL:EXT:vjchat/pi1/locallang.php:chatbutton.colors_on	
-			emptyTitleHandling = useAlt			
-			stdWrap.wrap = <span id="tx-vjchat-button-styles-container">|</span>			
-			stdWrap.if.isTrue.field = enableUserstyles			
 
-		}
-
-		101 = IMAGE
-		101 {
-			file = EXT:vjchat/pi1/icons/icon_enablesound.gif
-			height = 30m
-			params = id="tx-vjchat-button-enablesound" onClick="javascript:chat_instance.toggleEnableSound();"
-			altText.data = LLL:EXT:vjchat/pi1/locallang.php:chatbutton.enablesound_on
-			emptyTitleHandling = useAlt			
-			stdWrap.wrap = <span id="tx-vjchat-button-enablesound-container">|</span>			
-			stdWrap.if.isTrue.field = enableSound
-		}		
-		
-		105 = IMAGE
-		105 {
-			file = EXT:vjchat/pi1/icons/icon_autofocus.gif
-			height = 30m
-			params = id="tx-vjchat-button-autofocus" onClick="javascript:chat_instance.toggleAutoFocus();"
-			#stdWrap.typolink.parameter.dataWrap = javascript:chat_instance.helpInNewWindow();
-			stdWrap.wrap = <span id="tx-vjchat-button-autofocus-container">|</span>
-			altText.data = LLL:EXT:vjchat/pi1/locallang.php:chatbutton.autofocus_on
-			emptyTitleHandling = useAlt			
-			stdWrap.if.isTrue.field = popup
-		}
-		/*j.v. removed because not needed / wanted 
-		106 = IMAGE
-		106 {
-			file = EXT:vjchat/pi1/icons/icon_newwindow.gif
-			height = 30m
-			params = id="tx-vjchat-button-newwindow" onClick="javascript:chat_instance.newWindow();"
-			altText.data = LLL:EXT:vjchat/pi1/locallang.php:new_window
-			emptyTitleHandling = useAlt			
-			stdWrap.if.isFalse.field = popup
-		}		
-*/
 		107 = IMAGE
 		107 {
 			file = EXT:vjchat/pi1/icons/icon_start.gif
@@ -800,15 +658,7 @@ plugin.tx_vjchat_pi1 {
 			emptyTitleHandling = useAlt			
 		}																
 		
-		tx_vjchat_button_usercolors = IMAGE
-		tx_vjchat_button_usercolors {
-			file = EXT:vjchat/pi1/icons/icon_usercolors_on.gif
-			height = 30m
-			params = id="tx-vjchat-icon-usercolors-on" onClick="javascript:chat_instance.toggleUserColor();"
-			altText.data = LLL:EXT:vjchat/pi1/locallang.php:chatbutton.usercolor_off
-			emptyTitleHandling = useAlt			
-		}
-		
+
 		tx_vjchat_button_emoticons = IMAGE
 		tx_vjchat_button_emoticons {
 			file = EXT:vjchat/pi1/icons/icon_smilies_on.gif
@@ -817,24 +667,8 @@ plugin.tx_vjchat_pi1 {
 			altText.data = LLL:EXT:vjchat/pi1/locallang.php:chatbutton.smilies_off
 			emptyTitleHandling = useAlt
 		}
+
 		
-		tx_vjchat_button_styles = IMAGE
-		tx_vjchat_button_styles {
-			file = EXT:vjchat/pi1/icons/icon_colors_on.gif
-			height = 30m
-			params = id="tx-vjchat-icon-styles-on" onClick="javascript:chat_instance.toggleStyle();"
-			altText.data = LLL:EXT:vjchat/pi1/locallang.php:chatbutton.colors_off
-			emptyTitleHandling = useAlt			
-		}
-		
-		tx_vjchat_button_enablesound = IMAGE
-		tx_vjchat_button_enablesound {
-			file = EXT:vjchat/pi1/icons/icon_enablesound_on.gif
-			height = 30m
-			params = id="tx-vjchat-icon-enablesound-on" onClick="javascript:chat_instance.toggleEnableSound();"
-			altText.data = LLL:EXT:vjchat/pi1/locallang.php:chatbutton.enablesound_off	
-			emptyTitleHandling = useAlt			
-		}		
 		tx_vjchat_button_start = IMAGE
 		tx_vjchat_button_start {
 			file = EXT:vjchat/pi1/icons/icon_start_on.gif
@@ -854,428 +688,6 @@ plugin.tx_vjchat_pi1 {
 		}			
 	}
 
-	###############################################################################################################
-	# THE STYLES
-	###############################################################################################################
-	
-	_CSS_DEFAULT_STYLE (
-
-	/* FRAME AND MAIN CONTAINERS */
-
-		div#tx-vjchat-container * {
-			padding: 1px;
-		}
-		div#tx-vjchat-container .navbar-default {
-			margin: 1px;
-			posistion: absolute ;
-			left: 0;
-			top: 0 ;
-		}
-
-		div#tx-vjchat-container {
-			min-height: 30px;
-		}
-		
-		div#tx-vjchat-content {
-			min-height: 30px;
-			height: auto;
-			position: relative;
-			margin-top: 8px;
-		}
-		div.tx-vjchat-message-ownMsg {
-			text-align: right;
-	        border-right: 8px solid #F1F1F1;
-	        padding-right: 16px
-		}
-		
-		div#tx-vjchat-loadinginfo {
-			position: absolute;
-			width: 250px;
-			height: 2em;
-			padding: 2em;
-			border: 1px solid #CFCFCF;
-			background-color: #fff;
-			left:50%;
-			margin-left:-120px;
-			margin-top: 5%;
-			text-align: center;
-			z-index: 1000;
-			filter:alpha(opacity=80);
-			-moz-opacity:0.8;
-			-khtml-opacity: 0.8;
-			opacity: 0.8;			
-		}
-		
-		div#tx-vjchat-messages {
-			border: 1px solid #CFCFCF;
-			overflow: auto;
-			background-color: #fff;
-		}
-
-		div#tx-vjchat-userlist {
-			padding: 0;
-			overflow: auto;
-			border: #CFCFCF solid 1px;
-			color: #000;
-			background-color: #FFF;
-		}
-		div#tx-vjchat-userlist .tx-vjchat-username IMG {
-			width: 14px;
-			height: 21px;
-		}
-		div#tx-vjchat-tools-container {
-		}
-
-		div#tx-vjchat-format,
-		div#tx-vjchat-format a,
-		div#tx-vjchat-format img {
-			margin: 0;
-			padding: 0;
-			cursor: pointer;
-		}
-
-		div#tx-vjchat-emoticons {
-			padding: 0.2em 0 0 0.2em;
-			height: 20px;
-		}
-		
-		#tx-vjchat-emoticons img {
-			margin: 0 0.1em;
-			cursor:pointer;
-		}		
-		
-		div#tx-vjchat-style {
-			padding: 0.2em 0.2em 0.2em 0.265em;
-		}
-		
-		div#tx-vjchat-input-container {
-			clear:both;
-		}
-
-		textarea#txvjchatnewMessage {
-			width: 99%;
-			font-family: "Arial", "Helvetica", sans-serif;
-			font-size: 10pt;
-			height: 6em;
-			border: #CFCFCF solid 1px;
-			margin: 0;
-		}	
-		
-		#tx-vjchat-debug {
-			width: 99%;
-			height: 200px; 
-			border: 1px solid silver; 
-			font-family: Courier New, Courier; 
-			font-size: 8pt; 
-			overflow:auto;
-			display: none;
-		}
-	
-
-	
-	/* MESSAGE ITEMS */
-	
-		div.tx-vjchat-entry {
-			border-bottom: 1px solid #FAF7F3;
-			background-color: #fff;		
-			font-family: "Arial", "Helvetica", sans-serif;
-			font-size: 10pt;
-			/*line-height: 1.3em;*/
-			color: #320101;
-			/*margin: 0.25em 0 0 0;
-			padding: 0em 0 0.625em 0.25em;*/
-		}
-	
-		div.tx-vjchat-moderator {
-			color: #666666;
-			background-color: #C0E1F4;
-		}
-		
-		div.tx-vjchat-expert {
-			color: #99221a;
-		}
-		.tx-vjchat-superuser {
-			color: #608174;
-			background-color: #FFFFFF;
-		}
-
-		div.tx-vjchat-entry span.tx-vjchat-user {
-			font-weight: bold;
-		}
-
-		div.tx-vjchat-system,
-		div.tx-vjchat-system .tx-vjchat-entry {
-			color: #9E9E9E;
-			font-size: 0.9em;
-			font-style: italic;			
-		}		
-		div.tx-vjchat-hidden {
-			background-color: #F2F2F2;
-			color: #333333;
-		}
-		
-		div.tx-vjchat-committed {
-			background-color: #B8F2AE;
-		}
-	
-		span.tx-vjchat-time {
-			font-size: 8pt;
-			color: #9E9E9E;
-		}
-		
-		span.tx-vjchat-bold {
-			font-weight: bold;
-		}
-	
-		span.tx-vjchat-underlined {
-			text-decoration: underline;
-		}
-
-		span.tx-vjchat-italic {
-			font-style: italic;
-		}
-
-		span.tx-vjchat-stroke {
-			text-decoration: line-through;
-		}		
-
-		p.tx-vjchat-error {
-			font-weight: bold;
-			color: #f00;
-		}
-		
-		a.tx-vjchat-actionlink {
-			cursor:pointer;
-			font-size: 8pt;
-			color: #337236;
-		}
-		
-		a.tx-vjchat-actionlink:hover {
-			color: #0F3D11;
-			text-decoration: underline;
-		}
-	
-	/* SELECTABLE USER STYLES */
-		
-		/* if you do not want to colorize usernames like style use
-			.tx-vjchat-message-style-0  .tx-vjchat-entry {
-				color: #000000;
-			}
-		*/
-		.tx-vjchat-message-style-0   {
-			color: #000000;
-		}
-		.tx-vjchat-message-style-1 {
-			color: #000055;
-		}
-		.tx-vjchat-message-style-2 {
-			color: #008000;
-		}
-		.tx-vjchat-message-style-3 {
-			color: #FF0000;
-		}
-		.tx-vjchat-message-style-4 {
-			color: #800000;
-		}
-		.tx-vjchat-message-style-5 {
-			color: #800080;
-		}
-		.tx-vjchat-message-style-6 {
-			color: #FF5500;
-		}
-		.tx-vjchat-message-style-7 {
-			color: #FFFF00;
-		}
-		.tx-vjchat-message-style-8 {
-			color: #00FF00;
-		}
-		.tx-vjchat-message-style-9  {
-			color: #008080;
-		}
-		.tx-vjchat-message-style-10 {
-			color: #00FFFF;
-		}
-		.tx-vjchat-message-style-11 {
-			color: #0000FF;
-		}
-		.tx-vjchat-message-style-12 {
-			color: #FF00FF;
-		}
-		.tx-vjchat-message-style-13 {
-			color: #7F7F7F;
-		}
-		.tx-vjchat-message-style-14 {
-			color: #D2D2D2;
-		}
-
-
-	/* HELP AND COMMAND OUTPUT */
-	
-
-		.tx-vjchat-ok {
-			color: #447174;
-			background-color: #F5F5F5;
-		}
-		
-		.tx-vjchat-error {
-			color: #99221a;
-		}
-		
-		div.tx-vjchat-cmd-smileys-text {
-			width: 5em;
-			height: 1.2em;
-			float: left;
-			background-color: #F0F0F0;
-			margin-bottom: 0.625em;
-			text-align: right;		
-			padding-right: 0.625em;
-		}
-	
-		div.tx-vjchat-cmd-smileys-image {
-			width: 4em;
-			height: 1.2em; 		
-			float: left;
-			background-color: #F0F0F0;
-			margin-bottom: 0.625em;
-		}
-
-		div.tx-vjchat-cmd-help,
-		div.tx-vjchat-cmd-help * {
-			font-size: 0.95em;
-			background-color: #F0F0F0;			
-		}
-		
-		div.tx-vjchat-cmd-help div.tx-vjchat-cmd-help-command {
-		}
-				
-		span.tx-vjchat-cmd-help-link {
-			text-decoration: underline;
-			cursor: pointer;
-		}
-		
-		div.tx-vjchat-cmd-help-command div.tx-vjchat-cmd-help-command-title {
-			width: 9em;
-			float: left;
-			clear: left;
-			font-weight: bold;
-		}
-
-		div.tx-vjchat-cmd-help-command span.tx-vjchat-cmd-help-command-descr {
-			/*display: block;
-			margin-left: 10em;*/
-		}
-
-		div.tx-vjchat-cmd-help-command span.tx-vjchat-cmd-help-parameter-list {
-		}
-
-		div.tx-vjchat-cmd-help-command span.tx-vjchat-cmd-help-parameter-descr {
-			display: block;
-			margin-left: 11em;		
-		}
-
-	/* USERLIST ITEMS */
-
-		#tx-vjchat-userlist * {
-			font-family: "Arial", "Helvetica", sans-serif;
-			font-size: 0.9em;
-		}
-		
-		#tx-vjchat-userlist .tx-vjchat-link-box {
-			display: block;
-			width: 50px;
-			float: right;			
-		}
-		
-		
-		#tx-vjchat-userlist .tx-vjchat-pr-link,
-		#tx-vjchat-userlist .tx-vjchat-pm-link {
-			font-size: 0.8em;
-			cursor: pointer;			
-		}
-
-		#tx-vjchat-userlist .tx-vjchat-userlist-moderator {
-			color: #C0E1F4;
-		}
-	
-		#tx-vjchat-userlist .tx-vjchat-userlist-expert {
-			color: #ECECEE;
-		}
-	
-
-		#tx-vjchat-userlist .tx-vjchat-userlist-superuser {
-			background-color: #ECECEE;
-		}
-		
-		#tx-vjchat-userlist .tx-vjchat-userlist-username {
-			font-weight: bold;
-			cursor: pointer;
-			float:left;
-		}
-
-		#tx-vjchat-userlist .tx-vjchat-userlist-user,
-		#tx-vjchat-userlist .tx-vjchat-userlist-moderator,
-		#tx-vjchat-userlist .tx-vjchat-userlist-expert,
-		#tx-vjchat-userlist .tx-vjchat-userlist-owner,		
-		#tx-vjchat-userlist .tx-vjchat-userlist-superuser {
-		}
-
-		#tx-vjchat-userlist .tx-vjchat-userlist-owner,
-		#tx-vjchat-userlist .tx-vjchat-userlist-moderator,
-		#tx-vjchat-userlist .tx-vjchat-userlist-superuser {
-			font-weight: bold;
-			font-style: italic;
-		}
-
-		#tx-vjchat-userlist .tx-vjchat-userlist-item img,
-		#tx-vjchat-user-detail img {
-			float: left;
-			margin-right: 2px;
-		}
-		
-		#tx-vjchat-userlist .tx-vjchat-userlist-item {
-			clear: both;
-			height: 22px;
-			border-bottom: 1px solid #FBFBFB;
-		}		
-		
-		#tx-vjchat-userlist .tx-vjchat-userlist-item:hover {
-			font-weight: bold;
-		}
-
-		#tx-vjchat-user-detail {
-			border: 1px solid #CFCFCF;
-			background-color: #ECECEE;
-			width: 12em;
-			padding: 0.8em;			
-			filter:alpha(opacity=80);
-			z-index: 10000;
-			-moz-opacity:0.8;
-			-khtml-opacity: 0.8;
-			opacity: 0.8;
-		}
-		
-		
-		#tx-vjchat-user-detail * {
-			font-family: "Arial", "Helvetica", sans-serif;
-			font-size: 0.8em;
-			padding: 0;
-			margin: 0;		
-		}
-
-		#tx-vjchat-user-detail #tx-vjchat-user-detail-caption {
-			font-size: 0.8em;
-			font-weight: bold;
-		}
-		
-		.tx-vjchat-rooms-short a img {
-			margin-right: 0.2em !important;
-			padding: 0 !important;
-			border: 0;
-		}
-		LI.tx-vjchat-cmd-roomlist-user {
-			background: none;
-		}
-	)
 
 }
 
@@ -1285,16 +697,11 @@ chatwindow < plugin.tx_vjchat_pi1.chatwindow
 
 includeLibs.vjchat = EXT:vjchat/pi1/class.tx_vjchat_userFunctions.php
 
-[usergroup = 4,5,22,16]
-plugin.tx_vjchat_pi1.chatbuttons {
-	115 = IMAGE
-	115 {
-			file = EXT:vjchat/pi1/icons/icon_uploadImg.gif
-			height = 30m
-			params = id="tx-vjchat-button-image" onClick="javascript:chat_instance.uploadImg();"
-
-			altText.data = LLL:EXT:vjchat/pi1/locallang.php:UploadImage.help
-			emptyTitleHandling = useAlt
-	}
+page.includeCSS {
+	vjchat = EXT:vjchat/Resources/Public/Css/vjchat.css
 }
+
+[usergroup = 4,5,22,16]
+	plugin.tx_vjchat_pi1.enableImageUpload = 1
+
 [global]

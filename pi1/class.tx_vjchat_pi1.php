@@ -36,6 +36,21 @@ class tx_vjchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
     /** @var array */
     public $settings ;
 
+    /** @var string  */
+    var $prefixId = 'tx_vjchat_pi1';
+
+    /** @var string  */
+    var $extKey = 'vjchat';
+
+    var $pi_checkCHash = FALSE;
+
+    var $chatScript;
+
+    /** @var  tx_vjchat_db  */
+    var $db;
+
+    var $user;
+
 	/**
 	 */
 	function main($content,$conf)	{
@@ -397,9 +412,9 @@ class tx_vjchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
             }
         }
 
-        $marker['CHATBUTTONS_KEYS'] = "Array('".implode("','", $chatbuttons_keys)."')";
-        $marker['CHATBUTTONS_ON'] = "Array('".implode("','", $chatbuttons_on)."')";
-        $marker['CHATBUTTONS_OFF'] = "Array('".implode("','", $chatbuttons_off)."')";
+     //   $marker['CHATBUTTONS_KEYS'] = "Array('".implode("','", $chatbuttons_keys)."')";
+        //   $marker['CHATBUTTONS_ON'] = "Array('".implode("','", $chatbuttons_on)."')";
+        //    $marker['CHATBUTTONS_OFF'] = "Array('".implode("','", $chatbuttons_off)."')";
 
         $marker['isFull'] = $this->cObj->data['isFull'] ;
 
@@ -442,11 +457,6 @@ class tx_vjchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
             $marker['CHATURL'] = $this->pi_linkTP_keepPIvars_url(array(), 0, false);
             $marker['USERID'] = $this->user['uid'];
         }
-
-       // $theValue = $this->cObj->substituteMarkerArrayCached($subpart, $markerArray, $subpartMarkerArray);
-        // prepend the subpart COMMON
-       // $common = $this->cObj->getSubpart($template, 'COMMON');
-        // $common = $this->cObj->substituteMarkerArray($common, $markerArray);
 
         $renderer->assign("user" , $this->user ) ;
         $renderer->assign("marker" , $marker ) ;
@@ -524,80 +534,10 @@ class tx_vjchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$theValue['popup'] = $this->piVars['popup'];
 		$theValue['leaveChat'] = ($this->conf['FLEX']['display'] == 'rooms') && ($theValue['popup'] == false);
 
-		//\TYPO3\CMS\Core\Utility\GeneralUtility::debug($theValue);
 
 		return $theValue;
-	}	// Datasource
-	
-	/**
-	  * Generates a javascript array with colors for the users
-	  */
-	function getUserColorArray() {
-
-		$array = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',',$this->conf['userColors']);
-		$out = '' ;
-		for($i = 0; $i<count($array); $i++) {
-
-			$out = $out.'\''.$array[$i].'\'';
-
-			if($i<count($array)-1)
-				$out = $out.',';
-		}
-
-		return ' Array('.$out.')';
-
 	}
-	
-	function getCssUserColors() {
 
-		$array = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',',$this->conf['userColors']);
-		$out = '' ;
-		for($i = 0; $i<count($array); $i++) {
-
-			$out = $out." .usercolor-$i { color: ".$array[$i]."; } ";
-
-			if($i<count($array)-1)
-				$out = $out.chr(10);
-		}
-
-		$out = '<style type="text/css">'.chr(10).$out.chr(10).'</style>';
-
-		return $out;
-
-
-	}
-	
-	/* gets configuration from plugin-flexform */
-
-	function getCssUserColorsCount() {
-
-		$array = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',',$this->conf['userColors']);
-		return count($array);
-
-	}
-	
-	function getStylingContainer() {
-
-		// it must be defined at least two styles (default + 1)
-		if(!$this->conf['messageStyles.']['1'])
-			return "";
-
-		$out = "";
-
-		$this->conf['messageStyles.']['0'] = $this->conf['messageStyles.']['default'];
-		$this->conf['messageStyles.']['0.'] = $this->conf['messageStyles.']['default.'];
-
-		$i = 0;
-		while($this->conf['messageStyles.'][$i]) {
-
-			$this->cObj->data['number'] = $i;
-			$out .= $this->cObj->cObjGetSingle($this->conf['messageStyles.'][$i], $this->conf['messageStyles.'][$i.'.']);
-			$i++;
-		}
-
-		return $out;
-
-	}
 	/*
 	* @param  tx_vjchat_room $room
 	* @param  fe_user $user
@@ -689,8 +629,6 @@ class tx_vjchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			return $this->displayErrorMessage($this->pi_getLL('access_denied'));
 
 
-//		var_dump($session);
-
 		$entries = $this->db->getEntriesOfSession($session);
 
 		$isModerator = tx_vjchat_lib::isModerator($room, $this->user['uid']);
@@ -737,7 +675,6 @@ class tx_vjchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
         $theValue = '' ;
 		foreach($rooms as $room) {
 
-			// set data (current room array to cobj)
 			$this->cObj->data = $this->getRoomData($room);
 
 			if(!$this->conf['FLEX']['showDescription'])
@@ -754,9 +691,14 @@ class tx_vjchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	}
 	
 	function getRoomsFromFlexConf() {
-		if(!$this->conf['FLEX']['chatrooms'])
-			$rooms = $this->db->getRooms($this->conf['pidList']);
-		else {
+		if(!$this->conf['FLEX']['chatrooms']) {
+            if($this->conf['FLEX']['hidePrivateRooms']) {
+                $rooms = $this->db->_getRooms($this->conf['pidList'] , false);
+            } else{
+                $rooms = $this->db->getRooms($this->conf['pidList']);
+            }
+
+        } else {
 			$rooms = array();
 			$roomsIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->conf['FLEX']['chatrooms']);
 			foreach($roomsIds as $id) {
@@ -823,20 +765,7 @@ class tx_vjchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
     }
 
 
-    var $prefixId = 'tx_vjchat_pi1';
 
-    var $scriptRelPath = 'pi1/class.tx_vjchat_pi1.php';
-
-    var $extKey = 'vjchat';
-	
-	var $pi_checkCHash = FALSE;
-	
-	var $chatScript;
-
-	/** @var  tx_vjchat_db  */
-    var $db;
-
-	var $user;
 	
 
 }

@@ -32,6 +32,160 @@ plugin.tx_vjchat_pi1 {
 	# To customize rendering you need either copy the whole configuration or overwrite the respective values in plugin.tx_vjchat_pi1.views.*
 	# e.g. plugin.tx_vjchat_pi1.views.rooms.oneRoom
 	cObjects {
+		# represents one Room
+		# used in view rooms
+		# available fields are uid, name, description, userCount, showUserCount, sessionCount, closed, maxusercount, onlineExperts, onlineModerators, onlineUsers, allUserNicknames, allUserSnippets, isFull
+		room = COA
+		room {
+			
+			10 = TEXT
+			10.value = <h2>{field:name}</h2>
+			10.insertData = 1
+
+			15 = IMAGE
+			15.file {
+				import = uploads/tx_vjchat/
+				import.field = image
+				import.listNum = 0
+			}
+			
+			20 = TEXT
+			20.dataWrap = <p class="hidden-xs">{field:description}</p>
+			20.if.isTrue.field = description
+		
+			40 = COA
+			40 {
+				
+				40 = TEXT
+				40 {
+					data = LLL:EXT:vjchat/pi1/locallang.php:user_in_chat
+					dataWrap = {field:userCount}&nbsp;|
+					if.isTrue.field = userCount
+				}
+	
+				50 = TEXT
+				50.data = LLL:EXT:vjchat/pi1/locallang.php:no_user_in_chat
+				50.if.isFalse.field = userCount
+
+				60 = TEXT
+				60 {
+#					data = LLL:EXT:vjchat/pi1/locallang.php:max_user
+					dataWrap = &nbsp;(max. {field:maxusercount})
+					if.isTrue.field = maxusercount
+				}
+				
+				if.isTrue.field = showUserCount
+			}
+			
+			50 = COA
+			50 {
+
+				70 = TEXT
+				70 {
+					value = {LLL:EXT:vjchat/pi1/locallang.php:experts}&nbsp;{field:onlineExperts}
+					insertData = 1
+					if.isTrue.field = onlineExperts	
+					wrap = <br />|
+				}
+
+				80 = TEXT
+				80 {
+					value = {LLL:EXT:vjchat/pi1/locallang.php:moderators}&nbsp;{field:onlineModerators}
+					insertData = 1
+					if.isTrue.field = onlineModerators	
+					wrap = <br />|
+				}
+
+				90 = TEXT
+				90 {
+					value = {LLL:EXT:vjchat/pi1/locallang.php:users}&nbsp;{field:onlineUsers}
+					insertData = 1
+					if.isTrue.field = onlineUsers	
+					wrap = <br />|
+				}
+
+				wrap = <p class="small">|</p>
+			
+			}
+			
+			60 = COA
+			60 {
+
+				10 = COA
+				10 {
+			
+					10 = TEXT
+					10 {
+						data = LLL:EXT:vjchat/pi1/locallang.php:enter_chat
+						typolink.parameter.data = page:uid
+						typolink.additionalParams = &tx_vjchat_pi1[uid]={field:uid}&tx_vjchat_pi1[view]=chat
+						typolink.additionalParams.insertData = 1
+						if.isFalse.field = page
+					}
+					
+					# try to link header if the page in room's record is given
+					20 = TEXT
+					20 {
+						data = LLL:EXT:vjchat/pi1/locallang.php:enter_chat
+						typolink.parameter.dataWrap = {field:page}
+						if.isTrue.field = page
+					}	
+
+					if.isFalse.field = closed					
+					
+				}
+
+				/* Disabled new window because not wanted .. 
+				20 = TEXT
+				20.data = LLL:EXT:vjchat/pi1/locallang.php:new_window
+				20.typolink.parameter.dataWrap = javascript:tx_vjchat_openNewChatWindow('{field:newWindowUrl}',{field:uid});
+				20.typolink.ATagParams.stdWrap.dataWrap = onClick="tx_vjchat_openNewChatWindow('{field:newWindowUrl}',{field:uid}); return false;" 
+				20.if.isTrue.field = chatwindow
+				20.wrap = &nbsp;|
+				*/
+	
+				30 = TEXT
+				30 {
+					data = LLL:EXT:vjchat/pi1/locallang.php:closed
+					if.isTrue.field = closed
+				}
+	
+				40 = TEXT
+				40 {
+					data = LLL:EXT:vjchat/pi1/locallang.php:sessions
+					innerWrap = {field:sessionCount}&nbsp;|
+					innerWrap.insertData = 1
+					typolink.parameter.data = page:uid
+					typolink.additionalParams = &tx_vjchat_pi1[uid]={field:uid}&tx_vjchat_pi1[view]=sessions
+					typolink.additionalParams.insertData = 1
+					if.isTrue.field = sessionCount
+					wrap = &nbsp;|
+				}
+				
+				wrap = <p>|</p>
+				
+			}
+
+		}
+		
+		# this is just another room type for the view Rooms (short), could be used for teaser
+		# the most things can be switched off with the FLEX form of the plugin or just be removed like here
+		roomShort = COA
+		roomShort < .room
+		roomShort {
+
+			# 10.value = <h2>{field:name} ({field:userCount})</h2>
+		
+			# do not show user types and count, just nicknames
+			40 > 
+			50 >
+
+			40 = TEXT
+			# 40.dataWrap = {field:allUserNicknames}
+			40.dataWrap = {field:allUserSnippets}
+			40.wrap = <p>|</p>
+			
+		}
 
 		# uses in view sessions
 		# available fields are uid, name, description, entriesCount
@@ -157,7 +311,10 @@ plugin.tx_vjchat_pi1 {
 		}
 				
 		sessions {
+
 			oneSession < plugin.tx_vjchat_pi1.cObjects.session
+
+
 
 			stdWrap.preCObject = COA
 			stdWrap.preCObject {
@@ -170,9 +327,11 @@ plugin.tx_vjchat_pi1 {
 				2.wrap = <p>|</p>
 			}
 
+
 			stdWrap.wrap = <div class="tx-vjchat-sessions">|<br /><br /></div>
 			stdWrap.insertData = 1
-
+			
+			
 		}		
 
 		# additional available fields are roomName, roomDescription
@@ -205,7 +364,12 @@ plugin.tx_vjchat_pi1 {
 
 			}
 
+			
+
 			stdWrap.wrap = <div class="tx-vjchat-session">|<br /></div>
+
+#			stdWrap.wrap = <div class="tx-vjchat-session"> <h2>{field:roomName}</h2><h3>{field:name}</h3>|</div>
+#			stdWrap.insertData = 1
 
 		}
 		
@@ -340,6 +504,43 @@ plugin.tx_vjchat_pi1 {
 		30 = TEXT
 		30.dataWrap = {field:username}
 		
+	}
+
+
+	
+	# TOOLTIP SNIPPET
+	# This snippet is generated upon entering chat and stored in db for ajax recall 
+	# There are all fields available that you have defined in the room's form (Show additional information about Users)
+	# 'username' and 'image' are always available
+	tooltipSnippet = COA
+	tooltipSnippet {
+	
+		#10 = IMAGE
+		#10.file {
+	#		import.field = image
+	#		import = uploads/tx_barafeprofileuser/
+
+	#		import.listNum = 0
+	#		width = 50c
+	#		height = 75c
+	#	}
+
+		#30 = TEXT
+		#30.field = username
+		#30.wrap = <span id="tx-vjchat-user-detail-caption">|</span><br />
+
+		#40 = COA
+		#40 {
+			# This is just an example, add as much you need
+			# But don't forget to add the fieldnames in the room's form in the backend!
+		#	10 = TEXT
+		#	10.field = company
+		#	10.wrap = <br />
+		#	10.if.isTrue.field = company
+		#}
+		
+		#40.stdWrap.wrap = <span id="tx-vjchat-user-detail-body">|</span>
+
 	}
 
 }

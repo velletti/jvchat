@@ -318,18 +318,7 @@ class tx_vjchat_chat {
 					),
 					'rights' => '0011',
 				),
-				'setstyle'	=> array(
-					'callback' => '_setmessagestyle',
-					'hideinhelp' => '1',
-					'hidefeedback' => '1',
-					'parameters' => array(
-						'number' => array(
-							'regExp' =>'/([0-9]*)/',
-							'required' => 1,
-						),
-					),
-					'rights' => '1111',
-				),
+
 				'newroom' => array(
 					'callback' => '_newroom',
                     'hidefeedback' => '1',
@@ -345,20 +334,20 @@ class tx_vjchat_chat {
 					'rights' => $this->extConf['allowPrivateRooms'] ? '1111' : '0001',
 				),
 
-            'talkTo' => array(
-                'callback' => '_talkTo',
-                'hidefeedback' => '1',
-                'hideinhelp' => '1',
-                'description' => $this->lang->getLL('command_talkto'),
-                'parameters' => array(
-                    'name' => array(
-                        'regExp' =>'/.(.*)/i',
-                        'description' => $this->lang->getLL('command_talkto_param_name'),
-                        'required' => 0,
+                'talkTo' => array(
+                    'callback' => '_talkTo',
+                    'hidefeedback' => '1',
+                    'hideinhelp' => '1',
+                    'description' => $this->lang->getLL('command_talkto'),
+                    'parameters' => array(
+                        'name' => array(
+                            'regExp' =>'/.(.*)/i',
+                            'description' => $this->lang->getLL('command_talkto_param_name'),
+                            'required' => 0,
+                        ),
                     ),
+                    'rights' => $this->extConf['allowPrivateRooms'] ? '1111' : '0001',
                 ),
-                'rights' => $this->extConf['allowPrivateRooms'] ? '1111' : '0001',
-            ),
 
 				'recentinvite' => array(
 					'callback' => '_recentinvite',

@@ -209,24 +209,24 @@ class tx_vjchat_lib {
 				$img = '<img src="'.$emicoPath.$file.'" alt="'.tx_vjchat_lib::unicode_encode($emoticon).'" title="'.tx_vjchat_lib::unicode_encode($emoticon).'" />';
 				$text = str_replace($emoticon, $img, $text);
 			}
+        }
 
-			// temporary removed since xss risk
-			//$text = preg_replace('/\[email\](.*)\[\/email\]/i', '<span class="tx-vjchat-email"><a href="mailto:\1">\1</a></span>', $text);
-			//$text = preg_replace('/\[url\](.*)\[\/url\]/i', '<span class="tx-vjchat-url"><a href="\1" target="_blank">\1</a></span>', $text);
+        // temporary removed since xss risk
+        //$text = preg_replace('/\[email\](.*)\[\/email\]/i', '<span class="tx-vjchat-email"><a href="mailto:\1">\1</a></span>', $text);
+        //$text = preg_replace('/\[url\](.*)\[\/url\]/i', '<span class="tx-vjchat-url"><a href="\1" target="_blank">\1</a></span>', $text);
 
-			$text = preg_replace('/\[b\](.*?)\[\/b\]/i', '<span class="tx-vjchat-bold">\1</span>', $text);
-			$text = preg_replace('/\[u\](.*?)\[\/u\]/i', '<span class="tx-vjchat-underlined">\1</span>', $text);
-			$text = preg_replace('/\[i\](.*?)\[\/i\]/i', '<span class="tx-vjchat-italic">\1</span>', $text);
-			$text = preg_replace('/\[s\](.*?)\[\/s\]/i', '<span class="tx-vjchat-stroke">\1</span>', $text);
-			$text = preg_replace('/(\*.*?\*)/i', '<span class="tx-vjchat-bold">\1</span>', $text);
-			// this breaks LINKS with "_" in ULR !!!
-			//		$text = preg_replace('/(\_.*?\_)/i', '<span class="tx-vjchat-underlined">\1</span>', $text);
+        $text = preg_replace('/\[b\](.*?)\[\/b\]/i', '<span class="tx-vjchat-bold">\1</span>', $text);
+        $text = preg_replace('/\[u\](.*?)\[\/u\]/i', '<span class="tx-vjchat-underlined">\1</span>', $text);
+        $text = preg_replace('/\[i\](.*?)\[\/i\]/i', '<span class="tx-vjchat-italic">\1</span>', $text);
+        $text = preg_replace('/\[s\](.*?)\[\/s\]/i', '<span class="tx-vjchat-stroke">\1</span>', $text);
+        $text = preg_replace('/(\*.*?\*)/i', '<span class="tx-vjchat-bold">\1</span>', $text);
 
-			// j.v. Link to image
-			$text = preg_replace('/\[img=(.*?)\](.*?)\[\/img\]/i', '<img title="click me" alt="click me" class="tx-vjchat-img" src="\2" onclick="tx_vjchat_pi1_js_chat_instance.showChatImg(\'\1\');" />', $text);
-		}
 
-		return $text;
+
+        // j.v. Link to image
+        $text = preg_replace('/\[img=(.*?)\](.*?)\[\/img\]/i', '<img title="click me" alt="click me" class="tx-vjchat-img" src="\2" onclick="tx_vjchat_pi1_js_chat_instance.showChatImg(\'\1\');" />', $text);
+
+        return $text;
 
 	}
 

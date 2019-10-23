@@ -7,27 +7,27 @@
 		<sDEF>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.sheet_general</sheetTitle>
+					<sheetTitle>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.sheet_general</sheetTitle>
 				</TCEforms>
 				<type>array</type>
 				<el>
 					<display>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.conf_view</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.conf_view</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>select</type>
 								<items type="array">
 									<numIndex index="0" type="array">
-										<numIndex index="0">LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.conf_view_1</numIndex>
+										<numIndex index="0">LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.conf_view_1</numIndex>
 										<numIndex index="1">rooms</numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.conf_view_2</numIndex>
+										<numIndex index="0">LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.conf_view_2</numIndex>
 										<numIndex index="1">chat</numIndex>
 									</numIndex>
 									<numIndex index="2" type="array">
-										<numIndex index="0">LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.conf_view_3</numIndex>
+										<numIndex index="0">LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.conf_view_3</numIndex>
 										<numIndex index="1">overallusercount</numIndex>
 									</numIndex>
 								</items>
@@ -39,12 +39,12 @@
 					</display>			
 					<chatroom>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.chatroom</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.chatroom</label>
 							<config>
 								<exclude>1</exclude>
 								<type>group</type>
 								<internal_type>db</internal_type>
-								<allowed>tx_vjchat_room</allowed>
+								<allowed>tx_jvchat_room</allowed>
 								<size>1</size>
 								<maxitems>1</maxitems>
 							</config>
@@ -53,12 +53,12 @@
 					</chatroom>
 					<chatrooms>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.chatrooms</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.chatrooms</label>
 							<config>
 								<exclude>1</exclude>
 								<type>group</type>
 								<internal_type>db</internal_type>
-								<allowed>tx_vjchat_room</allowed>
+								<allowed>tx_jvchat_room</allowed>
 								<size>10</size>
 								<maxitems>100</maxitems>
 							</config>
@@ -67,7 +67,7 @@
 					</chatrooms>					
 					<chatwindow>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.chat_window</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.chat_window</label>
 							<config>
 								<exclude>1</exclude>
 								<type>group</type>
@@ -81,7 +81,7 @@
 					</chatwindow>
 					<targetwindow>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.target_window</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.target_window</label>
 							<config>
 								<exclude>1</exclude>
 								<type>group</type>
@@ -95,7 +95,7 @@
 					</targetwindow>
 					<typoscriptRoomsTemplate>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.typoscriptRoomsTemplate</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.typoscriptRoomsTemplate</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>select</type>
@@ -122,7 +122,7 @@
 					</typoscriptRoomsTemplate>
 					<typoscriptRoomsTemplateCustom>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.typoscriptRoomsTemplateCustom</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.typoscriptRoomsTemplateCustom</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>input</type>
@@ -134,7 +134,7 @@
 					</typoscriptRoomsTemplateCustom>
 					<showDescription>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showDescription</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showDescription</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>check</type>
@@ -145,7 +145,7 @@
 					</showDescription>	
 					<hideEmptyRooms>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.hideEmptyRooms</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.hideEmptyRooms</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>check</type>
@@ -156,7 +156,7 @@
 					</hideEmptyRooms>						
 					<hideClosedRooms>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.hideClosedRooms</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.hideClosedRooms</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>check</type>
@@ -167,7 +167,7 @@
 					</hideClosedRooms>
 					<hidePrivateRooms>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.hidePrivateRooms</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.hidePrivateRooms</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>check</type>
@@ -179,7 +179,7 @@
 
 					<showModerators>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showModerators</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showModerators</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>check</type>
@@ -190,7 +190,7 @@
 					</showModerators>
 					<showUsers>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showUsers</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showUsers</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>check</type>
@@ -201,7 +201,7 @@
 					</showUsers>					
 					<showExperts>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showExperts</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showExperts</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>check</type>
@@ -212,7 +212,7 @@
 					</showExperts>					
 					<showUserCount>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showUserCount</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showUserCount</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>check</type>
@@ -223,17 +223,17 @@
 					</showUserCount>						
 					<!-- initChatWithMessagesBeforeType>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.initChatWithMessagesBeforeType</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.initChatWithMessagesBeforeType</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>select</type>
 								<items type="array">
 									<numIndex index="0" type="array">
-										<numIndex index="0">LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:pi_flexform.initChatWithMessagesBeforeTypeMinutes</numIndex>
+										<numIndex index="0">LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:pi_flexform.initChatWithMessagesBeforeTypeMinutes</numIndex>
 										<numIndex index="1">minutes</numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:pi_flexform.initChatWithMessagesBeforeTypeCount</numIndex>
+										<numIndex index="0">LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:pi_flexform.initChatWithMessagesBeforeTypeCount</numIndex>
 										<numIndex index="1">count</numIndex>
 									</numIndex>
 								</items>
@@ -249,13 +249,13 @@
 		<chatDEF>
 			<ROOT>
 				<TCEforms>
-					<sheetTitle>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.sheet_chatroom</sheetTitle>
+					<sheetTitle>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.sheet_chatroom</sheetTitle>
 				</TCEforms>
 				<type>array</type>			
 				<el>
 					<initChatWithMessagesBefore>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.initChatWithMessagesBefore</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.initChatWithMessagesBefore</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>input</type>
@@ -266,7 +266,7 @@
 					</initChatWithMessagesBefore>
 					<reloadTimeIfRoomFull>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.reloadTimeIfRoomFull</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.reloadTimeIfRoomFull</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>input</type>
@@ -277,7 +277,7 @@
 					</reloadTimeIfRoomFull>
 					<refreshMessagesTime>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.refreshMessagesTime</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.refreshMessagesTime</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>input</type>
@@ -288,7 +288,7 @@
 					</refreshMessagesTime>
 					<refreshUserListTime>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.refreshUserListTime</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.refreshUserListTime</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>input</type>
@@ -300,7 +300,7 @@
 
 					<showFormatting>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showFormatting</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showFormatting</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>check</type>
@@ -310,7 +310,7 @@
 					</showFormatting>
 					<showEmoticons>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showEmoticons</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showEmoticons</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>check</type>
@@ -320,7 +320,7 @@
 					</showEmoticons>
 					<showStyles>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showStyles</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showStyles</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>check</type>
@@ -330,7 +330,7 @@
 					</showStyles>					
 					<colorizeNicks>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.colorizeNicks</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.colorizeNicks</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>check</type>
@@ -340,7 +340,7 @@
 					</colorizeNicks>					
 					<enableSound>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.enableSound</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.enableSound</label>
 							<config>
 								<exclude>1</exclude>						
 								<type>check</type>
@@ -350,7 +350,7 @@
 					</enableSound>					
 					<showTime>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showTime</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showTime</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>check</type>
@@ -360,7 +360,7 @@
 					</showTime>					
 					<showSendButton>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showSendButton</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showSendButton</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>check</type>
@@ -370,7 +370,7 @@
 					</showSendButton>
 					<showDescriptionInChat>
 						<TCEforms>
-							<label>LLL:EXT:vjchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showDescriptionInChat</label>
+							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showDescriptionInChat</label>
 							<config>
 								<exclude>1</exclude>							
 								<type>check</type>

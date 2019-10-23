@@ -1,17 +1,17 @@
 /* FRAME AND MAIN CONTAINERS */
 
-div#tx-vjchat-container .navbar-default {
+div#tx-jvchat-container .navbar-default {
     margin: 1px;
     position: absolute ;
     left: 0;
     top: 0 ;
 }
 
-div#tx-vjchat-container {
+div#tx-jvchat-container {
     min-height: 30px;
 }
 
-div#tx-vjchat-content {
+div#tx-jvchat-content {
     min-height: 30px;
     height: auto;
     position: relative;
@@ -19,7 +19,7 @@ div#tx-vjchat-content {
 }
 
 
-div#tx-vjchat-loadinginfo {
+div#tx-jvchat-loadinginfo {
     position: absolute;
     width: 250px;
     height: 2em;
@@ -37,13 +37,13 @@ div#tx-vjchat-loadinginfo {
     opacity: 0.8;
 }
 
-div#tx-vjchat-messages {
+div#tx-jvchat-messages {
     border: 1px solid #CFCFCF;
     overflow: auto;
     background-color: #F1F1F1;
 }
 
-div#tx-vjchat-userlist {
+div#tx-jvchat-userlist {
     padding: 0;
     overflow: auto;
     border: #CFCFCF solid 1px;
@@ -51,36 +51,36 @@ div#tx-vjchat-userlist {
     background-color: #FFF;
 }
 
-div#tx-vjchat-tools-container {
+div#tx-jvchat-tools-container {
 }
 
-div#tx-vjchat-format,
-div#tx-vjchat-format a,
-div#tx-vjchat-format img {
+div#tx-jvchat-format,
+div#tx-jvchat-format a,
+div#tx-jvchat-format img {
     margin: 0;
     padding: 0;
     cursor: pointer;
 }
 
-div#tx-vjchat-emoticons {
+div#tx-jvchat-emoticons {
     padding: 0.2em 0 0 0.2em;
     height: 20px;
 }
 
-#tx-vjchat-emoticons img {
+#tx-jvchat-emoticons img {
     margin: 0 0.1em;
     cursor:pointer;
 }
 
-div#tx-vjchat-style {
+div#tx-jvchat-style {
     padding: 0.2em 0.2em 0.2em 0.265em;
 }
 
-div#tx-vjchat-input-container {
+div#tx-jvchat-input-container {
     clear:both;
 }
 
-textarea#txvjchatnewMessage {
+textarea#txjvchatnewMessage {
     width: 99%;
     height: 6em;
     border: #CFCFCF solid 1px;
@@ -90,10 +90,10 @@ textarea#txvjchatnewMessage {
 
 /* MESSAGE ITEMS */
 
-.tx-vjchat-entry {
+.tx-jvchat-entry {
     clear: both;
 }
-.tx-vjchat-message {
+.tx-jvchat-message {
     border: 4px solid #F1F1F1;
     background-color: #fff;
     padding: 6px 12px;
@@ -101,82 +101,82 @@ textarea#txvjchatnewMessage {
     display: inline-block;
 }
 
-.tx-vjchat-message.tx-vjchat-message-ownMsg {
+.tx-jvchat-message.tx-jvchat-message-ownMsg {
     float: right;
     padding-right: 16px
 }
-.tx-vjchat-message-ownMsg .tx-vjchat-entry-text {
+.tx-jvchat-message-ownMsg .tx-jvchat-entry-text {
     float: left;
 }
-.tx-vjchat-message SPAN * {
+.tx-jvchat-message SPAN * {
     padding: 1px 2px;
 }
 
-div.tx-vjchat-moderator {
+div.tx-jvchat-moderator {
     color: #666666;
     background-color: #C0E1F4;
 }
 
-div.tx-vjchat-expert {
+div.tx-jvchat-expert {
     color: #99221a;
 }
-.tx-vjchat-superuser {
+.tx-jvchat-superuser {
     color: #608174;
     background-color: #FFFFFF;
 }
 
-div.tx-vjchat-entry span.tx-vjchat-user {
+div.tx-jvchat-entry span.tx-jvchat-user {
     font-weight: bold;
 }
 
-div.tx-vjchat-system,
-div.tx-vjchat-system .tx-vjchat-entry {
+div.tx-jvchat-system,
+div.tx-jvchat-system .tx-jvchat-entry {
     color: #9E9E9E;
     font-size: 0.9em;
     font-style: italic;
 }
-div.tx-vjchat-hidden {
+div.tx-jvchat-hidden {
     background-color: #F2F2F2;
     color: #333333;
 }
 
-div.tx-vjchat-committed {
+div.tx-jvchat-committed {
     background-color: #B8F2AE;
 }
 
-span.tx-vjchat-time {
+span.tx-jvchat-time {
     font-size: 8pt;
     color: #9E9E9E;
 }
 
-span.tx-vjchat-bold {
+span.tx-jvchat-bold {
     font-weight: bold;
 }
 
-span.tx-vjchat-underlined {
+span.tx-jvchat-underlined {
     text-decoration: underline;
 }
 
-span.tx-vjchat-italic {
+span.tx-jvchat-italic {
     font-style: italic;
 }
 
-span.tx-vjchat-stroke {
+span.tx-jvchat-stroke {
     text-decoration: line-through;
 }
 
-p.tx-vjchat-error {
+p.tx-jvchat-error {
     font-weight: bold;
     color: #f00;
 }
 
-a.tx-vjchat-actionlink {
+a.tx-jvchat-actionlink {
     cursor:pointer;
     font-size: 8pt;
     color: #337236;
 }
 
-a.tx-vjchat-actionlink:hover {
+a.tx-jvchat-actionlink:hover {
     color: #0F3D11;
     text-decoration: underline;
 }
@@ -185,16 +185,16 @@ a.tx-vjchat-actionlink:hover {
 /* HELP AND COMMAND OUTPUT */
 
 
-.tx-vjchat-ok {
+.tx-jvchat-ok {
     color: #447174;
     background-color: #F5F5F5;
 }
 
-.tx-vjchat-error {
+.tx-jvchat-error {
     color: #99221a;
 }
 
-div.tx-vjchat-cmd-smileys-text {
+div.tx-jvchat-cmd-smileys-text {
     width: 5em;
     height: 1.2em;
     float: left;
@@ -204,7 +204,7 @@ div.tx-vjchat-cmd-smileys-text {
     padding-right: 0.625em;
 }
 
-div.tx-vjchat-cmd-smileys-image {
+div.tx-jvchat-cmd-smileys-image {
     width: 4em;
     height: 1.2em;
     float: left;
@@ -212,18 +212,18 @@ div.tx-vjchat-cmd-smileys-image {
     margin-bottom: 0.625em;
 }
 
-div.tx-vjchat-cmd-help,
-div.tx-vjchat-cmd-help * {
+div.tx-jvchat-cmd-help,
+div.tx-jvchat-cmd-help * {
     font-size: 0.95em;
     background-color: #F0F0F0;
 }
 
-span.tx-vjchat-cmd-help-link {
+span.tx-jvchat-cmd-help-link {
     text-decoration: underline;
     cursor: pointer;
 }
 
-div.tx-vjchat-cmd-help-command div.tx-vjchat-cmd-help-command-title {
+div.tx-jvchat-cmd-help-command div.tx-jvchat-cmd-help-command-title {
     width: 9em;
     float: left;
     clear: left;
@@ -231,74 +231,74 @@ div.tx-vjchat-cmd-help-command div.tx-vjchat-cmd-help-command-title {
 }
 
 
-div.tx-vjchat-cmd-help-command span.tx-vjchat-cmd-help-parameter-descr {
+div.tx-jvchat-cmd-help-command span.tx-jvchat-cmd-help-parameter-descr {
     display: block;
     margin-left: 11em;
 }
 
 /* USERLIST ITEMS */
 
-#tx-vjchat-userlist * {
+#tx-jvchat-userlist * {
 
 }
 
-#tx-vjchat-userlist .tx-vjchat-link-box {
+#tx-jvchat-userlist .tx-jvchat-link-box {
     display: block;
     width: 50px;
     float: right;
 }
 
 
-#tx-vjchat-userlist .tx-vjchat-pr-link,
-#tx-vjchat-userlist .tx-vjchat-pm-link {
+#tx-jvchat-userlist .tx-jvchat-pr-link,
+#tx-jvchat-userlist .tx-jvchat-pm-link {
     cursor: pointer;
 }
 
-#tx-vjchat-userlist .tx-vjchat-userlist-moderator {
+#tx-jvchat-userlist .tx-jvchat-userlist-moderator {
     color: #C0E1F4;
 }
 
-#tx-vjchat-userlist .tx-vjchat-userlist-expert {
+#tx-jvchat-userlist .tx-jvchat-userlist-expert {
     color: #ECECEE;
 }
 
 
-#tx-vjchat-userlist .tx-vjchat-userlist-superuser {
+#tx-jvchat-userlist .tx-jvchat-userlist-superuser {
     background-color: #ECECEE;
 }
 
-#tx-vjchat-userlist .tx-vjchat-userlist-username {
+#tx-jvchat-userlist .tx-jvchat-userlist-username {
     font-weight: bold;
     cursor: pointer;
     float:left;
 }
 
 
-#tx-vjchat-userlist .tx-vjchat-userlist-owner,
-#tx-vjchat-userlist .tx-vjchat-userlist-moderator,
-#tx-vjchat-userlist .tx-vjchat-userlist-superuser {
+#tx-jvchat-userlist .tx-jvchat-userlist-owner,
+#tx-jvchat-userlist .tx-jvchat-userlist-moderator,
+#tx-jvchat-userlist .tx-jvchat-userlist-superuser {
     font-weight: bold;
     font-style: italic;
 }
 
-#tx-vjchat-userlist .tx-vjchat-userlist-item img,
-#tx-vjchat-user-detail img {
+#tx-jvchat-userlist .tx-jvchat-userlist-item img,
+#tx-jvchat-user-detail img {
     float: left;
     margin-right: 2px;
 }
 
-#tx-vjchat-userlist .tx-vjchat-userlist-item {
+#tx-jvchat-userlist .tx-jvchat-userlist-item {
     clear: both;
     height: 36px;
     border-bottom: 1px solid #FBFBFB;
     vertical-align: center;
 }
 
-#tx-vjchat-userlist .tx-vjchat-userlist-item:hover {
+#tx-jvchat-userlist .tx-jvchat-userlist-item:hover {
     opacity: 0.9;
 }
 
-#tx-vjchat-user-detail {
+#tx-jvchat-user-detail {
     border: 1px solid #CFCFCF;
     background-color: #ECECEE;
     width: 12em;
@@ -311,22 +311,22 @@ div.tx-vjchat-cmd-help-command span.tx-vjchat-cmd-help-parameter-descr {
 }
 
 
-#tx-vjchat-user-detail * {
+#tx-jvchat-user-detail * {
     font-size: 0.8em;
     padding: 0;
     margin: 0;
 }
 
-#tx-vjchat-user-detail #tx-vjchat-user-detail-caption {
+#tx-jvchat-user-detail #tx-jvchat-user-detail-caption {
     font-size: 0.8em;
     font-weight: bold;
 }
 
-.tx-vjchat-rooms-short a img {
+.tx-jvchat-rooms-short a img {
     margin-right: 0.2em !important;
     padding: 0 !important;
     border: 0;
 }
-LI.tx-vjchat-cmd-roomlist-user {
+LI.tx-jvchat-cmd-roomlist-user {
     background: none;
 }

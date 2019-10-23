@@ -1,5 +1,5 @@
-# vjchat
-Fork of the TYPO3 extension vjchat 
+# jvchat
+Fork of the old TYPO3 extension vjchat 
 
 see ChangeLog for old Infos about this extension
 

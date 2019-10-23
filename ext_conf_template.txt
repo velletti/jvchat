@@ -22,7 +22,7 @@
 
 
 	# cat=basic; type=string; label=Emoticons: Path to emoticons
-	emoticonsPath = typo3conf/ext/vjchat/pi1/emoticons/
+	emoticonsPath = typo3conf/ext/jvchat/pi1/emoticons/
 
 	# cat=basic; type=boolean; label=Show parameter description: If activated the 'help' command shows also a description for each parameter
 	showParameterDescription = 1

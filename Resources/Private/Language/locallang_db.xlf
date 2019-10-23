@@ -1,111 +1,111 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" datatype="plaintext" original="messages" date="2016-07-22T08:55:26Z" product-name="vjchat">
+	<file source-language="en" datatype="plaintext" original="messages" date="2016-07-22T08:55:26Z" product-name="jvchat">
 		<header/>
 		<body>
 
-			<trans-unit id="tx_vjchat_entry">
+			<trans-unit id="tx_jvchat_entry">
 				<source>Ajax Chat Entry</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_messages">
+			<trans-unit id="tx_jvchat_messages">
 				<source>Chat automatic message</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_entry.entry">
+			<trans-unit id="tx_jvchat_entry.entry">
 				<source>Entry</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_entry.feuser">
+			<trans-unit id="tx_jvchat_entry.feuser">
 				<source>Frontend User</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_entry.room">
+			<trans-unit id="tx_jvchat_entry.room">
 				<source>Chatroom</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_entry.style">
+			<trans-unit id="tx_jvchat_entry.style">
 				<source>Style</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room">
+			<trans-unit id="tx_jvchat_room">
 				<source>Chat Room</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.name">
+			<trans-unit id="tx_jvchat_room.name">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.description">
+			<trans-unit id="tx_jvchat_room.description">
 				<source>description</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.maxusercount">
+			<trans-unit id="tx_jvchat_room.maxusercount">
 				<source>Maximum usercount</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.closed">
+			<trans-unit id="tx_jvchat_room.closed">
 				<source>closed</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.mode.I.0">
+			<trans-unit id="tx_jvchat_room.mode.I.0">
 				<source>Normal Mode</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.mode.I.1">
+			<trans-unit id="tx_jvchat_room.mode.I.1">
 				<source>Expert Chat</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.mode">
+			<trans-unit id="tx_jvchat_room.mode">
 				<source>Chat mode</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.showfullnames">
+			<trans-unit id="tx_jvchat_room.showfullnames">
 				<source>Show real names (experimental! commands may not work)</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.moderators">
+			<trans-unit id="tx_jvchat_room.moderators">
 				<source>moderators</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.owner">
+			<trans-unit id="tx_jvchat_room.owner">
 				<source>owner</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.experts">
+			<trans-unit id="tx_jvchat_room.experts">
 				<source>experts</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.groupaccess">
+			<trans-unit id="tx_jvchat_room.groupaccess">
 				<source>User group</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.superusergroup">
+			<trans-unit id="tx_jvchat_room.superusergroup">
 				<source>superusergroup</source>
 			</trans-unit>
 
-			<trans-unit id="tx_vjchat_room.moderators">
+			<trans-unit id="tx_jvchat_room.moderators">
 				<source>moderators</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.bannedusers">
+			<trans-unit id="tx_jvchat_room.bannedusers">
 				<source>banned users</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.welcomemessage">
+			<trans-unit id="tx_jvchat_room.welcomemessage">
 				<source>welcome message</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.members">
+			<trans-unit id="tx_jvchat_room.members">
 				<source>Invited members</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.private">
+			<trans-unit id="tx_jvchat_room.private">
 				<source>Private</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_session">
+			<trans-unit id="tx_jvchat_session">
 				<source>Chat Session</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_session.name">
+			<trans-unit id="tx_jvchat_session.name">
 				<source>name</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_session.description">
+			<trans-unit id="tx_jvchat_session.description">
 				<source>description</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_session.startid">
+			<trans-unit id="tx_jvchat_session.startid">
 				<source>start id (First Message)</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_session.endid">
+			<trans-unit id="tx_jvchat_session.endid">
 				<source>end id (Last Message)</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_session.room">
+			<trans-unit id="tx_jvchat_session.room">
 				<source>Room</source>
 			</trans-unit>
 
-			<trans-unit id="tx_vjchat_room.page">
+			<trans-unit id="tx_jvchat_room.page">
 				<source>Page of chat room</source>
 			</trans-unit>
 			<trans-unit id="">
 				<source>Ajax Chat</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat.sysfolder">
+			<trans-unit id="tx_jvchat.sysfolder">
 				<source>Chat</source>
 			</trans-unit>
 
@@ -170,37 +170,37 @@
 			<trans-unit id="tt_content.pi_flexform.showSendButton">
 				<source>show Send Button</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.showuserinfo_experts">
+			<trans-unit id="tx_jvchat_room.showuserinfo_experts">
 				<source>Show additional information about Experts (list of fields in fe_users)</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.showuserinfo_moderators">
+			<trans-unit id="tx_jvchat_room.showuserinfo_moderators">
 				<source>Show additional information about Moderators</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.showuserinfo_users">
+			<trans-unit id="tx_jvchat_room.showuserinfo_users">
 				<source>Show additional information about Users</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.showuserinfo_superusers">
+			<trans-unit id="tx_jvchat_room.showuserinfo_superusers">
 				<source>Show additional information about Superusers</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.showuserinfo_name.I.0">
+			<trans-unit id="tx_jvchat_room.showuserinfo_name.I.0">
 				<source>Name</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.showuserinfo_email.I.1">
+			<trans-unit id="tx_jvchat_room.showuserinfo_email.I.1">
 				<source>E-Mail</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.showuserinfo_company.I.2">
+			<trans-unit id="tx_jvchat_room.showuserinfo_company.I.2">
 				<source>Company</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.private">
+			<trans-unit id="tx_jvchat_room.private">
 				<source>private</source>
 			</trans-unit>
-			<trans-unit id="fe_users.tx_vjchat_chatstyle">
+			<trans-unit id="fe_users.tx_jvchat_chatstyle">
 				<source>Chat style</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.temp">
+			<trans-unit id="tx_jvchat_room.temp">
 				<source>temp Room</source>
 			</trans-unit>
-			<trans-unit id="tx_vjchat_room.members">
+			<trans-unit id="tx_jvchat_room.members">
 				<source>members</source>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.chatrooms">
@@ -242,10 +242,10 @@
 				<source>show User Count</source>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.typoscriptRoomsTemplate">
-				<source>TS for this view (plugin.tx_vjchat_pi1.views.*)</source>
+				<source>TS for this view (plugin.tx_jvchat_pi1.views.*)</source>
 			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.typoscriptRoomsTemplateCustom">
-				<source>Custom TS (plugin.tx_vjchat_pi1.views.X)</source>
+				<source>Custom TS (plugin.tx_jvchat_pi1.views.X)</source>
 			</trans-unit>
 
 		</body>

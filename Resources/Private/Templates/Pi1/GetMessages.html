@@ -15,8 +15,8 @@
                         <f:then>
                             <f:comment><!-- Private message From User To User --> </f:comment>
                             <f:if condition="{involved} && {entry.tofeuserid} == {user.uid}">
-                                <div class="tx-vjchat-private">
-                                    <div class="tx-vjchat-hidden" id="tx-vjchat-entry-{entry.uid}">
+                                <div class="tx-jvchat-private">
+                                    <div class="tx-jvchat-hidden" id="tx-jvchat-entry-{entry.uid}">
                                         Private Msg for: {entry.tofeuserid}:{user2Name}<br>
                                         <f:render section="message" arguments="{_all}"></f:render>
                                     </div>
@@ -28,22 +28,22 @@
                             <f:if condition="{needsModeration}">
                                 <f:comment><!-- Hidden message: needs moderation --> </f:comment>
 
-                                <div class="tx-vjchat-commit" id="tx-vjchat-entry-commitlink-{entry.uid}">
-                                    <a class="tx-vjchat-actionlink" onClick="javascript:chat_instance.commitEntry('{entry.uid}');">
+                                <div class="tx-jvchat-commit" id="tx-jvchat-entry-commitlink-{entry.uid}">
+                                    <a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.commitEntry('{entry.uid}');">
                                         <f:translate key="commit_message"></f:translate>
                                     </a> |
-                                    <a class="tx-vjchat-actionlink" onClick="javascript:chat_instance.hideEntry('{entry.uid}');">
+                                    <a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.hideEntry('{entry.uid}');">
                                         <f:translate key="hide_message"></f:translate>
                                     </a>
-                                    <span id="tx-vjchat-storelink-{entry.uid}">|
-                                        <a class="tx-vjchat-actionlink" onClick="javascript:chat_instance.storeEntry('{entry.uid}');">
+                                    <span id="tx-jvchat-storelink-{entry.uid}">|
+                                        <a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.storeEntry('{entry.uid}');">
                                             <f:translate key="store_message"></f:translate>
                                         </a>
                                     </span>
                                 </div>
 
 
-                                <div class="tx-vjchat-hidden" id="tx-vjchat-entry-{entry.uid}">
+                                <div class="tx-jvchat-hidden" id="tx-jvchat-entry-{entry.uid}">
                                     <f:render section="message" arguments="{_all}"></f:render>
                                 </div>
                             </f:if>
@@ -65,19 +65,19 @@
 <f:section name="message">
     <f:format.raw>
         <f:spaceless>
-            <div id="cid{mid}" class="tx-vjchat-message tx-vjchat-message-style-{entryStyle} {groupstyles} {f:if(condition: '{ownMsg}' , then: 'tx-vjchat-message-ownMsg')}">
-                <div class="tx-vjchat-type-{userType}">
+            <div id="cid{mid}" class="tx-jvchat-message tx-jvchat-message-style-{entryStyle} {groupstyles} {f:if(condition: '{ownMsg}' , then: 'tx-jvchat-message-ownMsg')}">
+                <div class="tx-jvchat-type-{userType}">
                     <f:if condition="{ownMsg}">
                         <f:then>
-                            <span class="tx-vjchat-entry-text">{entryText}</span> &lt;&nbsp;
-                            <span id="msg-{entry.uid}" class="tx-vjchat-time"><f:format.date format="{timeFormat}">{time}</f:format.date></span><span class="tx-vjchat-user tx-vjchat-userid-{entry.uid}">
+                            <span class="tx-jvchat-entry-text">{entryText}</span> &lt;&nbsp;
+                            <span id="msg-{entry.uid}" class="tx-jvchat-time"><f:format.date format="{timeFormat}">{time}</f:format.date></span><span class="tx-jvchat-user tx-jvchat-userid-{entry.uid}">
                                 <f:render section="userName" arguments="{showFullNames: showFullNames, user: entryUser , entry: entry , extConf: extConf, ownMsg: ownMsg}"/>
                             </span>
                         </f:then>
                         <f:else>
-                            <span id="msg-{entry.uid}" class="tx-vjchat-time"><f:format.date format="{timeFormat}">{time}</f:format.date></span><span class="tx-vjchat-user tx-vjchat-userid-{entry.uid}">
+                            <span id="msg-{entry.uid}" class="tx-jvchat-time"><f:format.date format="{timeFormat}">{time}</f:format.date></span><span class="tx-jvchat-user tx-jvchat-userid-{entry.uid}">
                                 <f:render section="userName" arguments="{showFullNames: showFullNames, user: entryUser , entry: entry , extConf: extConf, ownMsg: ownMsg}"/>
-                            </span> &gt;&nbsp;<span class="tx-vjchat-entry-text">{entryText}</span>
+                            </span> &gt;&nbsp;<span class="tx-jvchat-entry-text">{entryText}</span>
                         </f:else>
                     </f:if>
 
@@ -106,7 +106,7 @@
                                         var id = '{entry.uid}' ;
                                         var userid = '#{user.uid}' ;
                                         var username = '{user.{usernameField1}} {user.{usernameField2}}' ;
-                                        $('#tx-vjchat-msg-user-' + id + " span.btn").bind("click", function(evt) {
+                                        $('#tx-jvchat-msg-user-' + id + " span.btn").bind("click", function(evt) {
                                             evt.preventDefault();
                                             var name = chat_instance.talkToNewRoomName.replace(/\%s/, username);
                                             var command = "/newroom "+name ;
@@ -122,7 +122,7 @@
                             </f:else>
                         </f:if>
 
-                        <span id="tx-vjchat-msg-user-{entry.uid}" class="tx-vjchat-link-user" data-content="user-{user.uid}" >
+                        <span id="tx-jvchat-msg-user-{entry.uid}" class="tx-jvchat-link-user" data-content="user-{user.uid}" >
                             <f:format.raw>{Button}</f:format.raw> {user.{extConf.usernameField1}}<f:if condition="{usernameField2}"> {user.{extConf.usernameField2}}</f:if>
                         </span>
 

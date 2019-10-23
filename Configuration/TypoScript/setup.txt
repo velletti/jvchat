@@ -6,9 +6,9 @@
 # Donate: http://www.vincent-tietz.de/donate
 ###############################################################################################################
 
-plugin.tx_vjchat_pi1 {
+plugin.tx_jvchat_pi1 {
 
-	templateFile = EXT:vjchat/Resources/Private/Template/chat.tpl.html
+	templateFile = EXT:jvchat/Resources/Private/Template/chat.tpl.html
 	
 		# if not defined anything in the configuration form
 	pidList = 
@@ -20,7 +20,7 @@ plugin.tx_vjchat_pi1 {
 	tooltipOffsetXY = 20,10
 	
 	loadingMessage = TEXT
-	loadingMessage.data = LLL:EXT:vjchat/pi1/locallang.php:loading_message
+	loadingMessage.data = LLL:EXT:jvchat/pi1/locallang.php:loading_message
 	loadingMessage.wrap = <p>|</p>
 	
 	###############################################################################################################
@@ -28,9 +28,9 @@ plugin.tx_vjchat_pi1 {
 	###############################################################################################################
 	
 	# these COAs are used by the views
-	# Attention! just overwriting values of plugin.tx_vjchat_pi1.cObjects.* will have no effect, because they are copied in the views with '<'
-	# To customize rendering you need either copy the whole configuration or overwrite the respective values in plugin.tx_vjchat_pi1.views.*
-	# e.g. plugin.tx_vjchat_pi1.views.rooms.oneRoom
+	# Attention! just overwriting values of plugin.tx_jvchat_pi1.cObjects.* will have no effect, because they are copied in the views with '<'
+	# To customize rendering you need either copy the whole configuration or overwrite the respective values in plugin.tx_jvchat_pi1.views.*
+	# e.g. plugin.tx_jvchat_pi1.views.rooms.oneRoom
 	cObjects {
 
 		# uses in view sessions
@@ -64,7 +64,7 @@ plugin.tx_vjchat_pi1 {
 				lang.de = Nachrichten ansehen
 				innerWrap = {field:entriesCount}&nbsp;|
 				typolink.parameter.data = page:uid
-				typolink.additionalParams = &tx_vjchat_pi1[uid]={field:uid}&tx_vjchat_pi1[view]=session
+				typolink.additionalParams = &tx_jvchat_pi1[uid]={field:uid}&tx_jvchat_pi1[view]=session
 				typolink.additionalParams.insertData = 1
 				insertData = 1
 				if.isTrue.field = entriesCount
@@ -82,17 +82,17 @@ plugin.tx_vjchat_pi1 {
 			1 {
 
 				10 = TEXT
-				10.value = <span class="tx-vjchat-user">{field:username}</span>&gt;&nbsp;{field:entry}
+				10.value = <span class="tx-jvchat-user">{field:username}</span>&gt;&nbsp;{field:entry}
 				10.insertData = 1
 				
 				10.innerWrap.cObject = CASE
 				10.innerWrap.cObject {
 					1 = TEXT
-					1.value = <div class="tx-vjchat-moderator">|</div>
+					1.value = <div class="tx-jvchat-moderator">|</div>
 					2 = TEXT
-					2.value = <div class="tx-vjchat-system">|</div>
+					2.value = <div class="tx-jvchat-system">|</div>
 					3 = TEXT
-					3.value = <div class="tx-vjchat-expert">|</div>
+					3.value = <div class="tx-jvchat-expert">|</div>
 					default = TEXT
 					default.value = |
 					key.field = type
@@ -103,14 +103,14 @@ plugin.tx_vjchat_pi1 {
 					value = Delete Message #{field:uid}
 					typolink.parameter.data = page:uid
 					typolink.addQueryString = 1
-					typolink.additionalParams = &tx_vjchat_pi1[entryId]={field:uid}&tx_vjchat_pi1[action]=delete
+					typolink.additionalParams = &tx_jvchat_pi1[entryId]={field:uid}&tx_jvchat_pi1[action]=delete
 					typolink.additionalParams.insertData = 1
 					if.isTrue.field = isModerator
 					insertData = 1
 					wrap = <p>|</p>
 				}
 
-				wrap = <div class="tx-vjchat-entry">|</div>
+				wrap = <div class="tx-jvchat-entry">|</div>
 
 			}
 						
@@ -128,8 +128,8 @@ plugin.tx_vjchat_pi1 {
 	views {
 		
 		rooms {
-			oneRoom < plugin.tx_vjchat_pi1.cObjects.room
-			stdWrap.wrap = <div class="tx-vjchat-rooms">|<br /></div>
+			oneRoom < plugin.tx_jvchat_pi1.cObjects.room
+			stdWrap.wrap = <div class="tx-jvchat-rooms">|<br /></div>
 
 			usersGlue = ,&nbsp;
 			
@@ -142,8 +142,8 @@ plugin.tx_vjchat_pi1 {
 				
 		# this is just another rooms overview
 		roomsShort {
-			oneRoom < plugin.tx_vjchat_pi1.cObjects.roomShort
-			stdWrap.wrap = <div class="tx-vjchat-rooms-short">|</div>
+			oneRoom < plugin.tx_jvchat_pi1.cObjects.roomShort
+			stdWrap.wrap = <div class="tx-jvchat-rooms-short">|</div>
 			
 			usersGlue = ,&nbsp;
 			
@@ -157,7 +157,7 @@ plugin.tx_vjchat_pi1 {
 		}
 				
 		sessions {
-			oneSession < plugin.tx_vjchat_pi1.cObjects.session
+			oneSession < plugin.tx_jvchat_pi1.cObjects.session
 
 			stdWrap.preCObject = COA
 			stdWrap.preCObject {
@@ -165,19 +165,19 @@ plugin.tx_vjchat_pi1 {
 				1.dataWrap = <h2>{field:room.name}</h2><p>{field:room.description}</p>
 				
 				2 = TEXT
-				2.data = LLL:EXT:vjchat/pi1/locallang.php:back_to_rooms
+				2.data = LLL:EXT:jvchat/pi1/locallang.php:back_to_rooms
 				2.typolink.parameter.data = page:uid
 				2.wrap = <p>|</p>
 			}
 
-			stdWrap.wrap = <div class="tx-vjchat-sessions">|<br /><br /></div>
+			stdWrap.wrap = <div class="tx-jvchat-sessions">|<br /><br /></div>
 			stdWrap.insertData = 1
 
 		}		
 
 		# additional available fields are roomName, roomDescription
 		session {
-			oneEntry < plugin.tx_vjchat_pi1.cObjects.entry
+			oneEntry < plugin.tx_jvchat_pi1.cObjects.entry
 
 
 			# this will be prepended to content
@@ -193,19 +193,19 @@ plugin.tx_vjchat_pi1 {
 				20.if.isTrue.field = room.description
 
 				30 = TEXT
-				30.data = LLL:EXT:vjchat/pi1/locallang.php:back_to_sessions
+				30.data = LLL:EXT:jvchat/pi1/locallang.php:back_to_sessions
 				30.typolink.parameter.data = page:uid
-				30.typolink.additionalParams = &tx_vjchat_pi1[uid]={field:room.uid}&tx_vjchat_pi1[view]=sessions
+				30.typolink.additionalParams = &tx_jvchat_pi1[uid]={field:room.uid}&tx_jvchat_pi1[view]=sessions
 				30.typolink.additionalParams.insertData = 1
 				30.wrap = <p>|</p>
 
 				# use CObject session, but clear the typolink
-				40 < plugin.tx_vjchat_pi1.cObjects.session
+				40 < plugin.tx_jvchat_pi1.cObjects.session
 				40.40 >
 
 			}
 
-			stdWrap.wrap = <div class="tx-vjchat-session">|<br /></div>
+			stdWrap.wrap = <div class="tx-jvchat-session">|<br /></div>
 
 		}
 		
@@ -224,43 +224,43 @@ plugin.tx_vjchat_pi1 {
 				15.required = 1
 				
 				20 = TEXT
-				20.data = LLL:EXT:vjchat/pi1/locallang.php:error_room_full
+				20.data = LLL:EXT:jvchat/pi1/locallang.php:error_room_full
 				20.wrap = <p class="error">|</p>
 				20.if.isTrue.field = isFull 				
 				
 				25 = TEXT
-				25.value = <div id="tx-vjchat-full-jsstatus"></div>
+				25.value = <div id="tx-jvchat-full-jsstatus"></div>
 				
 				30 = COA
 				30 {
 				
 					10 = TEXT
-					10.data = LLL:EXT:vjchat/pi1/locallang.php:leave_chat
+					10.data = LLL:EXT:jvchat/pi1/locallang.php:leave_chat
 					10.typolink.parameter.data = page:uid
-					10.typolink.additionalParams = &tx_vjchat_pi1[leaveRoom]={field:uid}
+					10.typolink.additionalParams = &tx_jvchat_pi1[leaveRoom]={field:uid}
 					10.typolink.additionalParams.insertData = 1
 					10.if.isTrue.field = leaveChat
 				
 					20 = TEXT
-					20.data = LLL:EXT:vjchat/pi1/locallang.php:close_window
+					20.data = LLL:EXT:jvchat/pi1/locallang.php:close_window
 					20.typolink.parameter = javascript:window.close();
 					20.typolink.ATagParams = onClick="window.close();" 
 					20.if.isTrue.field = popup
 						
 					/*			
 					30 = TEXT
-					30.data = LLL:EXT:vjchat/pi1/locallang.php:new_window
-					30.typolink.parameter.dataWrap = javascript:tx_vjchat_openNewChatWindow('{field:newWindowUrl}',{field:uid});
-					30.typolink.ATagParams.stdWrap.dataWrap = onClick="tx_vjchat_openNewChatWindow('{field:newWindowUrl}',{field:uid}); return false;" 
+					30.data = LLL:EXT:jvchat/pi1/locallang.php:new_window
+					30.typolink.parameter.dataWrap = javascript:tx_jvchat_openNewChatWindow('{field:newWindowUrl}',{field:uid});
+					30.typolink.ATagParams.stdWrap.dataWrap = onClick="tx_jvchat_openNewChatWindow('{field:newWindowUrl}',{field:uid}); return false;"
 					30.if.isTrue.field = chatwindow
 					30.wrap = &nbsp;|
 					*/
 					stdWrap.wrap = <p>|</p>
 				}
-				stdWrap.wrap = <div id="tx-vjchat-chat-intro">|</div>
+				stdWrap.wrap = <div id="tx-jvchat-chat-intro">|</div>
 			}
 
-			stdWrap.wrap 	=  <div class="tx-vjchat-chat text">|<br /></div>
+			stdWrap.wrap 	=  <div class="tx-jvchat-chat text">|<br /></div>
 		}
 
 		# this is the view when 'overallusercount' is choosen from flexform
@@ -277,7 +277,7 @@ plugin.tx_vjchat_pi1 {
 	
 	}
 	
-	errorMessagesStdWrap.wrap = <p class="tx-vjchat-error">|</p>
+	errorMessagesStdWrap.wrap = <p class="tx-jvchat-error">|</p>
 	errorMessagesAllWrap.wrap = <div class="alert alert-warning">|</div>
 
 	
@@ -294,8 +294,8 @@ plugin.tx_vjchat_pi1 {
 	userlistPRContent = &nbsp;PR&nbsp;
 
 	# use ' .. using " in this code will not work !
-	privateRoomCode = <span class='btn btn-default tx-vjchat-pr-link'><span class='fas fa-user-plus'></span></span>
-	privateMsgCode = <span class='btn btn-default tx-vjchat-pm-link'><span class='fa fa-comment-alt'></span></span>
+	privateRoomCode = <span class='btn btn-default tx-jvchat-pr-link'><span class='fas fa-user-plus'></span></span>
+	privateMsgCode = <span class='btn btn-default tx-jvchat-pm-link'><span class='fa fa-comment-alt'></span></span>
 
 	###############################################################################################################
 	# Snippets are a new feature for customizing the userlist and tooltip
@@ -322,7 +322,7 @@ plugin.tx_vjchat_pi1 {
 		10.if.isTrue.field = tx_nem_image
 
 		20 = IMAGE
-		20.file = EXT:vjchat/pi1/icons/Avatar_Male.gif
+		20.file = EXT:jvchat/pi1/icons/Avatar_Male.gif
 
 		20.if {
 			isFalse.field = tx_nem_image
@@ -330,7 +330,7 @@ plugin.tx_vjchat_pi1 {
 		}
 
 
-		20.file = EXT:vjchat/pi1/icons/Avatar_Female.gif
+		20.file = EXT:jvchat/pi1/icons/Avatar_Female.gif
 		20.file.if {
 			isFalse.field = tx_nem_image
 			isTrue.field = tx_nem_gender
@@ -345,16 +345,16 @@ plugin.tx_vjchat_pi1 {
 }
 
 # for the popup PAGE object
-chatwindow < plugin.tx_vjchat_pi1.chatwindow
+chatwindow < plugin.tx_jvchat_pi1.chatwindow
 
 
-includeLibs.vjchat = EXT:vjchat/pi1/class.tx_vjchat_userFunctions.php
+includeLibs.jvchat = EXT:jvchat/pi1/class.tx_jvchat_userFunctions.php
 
 page.includeCSS {
-	vjchat = EXT:vjchat/Resources/Public/Css/vjchat.css
+	jvchat = EXT:jvchat/Resources/Public/Css/jvchat.css
 }
 
 [usergroup = 4,5,22,16]
-	plugin.tx_vjchat_pi1.enableImageUpload = 1
+	plugin.tx_jvchat_pi1.enableImageUpload = 1
 
 [global]

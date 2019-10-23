@@ -24,10 +24,10 @@ header('Content-type: text/plain; charset='.$charset);
 
 ################
 ## CHAT
-require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('vjchat', 'pi1/class.tx_vjchat_chat.php'));
+require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('jvchat', 'pi1/class.tx_jvchat_chat.php'));
 
 $timer->start('chat');
-$chat = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_vjchat_chat');
+$chat = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_jvchat_chat');
 $chat->init($feUserObj, $charset);
 print $chat->perform();
 

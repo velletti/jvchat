@@ -1,7 +1,7 @@
 #
-# Table structure for table 'tx_vjchat_entry'
+# Table structure for table 'tx_jvchat_entry'
 #
-CREATE TABLE tx_vjchat_entry (
+CREATE TABLE tx_jvchat_entry (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 	tstamp int(11) DEFAULT '0' NOT NULL,
@@ -27,9 +27,9 @@ CREATE TABLE tx_vjchat_entry (
 
 
 #
-# Table structure for table 'tx_vjchat_room'
+# Table structure for table 'tx_jvchat_room'
 #
-CREATE TABLE tx_vjchat_room (
+CREATE TABLE tx_jvchat_room (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 	tstamp int(11) DEFAULT '0' NOT NULL,
@@ -68,9 +68,9 @@ CREATE TABLE tx_vjchat_room (
 
 
 #
-# Table structure for table 'tx_vjchat_session'
+# Table structure for table 'tx_jvchat_session'
 #
-CREATE TABLE tx_vjchat_session (
+CREATE TABLE tx_jvchat_session (
     uid int(11) NOT NULL auto_increment,
     pid int(11) DEFAULT '0' NOT NULL,
     tstamp int(11) DEFAULT '0' NOT NULL,
@@ -92,7 +92,7 @@ CREATE TABLE tx_vjchat_session (
 );
 
 
-CREATE TABLE tx_vjchat_room_feusers_mm (
+CREATE TABLE tx_jvchat_room_feusers_mm (
   uid_local int(11) unsigned DEFAULT '0' NOT NULL,
   uid_foreign int(11) unsigned DEFAULT '0' NOT NULL,
   tstamp int(11) DEFAULT '0' NOT NULL,
@@ -109,10 +109,10 @@ CREATE TABLE tx_vjchat_room_feusers_mm (
 # Table structure for table 'fe_users'
 #
 CREATE TABLE fe_users (
-    tx_vjchat_chatstyle tinyint(4) unsigned DEFAULT '0' NOT NULL,
+    tx_jvchat_chatstyle tinyint(4) unsigned DEFAULT '0' NOT NULL,
 );
 
-CREATE TABLE tx_vjchat_messages (
+CREATE TABLE tx_jvchat_messages (
 	uid int(11) NOT NULL auto_increment,
 	pid int(11) DEFAULT '0' NOT NULL,
 	tstamp int(11) DEFAULT '0' NOT NULL,

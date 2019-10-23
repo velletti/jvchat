@@ -1,14 +1,14 @@
 {
-    "name": "velletti/vjchat",
-    "description": "The vjchat compatible for TYPO3 LTS 8 ",
+    "name": "velletti/jvchat",
+    "description": "The jvchat compatible for TYPO3 LTS 8 ",
     "type": "typo3-cms-extension",
     "non-feature-branches": ["development"],
     "support": {
-        "issues": "https://github.com/velletti/vjchat/issues"
+        "issues": "https://github.com/velletti/jvchat/issues"
     },
     "keywords": [
         "TYPO3 CMS",
-        "vjchat",
+        "jvchat",
         "Chat Room"
     ],
     "config": {
@@ -20,7 +20,7 @@
     "license": "GPL-2.0-or-later",
     "autoload": {
         "psr-4": {
-            "JVE\\vjchat\\": "classes/"
+            "JVE\\jvchat\\": "classes/"
         },
         "classmap": [
             "pi1"
@@ -41,8 +41,8 @@
         "typo3/cms-backend": "^8.7 || ^9 || dev-master"
     },
     "replace": {
-        "vjchat": "self.version",
-        "typo3-ter/vjchat": "self.version"
+        "jvchat": "self.version",
+        "typo3-ter/jvchat": "self.version"
     },
 
     "scripts": {

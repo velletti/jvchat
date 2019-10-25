@@ -16,24 +16,15 @@ function tx_jvchat_pi1_js_chat() {
 	this.maxActiveRequests		= 3;
 	this.popup					= true;
 	this.debug                  = true;
-	this.userlistPMContent		= "PM";
-	this.userlistPRContent		= "PR";
 	this.userlistPMInfo 		= "Send a private message to \'%s\'";
 	this.userlistPRInfo 		= "Open a new room and invite \'%s\'";
-
-		talkToNewRoomName:	"###TALK_TO_ROOM_NAME###",
 
 	this.allowPrivateMessages	= false;
 	this.allowPrivateRooms		= false;
 	this.talkToNewRoomName		= 'New Room with %s';
 	this.checkFullTime			= 20000;
 	this.checkFullStatusElement = $('#tx-jvchat-full-jsstatus');
-	this.tooltipOffsetX			= 20;
-	this.tooltipOffsetY			= 10;
 	this.autoFocus				= false;
-	this.chatbuttonson 			= new Array();
-	this.chatbuttonsoff 		= new Array();
-	this.chatbuttonskeys 		= new Array();
 	this.chatWindow				= window;
 
 	var globalInstanceName = tx_jvchat_pi1_js_chat_instance;
@@ -57,6 +48,7 @@ function tx_jvchat_pi1_js_chat() {
 
 		initConfig = $('#tx-jvchat-config') ;
 		this.roomId					= initConfig.data('roomid');
+		this.pid					= initConfig.data('pid');
 		this.userId					= initConfig.data('userid');
 		this.scriptUrl 				= initConfig.data('scripturl');
 		this.leaveUrl 				= initConfig.data('leaveurl');
@@ -71,7 +63,6 @@ function tx_jvchat_pi1_js_chat() {
 		this.idGlue 				= initConfig.data('idglue');
 		this.showTime 				= initConfig.data('showtime');
 		this.showEmoticons 			= initConfig.data('showemoticons');
-		this.showStyles 			= initConfig.data('showstyles');
 		this.popupJSWindowParams 	= initConfig.data('popupparams');
 		this.talkToNewRoomName 		= initConfig.data('talktonewroomname');
 
@@ -86,7 +77,6 @@ function tx_jvchat_pi1_js_chat() {
 		this.messagesElement 		= $('#tx-jvchat-messages');
 		this.userListElement		= $('#tx-jvchat-userlist');
 		this.emoticonsElement		= $('#tx-jvchat-emoticons');
-		this.stylesElement			= $('#tx-jvchat-style');
 		this.toolsElement			= $('#tx-jvchat-tools-container');
 		this.storedMessagesElement  = $('#tx-jvchat-storedMessages');
 
@@ -95,12 +85,6 @@ function tx_jvchat_pi1_js_chat() {
 		globalInstanceName = tx_jvchat_pi1_js_chat_instance;
 
 
-		for(var i = 0;i<this.chatbuttonskeys.length;i++) {
-			//alert('on: '+this.chatbuttonskeys[i]+' : '+name+ ' : '+this.chatbuttonson[i]);
-			var name = this.chatbuttonskeys[i];
-			var containerName = "#" + name+'-container';
-			this.chatbuttonsoff[i] = $(containerName) ? $(containerName).html() : '';
-		}
 
 		if(Cookie.get('tx-jvchat-emoticons_visible') != null) {
 			var show = (Cookie.get('tx-jvchat-emoticons_visible') == '1');
@@ -117,12 +101,10 @@ function tx_jvchat_pi1_js_chat() {
 		else
 			this.setAllTime(this.showTime );
 
-
 		self = this;
 		chat_instance = this;
 
 	}
-
 	/**
 	 * Run chat
 	 */
@@ -203,7 +185,7 @@ function tx_jvchat_pi1_js_chat() {
 			type:       "GET",
 			url:        this.scriptUrl ,
 			cache:      false,
-			data:       'r=' + this.roomId + '&a=gm&t=' + this.id + '&charset=' + this.charset + '&l=' + this.lang+ "&showJason=0",
+			data:       'r=' + this.roomId + '&p=' + this.pid +'&a=gm&t=' + this.id + '&charset=' + this.charset + '&l=' + this.lang+ "&showJason=0",
 			beforeSend:	function() {
 				},
 			success:    function(result) {
@@ -451,7 +433,7 @@ function tx_jvchat_pi1_js_chat() {
 				url:        this.scriptUrl ,
 				cache:      false,
 
-				data:       "r="+this.roomId+"&a=sm&t="+this.id+"&l="+this.lang+"&m="+ message +"&charset="+this.charset,
+				data:       "r="+this.roomId+ '&p=' + this.pid+"&a=sm&t="+this.id+"&l="+this.lang+"&m="+ message +"&charset="+this.charset,
 				beforeSend:	function() {
 				},
 				success:    function(result) {
@@ -479,7 +461,7 @@ function tx_jvchat_pi1_js_chat() {
 			type:       "get",
 			url:        this.scriptUrl ,
 			cache:      false,
-			data:       "r="+this.roomId+"&t="+this.id+"&a=commit&uid="+uid+ "&showJason=0",
+			data:       "r="+this.roomId+ '&p=' + this.pid +"&t="+this.id+"&a=commit&uid="+uid+ "&showJason=0",
 
 			beforeSend:	function() {
 			},
@@ -571,7 +553,7 @@ function tx_jvchat_pi1_js_chat() {
 			type:       "get",
 			url:        this.scriptUrl ,
 			cache:      true,
-			data:       'r='+this.roomId+'&a=gu&charset='+this.charset+ "&showJason=0",
+			data:       'r='+this.roomId+ '&p=' + this.pid+'&a=gu&charset='+this.charset+ "&showJason=0",
 			beforeSend:	function() {
 			},
 			success:    function(result) {
@@ -633,40 +615,11 @@ function tx_jvchat_pi1_js_chat() {
 
 		var parts = value.split(this.usernameGlue);
 
-		var username = parts[0];
-
+		var userObj = parts[0];
 		var type = parts[1];
 		var id = parts[2];
-		var style = parts[3];
 
 		userList["userid-"+id] = value;
-
-		/*
-		 create a node like:
-		 <div class="tx-jvchat-userlist-item tx-jvchat-userlist-[moderator|user|expert|superuse]">
-		 <span id="userid-[id]">[username]</span> <span class="tx-jvchat-pm-link">[PM]</span> <span class="tx-jvchat-pr-link">[PR]</span>
-		 </div>
-
-		 */
-
-		var userObj =  '<span class="tx-jvchat-username">'
-			+ parts[4] +'</span>' ;
-		if(this.userId != id) {
-			if(this.allowPrivateMessages ) {
-				if( this.privateMsgCode) {
-					userObj += ' ' + this.privateMsgCode ;
-				} else {
-					userObj += ' <span class="tx-jvchat-pm-link">[PM]</span> ' ;
-				}
-			}
-			if( this.allowPrivateRooms) {
-				if( this.privateRoomCode) {
-					userObj += ' ' + this.privateRoomCode ;
-				} else {
-					userObj += ' <span class="tx-jvchat-pr-link">[PR]</span> ' ;
-				}
-			}
-		}
 
 		jQuery('<div/>', {
 			class: "tx-jvchat-userlist-item tx-jvchat-userlist-" +type ,
@@ -725,7 +678,7 @@ function tx_jvchat_pi1_js_chat() {
 			this.emoticonsElement.hide() ;
 		}
 
-		this.setChatButton('tx-jvchat-button-emoticons', on);
+		// this.setChatButton('tx-jvchat-button-emoticons', on);
 	}
 
 
@@ -742,50 +695,18 @@ function tx_jvchat_pi1_js_chat() {
 			$( ".tx-jvchat-time").show() ;
 			Cookie.set('tx_jvchat_showtime', '1' , 100);
 		}
-		this.setChatButton('tx-jvchat-button-clock', on);
+		// this.setChatButton('tx-jvchat-button-clock', on);
 	}
 
 
-	this.setChatButton = function(name, on) {
-		if(on)
-			this.setChatButtonOn(name);
-		else
-			this.setChatButtonOff(name);
-	}
 
-	this.setChatButtonOn = function(name) {
-
-		for(var i = 0;i<this.chatbuttonskeys.length;i++) {
-			// alert('on: '+this.chatbuttonskeys[i]+' : '+name+ ' : '+this.chatbuttonson[i]);
-			if(this.chatbuttonskeys[i] == name) {
-				var containerName = "#" + name+'-container';
-				if($(containerName)) {
-					$(containerName).html( this.chatbuttonson[i] );
-				}
-				break;
-			}
-		}
-	}
-
-	this.setChatButtonOff = function(name) {
-		for(var i = 0;i<this.chatbuttonskeys.length;i++) {
-			// alert('off: '+this.chatbuttonskeys[i]+' : '+name+ ' : '+this.chatbuttonsoff[i]);
-			if(this.chatbuttonskeys[i] == name) {
-				var containerName = "#" + name+'-container';
-				if($(containerName)) {
-					$(containerName).html( this.chatbuttonsoff[i] ) ;
-				}
-				break;
-			}
-		}
-	}
 
 	this.doCheckFull = function() {
 		jQuery.ajax({
 			type:       "get",
 			url:        this.scriptUrl ,
 			cache:      false,
-			data:       'r='+this.roomId+'&a=checkfull&showJason=0',
+			data:       'r='+this.roomId + '&p=' + this.pid+'&a=checkfull&showJason=0',
 			beforeSend:	function() {
 			},
 			success:    function(result) {
@@ -848,7 +769,7 @@ function tx_jvchat_pi1_js_chat() {
 		this.reload = on ;
 
 		Cookie.set('tx_jvchat_reload', this.reload ? '1' : '0', 100);
-		this.setChatButton('tx-jvchat-button-start', on);
+		// this.setChatButton('tx-jvchat-button-start', on);
 
 		if ( this.reload  ) {
 			if ( this.runningto) {

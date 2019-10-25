@@ -1,0 +1,47 @@
+/*
+Error: Invalid CSS after "    margin-left": expected ";", was ": 40px;"
+        on line 110 of ../http/typo3conf/ext/jvchat/Resources/Private/Scss/jvchat.scss
+
+105: }
+106: 
+107: .tx-jvchat-message.tx-jvchat-message-ownMsg {
+108:     float: right;
+109:     padding-right: 16px
+110:     margin-left: 40px;
+111:     margin-right: 0px;
+112: }
+113: .tx-jvchat-message-ownMsg .tx-jvchat-entry-text {
+114:     float: left;
+115: }
+
+Backtrace:
+../http/typo3conf/ext/jvchat/Resources/Private/Scss/jvchat.scss:110
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:1278:in `expected'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:1208:in `expected'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:1203:in `tok!'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:804:in `block in try_declaration'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:1254:in `rethrow'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:809:in `try_declaration'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:732:in `declaration_or_ruleset'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:697:in `block_child'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:689:in `block_contents'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:678:in `block'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:670:in `ruleset'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:696:in `block_child'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:689:in `block_contents'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:137:in `stylesheet'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/scss/parser.rb:41:in `parse'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/engine.rb:414:in `_to_tree'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/engine.rb:290:in `render'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/exec/sass_scss.rb:396:in `run'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/exec/sass_scss.rb:63:in `process_result'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/exec/base.rb:50:in `parse'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/lib/sass/exec/base.rb:18:in `parse!'
+C:/Ruby24/lib/ruby/gems/2.4.0/gems/sass-3.5.7/bin/sass:13:in `<top (required)>'
+C:/Ruby24/bin/sass:23:in `load'
+C:/Ruby24/bin/sass:23:in `<main>'
+*/
+body:before {
+  white-space: pre;
+  font-family: monospace;
+  content: "Error: Invalid CSS after \"    margin-left\": expected \";\", was \": 40px;\"\A         on line 110 of ../http/typo3conf/ext/jvchat/Resources/Private/Scss/jvchat.scss\A \A 105: }\A 106: \A 107: .tx-jvchat-message.tx-jvchat-message-ownMsg {\A 108:     float: right;\A 109:     padding-right: 16px\A 110:     margin-left: 40px;\A 111:     margin-right: 0px;\A 112: }\A 113: .tx-jvchat-message-ownMsg .tx-jvchat-entry-text {\A 114:     float: left;\A 115: }"; }

@@ -188,32 +188,40 @@ class tx_jvchat_lib {
 		return (is_array($matches)) ? $matches:FALSE;
 	}
 
-    static function formatMessage($text, $enableEmoticons = true, $emoticons_path = '/typo3conf/ext/jvchat/pi1/emoticons/') {
+    static function formatMessage($text, $emoticons , $enableEmoticons = true ) {
 
 		// replace line breaks with <br>
-		$text = str_replace(chr(10), '<br />', $text);
+        $text = strip_tags( $text) ;
+
+        $faSize = "fa-lg" ;
+        if( strlen( $text ) > 100 ) {
+            $faSize = "" ;
+        }
+        if( strlen( $text ) < 30 ) {
+            $faSize = "fa-2x" ;
+        }
+        if( strlen( $text ) < 20 ) {
+            $faSize = "fa-3x" ;
+        }
+
 
 		// Check if emoticons are disabled
 		if ($enableEmoticons) {
-			$emoticons = array();
-			$searchEmoticons = array();
-			$replaceEmoticons = array();
+            if ( is_array($emoticons)) {
+                // Replace all emoticon codes with images
+                foreach($emoticons as $key => $emoji ) {
+                    if( trim($text) == trim($emoji['code'])) {
+                        $faSize = "fa-4x" ;
+                    }
+                    $emoji['html'] = str_replace("fa-lg", $faSize , $emoji['html']);
 
-			// same are used in chc_forum
-			$emoticons = tx_jvchat_lib::getEmoticons();
+                    $html = self::formatMessageEmoji($emoji) ;
+                    $text = str_replace($emoji['code'], $html , $text);
+                }
+            }
 
-			$emicoPath = $emoticons_path;
-
-			// Replace all emoticon codes with images
-			foreach($emoticons as $emoticon => $file) {
-				$img = '<img src="'.$emicoPath.$file.'" alt="'.tx_jvchat_lib::unicode_encode($emoticon).'" title="'.tx_jvchat_lib::unicode_encode($emoticon).'" />';
-				$text = str_replace($emoticon, $img, $text);
-			}
         }
-
-        // temporary removed since xss risk
-        //$text = preg_replace('/\[email\](.*)\[\/email\]/i', '<span class="tx-jvchat-email"><a href="mailto:\1">\1</a></span>', $text);
-        //$text = preg_replace('/\[url\](.*)\[\/url\]/i', '<span class="tx-jvchat-url"><a href="\1" target="_blank">\1</a></span>', $text);
+        $text = str_replace(chr(10), '<br />', $text);
 
         $text = preg_replace('/\[b\](.*?)\[\/b\]/i', '<span class="tx-jvchat-bold">\1</span>', $text);
         $text = preg_replace('/\[u\](.*?)\[\/u\]/i', '<span class="tx-jvchat-underlined">\1</span>', $text);
@@ -229,48 +237,9 @@ class tx_jvchat_lib {
         return $text;
 
 	}
-
-    static function getEmoticons($getAll = true) {
-		$theValue = array(
-			':arrow:' => 'arrow.gif',
-			':badgrin:' => 'badgrin.gif',
-			':D' => 'biggrin.gif',
-			':?' => 'confused.gif',
-			'8-)' => 'cool.gif',
-			':(' => 'cry.gif',
-			':doubt:' => 'doubt.gif',
-			':evil:' => 'evil.gif',
-			':!:' => 'exclaim.gif',
-			':idea:' => 'idea.gif',
-			':lol:' => 'lol.gif',
-			':mad:' => 'mad.gif',
-			':neutral:' => 'neutral.gif',
-			':question:' => 'question.gif',
-			':razz:' => 'razz.gif',
-			':*' => 'kiss.gif',
-			':oops:' => 'redface.gif',
-			':roll:' => 'rolleyes.gif',
-			':-(' => 'sad.gif',
-			':shock:' => 'shock.gif',
-			':)' => 'smile.gif',
-			':-)' => 'smile.gif',
-			';)' => 'smile.gif',
-			';-)' => 'smile.gif',
-			':-o' => 'surprised.gif',
-			':wink:' => 'wink.gif',
-			':C:' => 'coffee.gif',
-		);
-		if(!$getAll)
-			return $theValue;
-
-		foreach($theValue as $key => $value) {
-			if(preg_match('/^\:(.*)\:$/i', $key, $matches)) {
-				$theValue['*'.$matches[1].'*'] = $value;
-			}
-		}
-
-		return $theValue;
-	}
+    static function formatMessageEmoji($code ) {
+        return '<span class="chatIconColor"><i class="' . $code['html'] . '"> </i></span>' ;
+    }
 
     static function unicode_encode($string) {
 		$chars = array(
@@ -380,23 +349,21 @@ class tx_jvchat_lib {
 
 	}
 
-    static function getEmoticonsForChatRoom($emoticons_path = 'typo3conf/ext/jvchat/pi1/emoticons/') {
-		$emoticons = tx_jvchat_lib::getEmoticons(false);
+    static function getEmoticonsForChatRoom() {
+		$setup = tx_jvchat_lib::getSetUp();
 
+		if( ! is_array($setup) ) { return '' ;}
+		if( ! is_array($setup["settings"]) ) { return '' ;}
+		if( ! is_array($setup["settings"]["emoticons"]) ) { return '' ;}
+        $emoticons = $setup["settings"]["emoticons"] ;
+        $emoticonBtnClass = $setup["settings"]["emoticonBtnClass"] ;
 		$out = "";
-		$files = array();
-		foreach($emoticons as $code => $file) {
-
-			// output file only once
-			if(in_array($file, $files))
-				continue;
-
-			$files[] = $file;
-			$out .= '<img onClick="setValueToInput(\''.$code.'\');" src="'.$emoticons_path.$file.'" alt="'.tx_jvchat_lib::unicode_encode($code).'" title="'.tx_jvchat_lib::unicode_encode($code).'" />';
+		foreach($emoticons as $key => $emoji) {
+		    if (  $emoji['inMenu']) {
+                $out .= '<span class="'. $emoticonBtnClass. '"><span class="' . $emoji['html'] . '" onClick="setValueToInput(\''.$emoji['code'].'\');" alt="emoji-' . $key . '" title="'.tx_jvchat_lib::unicode_encode($emoji['code']).'"> </span></span>';
+            }
 
 		}
-
-		//$out = '<div class="tx-jvchat-emoticons">'.$out.'</div>';
 
 		return $out;
 	}
@@ -412,6 +379,14 @@ class tx_jvchat_lib {
         }
 
 	}
+
+    static function getSetUp( $pid = 0 ) {
+        if ( $pid == 0) {
+            $pid =  $GLOBALS['TSFE']->id ;
+        }
+         return JV\Jvchat\Utility\TyposcriptUtility::loadTypoScriptFromScratch( $pid , 'tx_jvchat_pi1');
+
+    }
 
     static function trimImplode($glue, $array) {
 		foreach($array as $key => $value) {

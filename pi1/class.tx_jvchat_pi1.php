@@ -390,6 +390,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
         $dataString .= ' data-allowtooltipoffset-y="' . $tooltipOffsetXY[1] . '"' ;
         $dataString .= ' data-refreshMessagesTime="' . $this->conf['FLEX']['refreshMessagesTime']*1000 . '"' ;
         $dataString .= ' data-refreshUserListTime="' . $this->conf['FLEX']['refreshUserListTime']*1000 . '"' ;
+        $dataString .= ' data-pid="' . $GLOBALS['TSFE']->id  . '"' ;
 
 
         if( $this->piVars['debug'] ) {
@@ -398,23 +399,6 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 
 
-        $setup = $this->conf['chatbuttons_on.'];
-        //$sKeyArray = t3lib_TStemplate::sortedKeyList($setup);
-        $chatbuttons_on = array();
-        $chatbuttons_keys = array();
-        foreach($setup as $key => $value)	{
-            $theValue = $setup[$key];
-            if (!strstr($key,'.'))	{
-                $conf = $setup[$key.'.'];
-                $chatbuttons_on[] = $this->cObj->cObjGetSingle($theValue,$conf,$key);	// Get the contentObject
-                $chatbuttons_off[] = '';
-                $chatbuttons_keys[] = str_replace('_','-',$key);
-            }
-        }
-
-     //   $marker['CHATBUTTONS_KEYS'] = "Array('".implode("','", $chatbuttons_keys)."')";
-        //   $marker['CHATBUTTONS_ON'] = "Array('".implode("','", $chatbuttons_on)."')";
-        //    $marker['CHATBUTTONS_OFF'] = "Array('".implode("','", $chatbuttons_off)."')";
 
         $marker['isFull'] = $this->cObj->data['isFull'] ;
 
@@ -425,17 +409,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
             $marker['SUBMIT_MESSAGE'] = $this->pi_getLL('submit_message');
             $marker['LABEL_NEW_MESSAGE'] = $this->pi_getLL('new_message');
 
-/*
-            if(!$this->conf['FLEX']['showFormatting'])
-                $marker['CHATBUTTONS'] = false ;
-            else {
-                $this->cObj->data['enableEmoticons'] = $this->conf['FLEX']['showEmoticons'];
-                $this->cObj->data['enableUserstyles'] = $this->conf['FLEX']['showStyles'];
-                $this->cObj->data['enableTime'] = $this->conf['FLEX']['showTime'];
-                $marker['CHATBUTTONS'] =  $this->cObj->cObjGet($this->conf['chatbuttons.']);
-            }
-*/
-            $marker['EMOTICONS'] = tx_jvchat_lib::getEmoticonsForChatRoom();
+            $renderer->assign("emoticons" ,  tx_jvchat_lib::getEmoticonsForChatRoom() ) ;
 
 
             if($this->conf['useSnippets']) {
@@ -460,11 +434,16 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
         $renderer->assign("user" , $this->user ) ;
         $renderer->assign("marker" , $marker ) ;
+
         $renderer->assign("room" , $room ) ;
         $renderer->assign("roomData" , $roomData ) ;
         $renderer->assign("confFLEX" , $this->conf['FLEX'] ) ;
 
         $renderer->assign("dataString" , $dataString ) ;
+
+        // only for debuggin ..
+       //  $renderer->assign("DisplayIcons" , true ) ;
+
         $content = $renderer->render();
         return $content ;
 	}
@@ -653,7 +632,8 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			if(tx_jvchat_lib::isExpert($room, $entry->feuser))
 				$this->cObj->data['type'] = 3;
 
-			$this->cObj->data['entry'] = tx_jvchat_lib::formatMessage($entry->entry);
+            $extConf = tx_jvchat_lib::getExtConf();
+			$this->cObj->data['entry'] = tx_jvchat_lib::formatMessage($entry->entry , $extConf->setup['settings']['emoticons'] ,  $room->enableEmoticons );
 
 			// render COBJ from TS with current data
 			$theValue .= $this->cObj->cObjGet($this->conf['views.']['session.']['oneEntry.']);

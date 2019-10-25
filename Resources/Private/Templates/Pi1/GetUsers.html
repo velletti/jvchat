@@ -1,0 +1,53 @@
+<f:layout name="Ajax" />
+
+<f:section name="main">
+
+    <f:format.raw>
+        <f:spaceless>
+            <f:if condition="{user.hidden}">
+                <f:else>
+
+                    <f:render section="userName" arguments="{showFullNames: showFullNames, user: user , thisUser: thisUser , extConf: extConf }"/>
+
+                </f:else>
+            </f:if>
+        </f:spaceless>
+    </f:format.raw>
+</f:section>
+
+<f:section name="userName">
+    <f:spaceless>
+        <f:variable name="Button"></f:variable>
+        <f:if condition="{thisUser.uid} == {user.uid}">
+            <f:else>
+                <f:if condition="{extConf.allowPrivateRooms}">
+                    <f:variable name="Button"><span class=" btn btn-sm  btn-default" title="{extConf.LLL.command_invite}">&nbsp;
+                        <span class="fa fa-lock"></span>&nbsp;
+                    </span></f:variable>
+
+
+                    <script type="application/javascript">
+                        var userid = '#{user.uid}' ;
+                        var username = '{user.{extConf.usernameField1}} {user.{extConf.usernameField2}}' ;
+                        $('#tx-jvchat-msg-user-' + id + " span.btn").bind("click", function(evt) {
+                            evt.preventDefault();
+                            var name = chat_instance.talkToNewRoomName.replace(/\%s/, username);
+                            var command = "/newroom "+name ;
+                            chat_instance.sendMessage(command);
+                            command = "/recentinvite "+userid+" ";
+                            chat_instance.sendMessage(command);
+                        });
+
+                    </script>
+
+
+                </f:if>
+            </f:else>
+        </f:if>
+
+        <span id="tx-jvchat-msg-user-{entry.uid}" class="tx-jvchat-link-user" data-content="user-{user.uid}" >
+            <f:format.raw>{Button}</f:format.raw> {user.{extConf.usernameField1}}<f:if condition="{usernameField2}"> {user.{extConf.usernameField2}}</f:if>
+        </span>
+    </f:spaceless>
+</f:section>
+

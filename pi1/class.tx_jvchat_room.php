@@ -34,6 +34,10 @@ class tx_jvchat_room {
 		$this->members = $array['members'];
 		$this->page = $array['page'];
 		$this->image = $array['image'];
+		$this->enableEmoticons = $array['enableEmoticons'];
+		$this->enableTime = $array['enableTime'];
+		$this->imageUpload = $array['imageUpload'];
+
 	}
 
 	function toArray() {
@@ -64,6 +68,10 @@ class tx_jvchat_room {
 			'members' => $this->members,
 			'page' => $this->page,
 			'image' => $this->image,
+			'enableEmoticons' => $this->enableEmoticons,
+			'enableTime' => $this->enableTime,
+			'imageUpload' => $this->imageUpload
+
 		);
 
 		return $theValue;
@@ -166,6 +174,10 @@ class tx_jvchat_room {
 	var $page;
 	
 	var $image;
+
+	var $enableEmoticons;
+	var $enableTime;
+	var $imageUpload ;
 
 /*	function getModeratorIDs() {
 		$moderators = array();

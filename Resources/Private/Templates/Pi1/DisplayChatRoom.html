@@ -1,110 +1,120 @@
 <f:layout name="Default" />
 
 <f:section name="main">
-    <div class="p-2 tx-jvchat-chat-intro" id="tx-jvchat-config" {dataString -> f:format.raw()} >
-        <f:if condition="{room.name}">
-            <h2>{room.name}</h2>
-        </f:if>
-        <f:if condition="{room.image}">
-            <p class="hidden-xs"><img src="uploads/tx_jvchat/{room.image}" alt="logo" ></p>
-        </f:if>
-        <f:if condition="{room.description}">
-            <f:then>
-                <p class="hidden-xs">{room.description}</p>
-            </f:then>
-            <f:else>
-                <p class="hidden-xs">{room.description}</p>
-            </f:else>
-
-        </f:if>
-        <p class="hidden-xs">{user.uid}: {user.username} ({roomData.userCount} <f:translate key="user_in_chat"></f:translate> )</p>
-
-
-        <f:if condition="{marker.isFull}">
-            <f:else>
-                <div id="tx-jvchat-showUserlist" class="hidden-sm hidden-md hidden-lg navbar-default" style="margin-right: -20px;">
-
-                    <button class="navbar-toggle collapsed" style="margin:0;" aria-expanded="false" aria-controls="collapsed" type="button" data-toggle="collapse" data-target="#tx-jvchat-userlist">
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                            <span class="icon-bar"></span>
-                    </button>
-                    <span class="left" style="margin: 4px 20px 0 0 ;">Show Userlist</span>
-                </div>
-            </f:else>
-        </f:if>
-    </div>
-
-
-
-
-    <f:if condition="{marker.isFull}">
+    <f:if condition="{DisplayIcons}">
         <f:then>
-            <f:render section="roomIsFull" arguments="{_all}"></f:render>
+            <f:render partial="DisplayIcons" arguments="{_all}"></f:render>
         </f:then>
-
         <f:else>
+            <div class="p-2 tx-jvchat-chat-intro" id="tx-jvchat-config" {dataString -> f:format.raw()} >
+                <f:if condition="{room.name}">
+                    <h2>{room.name}</h2>
+                </f:if>
+                <f:if condition="{room.image}">
+                    <p class="hidden-xs"><img src="uploads/tx_jvchat/{room.image}" alt="logo" ></p>
+                </f:if>
+                <f:if condition="{room.description}">
+                    <f:then>
+                        <p class="hidden-xs">{room.description}</p>
+                    </f:then>
+                    <f:else>
+                        <p class="hidden-xs">{room.description}</p>
+                    </f:else>
+
+                </f:if>
+                <p class="hidden-xs">{user.uid}: {user.username} ({roomData.userCount} <f:translate key="user_in_chat"></f:translate> )</p>
 
 
+                <f:if condition="{marker.isFull}">
+                    <f:else>
+                        <div id="tx-jvchat-showUserlist" class="hidden-sm hidden-md hidden-lg navbar-default" style="margin-right: -20px;">
 
-            <div id="tx-jvchat-loadinginfo">
-                <img src="/typo3conf/ext/connect_template/Resources/Public/Images/loading-big.gif" height="30" width="30">
-                <f:format.raw>{marker.LOADING_MESSAGE}</f:format.raw>
+                            <button class="navbar-toggle collapsed" style="margin:0;" aria-expanded="false" aria-controls="collapsed" type="button" data-toggle="collapse" data-target="#tx-jvchat-userlist">
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                                    <span class="icon-bar"></span>
+                            </button>
+                            <span class="left" style="margin: 4px 20px 0 0 ;">Show Userlist</span>
+                        </div>
+                    </f:else>
+                </f:if>
             </div>
 
-            <div id="tx-jvchat-container" class="container">
-                <div id="tx-jvchat-content" class="row">
-                    <div id="tx-jvchat-userlist" class="collapse in col-sm-3" style="height:auto;" aria-expanded="true"></div>
-
-                    <div id="tx-jvchat-messages" class="col-xs-12 col-sm-9" style="height: 100%; display:none;"></div>
-                </div>
-
-                <div id="tx-jvchat-tools-container" class="row" style="display:none;">
-                    <div id="tx-jvchat-format">
-
-                        <i class="btn btn-default fa fa-bold" id="tx-jvchat-button-b" onClick="javascript:chat_instance.addSelText('[b]','[/b]');" title="{f:translate(key: 'chatbutton.bold')}"></i>
-                        <i class="btn btn-default fa fa-italic" id="tx-jvchat-button-i" onClick="javascript:chat_instance.addSelText('[i]','[/i]');" title="{f:translate(key: 'chatbutton.italic')}"></i>
-                        <i class="btn btn-default fa fa-underline" id="tx-jvchat-button-u" onClick="javascript:chat_instance.addSelText('[u]','[/u]');" title="{f:translate(key: 'chatbutton.underlined')}"></i>
-                        <i class="btn btn-default fa fa-strikethrough" id="tx-jvchat-button-s" onClick="javascript:chat_instance.addSelText('[s]','[/s]');" title="{f:translate(key: 'chatbutton.stroke')}"></i>
-                        <f:if condition="{roomData.enableTime}">
-                            <i class="btn btn-default fas fa-clock" id="tx-jvchat-button-c" onClick="javascript:chat_instance.toggleAllTime();" title="{f:translate(key: 'chatbutton.clock_on')}"></i>
-
-                        </f:if>
-                        <f:if condition="{roomData.enableEmoticons}">
-                            <i class="btn btn-default fas fa-smile" id="tx-jvchat-button-smilies" onClick="javascript:chat_instance.toggleEmoticons();" title="{f:translate(key: 'chatbutton.smilies_on')}"></i>
-                        </f:if>
-
-                        <i class="btn btn-default fas fa-play" style="display:none" id="tx-jvchat-button-start-on" onClick="javascript:chat_instance.chat_instance.start();" title="{f:translate(key: 'chatbutton.start')}"></i>
-                        <i class="btn btn-default fas fa-stop" id="tx-jvchat-button-start" onClick="javascript:chat_instance.start();" title="{f:translate(key: 'chatbutton.stop')}"></i>
-                        <i class="btn btn-default fa fa-question" id="tx-jvchat-button-help" onClick="javascript:chat_instance.sendMessage('/help');" title="{f:translate(key: 'chatbutton.help')}"></i>
-
-                        <f:if condition="{roomData.enableImageUpload}">
-                            <i class="btn btn-default fa fa-images" id="tx-jvchat-button-image" onClick="javascript:chat_instance.uploadImg();" title="{f:translate(key: 'UploadImage.help')}"></i>
-                        </f:if>
 
 
+
+            <f:if condition="{marker.isFull}">
+                <f:then>
+                    <f:render section="roomIsFull" arguments="{_all}"></f:render>
+                </f:then>
+
+                <f:else>
+
+
+
+
+                    <div id="tx-jvchat-loadinginfo">
+                        <img src="/typo3conf/ext/connect_template/Resources/Public/Images/loading-big.gif" height="30" width="30">
+                        <f:format.raw>{marker.LOADING_MESSAGE}</f:format.raw>
                     </div>
-                    <div id="tx-jvchat-emoticons" style="display:none;"><f:format.raw>{marker.EMOTICONS}</f:format.raw></div>
-                </div>
 
-                <div id="tx-jvchat-input-container" class="row" style="display:none;">
-                    <textarea id="txjvchatnewMessage" name="txjvchatnewMessage" rows="3" cols="40"></textarea>
-                    <f:if condition="{confFLEX.showSendButton}">
-                        <button onClick="chat_instance.submitMessage()">{f:translate(key: 'submit_message')}</button>
-                    </f:if>
-                </div>
-            </div>
-            <div style="display:none; height: 0;">
-                <div id="tx-jvchat-storedMessages" style="display:none; height: 10em;"></div>
-                <div id="tx-jvchat-user-detail" style="display:none; position: absolute; top: 0px; left: 0px; z-index: 1000; margin: 0;">
-                    <div id="tx-jvchat-user-detail-caption"></div>
-                    <div id="tx-jvchat-user-detail-body"></div>
-                </div>
-            </div>
+                    <div id="tx-jvchat-container" class="container">
+                        <div id="tx-jvchat-content" class="row">
+                            <div id="tx-jvchat-userlist" class="collapse in col-sm-3" style="height:auto;" aria-expanded="true"></div>
 
-            <f:render section="javascriptShort"  arguments="{_all}"></f:render>
+                            <div id="tx-jvchat-messages" class="col-xs-12 col-sm-9" style="height: 100%; display:none;"></div>
+                        </div>
+
+                        <div id="tx-jvchat-tools-container" class="row" style="display:none;">
+                            <div id="tx-jvchat-format">
+
+                                <i class="btn btn-default fa fa-bold" id="tx-jvchat-button-b" onClick="javascript:chat_instance.addSelText('[b]','[/b]');" title="{f:translate(key: 'chatbutton.bold')}"></i>
+                                <i class="btn btn-default fa fa-italic" id="tx-jvchat-button-i" onClick="javascript:chat_instance.addSelText('[i]','[/i]');" title="{f:translate(key: 'chatbutton.italic')}"></i>
+                                <i class="btn btn-default fa fa-underline" id="tx-jvchat-button-u" onClick="javascript:chat_instance.addSelText('[u]','[/u]');" title="{f:translate(key: 'chatbutton.underlined')}"></i>
+                                <i class="btn btn-default fa fa-strikethrough" id="tx-jvchat-button-s" onClick="javascript:chat_instance.addSelText('[s]','[/s]');" title="{f:translate(key: 'chatbutton.stroke')}"></i>
+                                <f:if condition="{roomData.enableTime}">
+                                    <i class="btn btn-default fas fa-clock" id="tx-jvchat-button-c" onClick="javascript:chat_instance.toggleAllTime();" title="{f:translate(key: 'chatbutton.clock_on')}"></i>
+
+                                </f:if>
+                                <f:if condition="{roomData.enableEmoticons}">
+                                    <span class="chatIconColor">
+                                        <i class="btn btn-default fas fa-smile" id="tx-jvchat-button-smilies" onClick="javascript:chat_instance.toggleEmoticons();" title="{f:translate(key: 'chatbutton.smilies_on')}"></i>
+                                    </span>
+                                </f:if>
+
+                                <i class="btn btn-default fas fa-play" style="display:none" id="tx-jvchat-button-start-on" onClick="javascript:chat_instance.chat_instance.start();" title="{f:translate(key: 'chatbutton.start')}"></i>
+                                <i class="btn btn-default fas fa-stop" id="tx-jvchat-button-start" onClick="javascript:chat_instance.start();" title="{f:translate(key: 'chatbutton.stop')}"></i>
+                                <i class="btn btn-default fa fa-question" id="tx-jvchat-button-help" onClick="javascript:chat_instance.sendMessage('/help');" title="{f:translate(key: 'chatbutton.help')}"></i>
+
+                                <f:if condition="{roomData.enableImageUpload}">
+                                    <i class="btn btn-default fa fa-images" id="tx-jvchat-button-image" onClick="javascript:chat_instance.uploadImg();" title="{f:translate(key: 'UploadImage.help')}"></i>
+                                </f:if>
 
 
+                            </div>
+                            <div id="tx-jvchat-emoticons" style="display:none;" class="chatIconColor"><span class="btn btn-default"><i class="fa fa-lg fa-bars" onClick="javascript:chat_instance.sendMessage('/smilies');"></i></span><f:format.raw>{emoticons}</f:format.raw></div>
+                        </div>
+
+                        <div id="tx-jvchat-input-container" class="row" style="display:none;">
+                            <textarea id="txjvchatnewMessage" name="txjvchatnewMessage" rows="3" cols="40"></textarea>
+                            <f:if condition="{confFLEX.showSendButton}">
+                                <button onClick="chat_instance.submitMessage()">{f:translate(key: 'submit_message')}</button>
+                            </f:if>
+                        </div>
+                    </div>
+                    <div style="display:none; height: 0;">
+                        <div id="tx-jvchat-storedMessages" style="display:none; height: 10em;"></div>
+                        <div id="tx-jvchat-user-detail" style="display:none; position: absolute; top: 0px; left: 0px; z-index: 1000; margin: 0;">
+                            <div id="tx-jvchat-user-detail-caption"></div>
+                            <div id="tx-jvchat-user-detail-body"></div>
+                        </div>
+                    </div>
+
+                    <f:render section="javascriptShort"  arguments="{_all}"></f:render>
+
+
+                </f:else>
+            </f:if>
         </f:else>
     </f:if>
 
@@ -153,7 +163,6 @@
         var roomId = {marker.CHATROOM_ID} ;
         var checkFullTime = {marker.RELOAD_TIME} ;
         var scriptUrl = "{marker.SCRIPTURL}" ;
-        var chatbuttonskeys = {marker.CHATBUTTONS_KEYS} ;
 
         chat_instance.configuration = {
             roomId : roomId,

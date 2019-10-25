@@ -39,6 +39,36 @@ require_once('class.tx_jvchat_lib.php');
 
 class tx_jvchat_chat {
 
+    /** @var \TYPO3\CMS\Lang\LanguageService $lang */
+    var $lang;
+
+    var $commands;
+
+    /** @var  tx_jvchat_db  */
+    var $db;
+
+    var $env;
+
+    var $debug = false;
+
+    /**********************************************************************************************/
+    // GENERAL HELPER FUNCTIONS
+    /**********************************************************************************************/
+
+    var $debugMessages = array();
+
+    /** @var  tx_jvchat_room  */
+    var $room;
+
+    var $user;
+
+    var $lastMessageId;
+
+    /** @var array The typoscript setup includings views cObjects and the settings array  */
+    var $setup = array() ;
+
+    var $extConf;
+
 	function init($user, $charset) {
 		// load language files
 		// at this moment it is impossible to modify this via TypoScript
@@ -47,21 +77,16 @@ class tx_jvchat_chat {
 
 		$this->extConf = tx_jvchat_lib::getExtConf();
 
+
+
 		// get parameters
-		//$this->env['user'] = $GLOBALS['TSFE']->fe_user->user;
 		$this->env['user'] = $user->user;
 		$this->env['room_id'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('r'));
 		$this->env['pid'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('p'));
-		//$this->env['charset'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('charset'));
 		$this->env['charset'] = $charset;
-		//var_dump(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('m'));
 
 		$this->env['msg'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('m');
 
-		//var_dump($this->env['charset']);
-
-		//if($this->env['charset'] == 'utf-8')
-		//	$this->env['msg'] = tx_jvchat_lib::utf8RawUrlDecode($this->env['msg'], $this->env['charset'] == 'utf-8');
 		$this->env['msg'] = rawurldecode($this->env['msg']) ;
 		$this->env['msg'] = str_replace('<', '&lt;', $this->env['msg']);
 		$this->env['msg'] = str_replace('>', '&gt;', $this->env['msg']);
@@ -76,7 +101,6 @@ class tx_jvchat_chat {
 		$this->lang = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
 		$this->lang->init($this->env['LLKey']);
 		if( $this->env['LLKey'] == "en" || $this->env['LLKey'] == "default" || $this->env['LLKey'] == '') {
-			// j.v. 22.7.2016 .php geht nciht mehr nun in resources/ ...  als xlf
 			$this->lang->includeLLFile("EXT:jvchat/Resources/Private/Language/locallang.xlf");
 		} else {
 			$this->lang->includeLLFile("EXT:jvchat/Resources/Private/Language/"  . $this->env['LLKey'] . ".locallang.xlf"  );
@@ -95,6 +119,7 @@ class tx_jvchat_chat {
 		$this->debugMessage('init');
 
 		$this->lastMessageId = $this->env['lastid'];
+        $this->setup = tx_jvchat_lib::getSetUp( $this->env['pid'] );
 
 		// init commands
 		$this->initCommands();
@@ -120,7 +145,7 @@ class tx_jvchat_chat {
 	}
 
 	function initCommands() {
-		$this->commands = array(
+		$initCmd = array(
 			'help' => array(
 				'callback' => '_help',
 				'description' => $this->lang->getLL('command_help'),
@@ -131,6 +156,13 @@ class tx_jvchat_chat {
 				'callback' => '_smilies',
 				'description' => $this->lang->getLL('command_smileys'),
 				'rights' => '1111',
+                'parameters' => array(
+                    'group' => array(
+                        'description' => ' the icon category: food, emoji, signs ',
+                        'regExp' =>'/.(.*)/i',
+                        'required' => 0,
+                    ),
+                ),
 			),
 
 			'quit' => array(
@@ -377,7 +409,11 @@ class tx_jvchat_chat {
 				),
 
 			);
-
+        if ( is_array($this->setup['settings']) && is_array($this->setup['settings']['commands'])) {
+            $this->commands = array_merge($initCmd , $this->setup['settings']['commands']  ) ;
+        } else {
+            $this->commands = $initCmd ;
+        }
 	}
 
 	function perform() {
@@ -447,7 +483,7 @@ class tx_jvchat_chat {
         if($resUpdate === "full")
             return $this->returnMessage('full');
 
-
+        $roomData =
 
         $entries = $this->db->getEntries($this->room, $lastid);
 
@@ -513,7 +549,7 @@ class tx_jvchat_chat {
             if($entry->isPrivate()) {
                 $recipient = $this->db->getFeUser($entry->tofeuserid);
             }
-            $entryText = tx_jvchat_lib::formatMessage($entry->entry, $this->extConf['emoticonsPath']);
+            $entryText = tx_jvchat_lib::formatMessage($entry->entry, $this->setup['settings']['emoticons'] );
 
             $id = "";
             if(tx_jvchat_lib::isModerator($this->room, $this->user['uid'])) {
@@ -716,12 +752,9 @@ class tx_jvchat_chat {
                 $username = sprintf($this->lang->getLL('privateMsgUsernamens'), $username, $recipient['username']);
 			}
 
-			// get formatted text
-			$this->debugMessage('formatMessageB');
 
-			$entryText = tx_jvchat_lib::formatMessage($entry->entry, $this->extConf['emoticonsPath']);
+			$entryText = tx_jvchat_lib::formatMessage($entry->entry, $this->setup['settings']['emoticons'] );
 
-			$this->debugMessage('formatMessageE');
 
 			$id = "";
 			if(tx_jvchat_lib::isModerator($this->room, $this->user['uid']))
@@ -1010,8 +1043,10 @@ class tx_jvchat_chat {
 
 	function getUserlist($room = NULL, $roomlistMode = false) {
 
-		if(!$room)
-			$room = $this->room;
+		if(!$room) {
+            $room = $this->room;
+        }
+
 
 		// check if user is allowed to put message in this room
 		if(!tx_jvchat_lib::checkAccessToRoom($room, $this->user))
@@ -1027,50 +1062,31 @@ class tx_jvchat_chat {
 	  */
 	function getUserlistOfRoom($room, $roomlistMode = false) {
 
-		$userNamesGlue = tx_jvchat_lib::getUserNamesGlue();
-		$userNamesFieldGlue = tx_jvchat_lib::getUserNamesFieldGlue();
+        /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
+        $renderer = tx_jvchat_lib::getRenderer($this->settings , "GetUsers" , "html" )  ;
+        $renderer->assign("showFullNames" , $room->showFullNames() ) ;
+
+        $renderer->assign("thisUser" , $this->user ) ;
+        $renderer->assign("extConf" , $this->extConf ) ;
+        $renderer->assign("settings" , $this->setup['settings'] ) ;
 
 		$users = $this->db->getFeUsersOfRoom($room);
-
-		$userNames = array();
+        $glue = tx_jvchat_lib::getUserNamesGlue() ;
+		$usersArray = array();
+		$messages = array() ;
 		foreach($users as $user) {
-			unset($parts) ;
-			if(!$user || !$user['username'])
-				continue;
-
-			$type = tx_jvchat_lib::getUserTypeString($room, $user);
-			$parts['username'] = htmlspecialchars($this->getUsername($user));
-
-
-			$snippets = $this->db->getSnippets($room->uid, $user['uid']);
-
-			if(!$roomlistMode) {
-				$parts['type'] = $type;
-				$parts['uid'] = $user['uid'];
-				$parts['style'] = $user['tx_jvchat_chatstyle'];
-			}
-
-			if($snippets['userlistsnippet'])
-				$parts['userlistsnippet'] = $snippets['userlistsnippet'];
-
-			if($roomlistMode && $snippets['userlistsnippet']) {
-				unset($parts['username']);
-			}
-
-
-			if(!$roomlistMode)
-				$parts['tooltipsnippet'] = $snippets['tooltipsnippet'];
-
-			$details = $room->getDetailsField($type);
-			foreach($details as $key) {
-				if($room->showDetailOf($type,$key))
-					$parts[] = $key.($userNamesFieldGlue.$user[$key]);
-			}
-
-			$userNames[] = implode($userNamesGlue, $parts);
-
+			if(!$user || !$user['username']) {
+                $user['hidden'] = 1 ;
+                continue;
+            }
+            $user['chatType'] = tx_jvchat_lib::getUserTypeString($room, $user);
+            $usersArray[] = $user ;
+            $renderer->assign("user" , $user ) ;
+            $messages[] = $renderer->render() . $glue .$user['chatType'] .  $glue . $user['uid'] ;
 		}
-		return $userNames;
+
+        return $messages ;
+
 	}
 	
 	function getUsername($user = NULL) {
@@ -1126,30 +1142,52 @@ class tx_jvchat_chat {
 
 			$out[] = '<div class="tx-jvchat-cmd-help-command">'.$title.$parameterList.$commandDscr.$parameterDscr.'</div>';
 		}
-		return '<div class="tx-jvchat-cmd-help">'.implode('', $out).'</div>';
+		return '<div class="tx-jvchat-cmd-help">'.implode('', $out).'<br></div>';
 	}
 	
-	function _smilies($params)
+	function _smilies($params  )
 		{
-				// 2006-05-08: ï¿½nderung Vincent Tietz
-		 		$emoticons = tx_jvchat_lib::getEmoticons(false);
 
-				$out ="";
-				$columns = 3;
-				$col = 0;
-				foreach($emoticons as $iconCode => $image) {
-					$out .= '<div class="tx-jvchat-cmd-smileys-text">'.$iconCode.'</div>';
-					$out .= '<div class="tx-jvchat-cmd-smileys-image">'.tx_jvchat_lib::formatMessage($iconCode).'</div>';
-					$col++;
-					if($col == $columns) {
-						$col = 0;
-						$out = $out.'<br style="clear:both;" />';
-					}
-				}
+            $emoticons = $this->setup['settings']['emoticons'] ;
+            $param = $params[1] ;
+            $out ="";
+            usort($emoticons, function ($item1, $item2) {
+                return $item1['group'] <=> $item2['group'];
+            });
 
-				$out = '<div class="tx-jvchat-cmd-smileys">'.$out.'</div>';
+            $columns = 5;
+            $col = 0;
+            $group = false ;
+            foreach($emoticons as $key => $icon ) {
+                if( $icon['hideInHelp']) {
+                    continue ;
+                }
+                if( strlen($param) > 0 ) {
+                    if( strtolower( trim($param)) != trim( $icon['group'])) {
+                        continue ;
+                    }
+                }
 
-				return $out;
+                if( !$group || trim( $icon['group']) != $group ) {
+                    $col = 0;
+                    $group = $icon['group'] ;
+                    $out .="<br ><br style=\"clear:both;\"><b onClick=\"javascript:chat_instance.insertCommand('/smilies " . $icon['group'] .  "');\">/smilies " . $icon['group']. "</b><br>";
+                }
+
+                $out .= '<div class="tx-jvchat-cmd-smileys-text">'.$icon['code'].'</div>';
+                $out .= '<div class="tx-jvchat-cmd-smileys-image chatIconColor " onClick="javascript:chat_instance.insertCommand(\'' . $icon['code'] .  '\');" >'.tx_jvchat_lib::formatMessageEmoji($icon).'</div>';
+                $col++;
+                if($col == $columns || trim( $icon['group']) != $group ) {
+                    $col = 0;
+                    $out = $out.'<br style="clear:both;" />';
+                }
+                $group = $icon['group'] ;
+
+            }
+
+            $out = '<div class="tx-jvchat-cmd-smileys">'.$out.'<br></div>';
+
+            return $out;
 		}
 	
 	function _roomlist($params) {
@@ -1586,32 +1624,6 @@ class tx_jvchat_chat {
 
 	}
 	
-	/** @var \TYPO3\CMS\Lang\LanguageService $lang */
-	var $lang;
-	
-	var $commands;
 
-    /** @var  tx_jvchat_db  */
-	var $db;
-	
-	var $env;
-	
-	var $debug = false;
-
-	/**********************************************************************************************/
-	// GENERAL HELPER FUNCTIONS
-	/**********************************************************************************************/	
-
-	var $debugMessages = array();
-
-    /** @var  tx_jvchat_room  */
-	var $room;
-
-	var $user;
-
-	var $lastMessageId;
-	
-
-	var $extConf;
 
 }

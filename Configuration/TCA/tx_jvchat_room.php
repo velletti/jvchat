@@ -1,6 +1,6 @@
 <?php
 if (!defined ('TYPO3_MODE')) die ('Access denied.');
-return array (
+$return = array (
     "ctrl" => Array (
         "title" => "LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tx_jvchat_room",
         "label" => "name",
@@ -311,3 +311,14 @@ return array (
         "1" => Array("showitem" => "starttime, endtime, fe_group")
     )
 );
+
+
+if (TYPO3_MODE == 'BE')	{
+    $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['jvchat']);
+    if($conf['showRealNamesListing']) {
+        $return['columns']['experts']['config']['itemsProcFunc'] = 'tx_jvchat_itemsProcFunc->user_jvchat_getFeUser';
+        $return['columns']['moderators']['config']['itemsProcFunc'] = 'tx_jvchat_itemsProcFunc->user_jvchat_getFeUser';
+        $return['columns']['bannedusers']['config']['itemsProcFunc'] = 'tx_jvchat_itemsProcFunc->user_jvchat_getFeUser';
+    }
+}
+return $return ;

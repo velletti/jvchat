@@ -8,8 +8,6 @@
 
 plugin.tx_jvchat_pi1 {
 
-	templateFile = EXT:jvchat/Resources/Private/Template/chat.tpl.html
-	
 		# if not defined anything in the configuration form
 	pidList = 
 	
@@ -341,7 +339,221 @@ plugin.tx_jvchat_pi1 {
 		30.dataWrap = {field:username}
 		
 	}
+	settings {
+		commands {
+			# overwrite comands
+			# talkTo {
+			#        'callback' => '_talkTo',
+			#                    'hidefeedback' => '1',
+			#                    'hideinhelp' => '1',
+			#                    'description' => '',
+			#                    'parameters' => array(
+			#                        'name' => array(
+			#                            'regExp' =>'/.(.*)/i',
+			#                            'description' => $this->lang->getLL('command_talkto_param_name'),
+			#                            'required' => 0,
+			#                        ),
+			#                    ),
+			#                    # 4 Columns are for Superusers , Moderators  Experts  and normal users
+			#                    'rights' => '0001',
+			#}
+			stop {
+			#	rights = 0000
+				hideinhelp = 1
+			}
+			restart {
+			#	rights = 0000
+				hideinhelp = 1
+			}
 
+		}
+
+		###  ####################
+		#        ':arrow:' => 'arrow.gif',
+		#            ':?' => 'confused.gif',
+		#            '8-)' => 'cool.gif',
+		#            ':(' => 'cry.gif',
+		#            ':doubt:' => 'doubt.gif',
+		#            ':evil:' => 'evil.gif',
+		#            ':!:' => 'exclaim.gif',
+		#            ':idea:' => 'idea.gif',
+		#            ':lol:' => 'lol.gif',
+		#            ':mad:' => 'mad.gif',
+		#            ':neutral:' => 'neutral.gif',
+		#            ':question:' => 'question.gif',
+		#            ':razz:' => 'razz.gif',
+		#            ':*' => 'kiss.gif',
+		#            ':oops:' => 'redface.gif',
+		#            ':roll:' => 'rolleyes.gif',
+		#            ':-(' => 'sad.gif',
+		#            ':shock:' => 'shock.gif',
+		#            ':)' => 'smile.gif',
+		#            ':-)' => 'smile.gif',
+		#            ';)' => 'smile.gif',
+		#            ';-)' => 'smile.gif',
+		#            ':-o' => 'surprised.gif',
+		#            ':wink:' => 'wink.gif',
+		#            ':C:' => 'coffee.gif',
+		#
+		#### ###################
+		emoticonBtnClass = btn btn-default
+		emoticons {
+
+			###  list of icons for the first visible menu
+			# no. 1 is for the command to show all smilies
+			# these icons should have: inMenu = 1
+
+			2 {
+				code = :OK:
+				inMenu = 1
+				group = signs
+				html = fa fa-lg fa-thumbs-up
+			}
+			3 {
+				code = :NO:
+				inMenu = 1
+				group = signs
+				html = fa fa-lg fa-thumbs-down
+			}
+			4 {
+				code = :badgrin:
+				inMenu = 1
+				group = emoji
+				html = fa fa-lg fa-grin-squint
+			}
+
+			5 {
+				code = ;)
+				inMenu = 1
+				group = emoji
+				html = fa fa-lg fa-grin-wink
+			}
+			6 {
+				code = :~
+				inMenu = 1
+				group = emoji
+				html = fa fa-lg fa-grin-tongue
+			}
+			7 {
+				code = :*
+				inMenu = 1
+				group = emoji
+				html = fa fa-lg fa-kiss-beam
+			}
+			8 {
+				code = ;*
+				inMenu = 1
+				group = emoji
+				html = fa fa-lg fa-kiss-wink-heart
+			}
+
+			9 {
+				code = :C:
+				inMenu = 1
+				group = food
+				html = fa fa-lg fa-coffee
+			}
+			10 {
+				code = :B:
+				inMenu = 1
+				group = food
+				html = fa fa-lg fa-beer
+			}
+
+			## more icons ... inMenü should not be set. to be able to group them and show lists of icons, use the group = option
+
+
+			111 {
+				code = :D
+				group = emoji
+				html = fa fa-lg fa-grin-beam
+			}
+			112 {
+				code = !-)
+				group = emoji
+				html = fa fa-lg fa-grin-tongue-wink
+			}
+
+			114 {
+				code = 8)
+				group = emoji
+				html = fa fa-lg fa-mask
+			}
+			116 {
+				code = :#
+				group = emoji
+				html = fa fa-lg fa-grimace
+			}
+			117 {
+				code = :(
+				group = emoji
+				html = fa fa-lg fa-sad-tear
+			}
+
+			118 {
+				code = :-(
+				group = emoji
+				html = fa fa-lg fa-angry
+			}
+
+			119 {
+				code = :?
+				group = emoji
+				html = fa fa-lg fa-flushed
+			}
+			120 {
+				code = :grin-hearts:
+				group = emoji
+				html = fa fa-lg fa-grin-hearts
+			}
+
+
+			201 {
+				code = :WB:
+				group = food
+				html = fa fa-lg fa-wine-bottle
+			}
+
+			202 {
+				code = :W:
+				group = food
+				html = fa fa-lg fa-wine-glass-alt
+			}
+			203 {
+				code = :cheers:
+				group = food
+				html = fa fa-lg fa-glass-cheers
+			}
+			204 {
+				code = :pizza:
+				group = food
+				html = fa fa-lg fa-pizza-slice
+			}
+
+			301 {
+				code = :arrow:
+				group = signs
+				html = fa fa-lg fa-arrow-alt-circle-right
+			}
+			302 {
+				code = :!:
+				group = signs
+				html = fa fa-lg fa-exclamation-circle
+			}
+			351 {
+				code = :train:
+				group = signs
+				html = fa fa-lg fa-train
+			}
+			352 {
+				code = :ship:
+				group = signs
+				html = fa fa-lg fa-ship
+			}
+
+		}
+
+	}
 }
 
 # for the popup PAGE object
@@ -350,8 +562,14 @@ chatwindow < plugin.tx_jvchat_pi1.chatwindow
 
 includeLibs.jvchat = EXT:jvchat/pi1/class.tx_jvchat_userFunctions.php
 
-page.includeCSS {
-	jvchat = EXT:jvchat/Resources/Public/Css/jvchat.css
+page {
+	includeJSFooter {
+		jquery_chat = /typo3conf/ext/jvchat/Resources/Public/Js/tx_jvchat.min.js
+	}
+    includeCSS {
+		jvchat = EXT:jvchat/Resources/Public/Css/jvchat.min.css
+
+	}
 }
 
 [usergroup = 4,5,22,16]

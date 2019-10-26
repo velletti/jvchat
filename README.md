@@ -19,8 +19,8 @@ so you may Need to adjust the Fluid templates
 - pi1\Roomlist
 
 
-css is now in Resource\Public\jvchat.css
-or use scss 
+css is now in Resource\Public\css\jvchat.css
+or use scss in Resource\Private\Scss\jvchat.scss
 
 MYQSL Tables have to be renamed and th Plugins List type value has changed:
 

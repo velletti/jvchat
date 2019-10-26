@@ -30,3 +30,27 @@ MYQSL Tables have to be renamed and th Plugins List type value has changed:
     RENAME TABLE `tx_vjchat_messages` TO `tx_jvchat_messages`;
     RENAME TABLE `tx_vjchat_room_feusers_mm` TO `tx_jvchat_room_feusers_mm`;
     UPDATE tt_content SET list_type ='jvchat_pi1' WHERE list_type ='vjchat_pi1' ;
+    
+    
+## Installation using Composer
+
+add this to the repository section in your composer.json { "type": "vcs", "url": "git@github.com:velletti/jvchat.git" }
+
+    "repositories": [
+		{ "type": "composer", "url": "https://composer.typo3.org/" },
+		{ "type": "vcs", "url": "git@github.com:velletti/jvchat.git" }
+	],
+	
+call
+ 
+    composer require velletti/jvchat dev-master
+
+Update the psr-4 and classmapp folders .. (classmap maybe not needed in the near future anymore ) 
+    
+		"psr-4": {
+
+			"JVE\\jvchat\\": "http/typo3conf/ext/jvchat/Classes/"
+		},
+		"classmap": [
+			"http/typo3conf/ext/jvchat/pi1"
+		],

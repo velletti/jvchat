@@ -320,7 +320,7 @@ plugin.tx_jvchat_pi1 {
 		10.if.isTrue.field = tx_nem_image
 
 		20 = IMAGE
-		20.file = EXT:jvchat/pi1/icons/Avatar_Male.gif
+		20.file = EXT:jvchat/Resources/Public/Icons/Avatar/Avatar_Male.gif
 
 		20.if {
 			isFalse.field = tx_nem_image
@@ -328,7 +328,7 @@ plugin.tx_jvchat_pi1 {
 		}
 
 
-		20.file = EXT:jvchat/pi1/icons/Avatar_Female.gif
+		20.file = EXT:jvchat/Resources/Public/Icons/Avatar/Avatar_Female.gif
 		20.file.if {
 			isFalse.field = tx_nem_image
 			isTrue.field = tx_nem_gender
@@ -340,6 +340,31 @@ plugin.tx_jvchat_pi1 {
 		
 	}
 	settings {
+		userlist {
+			avatar {
+				genderField = tx_nem_gender
+				imageField = tx_nem_image
+				# spezial to be able to have 999.999 of user images, only 1000 each  in separate user Folders  uploads/tx_feusers_img/000x/
+				# will create a new setting: NemUserImgPath = uploads/tx_feusers_img/0001/ (if user Uid < 1000 ) /0002/ if uid < 2000  and so on..
+				useNemUserImgPath = 1
+				gender {
+					# value of gender field : 0 , 1 , 2 etc depending on your setup
+					0 {
+						# male
+						file = typo3conf/ext/jvchat/Resources/Public/Icons/Avatar/Avatar_Male.gif
+					}
+					1 {
+						# female
+						file = typo3conf/ext/jvchat/Resources/Public/Icons/Avatar/Avatar_Female.gif
+					}
+				}
+				# Image Sizes
+				maxwidth  = 20px
+				maxheight = 30px
+				width     = 20m
+				height    = 30m
+			}
+		}
 		commands {
 			# overwrite comands
 			# talkTo {

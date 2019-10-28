@@ -618,6 +618,7 @@ function tx_jvchat_pi1_js_chat() {
 		var userObj = parts[0];
 		var type = parts[1];
 		var id = parts[2];
+		var username = parts[3];
 
 		userList["userid-"+id] = value;
 
@@ -628,23 +629,27 @@ function tx_jvchat_pi1_js_chat() {
 
 		}).appendTo( '#tx-jvchat-userlist' );
 
+		if( parseInt( this.userId ) == parseInt(id )) {
+			$('#userid-'+ id +" .tx-jvchat-userlist-buttons").hide() ;
+		} else {
+			$('#userid-'+ id +" .tx-jvchat-username").bind("click", function(evt) {
+				self.setValueToInput(username, true);
+			} );
+			if(this.allowPrivateMessages ) {
+				$('#userid-' + id + " .tx-jvchat-pm-link").bind("click", function(evt) {
+					var command = "/msg #" + id + " ";
+					self.insertCommand(command);
+				});
+			}
 
-		$('#userid-'+ id +" .tx-jvchat-username").bind("click", function(evt) {
-			self.setValueToInput(username, true);
-		} );
-		if(this.allowPrivateMessages ) {
-			$('#userid-' + id + " .tx-jvchat-pm-link").bind("click", function(evt) {
-				var command = "/msg " + username + " ";
-				self.insertCommand(command);
-			});
+			if( this.allowPrivateRooms ) {
+				$('#userid-' + id + " .tx-jvchat-pr-link").bind("click", function(evt) {
+					var name = self.talkToNewRoomName.replace(/\%s/, username);
+					var command = "/talkTo #"+id+" "+name ;
+				});
+			}
 		}
 
-		if( this.allowPrivateRooms ) {
-			$('#userid-' + id + " .tx-jvchat-pr-link").bind("click", function(evt) {
-				var name = self.talkToNewRoomName.replace(/\%s/, username);
-				var command = "/talkTo "+username+" "+name ;
-			});
-		}
 
 	}
 

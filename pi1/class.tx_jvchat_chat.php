@@ -31,8 +31,9 @@
 // require_once('class.tx_jvchat_room.php');
 // require_once('class.tx_jvchat_entry.php');
 
-require_once('class.tx_jvchat_db.php');
-require_once('class.tx_jvchat_lib.php');
+// require_once('class.tx_jvchat_db.php');
+// require_once('class.tx_jvchat_lib.php');
+use \JV\Jvchat\Utility\LibUtility;
 
 # require_once(PATH_site.'typo3/sysext/lang/lang.php');
 # require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lang', 'lang.php'));
@@ -44,7 +45,7 @@ class tx_jvchat_chat {
 
     var $commands;
 
-    /** @var  tx_jvchat_db  */
+    /** @var  \JV\Jvchat\Domain\Repository\DbRepository  */
     var $db;
 
     var $env;
@@ -75,7 +76,7 @@ class tx_jvchat_chat {
 		//$LLKey = $GLOBALS['TSFE']->config['config']['language'];
 		$this->microtime = microtime();
 
-		$this->extConf = tx_jvchat_lib::getExtConf();
+		$this->extConf = LibUtility::getExtConf();
 
 
 
@@ -106,8 +107,8 @@ class tx_jvchat_chat {
 			$this->lang->includeLLFile("EXT:jvchat/Resources/Private/Language/"  . $this->env['LLKey'] . ".locallang.xlf"  );
 		}
 
-	        /** @var tx_jvchat_db db */
-		$this->db = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_jvchat_db');
+	        /** @var \JV\Jvchat\Domain\Repository\DbRepository db */
+		$this->db = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\Jvchat\Domain\Repository\DbRepository');
 		$this->db->lang = $this->lang;
 
 		$this->room = $this->db->getRoom($this->env['room_id']);
@@ -119,7 +120,7 @@ class tx_jvchat_chat {
 		$this->debugMessage('init');
 
 		$this->lastMessageId = $this->env['lastid'];
-        $this->setup = tx_jvchat_lib::getSetUp( $this->env['pid'] );
+        $this->setup = LibUtility::getSetUp( $this->env['pid'] );
 
 		// init commands
 		$this->initCommands();
@@ -203,7 +204,7 @@ class tx_jvchat_chat {
 						'required' => 0,
 					),
 				),
-				'rights' => ($this->room && ($this->room->private && tx_jvchat_lib::isOwner($this->room, $this->user['uid'])) ? '1111' : '0000'),
+				'rights' => ($this->room && ($this->room->private && LibUtility::isOwner($this->room, $this->user['uid'])) ? '1111' : '0000'),
 			    ),
 			'msg' => array(
 					'callback' => '_msg',
@@ -453,9 +454,9 @@ class tx_jvchat_chat {
     function getMessages($lastid) {#
 
 
-        if(!tx_jvchat_lib::isSuperuser($this->room, $this->user)) {
+        if(!LibUtility::isSuperuser($this->room, $this->user)) {
             // check if user is banned
-            if(tx_jvchat_lib::isBanned($this->room, $this->user['uid']))
+            if(LibUtility::isBanned($this->room, $this->user['uid']))
                 return $this->returnMessage(array('<span class="tx-jvchat-error">'.$this->lang->getLL('error_banned').'</span>', '/quit'));
 
             // check if user is kicked
@@ -463,21 +464,21 @@ class tx_jvchat_chat {
                 return $this->returnMessage(array('<span class="tx-jvchat-error">'.sprintf($this->lang->getLL('error_kicked'),$res).'</span>', '/quit'));
 
             // check if this is a private room and if the user is an invited member
-            if($this->room->private && !tx_jvchat_lib::isMember($this->room, $this->user['uid']))
+            if($this->room->private && !LibUtility::isMember($this->room, $this->user['uid']))
                 return $this->returnMessage(array('<span class="tx-jvchat-error">'.$this->lang->getLL('error_not_invited').'</span>', '/quit'));
 
             // remove user who left room and remove system messages
             $this->db->cleanUpUserInRoom($this->room->uid, 20, true, $this->lang->getLL('user_leaves_chat'));
 
             // check if user is allowed to put a message into this room
-            if(!tx_jvchat_lib::checkAccessToRoom($this->room, $this->user))
+            if(!LibUtility::checkAccessToRoom($this->room, $this->user))
                 return $this->returnMessage(array('<span class="tx-jvchat-error">'.$this->lang->getLL('error_room_access_denied').'</span>','/quit'));
 
         }
 
         // updateUserData
         // if user not already in room try to add
-        $resUpdate = $this->db->updateUserInRoom($this->room->uid, $this->user['uid'], tx_jvchat_lib::isSuperuser($this->room, $this->user), $this->lang->getLL('user_enters_chat'));
+        $resUpdate = $this->db->updateUserInRoom($this->room->uid, $this->user['uid'], LibUtility::isSuperuser($this->room, $this->user), $this->lang->getLL('user_enters_chat'));
 
         // quit here if room is full
         if($resUpdate === "full")
@@ -491,7 +492,7 @@ class tx_jvchat_chat {
             return '' ;
 
         /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
-        $renderer = tx_jvchat_lib::getRenderer($this->settings , "GetMessages" , "html" )  ;
+        $renderer = LibUtility::getRenderer($this->settings , "GetMessages" , "html" )  ;
 
 
         $messages = array() ;
@@ -521,7 +522,7 @@ class tx_jvchat_chat {
             // d) a superuser should receive all messages
             if(!$entry->isPrivate()) {
                 if($this->room->isExpertMode() && $entry->hidden) {
-                    if(!tx_jvchat_lib::isSuperuser($this->room, $this->user) && !tx_jvchat_lib::isModerator($this->room, $this->user['uid']) && ($this->user['uid'] != $entry->feuser))
+                    if(!LibUtility::isSuperuser($this->room, $this->user) && !LibUtility::isModerator($this->room, $this->user['uid']) && ($this->user['uid'] != $entry->feuser))
                         continue;	// skip to next entry
                 }
             }
@@ -531,16 +532,16 @@ class tx_jvchat_chat {
 
                 // if this is a private message check if this message should be received by the current user
                 // if superuser skip message if he is not allowed to view private messages
-                if(tx_jvchat_lib::isSuperuser($this->room, $this->user) && !$this->extConf['superuserCanReadPMs'] && !$involved)
+                if(LibUtility::isSuperuser($this->room, $this->user) && !$this->extConf['superuserCanReadPMs'] && !$involved)
                     continue;
 
                 // if not a superuser check show message to sender an recipient only
-                if(!tx_jvchat_lib::isSuperuser($this->room, $this->user) && !$involved)
+                if(!LibUtility::isSuperuser($this->room, $this->user) && !$involved)
                     continue;	// skip to next entry
             }
 
             $entryUser = NULL;
-            if(! tx_jvchat_lib::isSystem($entry->feuser)) {
+            if(! LibUtility::isSystem($entry->feuser)) {
                 $entryUser = $this->db->getFeUser($entry->feuser);	// this holds the complete user array
             }
 
@@ -549,10 +550,10 @@ class tx_jvchat_chat {
             if($entry->isPrivate()) {
                 $recipient = $this->db->getFeUser($entry->tofeuserid);
             }
-            $entryText = tx_jvchat_lib::formatMessage($entry->entry, $this->setup['settings']['emoticons'] );
+            $entryText = LibUtility::formatMessage($entry->entry, $this->setup['settings']['emoticons'] );
 
             $id = "";
-            if(tx_jvchat_lib::isModerator($this->room, $this->user['uid'])) {
+            if(LibUtility::isModerator($this->room, $this->user['uid'])) {
                 $id = '#'.$entry->uid.'&nbsp;';
             }
 
@@ -573,7 +574,7 @@ class tx_jvchat_chat {
             // if entry is hidden and user is a moderator then add a commit link
             if($entry->hidden) {
                 $message = '<div class="tx-jvchat-hidden" id="tx-jvchat-entry-'.$entry->uid.'">'.$message.'</div>';
-                if(tx_jvchat_lib::isModerator($this->room, $this->user['uid']) && !$entry->isPrivate())
+                if(LibUtility::isModerator($this->room, $this->user['uid']) && !$entry->isPrivate())
                     $message = $message.'<div class="tx-jvchat-commit" id="tx-jvchat-entry-commitlink-'.$entry->uid.'"><a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.commitEntry('.$entry->uid.');">'.$this->lang->getLL('commit_message').'</a> | <a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.hideEntry('.$entry->uid.');">'.$this->lang->getLL('hide_message').'</a> <span id="tx-jvchat-storelink-'.$entry->uid.'">| <a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.storeEntry('.$entry->uid.');">'.$this->lang->getLL('store_message').'</a></span></div>';
 
                 if($entry->isPrivate()) {
@@ -583,7 +584,7 @@ class tx_jvchat_chat {
 
 
             if($entryUser) {
-                $userType = tx_jvchat_lib::getUserTypeString($this->room, $entryUser) ;
+                $userType = LibUtility::getUserTypeString($this->room, $entryUser) ;
             } else {
                 $userType = 'system' ;
             }
@@ -594,7 +595,7 @@ class tx_jvchat_chat {
 
             $mid = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(($entry->tstamp).($entry->uid));
 
-            if(tx_jvchat_lib::isModerator($this->room, $this->user['uid']) && !$entry->isPrivate()) {
+            if(LibUtility::isModerator($this->room, $this->user['uid']) && !$entry->isPrivate()) {
                 $renderer->assign("needsModeration" , true ) ;
             }
 
@@ -644,9 +645,9 @@ class tx_jvchat_chat {
 
 		$this->debugMessage('getMessage');
 
-		if(!tx_jvchat_lib::isSuperuser($this->room, $this->user)) {
+		if(!LibUtility::isSuperuser($this->room, $this->user)) {
 			// check if user is banned
-			if(tx_jvchat_lib::isBanned($this->room, $this->user['uid']))
+			if(LibUtility::isBanned($this->room, $this->user['uid']))
 				return $this->returnMessage(array('<span class="tx-jvchat-error">'.$this->lang->getLL('error_banned').'</span>', '/quit'));
 
 			// check if user is kicked
@@ -654,21 +655,21 @@ class tx_jvchat_chat {
 				return $this->returnMessage(array('<span class="tx-jvchat-error">'.sprintf($this->lang->getLL('error_kicked'),$res).'</span>', '/quit'));
 
 			// check if this is a private room and if the user is an invited member
-			if($this->room->private && !tx_jvchat_lib::isMember($this->room, $this->user['uid']))
+			if($this->room->private && !LibUtility::isMember($this->room, $this->user['uid']))
 				return $this->returnMessage(array('<span class="tx-jvchat-error">'.$this->lang->getLL('error_not_invited').'</span>', '/quit'));
 
 			// remove user who left room and remove system messages
 			$this->db->cleanUpUserInRoom($this->room->uid, 20, true, $this->lang->getLL('user_leaves_chat'));
 
 			// check if user is allowed to put a message into this room
-			if(!tx_jvchat_lib::checkAccessToRoom($this->room, $this->user))
+			if(!LibUtility::checkAccessToRoom($this->room, $this->user))
 				return $this->returnMessage(array('<span class="tx-jvchat-error">'.$this->lang->getLL('error_room_access_denied').'</span>','/quit'));
 
 		}
 
 		// updateUserData
 		// if user not already in room try to add
-		$resUpdate = $this->db->updateUserInRoom($this->room->uid, $this->user['uid'], tx_jvchat_lib::isSuperuser($this->room, $this->user), $this->lang->getLL('user_enters_chat'));
+		$resUpdate = $this->db->updateUserInRoom($this->room->uid, $this->user['uid'], LibUtility::isSuperuser($this->room, $this->user), $this->lang->getLL('user_enters_chat'));
 
 		// quit here if room is full
 		if($resUpdate === "full")
@@ -709,7 +710,7 @@ class tx_jvchat_chat {
 			// d) a superuser should receive all messages
 			if(!$entry->isPrivate()) {
 				if($this->room->isExpertMode() && $entry->hidden) {
-					if(!tx_jvchat_lib::isSuperuser($this->room, $this->user) && !tx_jvchat_lib::isModerator($this->room, $this->user['uid']) && ($this->user['uid'] != $entry->feuser))
+					if(!LibUtility::isSuperuser($this->room, $this->user) && !LibUtility::isModerator($this->room, $this->user['uid']) && ($this->user['uid'] != $entry->feuser))
 						continue;	// skip to next entry
 				}
 			}
@@ -719,11 +720,11 @@ class tx_jvchat_chat {
 
 				// if this is a private message check if this message should be received by the current user
 				// if superuser skip message if he is not allowed to view private messages
-				if(tx_jvchat_lib::isSuperuser($this->room, $this->user) && !$this->extConf['superuserCanReadPMs'] && !$involved)
+				if(LibUtility::isSuperuser($this->room, $this->user) && !$this->extConf['superuserCanReadPMs'] && !$involved)
 					continue;
 
 				// if not a superuser check show message to sender an recipient only
-				if(!tx_jvchat_lib::isSuperuser($this->room, $this->user) && !$involved)
+				if(!LibUtility::isSuperuser($this->room, $this->user) && !$involved)
 						continue;	// skip to next entry
 			}
 
@@ -731,7 +732,7 @@ class tx_jvchat_chat {
 			// if this entry was sent by system we cannot get a FeUser
 			// so we have to assign the username SYSTEM
 			$entryUser = NULL;
-			if(tx_jvchat_lib::isSystem($entry->feuser))
+			if(LibUtility::isSystem($entry->feuser))
 				$username = $this->lang->getLL('system_name');
 			else {
 				$entryUser = $this->db->getFeUser($entry->feuser);	// this holds the complete user array
@@ -745,7 +746,7 @@ class tx_jvchat_chat {
 
 
 			// the superuser should know the recipient of a private message
-			//if(tx_jvchat_lib::isSuperuser($this->room, $this->user) && $entry->isPrivate()) {
+			//if(LibUtility::isSuperuser($this->room, $this->user) && $entry->isPrivate()) {
 			if($entry->isPrivate()) {
 				$recipient = $this->db->getFeUser($entry->tofeuserid);
 				$recipient['username'] = "<a href=\"/user/" . $recipient['username'] . "\" target=\"_blank\" title=\"UserProfile\">" . $recipient['username'] . "</a>";
@@ -753,11 +754,11 @@ class tx_jvchat_chat {
 			}
 
 
-			$entryText = tx_jvchat_lib::formatMessage($entry->entry, $this->setup['settings']['emoticons'] );
+			$entryText = LibUtility::formatMessage($entry->entry, $this->setup['settings']['emoticons'] );
 
 
 			$id = "";
-			if(tx_jvchat_lib::isModerator($this->room, $this->user['uid']))
+			if(LibUtility::isModerator($this->room, $this->user['uid']))
 				$id = '#'.$entry->uid.'&nbsp;';
 
 			$time = $entry->crdate;
@@ -779,7 +780,7 @@ class tx_jvchat_chat {
 			// if entry is hidden and user is a moderator then add a commit link
 			if($entry->hidden) {
 				$message = '<div class="tx-jvchat-hidden" id="tx-jvchat-entry-'.$entry->uid.'">'.$message.'</div>';
-				if(tx_jvchat_lib::isModerator($this->room, $this->user['uid']) && !$entry->isPrivate())
+				if(LibUtility::isModerator($this->room, $this->user['uid']) && !$entry->isPrivate())
 					$message = $message.'<div class="tx-jvchat-commit" id="tx-jvchat-entry-commitlink-'.$entry->uid.'"><a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.commitEntry('.$entry->uid.');">'.$this->lang->getLL('commit_message').'</a> | <a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.hideEntry('.$entry->uid.');">'.$this->lang->getLL('hide_message').'</a> <span id="tx-jvchat-storelink-'.$entry->uid.'">| <a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.storeEntry('.$entry->uid.');">'.$this->lang->getLL('store_message').'</a></span></div>';
 
 				if($entry->isPrivate()) {
@@ -789,7 +790,7 @@ class tx_jvchat_chat {
 
 
 			if($entryUser)
-				$message = '<div class="tx-jvchat-'.tx_jvchat_lib::getUserTypeString($this->room, $entryUser).'">'.$message.'</div>';
+				$message = '<div class="tx-jvchat-'.LibUtility::getUserTypeString($this->room, $entryUser).'">'.$message.'</div>';
 			else
 				$message = '<div class="tx-jvchat-system">'.$message.'</div>';
 
@@ -910,10 +911,10 @@ class tx_jvchat_chat {
 		if($msg == '')
 			return;
 
-		if(!tx_jvchat_lib::isSuperuser($this->room, $this->user)) {
+		if(!LibUtility::isSuperuser($this->room, $this->user)) {
 
 			// check if user is allowed to put message into this room
-			if(!tx_jvchat_lib::checkAccessToRoom($this->room, $this->user))
+			if(!LibUtility::checkAccessToRoom($this->room, $this->user))
 				return $this->returnMessage('<span class="tx-jvchat-error">'.$this->lang->getLL('error_room_access_denied').'</span>');
 
 			// check if user is kicked
@@ -921,7 +922,7 @@ class tx_jvchat_chat {
 				return $this->returnMessage(array('<span class="tx-jvchat-error">'.sprintf($this->lang->getLL('error_kicked'),$res).'</span>', '/quit'));
 
 			// check if user is banned
-			if(tx_jvchat_lib::isBanned($this->room, $this->user['uid']))
+			if(LibUtility::isBanned($this->room, $this->user['uid']))
 				return $this->returnMessage(array('<span class="tx-jvchat-error">'.$this->lang->getLL('error_banned').'</span>', '/quit'));
 
 		}
@@ -935,7 +936,7 @@ class tx_jvchat_chat {
 		// just put message if it is a normal chat room
 		// or the user is a moderator or expert
 		// if it is private message ($tofeuserid != null) send a hidden message
-		if(!$this->room->isExpertMode() || tx_jvchat_lib::isModerator($this->room, $this->user['uid'])  || tx_jvchat_lib::isExpert($this->room, $this->user['uid'])) {
+		if(!$this->room->isExpertMode() || LibUtility::isModerator($this->room, $this->user['uid'])  || LibUtility::isExpert($this->room, $this->user['uid'])) {
 			$this->db->putMessage($this->room->uid, $msg, $this->user['tx_jvchat_chatstyle'], $this->user, ($tofeuserid ? true : false), $this->user['uid'], $tofeuserid);
 			return $this->getMessages($lastid);
 		}
@@ -948,7 +949,7 @@ class tx_jvchat_chat {
 	
 	function performCommand($lines) {
 
-		if(!tx_jvchat_lib::checkAccessToRoom($this->room, $this->env['user']))
+		if(!LibUtility::checkAccessToRoom($this->room, $this->env['user']))
 			return $this->lang->getLL('error_room_access_denied');
 
 		$lines = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(chr(10), $lines);
@@ -1015,13 +1016,13 @@ class tx_jvchat_chat {
 		if($this->commands[$command]['rights'][0])
 			$denied = false;
 
-		if($this->commands[$command]['rights'][1] && tx_jvchat_lib::isExpert($this->room, $this->user['uid']))
+		if($this->commands[$command]['rights'][1] && LibUtility::isExpert($this->room, $this->user['uid']))
 			$denied = false;
 
-		if($this->commands[$command]['rights'][2] && tx_jvchat_lib::isModerator($this->room, $this->user['uid']))
+		if($this->commands[$command]['rights'][2] && LibUtility::isModerator($this->room, $this->user['uid']))
 			$denied = false;
 
-		if($this->commands[$command]['rights'][3] && tx_jvchat_lib::isSuperuser($this->room, $this->user))
+		if($this->commands[$command]['rights'][3] && LibUtility::isSuperuser($this->room, $this->user))
 			$denied = false;
 
 		return !$denied;
@@ -1049,7 +1050,7 @@ class tx_jvchat_chat {
 
 
 		// check if user is allowed to put message in this room
-		if(!tx_jvchat_lib::checkAccessToRoom($room, $this->user))
+		if(!LibUtility::checkAccessToRoom($room, $this->user))
 			return $this->returnMessage($this->lang->getLL('error_room_access_denied'));
 
 		//$messages = $this->getUserNamesOfRoom($room);
@@ -1059,30 +1060,36 @@ class tx_jvchat_chat {
 
 	/**
 	  * This is for getUserlist() only
+     * @param \JV\Jvchat\Domain\Model\Room $room
+     * @param boolean $roomlistMode
 	  */
 	function getUserlistOfRoom($room, $roomlistMode = false) {
 
-        /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
-        $renderer = tx_jvchat_lib::getRenderer($this->settings , "GetUsers" , "html" )  ;
-        $renderer->assign("showFullNames" , $room->showFullNames() ) ;
-
-        $renderer->assign("thisUser" , $this->user ) ;
-        $renderer->assign("extConf" , $this->extConf ) ;
-        $renderer->assign("settings" , $this->setup['settings'] ) ;
 
 		$users = $this->db->getFeUsersOfRoom($room);
-        $glue = tx_jvchat_lib::getUserNamesGlue() ;
-		$usersArray = array();
+        $glue = LibUtility::getUserNamesGlue() ;
 		$messages = array() ;
 		foreach($users as $user) {
 			if(!$user || !$user['username']) {
                 $user['hidden'] = 1 ;
                 continue;
             }
-            $user['chatType'] = tx_jvchat_lib::getUserTypeString($room, $user);
-            $usersArray[] = $user ;
-            $renderer->assign("user" , $user ) ;
-            $messages[] = $renderer->render() . $glue .$user['chatType'] .  $glue . $user['uid'] ;
+            $user['chatType'] = LibUtility::getUserTypeString($room, $user);
+            // $snippet = $this->db->getSnippets($room->uid, $user['uid']);
+            $userName = $user['username']  ;
+            if( $this->extConf['usernameField1']) {
+                $userName = $user[$this->extConf['usernameField1']]  ;
+            }
+            if( $room->showFullNames() ) {
+                if( $this->extConf['usernameField1']) {
+                    $userName = $user[$this->extConf['usernameField1']]  ;
+                }
+                if( $this->extConf['usernameField2']) {
+                    $userName .= "_" .$user[$this->extConf['usernameField2']]  ;
+                }
+            }
+            $userName = str_replace(" " , "_" , $userName ) ;
+            $messages[] = $user['userlistsnippet'] . $glue .$user['chatType'] .  $glue . $user['uid'] . $glue . $userName ;
 		}
 
         return $messages ;
@@ -1098,7 +1105,7 @@ class tx_jvchat_chat {
 	
 	function commitMessage($entryId) {
 
-		if(!tx_jvchat_lib::isModerator($this->room, $this->user['uid']))
+		if(!LibUtility::isModerator($this->room, $this->user['uid']))
 			return $this->returnMessage('<span class="tx-jvchat-error">'.$this->lang->getLL('error_room_access_denied').'</span>');
 
 		if($this->db->commitMessage($entryId))
@@ -1175,7 +1182,7 @@ class tx_jvchat_chat {
                 }
 
                 $out .= '<div class="tx-jvchat-cmd-smileys-text">'.$icon['code'].'</div>';
-                $out .= '<div class="tx-jvchat-cmd-smileys-image chatIconColor " onClick="javascript:chat_instance.insertCommand(\'' . $icon['code'] .  '\');" >'.tx_jvchat_lib::formatMessageEmoji($icon).'</div>';
+                $out .= '<div class="tx-jvchat-cmd-smileys-image chatIconColor " onClick="javascript:chat_instance.insertCommand(\'' . $icon['code'] .  '\');" >'.LibUtility::formatMessageEmoji($icon).'</div>';
                 $col++;
                 if($col == $columns || trim( $icon['group']) != $group ) {
                     $col = 0;
@@ -1195,7 +1202,7 @@ class tx_jvchat_chat {
 
 			$htmlOut = '';
 			foreach($roomsArray as $room) {
-				if ($this->room->uid != $room->uid && !$room->closed && tx_jvchat_lib::checkAccessToRoom($room, $this->user)) {
+				if ($this->room->uid != $room->uid && !$room->closed && LibUtility::checkAccessToRoom($room, $this->user)) {
 					$roomUsers = array();
 					$roomUsers = $this->getUserlistOfRoom($room, true);
 					$htmlOut.='<div class="tx-jvchat-cmd-roomlist-room"><div class="tx-jvchat-cmd-room-title">'.$room->name.' <span class="tx-jvchat-cmd-roomlist-usercount">('.count($roomUsers).' Users) <a href="javascript:openChatWindow('.$room->uid.');">'.$this->lang->getLL('command_invite_enter_room').'</a></span></div>';
@@ -1229,8 +1236,8 @@ class tx_jvchat_chat {
 	  * This is for /who
 	  */
 	function getUserinfoOfRoom($room, $userNamesGlue = ': ', $userNamesFieldGlue = ', ') {
-		$userNamesGlue = tx_jvchat_lib::getUserNamesGlue();
-		$userNamesFieldGlue = tx_jvchat_lib::getUserNamesFieldGlue();
+		$userNamesGlue = LibUtility::getUserNamesGlue();
+		$userNamesFieldGlue = LibUtility::getUserNamesFieldGlue();
 		$users = $this->db->getFeUsersOfRoom($room);
 
 		$userNames = array();
@@ -1248,7 +1255,7 @@ class tx_jvchat_chat {
 	function getUserInfo($room, $user, $userNamesFieldGlue) {
 
 		// user, moderator or expert
-		$type = tx_jvchat_lib::getUserTypeString($room, $user);
+		$type = LibUtility::getUserTypeString($room, $user);
 
 		$parts = array();
 		//+++ w.f.12.07.11 htmlspecialchars instead of entities
@@ -1497,7 +1504,7 @@ class tx_jvchat_chat {
 			$name = implode(' ',$params);
 
         /** @var \JV\Jvchat\Domain\Model\Room $newRoom */
-        $newRoom = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\Jvchat\Domain\Model\Room');
+        $newRoom = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
 		$newRoom->pid = $this->room->pid;
 
 

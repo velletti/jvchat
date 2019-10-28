@@ -27,9 +27,7 @@
  * @author	Vincent Tietz <vincent.tietz@vj-media.de>
  */
 
-
-require_once('class.tx_jvchat_db.php');
-require_once('class.tx_jvchat_lib.php');
+use \JV\Jvchat\Utility\LibUtility ;
 
 class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
@@ -46,7 +44,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
     var $chatScript;
 
-    /** @var  tx_jvchat_db  */
+    /** @var  \JV\Jvchat\Domain\Repository\DbRepository  */
     var $db;
 
     var $user;
@@ -88,8 +86,8 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 		$this->loadFLEX();
 
-		/** @var tx_jvchat_db db */
-		$this->db = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_jvchat_db');
+		/** @var \JV\Jvchat\Domain\Repository\DbRepository db */
+		$this->db = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\Jvchat\Domain\Repository\DbRepository');
 
 
 		if($this->piVars['leaveRoom'] && $this->db->isMemberOfRoom($this->piVars['leaveRoom'], $this->user['uid'])) {
@@ -241,10 +239,10 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
         /** @var \JV\Jvchat\Domain\Model\Room $newRoom */
 		$room = $this->db->getRoom($entry->room);
 
-		if(!tx_jvchat_lib::checkAccessToRoom($room, $this->user))
+		if(!LibUtility::checkAccessToRoom($room, $this->user))
 			return $this->displayErrorMessage($this->pi_getLL('access_denied'));
 
-		if(!tx_jvchat_lib::isModerator($room, $this->user['uid']))
+		if(!LibUtility::isModerator($room, $this->user['uid']))
 			return $this->displayErrorMessage($this->pi_getLL('access_denied'));
 
 		return $this->db->deleteEntry($entryId);
@@ -277,9 +275,9 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		if(!$this->conf['FLEX']['showDescriptionInChat'])
 			unset($this->cObj->data['description']);
 
-		if(!tx_jvchat_lib::isSuperuser($room, $this->user)) {
+		if(!LibUtility::isSuperuser($room, $this->user)) {
 
-			if(tx_jvchat_lib::isBanned($room, $this->user['uid']))
+			if(LibUtility::isBanned($room, $this->user['uid']))
 				return $this->displayErrorMessage($this->pi_getLL('error_banned'), $this->conf['views.']['chat.']['stdWrap.']);
 
 			// check if user is kicked
@@ -287,21 +285,21 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				return $this->displayErrorMessage(sprintf($this->pi_getLL('error_kicked'),$res), $this->conf['views.']['chat.']['stdWrap.']);
 
 			// check if this is a private room and if the user is an invited member
-			if($room->private && !tx_jvchat_lib::isMember($room, $this->user['uid']))
+			if($room->private && !LibUtility::isMember($room, $this->user['uid']))
 				return $this->displayErrorMessage($this->pi_getLL('error_not_invited'), $this->conf['views.']['chat.']['stdWrap.']);
 
 			// remove user who left room and remove system messages
 			$this->db->cleanUpUserInRoom($room->uid, 20, true, $this->pi_getLL('user_leaves_chat'));
 
 			//check rights to view room
-			if(!tx_jvchat_lib::checkAccessToRoom($room, $this->user))
+			if(!LibUtility::checkAccessToRoom($room, $this->user))
 				return $this->displayErrorMessage($this->pi_getLL('error_room_access_denied'), $this->conf['views.']['chat.']['stdWrap.']);
 
 		}
 
 		/* ***********************************   LTS 9 ******************************** */
         /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
-        $renderer = tx_jvchat_lib::getRenderer($this->settings , "DisplayChatRoom" , "html" ) ;
+        $renderer = LibUtility::getRenderer($this->settings , "DisplayChatRoom" , "html" ) ;
 
         $renderer->assign('settings', $this->settings );
         $renderer->assign('server',  \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'));
@@ -334,10 +332,10 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 
         // seperators for splits
-        $dataString .= ' data-usernameglue="'       . tx_jvchat_lib::getUserNamesGlue()  . '"' ;
-        $dataString .= ' data-messagesglue="'       . tx_jvchat_lib::getMessagesGlue()  . '"' ;
-        $dataString .= ' data-usernamesfieldglue="' . tx_jvchat_lib::getUserNamesFieldGlue()  . '"' ;
-        $dataString .= ' data-idglue="'             . tx_jvchat_lib::getIdGlue()  . '"' ;
+        $dataString .= ' data-usernameglue="'       . LibUtility::getUserNamesGlue()  . '"' ;
+        $dataString .= ' data-messagesglue="'       . LibUtility::getMessagesGlue()  . '"' ;
+        $dataString .= ' data-usernamesfieldglue="' . LibUtility::getUserNamesFieldGlue()  . '"' ;
+        $dataString .= ' data-idglue="'             . LibUtility::getIdGlue()  . '"' ;
 
         if($this->conf['FLEX']['chatwindow'])
             $newwindowurl = $this->conf['FLEX']['chatwindow'] ? $this->pi_linkTP_keepPIvars_url(array(), 0, true, $this->conf['FLEX']['chatwindow']) : $marker['LEAVEURL'];
@@ -410,16 +408,16 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
             $marker['SUBMIT_MESSAGE'] = $this->pi_getLL('submit_message');
             $marker['LABEL_NEW_MESSAGE'] = $this->pi_getLL('new_message');
 
-            $renderer->assign("emoticons" ,  tx_jvchat_lib::getEmoticonsForChatRoom() ) ;
+            $renderer->assign("emoticons" ,  LibUtility::getEmoticonsForChatRoom() ) ;
 
 
             if($this->conf['useSnippets']) {
                 // try to add user
-                $this->db->updateUserInRoom($room->uid, $this->user['uid'], tx_jvchat_lib::isSuperuser($this->room, $this->user), $this->pi_getLL('user_enters_chat'));
+                $this->db->updateUserInRoom($room->uid, $this->user['uid'], LibUtility::isSuperuser($this->room, $this->user), $this->pi_getLL('user_enters_chat'));
 
                 // prepare the user's snippets
-                $this->db->setUserlistSnippet($room->uid, $this->user['uid'], $this->getSnippet($room, $this->user, $this->conf['userlistSnippet.']));
-                $this->db->setTooltipSnippet($room->uid, $this->user['uid'], $this->getSnippet($room, $this->user, $this->conf['tooltipSnippet.']));
+                $this->db->setUserlistSnippet($room->uid, $this->user['uid'], $this->getSnippet($room, $this->user ));
+
             }
 
         }
@@ -455,7 +453,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$theValue['userCount'] = $this->db->getUserCountOfRoom($room->uid);
 		$theValue['showUserCount'] = $this->conf['FLEX']['maxUserCount'];
 		$theValue['sessionCount'] = $this->db->getSessionsCountOfRoom($room->uid);
-		$theValue['isFull'] = $this->db->isRoomFull($room) && !tx_jvchat_lib::isSuperuser($room, $this->user) && !$this->db->isMemberOfRoom($room->uid, $this->user['uid']);
+		$theValue['isFull'] = $this->db->isRoomFull($room) && !LibUtility::isSuperuser($room, $this->user) && !$this->db->isMemberOfRoom($room->uid, $this->user['uid']);
 
 
         $theValue['enableEmoticons'] = $this->conf['FLEX']['showEmoticons'];
@@ -470,22 +468,22 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		if($this->conf['FLEX']['showExperts']) {
 			$experts = $this->db->getOnlineExperts($room->uid);
 			$this->cObj->data['userType'] = 'expert';
-			$theValue['onlineExperts'] = tx_jvchat_lib::getUsernames($experts, true, $conf['usersGlue'], $this->cObj, $conf['users_stdWrap.']);
+			$theValue['onlineExperts'] = LibUtility::getUsernames($experts, true, $conf['usersGlue'], $this->cObj, $conf['users_stdWrap.']);
 		}
 
         if($this->conf['FLEX']['showModerators']) {
 			$moderators = $this->db->getOnlineModerators($room->uid);
 			$this->cObj->data['userType'] = 'moderator';
-			$theValue['onlineModerators'] = tx_jvchat_lib::getUsernames($moderators, true, $conf['usersGlue'], $this->cObj, $conf['users_stdWrap.']);
+			$theValue['onlineModerators'] = LibUtility::getUsernames($moderators, true, $conf['usersGlue'], $this->cObj, $conf['users_stdWrap.']);
 		}
 		if($this->conf['FLEX']['showUsers']) {
 			$users = $this->db->getOnlineUsers($room->uid);
 			$this->cObj->data['userType'] = 'user';
-			$theValue['onlineUsers'] = tx_jvchat_lib::getUsernames($users, (($room->showFullNames) ? true : false), $conf['usersGlue'], $this->cObj, $conf['users_stdWrap.']);
+			$theValue['onlineUsers'] = LibUtility::getUsernames($users, (($room->showFullNames) ? true : false), $conf['usersGlue'], $this->cObj, $conf['users_stdWrap.']);
 		}
 
 		$allUsers = array_merge( $experts, $moderators, $users);
-		$theValue['allUserNicknames'] = tx_jvchat_lib::getUsernames($allUsers, false, $conf['usersGlue'], $this->cObj, $conf['users_stdWrap.']);
+		$theValue['allUserNicknames'] = LibUtility::getUsernames($allUsers, false, $conf['usersGlue'], $this->cObj, $conf['users_stdWrap.']);
 
 		$snippets = array();
 		foreach($allUsers as $user) {
@@ -521,31 +519,26 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	/*
 	* @param  \JV\Jvchat\Domain\Model\Room $room
 	* @param  fe_user $user
-	* @param array $conf
 
 	*/
-	function getSnippet($room, $user, $conf) {
-		if(!$conf || !$user)
-			return '';
+	function getSnippet($room, $user) {
+        $setup = LibUtility::getSetUp();
+        $extConf = LibUtility::getExtConf() ;
 
-		$cObj = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Frontend\\ContentObject\\ContentObjectRenderer');
+        /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
+        $renderer = LibUtility::getRenderer($this->settings , "GetUsers" , "html" )  ;
+        $renderer->assign("showFullNames" , $room->showFullNames() ) ;
+        if( $setup['settings']['userlist']['avatar']['useNemUserImgPath']) {
+            $setup['settings']['userlist']['avatar']['nemUserImgPath']  = 'uploads/tx_feusers_img/' . $subPath = substr( "0000" . intval( round( $user['uid'] / 1000 , 0 )) , -4 , 4 ) . "/"  ;
+        }
 
-			// this makes sure that only fields are available, that are defined in showuserinfo_users, ...
-		$type = tx_jvchat_lib::getUserTypeString($room, $user);
-		$details = $room->getDetailsField($type);
-		foreach($details as $key) {
-			if($room->showDetailOf($type,$key))
-			    if ( $key ) {
-                    $cObj->data[$key] = $user[$key];
-                }
-		}
+        $renderer->assign("thisUser" , $this->user ) ;
+        $renderer->assign("extConf" , $extConf ) ;
+        $renderer->assign("settings" , $setup['settings'] ) ;
 
-			// these are always available
-		$cObj->data['username'] = $room->showFullNames() ? $user['name'] : $user['username'];
-		$cObj->data['tx_nem_image'] = $user['tx_nem_image'];
-		$cObj->data['userpath'] = 'uploads/tx_feusers_img/' . $subPath = substr( "0000" . intval( round( $user['uid'] / 1000 , 0 )) , -4 , 4 ) . "/" . $user['tx_nem_image'] ;
-		$cObj->data['uid'] = $user['uid'];
-		return $cObj->cObjGet($conf);
+        $renderer->assign("user" , $user ) ;
+        return $renderer->render() ;
+
 	}
 	
 	function displaySessionsOfRoom($roomId) {
@@ -554,7 +547,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 			return	$this->displayErrorMessage($this->pi_getLL('error_room_not_found'), $this->conf['views.']['sessions.']['stdWrap.']);
 
 		//check rights to view room
-		if(!tx_jvchat_lib::checkAccessToRoom($room, $this->user))
+		if(!LibUtility::checkAccessToRoom($room, $this->user))
 			return  $this->displayErrorMessage($this->pi_getLL('error_room_access_denied'), $this->conf['views.']['sessions.']['stdWrap.']);
 
 		if(!$sessions = $this->db->getSessionsOfRoom($roomId))
@@ -605,13 +598,13 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$this->db->cleanUpUserInRoom($room->uid, 10, true, $this->pi_getLL('user_leaves_chat'));
 
 		//check rights to view room
-		if(!tx_jvchat_lib::checkAccessToRoom($room, $this->user))
+		if(!LibUtility::checkAccessToRoom($room, $this->user))
 			return $this->displayErrorMessage($this->pi_getLL('access_denied'));
 
 
 		$entries = $this->db->getEntriesOfSession($session);
 
-		$isModerator = tx_jvchat_lib::isModerator($room, $this->user['uid']);
+		$isModerator = LibUtility::isModerator($room, $this->user['uid']);
 		$theValue = '' ;
 		foreach($entries as $entry) {
 			$this->cObj->data = $entry->toArray();
@@ -624,17 +617,17 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				$this->cObj->data['username'] = 'SYSTEM';
 
 			$this->cObj->data['type'] = 0;
-			if(tx_jvchat_lib::isModerator($room, $entry->feuser))
+			if(LibUtility::isModerator($room, $entry->feuser))
 				$this->cObj->data['type'] = 1;
 
-			if(tx_jvchat_lib::isSystem($entry->feuser))
+			if(LibUtility::isSystem($entry->feuser))
 				$this->cObj->data['type'] = 2;
 
-			if(tx_jvchat_lib::isExpert($room, $entry->feuser))
+			if(LibUtility::isExpert($room, $entry->feuser))
 				$this->cObj->data['type'] = 3;
 
-            $extConf = tx_jvchat_lib::getExtConf();
-			$this->cObj->data['entry'] = tx_jvchat_lib::formatMessage($entry->entry , $extConf->setup['settings']['emoticons'] ,  $room->enableEmoticons );
+            $extConf = LibUtility::getExtConf();
+			$this->cObj->data['entry'] = LibUtility::formatMessage($entry->entry , $extConf->setup['settings']['emoticons'] ,  $room->enableEmoticons );
 
 			// render COBJ from TS with current data
 			$theValue .= $this->cObj->cObjGet($this->conf['views.']['session.']['oneEntry.']);
@@ -693,7 +686,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		foreach($rooms as $room) {
 
 			//check rights to view room
-			//if(!tx_jvchat_lib::checkAccessToRoom($room, $this->user))
+			//if(!LibUtility::checkAccessToRoom($room, $this->user))
 			//	continue;
 
 			$this->db->cleanUpUserInRoom($room->uid, 20, true, $this->pi_getLL('user_leaves_chat'));

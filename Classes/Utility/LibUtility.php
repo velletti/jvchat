@@ -1,7 +1,7 @@
 <?php
+namespace JV\Jvchat\Utility;
 
-
-class tx_jvchat_lib {
+class LibUtility {
 
     static function getUserNamesGlue() {
 		return '<user>';
@@ -25,7 +25,7 @@ class tx_jvchat_lib {
 			return false;
 
 		//is banned?
-		//if(tx_jvchat_lib::isBanned($room, $user['uid']))
+		//if(self::isBanned($room, $user['uid']))
 		//	return true;
 
 		//\TYPO3\CMS\Core\Utility\GeneralUtility::debug($room);
@@ -35,16 +35,16 @@ class tx_jvchat_lib {
 			return true;
 
 		// is superuser?
-		if(tx_jvchat_lib::isSuperuser($room, $user))
+		if(self::isSuperuser($room, $user))
 			return true;
 
 		// is moderator?
-		if(tx_jvchat_lib::isModerator($room, $user['uid']))
+		if(self::isModerator($room, $user['uid']))
 			return true;
 
 
 		// is closed?
-		if($room->closed && !tx_jvchat_lib::isModerator($room, $user['uid']))
+		if($room->closed && !self::isModerator($room, $user['uid']))
 			return false;
 
 		// if no usergroup is assigned to the room - allow all users
@@ -118,7 +118,7 @@ class tx_jvchat_lib {
 			return true;
 
 		// is owner?
-		if(tx_jvchat_lib::isOwner($room, $userid))
+		if(self::isOwner($room, $userid))
 			return true;
 
 		return false;
@@ -129,13 +129,13 @@ class tx_jvchat_lib {
 	}
 
     static function getUserTypeString($room, $user) {
-		if(tx_jvchat_lib::isSuperuser($room, $user))
+		if(self::isSuperuser($room, $user))
 			return 'superuser';
-		if(tx_jvchat_lib::isOwner($room, $user['uid']))
+		if(self::isOwner($room, $user['uid']))
 			return 'owner';
-		if(tx_jvchat_lib::isModerator($room, $user['uid']))
+		if(self::isModerator($room, $user['uid']))
 			return 'moderator';
-		if(tx_jvchat_lib::isExpert($room, $user['uid']))
+		if(self::isExpert($room, $user['uid']))
 			return 'expert';
 		return 'user';
 	}
@@ -350,7 +350,7 @@ class tx_jvchat_lib {
 	}
 
     static function getEmoticonsForChatRoom() {
-		$setup = tx_jvchat_lib::getSetUp();
+		$setup = self::getSetUp();
 
 		if( ! is_array($setup) ) { return '' ;}
 		if( ! is_array($setup["settings"]) ) { return '' ;}
@@ -360,7 +360,7 @@ class tx_jvchat_lib {
 		$out = "";
 		foreach($emoticons as $key => $emoji) {
 		    if (  $emoji['inMenu']) {
-                $out .= '<span class="'. $emoticonBtnClass. '"><span class="' . $emoji['html'] . '" onClick="setValueToInput(\''.$emoji['code'].'\');" alt="emoji-' . $key . '" title="'.tx_jvchat_lib::unicode_encode($emoji['code']).'"> </span></span>';
+                $out .= '<span class="'. $emoticonBtnClass. '"><span class="' . $emoji['html'] . '" onClick="setValueToInput(\''.$emoji['code'].'\');" alt="emoji-' . $key . '" title="'.self::unicode_encode($emoji['code']).'"> </span></span>';
             }
 
 		}
@@ -384,7 +384,7 @@ class tx_jvchat_lib {
         if ( $pid == 0) {
             $pid =  $GLOBALS['TSFE']->id ;
         }
-         return JV\Jvchat\Utility\TyposcriptUtility::loadTypoScriptFromScratch( $pid , 'tx_jvchat_pi1');
+         return \JV\Jvchat\Utility\TyposcriptUtility::loadTypoScriptFromScratch( $pid , 'tx_jvchat_pi1');
 
     }
 

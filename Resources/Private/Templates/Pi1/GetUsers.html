@@ -1,53 +1,76 @@
 <f:layout name="Ajax" />
 
 <f:section name="main">
-
+<f:spaceless>
     <f:format.raw>
-        <f:spaceless>
             <f:if condition="{user.hidden}">
                 <f:else>
-
-                    <f:render section="userName" arguments="{showFullNames: showFullNames, user: user , thisUser: thisUser , extConf: extConf }"/>
-
+                    <span id="tx-jvchat-msg-user-{user.uid}" class="tx-jvchat-link-user clearfix" data-content="user-{user.uid}" >
+                        <f:render section="image" arguments="{showFullNames: showFullNames, user: user , thisUser: thisUser , extConf: extConf , settings: settings }"/>
+                        <span class="tx-jvchat-userlist-name">
+                            <f:render section="userName" arguments="{showFullNames: showFullNames, user: user , thisUser: thisUser , extConf: extConf , settings: settings }"/>
+                        </span>
+                        <span class="right tx-jvchat-userlist-buttons">
+                            <f:render section="PRbutton" arguments="{showFullNames: showFullNames, user: user , thisUser: thisUser , extConf: extConf , settings: settings }"/>
+                            <f:render section="PMbutton" arguments="{showFullNames: showFullNames, user: user , thisUser: thisUser , extConf: extConf , settings: settings }"/>
+                        </span>
+                    </span>
                 </f:else>
             </f:if>
-        </f:spaceless>
     </f:format.raw>
+</f:spaceless>
 </f:section>
 
 <f:section name="userName">
     <f:spaceless>
-        <f:variable name="Button"></f:variable>
-        <f:if condition="{thisUser.uid} == {user.uid}">
-            <f:else>
-                <f:if condition="{extConf.allowPrivateRooms}">
-                    <f:variable name="Button"><span class=" btn btn-sm  btn-default" title="{extConf.LLL.command_invite}">&nbsp;
-                        <span class="fa fa-lock"></span>&nbsp;
-                    </span></f:variable>
-
-
-                    <script type="application/javascript">
-                        var userid = '#{user.uid}' ;
-                        var username = '{user.{extConf.usernameField1}} {user.{extConf.usernameField2}}' ;
-                        $('#tx-jvchat-msg-user-' + id + " span.btn").bind("click", function(evt) {
-                            evt.preventDefault();
-                            var name = chat_instance.talkToNewRoomName.replace(/\%s/, username);
-                            var command = "/newroom "+name ;
-                            chat_instance.sendMessage(command);
-                            command = "/recentinvite "+userid+" ";
-                            chat_instance.sendMessage(command);
-                        });
-
-                    </script>
-
-
-                </f:if>
-            </f:else>
-        </f:if>
-
-        <span id="tx-jvchat-msg-user-{entry.uid}" class="tx-jvchat-link-user" data-content="user-{user.uid}" >
-            <f:format.raw>{Button}</f:format.raw> {user.{extConf.usernameField1}}<f:if condition="{usernameField2}"> {user.{extConf.usernameField2}}</f:if>
+        <span class="tx-jvchat-username">
+            {user.{extConf.usernameField1}}<f:if condition="{usernameField2}"> {user.{extConf.usernameField2}}</f:if>
         </span>
+    </f:spaceless>
+</f:section>
+
+<f:section name="image">
+    <f:spaceless>
+        <f:variable name="imgPath">{settings.userlist.avatar.gender.0.file}</f:variable>
+        <f:if condition="{settings.userlist.avatar.genderField}">
+            <f:if condition="{user.{settings.userlist.avatar.genderField}}">
+                <f:variable name="imgPath">{settings.userlist.avatar.gender.{user.{settings.userlist.avatar.genderField}}.file}</f:variable>
+            </f:if>
+        </f:if>
+        <f:if condition="{settings.userlist.avatar.useNemUserImgPath}">
+            <f:then>
+                <f:if condition="{settings.userlist.avatar.imageField}">
+                    <f:if condition="{user.{settings.userlist.avatar.imageField}}">
+                        <f:variable name="imgPath">{settings.userlist.avatar.nemUserImgPath}{user.{settings.userlist.avatar.imageField}}</f:variable>
+                    </f:if>
+                </f:if>
+            </f:then>
+
+        </f:if>
+       <f:image class="tx_jvchat-avatar" src="{imgPath}" title="{imgPath}" maxWidth="{settings.userlist.avatar.maxwidth}" maxHeight="{settings.userlist.avatar.maxheight}" width="{settings.userlist.avatar.width}" height="{settings.userlist.avatar.height}" alt="I"></f:image>
+
+    </f:spaceless>
+</f:section>
+
+
+<f:section name="PRbutton">
+    <f:spaceless>
+        <f:if condition="{extConf.allowPrivateRooms}">
+            <span class=" btn btn-sm  btn-default tx-jvchat-pr-link" title="{f:translate(key: 'command_invite'}">&nbsp;
+                <span class="fa fa-user-friends"></span>&nbsp;
+            </span>
+        </f:if>
+    </f:spaceless>
+</f:section>
+
+
+<f:section name="PMbutton">
+    <f:spaceless>
+        <f:if condition="{extConf.allowPrivateMessages}">
+            <span class=" btn btn-sm  btn-default tx-jvchat-pm-link" title="{f:translate(key: 'command_msg'}">&nbsp;
+                <span class="fa fa-comments"></span>&nbsp;
+            </span>
+        </f:if>
     </f:spaceless>
 </f:section>
 

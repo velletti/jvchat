@@ -23,7 +23,7 @@ return Array (
     "columns" => Array (
         "hidden" => Array (
             "exclude" => 1,
-            "label" => "LLL:EXT:lang/locallang_general.xlf:LGL.hidden",
+            "label" => "LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden",
             "config" => Array (
                 "type" => "check",
                 "default" => "0"

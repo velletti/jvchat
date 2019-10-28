@@ -29,7 +29,7 @@ $return = array (
     "columns" => Array (
         "hidden" => Array (
             "exclude" => 1,
-            "label" => "LLL:EXT:lang/locallang_general.xlf:LGL.hidden",
+            "label" => "LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden",
             "config" => Array (
                 "type" => "check",
                 "default" => "0"
@@ -37,7 +37,7 @@ $return = array (
         ),
         "starttime" => Array (
             "exclude" => 1,
-            "label" => "LLL:EXT:lang/locallang_general.xlf:LGL.starttime",
+            "label" => "LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime",
             "config" => Array (
                 "type" => "input",
                 "renderType" => "inputDateTime",
@@ -48,7 +48,7 @@ $return = array (
         ),
         "endtime" => Array (
             "exclude" => 1,
-            "label" => "LLL:EXT:lang/locallang_general.xlf:LGL.endtime",
+            "label" => "LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime",
             "config" => Array (
                 "type" => "input",
                 "renderType" => "inputDateTime",
@@ -60,15 +60,15 @@ $return = array (
         ),
         "fe_group" => Array (
             "exclude" => 1,
-            "label" => "LLL:EXT:lang/locallang_general.xlf:LGL.fe_group",
+            "label" => "LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.fe_group",
             "config" => Array (
                 "type" => "select",
                 'renderType' => 'selectMultipleSideBySide' ,
                 "items" => Array (
                     Array("", 0),
-                    Array("LLL:EXT:lang/locallang_general.xlf:LGL.hide_at_login", -1),
-                    Array("LLL:EXT:lang/locallang_general.xlf:LGL.any_login", -2),
-                    Array("LLL:EXT:lang/locallang_general.xlf:LGL.usergroups", "--div--")
+                    Array("LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login", -1),
+                    Array("LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.any_login", -2),
+                    Array("LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.usergroups", "--div--")
                 ),
                 "foreign_table" => "fe_groups"
             )

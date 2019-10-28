@@ -1,7 +1,9 @@
 <?php
+namespace JV\Jvchat\Domain\Model;
 
+// was class tx_jvchat_room
 
-class tx_jvchat_room {
+class Room {
 
 	function __construct() {
 

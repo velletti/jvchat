@@ -48,23 +48,10 @@
 								<size>1</size>
 								<maxitems>1</maxitems>
 							</config>
-							<displayCond>FIELD:display:=:chat</displayCond>
+							<displayCond>FIELD:sDEF.display:=:chat</displayCond>
 						</TCEforms>
 					</chatroom>
-					<chatrooms>
-						<TCEforms>
-							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.chatrooms</label>
-							<config>
-								<exclude>1</exclude>
-								<type>group</type>
-								<internal_type>db</internal_type>
-								<allowed>tx_jvchat_room</allowed>
-								<size>10</size>
-								<maxitems>100</maxitems>
-							</config>
-							<displayCond>FIELD:display:!=:chat</displayCond>
-						</TCEforms>
-					</chatrooms>					
+
 					<chatwindow>
 						<TCEforms>
 							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.chat_window</label>
@@ -76,7 +63,7 @@
 								<size>1</size>
 								<maxitems>1</maxitems>
 							</config>
-							<displayCond>FIELD:display:!=:overallusercount</displayCond>
+							<displayCond>FIELD:sDEF.display:!=:overallusercount</displayCond>
 						</TCEforms>
 					</chatwindow>
 					<targetwindow>
@@ -90,162 +77,187 @@
 								<size>1</size>
 								<maxitems>1</maxitems>
 							</config>
-							<displayCond>FIELD:display:=:overallusercount</displayCond>
+							<displayCond>FIELD:sDEF.display:=:overallusercount</displayCond>
 						</TCEforms>
 					</targetwindow>
-					<typoscriptRoomsTemplate>
-						<TCEforms>
-							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.typoscriptRoomsTemplate</label>
-							<config>
-								<exclude>1</exclude>							
-								<type>select</type>
-								<items type="array">
-									<numIndex index="0" type="array">
-										<numIndex index="0">Rooms (rooms.)</numIndex>
-										<numIndex index="1">rooms</numIndex>
-									</numIndex>
-									<numIndex index="1" type="array">
-										<numIndex index="0">RoomsShort (Teaser) (roomsShort.)</numIndex>
-										<numIndex index="1">roomsShort</numIndex>
-									</numIndex>
-									<numIndex index="2" type="array">
-										<numIndex index="0">Custom</numIndex>
-										<numIndex index="1">custom</numIndex></numIndex>
-								</items>
-								<size>1</size>
-								<minitems>0</minitems>
-								<default>rooms</default>
-							</config>
-							<onChange>reload</onChange>
-							<displayCond>FIELD:display:=:rooms</displayCond>
-						</TCEforms>
-					</typoscriptRoomsTemplate>
-					<typoscriptRoomsTemplateCustom>
-						<TCEforms>
-							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.typoscriptRoomsTemplateCustom</label>
-							<config>
-								<exclude>1</exclude>							
-								<type>input</type>
-								<size>5</size>
-								<default>rooms</default>
-							</config>
-							<displayCond>FIELD:typoscriptRoomsTemplate:=:custom</displayCond>							
-						</TCEforms>
-					</typoscriptRoomsTemplateCustom>
-					<showDescription>
-						<TCEforms>
-							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showDescription</label>
-							<config>
-								<exclude>1</exclude>							
-								<type>check</type>
-								<default>1</default>
-							</config>
-							<displayCond>FIELD:display:=:rooms</displayCond>					
-						</TCEforms>
-					</showDescription>	
-					<hideEmptyRooms>
-						<TCEforms>
-							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.hideEmptyRooms</label>
-							<config>
-								<exclude>1</exclude>							
-								<type>check</type>
-								<default>0</default>
-							</config>
-							<displayCond>FIELD:display:=:rooms</displayCond>							
-						</TCEforms>
-					</hideEmptyRooms>						
-					<hideClosedRooms>
-						<TCEforms>
-							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.hideClosedRooms</label>
-							<config>
-								<exclude>1</exclude>							
-								<type>check</type>
-								<default>1</default>
-							</config>
-							<displayCond>FIELD:display:=:rooms</displayCond>							
-						</TCEforms>
-					</hideClosedRooms>
-					<hidePrivateRooms>
-						<TCEforms>
-							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.hidePrivateRooms</label>
-							<config>
-								<exclude>1</exclude>							
-								<type>check</type>
-								<default>1</default>
-							</config>
-							<displayCond>FIELD:display:=:rooms</displayCond>							
-						</TCEforms>
-					</hidePrivateRooms>					
 
-					<showModerators>
-						<TCEforms>
-							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showModerators</label>
-							<config>
-								<exclude>1</exclude>							
-								<type>check</type>
-								<default>1</default>
-							</config>
-							<displayCond>FIELD:display:=:rooms</displayCond>							
-						</TCEforms>
-					</showModerators>
-					<showUsers>
-						<TCEforms>
-							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showUsers</label>
-							<config>
-								<exclude>1</exclude>							
-								<type>check</type>
-								<default>1</default>
-							</config>
-							<displayCond>FIELD:display:=:rooms</displayCond>							
-						</TCEforms>
-					</showUsers>					
-					<showExperts>
-						<TCEforms>
-							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showExperts</label>
-							<config>
-								<exclude>1</exclude>							
-								<type>check</type>
-								<default>1</default>
-							</config>
-							<displayCond>FIELD:display:=:rooms</displayCond>
-						</TCEforms>
-					</showExperts>					
-					<showUserCount>
-						<TCEforms>
-							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showUserCount</label>
-							<config>
-								<exclude>1</exclude>							
-								<type>check</type>
-								<default>1</default>
-							</config>
-							<displayCond>FIELD:display:=:rooms</displayCond>
-						</TCEforms>
-					</showUserCount>						
-					<!-- initChatWithMessagesBeforeType>
-						<TCEforms>
-							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.initChatWithMessagesBeforeType</label>
-							<config>
-								<exclude>1</exclude>							
-								<type>select</type>
-								<items type="array">
-									<numIndex index="0" type="array">
-										<numIndex index="0">LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:pi_flexform.initChatWithMessagesBeforeTypeMinutes</numIndex>
-										<numIndex index="1">minutes</numIndex>
-									</numIndex>
-									<numIndex index="1" type="array">
-										<numIndex index="0">LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:pi_flexform.initChatWithMessagesBeforeTypeCount</numIndex>
-										<numIndex index="1">count</numIndex>
-									</numIndex>
-								</items>
-								<maxitems>1</maxitems>
-								<size>1</size>
-								<default>datats</default>
-							</config>
-						</TCEforms>
-					</initChatWithMessagesBeforeType -->
 				</el>
 			</ROOT>
 		</sDEF>
+			<roomsDEF>
+				<ROOT>
+					<TCEforms>
+						<sheetTitle>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.sheet_roomlist</sheetTitle>
+					</TCEforms>
+					<type>array</type>
+					<el>
+						<chatrooms>
+							<TCEforms>
+								<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.chatrooms</label>
+								<config>
+									<exclude>1</exclude>
+									<type>group</type>
+									<internal_type>db</internal_type>
+									<allowed>tx_jvchat_room</allowed>
+									<size>10</size>
+									<maxitems>100</maxitems>
+								</config>
+								<displayCond>FIELD:sDEF.display:!=:chat</displayCond>
+							</TCEforms>
+						</chatrooms>
+						<typoscriptRoomsTemplate>
+							<TCEforms>
+								<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.typoscriptRoomsTemplate</label>
+								<config>
+									<exclude>1</exclude>
+									<type>select</type>
+									<items type="array">
+										<numIndex index="0" type="array">
+											<numIndex index="0">Rooms (rooms.)</numIndex>
+											<numIndex index="1">rooms</numIndex>
+										</numIndex>
+										<numIndex index="1" type="array">
+											<numIndex index="0">RoomsShort (Teaser) (roomsShort.)</numIndex>
+											<numIndex index="1">roomsShort</numIndex>
+										</numIndex>
+										<numIndex index="2" type="array">
+											<numIndex index="0">Custom</numIndex>
+											<numIndex index="1">custom</numIndex></numIndex>
+									</items>
+									<size>1</size>
+									<minitems>0</minitems>
+									<default>rooms</default>
+								</config>
+								<onChange>reload</onChange>
+								<displayCond>FIELD:sDEF.display:=:rooms</displayCond>
+							</TCEforms>
+						</typoscriptRoomsTemplate>
+						<typoscriptRoomsTemplateCustom>
+							<TCEforms>
+								<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.typoscriptRoomsTemplateCustom</label>
+								<config>
+									<exclude>1</exclude>
+									<type>input</type>
+									<size>5</size>
+									<default>rooms</default>
+								</config>
+								<displayCond>FIELD:typoscriptRoomsTemplate:=:custom</displayCond>
+							</TCEforms>
+						</typoscriptRoomsTemplateCustom>
+						<showDescription>
+							<TCEforms>
+								<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showDescription</label>
+								<config>
+									<exclude>1</exclude>
+									<type>check</type>
+									<default>1</default>
+								</config>
+								<displayCond>FIELD:sDEF.display:=:rooms</displayCond>
+							</TCEforms>
+						</showDescription>
+						<hideEmptyRooms>
+							<TCEforms>
+								<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.hideEmptyRooms</label>
+								<config>
+									<exclude>1</exclude>
+									<type>check</type>
+									<default>0</default>
+								</config>
+								<displayCond>FIELD:sDEF.display:=:rooms</displayCond>
+							</TCEforms>
+						</hideEmptyRooms>
+						<hideClosedRooms>
+							<TCEforms>
+								<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.hideClosedRooms</label>
+								<config>
+									<exclude>1</exclude>
+									<type>check</type>
+									<default>1</default>
+								</config>
+								<displayCond>FIELD:sDEF.display:=:rooms</displayCond>
+							</TCEforms>
+						</hideClosedRooms>
+						<hidePrivateRooms>
+							<TCEforms>
+								<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.hidePrivateRooms</label>
+								<config>
+									<exclude>1</exclude>
+									<type>check</type>
+									<default>1</default>
+								</config>
+								<displayCond>FIELD:sDEF.display:=:rooms</displayCond>
+							</TCEforms>
+						</hidePrivateRooms>
+
+						<showModerators>
+							<TCEforms>
+								<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showModerators</label>
+								<config>
+									<exclude>1</exclude>
+									<type>check</type>
+									<default>1</default>
+								</config>
+								<displayCond>FIELD:sDEF.display:=:rooms</displayCond>
+							</TCEforms>
+						</showModerators>
+						<showUsers>
+							<TCEforms>
+								<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showUsers</label>
+								<config>
+									<exclude>1</exclude>
+									<type>check</type>
+									<default>1</default>
+								</config>
+								<displayCond>FIELD:sDEF.display:=:rooms</displayCond>
+							</TCEforms>
+						</showUsers>
+						<showExperts>
+							<TCEforms>
+								<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showExperts</label>
+								<config>
+									<exclude>1</exclude>
+									<type>check</type>
+									<default>1</default>
+								</config>
+								<displayCond>FIELD:sDEF.display:=:rooms</displayCond>
+							</TCEforms>
+						</showExperts>
+						<showUserCount>
+							<TCEforms>
+								<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showUserCount</label>
+								<config>
+									<exclude>1</exclude>
+									<type>check</type>
+									<default>1</default>
+								</config>
+								<displayCond>FIELD:sDEF.display:=:rooms</displayCond>
+							</TCEforms>
+						</showUserCount>
+						<!-- initChatWithMessagesBeforeType>
+                            <TCEforms>
+                                <label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.initChatWithMessagesBeforeType</label>
+                                <config>
+                                    <exclude>1</exclude>
+                                    <type>select</type>
+                                    <items type="array">
+                                        <numIndex index="0" type="array">
+                                            <numIndex index="0">LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:pi_flexform.initChatWithMessagesBeforeTypeMinutes</numIndex>
+                                            <numIndex index="1">minutes</numIndex>
+                                        </numIndex>
+                                        <numIndex index="1" type="array">
+                                            <numIndex index="0">LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:pi_flexform.initChatWithMessagesBeforeTypeCount</numIndex>
+                                            <numIndex index="1">count</numIndex>
+                                        </numIndex>
+                                    </items>
+                                    <maxitems>1</maxitems>
+                                    <size>1</size>
+                                    <default>datats</default>
+                                </config>
+                            </TCEforms>
+                        </initChatWithMessagesBeforeType -->
+					</el>
+				</ROOT>
+			</roomsDEF>
 		<chatDEF>
 			<ROOT>
 				<TCEforms>
@@ -261,7 +273,8 @@
 								<type>input</type>
 								<size>5</size>
 								<default>60</default>
-							</config>							
+							</config>
+							<displayCond>FIELD:sDEF.display:=:chat</displayCond>
 						</TCEforms>
 					</initChatWithMessagesBefore>
 					<reloadTimeIfRoomFull>
@@ -273,6 +286,7 @@
 								<size>5</size>
 								<default>10</default>
 							</config>
+							<displayCond>FIELD:sDEF.display:=:chat</displayCond>
 						</TCEforms>
 					</reloadTimeIfRoomFull>
 					<refreshMessagesTime>
@@ -284,6 +298,7 @@
 								<size>5</size>
 								<default>5</default>
 							</config>
+							<displayCond>FIELD:sDEF.display:=:chat</displayCond>
 						</TCEforms>
 					</refreshMessagesTime>
 					<refreshUserListTime>
@@ -295,6 +310,7 @@
 								<size>5</size>
 								<default>5</default>
 							</config>
+							<displayCond>FIELD:sDEF.display:=:chat</displayCond>
 						</TCEforms>
 					</refreshUserListTime>
 
@@ -306,6 +322,7 @@
 								<type>check</type>
 								<default>1</default>
 							</config>
+							<displayCond>FIELD:sDEF.display:=:chat</displayCond>
 						</TCEforms>
 					</showFormatting>
 					<showEmoticons>
@@ -316,6 +333,7 @@
 								<type>check</type>
 								<default>1</default>
 							</config>
+							<displayCond>FIELD:sDEF.display:=:chat</displayCond>
 						</TCEforms>
 					</showEmoticons>
 					<showStyles>
@@ -326,6 +344,7 @@
 								<type>check</type>
 								<default>1</default>
 							</config>
+							<displayCond>FIELD:sDEF.display:=:chat</displayCond>
 						</TCEforms>
 					</showStyles>					
 					<colorizeNicks>
@@ -336,6 +355,7 @@
 								<type>check</type>
 								<default>1</default>
 							</config>
+							<displayCond>FIELD:sDEF.display:=:chat</displayCond>
 						</TCEforms>
 					</colorizeNicks>					
 					<enableSound>
@@ -346,6 +366,7 @@
 								<type>check</type>
 								<default>1</default>
 							</config>
+							<displayCond>FIELD:sDEF.display:=:chat</displayCond>
 						</TCEforms>
 					</enableSound>					
 					<showTime>
@@ -356,8 +377,9 @@
 								<type>check</type>
 								<default>1</default>
 							</config>
+							<displayCond>FIELD:sDEF.display:=:chat</displayCond>
 						</TCEforms>
-					</showTime>					
+					</showTime>
 					<showSendButton>
 						<TCEforms>
 							<label>LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showSendButton</label>
@@ -366,6 +388,7 @@
 								<type>check</type>
 								<default>0</default>
 							</config>
+							<displayCond>FIELD:sDEF.display:=:chat</displayCond>
 						</TCEforms>
 					</showSendButton>
 					<showDescriptionInChat>
@@ -376,6 +399,7 @@
 								<type>check</type>
 								<default>1</default>
 							</config>
+							<displayCond>FIELD:sDEF.display:=:chat</displayCond>
 						</TCEforms>
 					</showDescriptionInChat>						
 				</el>

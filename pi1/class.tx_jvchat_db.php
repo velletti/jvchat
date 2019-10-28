@@ -1,9 +1,9 @@
 <?php
 
 
-require_once('class.tx_jvchat_room.php');
-require_once('class.tx_jvchat_session.php');
-require_once('class.tx_jvchat_entry.php');
+// require_once('class.tx_jvchat_room.php');
+// require_once('class.tx_jvchat_session.php');
+// require_once('class.tx_jvchat_entry.php');
 require_once('class.tx_jvchat_lib.php');
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -61,8 +61,8 @@ class tx_jvchat_db {
 
 		$rooms = array();
 		foreach ($rows as $row ) {
-
-			$room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_jvchat_room');
+            /** @var \JV\Jvchat\Domain\Model\Room $room */
+			$room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\Jvchat\Domain\Model\Room');
 			$room->fromArray($row);
 
 			$rooms[] = $room;
@@ -104,7 +104,8 @@ class tx_jvchat_db {
                 ->execute()
                 ->fetch();
 
-            $room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_jvchat_room');
+            /** @var \JV\Jvchat\Domain\Model\Room $room */
+            $room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\Jvchat\Domain\Model\Room');
             $room->fromArray($row);
             $rooms[] = $room;
         }
@@ -126,7 +127,8 @@ class tx_jvchat_db {
             ->execute()->fetchAll() ;
             ;
         foreach ( $rows as $row ) {
-            $room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_jvchat_room');
+            /** @var \JV\Jvchat\Domain\Model\Room $room */
+            $room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\Jvchat\Domain\Model\Room');
             $room->fromArray($row);
             $rooms[] = $room;
         }
@@ -151,7 +153,8 @@ class tx_jvchat_db {
             ->execute() ;
         ;
         if ( $row =  $rows->fetch()  ) {
-            $room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_jvchat_room');
+            /** @var \JV\Jvchat\Domain\Model\Room $room */
+            $room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\Jvchat\Domain\Model\Room');
             $room->fromArray($row);
             return  $room;
         }
@@ -226,8 +229,8 @@ class tx_jvchat_db {
             return false;
         }
 
-
-		$session = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_jvchat_session');
+        /** @var \JV\Jvchat\Domain\Model\Session $session */
+		$session = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\Jvchat\Domain\Model\Session');
 		$session->fromArray($row);
 		return $session;
 	}
@@ -272,8 +275,8 @@ class tx_jvchat_db {
 
 		$sessions = array();
 		while($row = $rows->fetch() ) {
-            /** @var tx_jvchat_session $session */
-			$session = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_jvchat_session');
+            /** @var \JV\Jvchat\Domain\Model\Session $session */
+			$session = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\Jvchat\Domain\Model\Session');
 			$session->fromArray($row);
 			$sessions[] = $session;
 		}
@@ -302,7 +305,8 @@ class tx_jvchat_db {
 
 		$entries = array();
 		while( $row = $rows->fetch() ) {
-			$entry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_jvchat_entry');
+            /** @var \JV\Jvchat\Domain\Model\Entry $entry */
+            $entry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\Jvchat\Domain\Model\Entry');
 			$entry->fromArray($row);
 			$entries[] = $entry;
 		}
@@ -448,7 +452,8 @@ class tx_jvchat_db {
         if ( ! $row ) {
             return false ;
         }
-        $room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_jvchat_room');
+        /** @var \JV\Jvchat\Domain\Model\Room $room */
+        $room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\Jvchat\Domain\Model\Room');
         $room->fromArray($row);
         return $room;
 
@@ -558,8 +563,8 @@ class tx_jvchat_db {
        // $this->debugQuery($queryBuilder) ;
         $rows = $queryBuilder->execute() ;
         while ( $row = $rows->fetch() ) {
-            /** @var tx_jvchat_entry $entry */
-            $entry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_jvchat_entry');
+            /** @var \JV\Jvchat\Domain\Model\Entry $entry */
+            $entry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\Jvchat\Domain\Model\Entry');
             $entry->fromArray($row);
             $entries[] = $entry;
             if ( count( $entries) > $max ) {
@@ -708,7 +713,8 @@ class tx_jvchat_db {
             if( $asArray ) {
                 return $row ;
             }
-			$entry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_jvchat_entry');
+            /** @var \JV\Jvchat\Domain\Model\Entry $entry */
+            $entry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\Jvchat\Domain\Model\Entry');
 			$entry->fromArray($row);
 
 			return $entry;
@@ -967,7 +973,8 @@ class tx_jvchat_db {
 
 		$rooms = array();
 		while($row = $rows->fetch() ) {
-			$room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_jvchat_room');
+            /** @var \JV\Jvchat\Domain\Model\Room $room */
+            $room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\Jvchat\Domain\Model\Room');
 			if (!$row) {
                 return $rooms;
             }
@@ -1191,8 +1198,8 @@ class tx_jvchat_db {
 
         $sessions = array();
         while($row = $rows->fetch() ) {
-            /** @var tx_jvchat_session $session */
-            $session = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('tx_jvchat_session');
+            /** @var \JV\Jvchat\Domain\Model\Session $session */
+            $session = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\Jvchat\Domain\Model\Session');
             $session->fromArray($row);
             $sessions[] = $session;
         }

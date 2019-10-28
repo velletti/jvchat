@@ -115,6 +115,9 @@
 			<trans-unit id="tt_content.pi_flexform.sheet_chatroom">
 				<source>Chat</source>
 			</trans-unit>
+			<trans-unit id="tt_content.pi_flexform.sheet_roomlist">
+				<source>Roomlist</source>
+			</trans-unit>
 			<trans-unit id="tt_content.pi_flexform.conf_view">
 				<source>Display</source>
 			</trans-unit>

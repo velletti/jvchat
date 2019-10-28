@@ -238,8 +238,9 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	function deleteEntry($entryId) {
 		// check rights
 		$entry = $this->db->getEntry($entryId);
-        /** @var tx_jvchat_room $room */
+        /** @var \JV\Jvchat\Domain\Model\Room $newRoom */
 		$room = $this->db->getRoom($entry->room);
+
 		if(!tx_jvchat_lib::checkAccessToRoom($room, $this->user))
 			return $this->displayErrorMessage($this->pi_getLL('access_denied'));
 
@@ -259,7 +260,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 
 		$this->db->cleanUpRooms();
-        /** @var tx_jvchat_room $room */
+        /** @var \JV\Jvchat\Domain\Model\Room $newRoom */
 		if(!$room = $this->db->getRoom($roomId)) {
             return $this->displayErrorMessage($this->pi_getLL('error_room_not_found'), $this->conf['views.']['chat.']['stdWrap.']);
         }
@@ -518,7 +519,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	}
 
 	/*
-	* @param  tx_jvchat_room $room
+	* @param  \JV\Jvchat\Domain\Model\Room $room
 	* @param  fe_user $user
 	* @param array $conf
 
@@ -548,7 +549,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	}
 	
 	function displaySessionsOfRoom($roomId) {
-        /** @var tx_jvchat_room $room */
+        /** @var \JV\Jvchat\Domain\Model\Room $room */
 		if(!$room = $this->db->getRoom($roomId))
 			return	$this->displayErrorMessage($this->pi_getLL('error_room_not_found'), $this->conf['views.']['sessions.']['stdWrap.']);
 
@@ -597,7 +598,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 		if(!$session = $this->db->getSession($sessionId))
 			return $this->displayErrorMessage($this->pi_getLL('session_not_found'), $this->conf['views.']['session.']['stdWrap.']);
-        /** @var tx_jvchat_room $room */
+        /** @var \JV\Jvchat\Domain\Model\Room $room */
 		if(!$room = $this->db->getRoom($session->room))
 			return $this->displayErrorMessage($this->pi_getLL('room_not_found'), $this->conf['views.']['session.']['stdWrap.']);
 

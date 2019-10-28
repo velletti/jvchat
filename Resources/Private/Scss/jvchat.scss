@@ -60,8 +60,8 @@ div#tx-jvchat-format img {
 }
 
 div#tx-jvchat-emoticons {
-    padding: 0.2em 0 0 0.2em;
-    height: 38px;
+    padding: 0;
+    height: 40px;
     .fa , .fab , .fas {
         cursor:pointer;
         line-height: unset !important;
@@ -76,10 +76,19 @@ div#tx-jvchat-input-container {
     clear:both;
 }
 
-.chatIconColor .fa , .chatIconColor .fas ,  .chatIconColor .fab {
-    background: linear-gradient(#FF9933,#FE3322);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
+.chatIconColor {
+    .fa ,
+    .fas ,
+    .fab {
+        background: linear-gradient(#FEE30E,#FEA200);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+    }
+    .fa-2x ,
+    .fa-3x ,
+    .fa-4x {
+        text-shadow: 1px 1px 3px rgba( 256 , 99 , 0 , 0.1);
+    }
 }
 
 textarea#txjvchatnewMessage {

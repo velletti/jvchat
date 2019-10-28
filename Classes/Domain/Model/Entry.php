@@ -1,7 +1,7 @@
 <?php
+namespace JV\Jvchat\Domain\Model;
 
-
-class tx_jvchat_entry {
+class Entry {
 
 	function __construct() {
 

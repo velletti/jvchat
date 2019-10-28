@@ -1,7 +1,8 @@
 <?php
+namespace JV\Jvchat\Domain\Model;
 
-
-class tx_jvchat_session {
+// was : class tx_jvchat_session {
+class Session {
 
 	function __construct() {
 	}

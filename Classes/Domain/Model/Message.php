@@ -1,4 +1,5 @@
 <?php
+namespace JV\Jvchat\Domain\Model;
 /***************************************************************
 *  Copyright notice
 *
@@ -25,9 +26,10 @@
  * Plugin 'Chat' for the 'jvchat' extension.
  *
  * @author	Vincent Tietz <vincent.tietz@vj-media.de>
+ * @author	Jörg velletti <typo3@velletti.de>
  */
  
-class tx_jvchat_message {
+class Message {
 	function toXML() {
 		return '<message id="'.$this->id.'"></message>';
 	}

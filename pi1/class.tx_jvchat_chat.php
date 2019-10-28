@@ -28,8 +28,8 @@
  * @author	Vincent Tietz <vincent.tietz@vj-media.de>
  */
  
-require_once('class.tx_jvchat_room.php');
-require_once('class.tx_jvchat_entry.php');
+// require_once('class.tx_jvchat_room.php');
+// require_once('class.tx_jvchat_entry.php');
 
 require_once('class.tx_jvchat_db.php');
 require_once('class.tx_jvchat_lib.php');
@@ -57,7 +57,7 @@ class tx_jvchat_chat {
 
     var $debugMessages = array();
 
-    /** @var  tx_jvchat_room  */
+    /** @var \JV\Jvchat\Domain\Model\Room $newRoom */
     var $room;
 
     var $user;
@@ -1496,7 +1496,8 @@ class tx_jvchat_chat {
 		else
 			$name = implode(' ',$params);
 
-		$newRoom = new tx_jvchat_room();
+        /** @var \JV\Jvchat\Domain\Model\Room $newRoom */
+        $newRoom = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\Jvchat\Domain\Model\Room');
 		$newRoom->pid = $this->room->pid;
 
 

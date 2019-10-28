@@ -26,11 +26,6 @@
             "pi1"
         ]
     },
-    "autoload-dev": {
-        "psr-4": {
-            "FluidTYPO3\\Vhs\\Tests\\": "Tests/"
-        }
-    },
 
     "require": {
         "php": ">=7.0.0",

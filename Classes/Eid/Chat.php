@@ -1,5 +1,9 @@
-<?php /** @noinspection PhpUndefinedMethodInspection */
+<?php
+/** @noinspection PhpUndefinedMethodInspection */
 /** @noinspection PhpUndefinedFieldInspection */
+
+namespace JV\Jvchat\Eid;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -22,23 +26,18 @@
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
+
 /**
  * Plugin 'Chat' for the 'jvchat' extension.
  *
  * @author	Vincent Tietz <vincent.tietz@vj-media.de>
  */
  
-// require_once('class.tx_jvchat_room.php');
-// require_once('class.tx_jvchat_entry.php');
-
-// require_once('class.tx_jvchat_db.php');
-// require_once('class.tx_jvchat_lib.php');
 use \JV\Jvchat\Utility\LibUtility;
 
-# require_once(PATH_site.'typo3/sysext/lang/lang.php');
-# require_once(\TYPO3\CMS\Core\Utility\ExtensionManagementUtility::extPath('lang', 'lang.php'));
 
-class tx_jvchat_chat {
+// was : class tx_jvchat_chat {
+class Chat {
 
     /** @var \TYPO3\CMS\Lang\LanguageService $lang */
     var $lang;

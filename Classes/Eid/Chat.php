@@ -276,6 +276,18 @@ class Chat {
 					),
 					'rights' => '0011',
 				),
+                'whois' => array(
+                    'callback' => '_whois',
+                    'description' => $this->lang->getLL('command_who_is'),
+                    'parameters' => array(
+                        'userId' => array(
+                            'regExp' =>'/(#([0-9]*)|[alphanum])?/i',
+                            'description' => $this->lang->getLL('command_param_userid'),
+                            'required' => 1,
+                        ),
+                    ),
+                    'rights' => '0001',
+                ),
 
 				'makesession' => array(
 					'callback' => '_makesession',
@@ -368,10 +380,15 @@ class Chat {
 
                 'talkTo' => array(
                     'callback' => '_talkTo',
-                    'hidefeedback' => '1',
-                    'hideinhelp' => '1',
+                 //   'hidefeedback' => '1',
+                 //   'hideinhelp' => '1',
                     'description' => $this->lang->getLL('command_talkto'),
                     'parameters' => array(
+                        'uid' => array(
+                            'regExp' =>'/[0-9]*)/i',
+                            'description' => $this->lang->getLL('command_talkto_param_uid'),
+                            'required' => 0,
+                        ),
                         'name' => array(
                             'regExp' =>'/.(.*)/i',
                             'description' => $this->lang->getLL('command_talkto_param_name'),
@@ -495,6 +512,7 @@ class Chat {
 
 
         $messages = array() ;
+        /** @var \JV\Jvchat\Domain\Model\Entry $entry */
         foreach($entries as $entry) {
 
             // if message is a quit message for current client
@@ -567,21 +585,6 @@ class Chat {
             }
 
 
-            // prepare message that should be sent to client
-            $message = $entryText ;
-
-            // if entry is hidden and user is a moderator then add a commit link
-            if($entry->hidden) {
-                $message = '<div class="tx-jvchat-hidden" id="tx-jvchat-entry-'.$entry->uid.'">'.$message.'</div>';
-                if(LibUtility::isModerator($this->room, $this->user['uid']) && !$entry->isPrivate())
-                    $message = $message.'<div class="tx-jvchat-commit" id="tx-jvchat-entry-commitlink-'.$entry->uid.'"><a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.commitEntry('.$entry->uid.');">'.$this->lang->getLL('commit_message').'</a> | <a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.hideEntry('.$entry->uid.');">'.$this->lang->getLL('hide_message').'</a> <span id="tx-jvchat-storelink-'.$entry->uid.'">| <a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.storeEntry('.$entry->uid.');">'.$this->lang->getLL('store_message').'</a></span></div>';
-
-                if($entry->isPrivate()) {
-                    $message = '<div class="tx-jvchat-private">'.$message.'</div>';
-                }
-            }
-
-
             if($entryUser) {
                 $userType = LibUtility::getUserTypeString($this->room, $entryUser) ;
             } else {
@@ -618,8 +621,6 @@ class Chat {
             // as workaround do translation in php ..
             $this->extConf['LLL']['command_invite'] = $this->lang->getLL('command_invite')  ;
 
-
-            $renderer->assign("message" , $message ) ;
             $renderer->assign("showFullNames" , $this->room->showFullNames() ) ;
             $renderer->assign("extConf" , $this->extConf ) ;
 
@@ -947,7 +948,6 @@ class Chat {
 	}
 	
 	function performCommand($lines) {
-
 		if(!LibUtility::checkAccessToRoom($this->room, $this->env['user']))
 			return $this->lang->getLL('error_room_access_denied');
 
@@ -965,15 +965,13 @@ class Chat {
 					$found = true;
 					// check rights
 					unset($parts[0]);
-
-					if(!$this->grantAccessToCommand($command, $this->env['user'])) {
+                   if(!$this->grantAccessToCommand($command, $this->env['user'])) {
 						$out .= $this->returnMessage('<span class="tx-jvchat-error">'.$this->lang->getLL('error_access_denied').'</span>');
 						continue;
 					}
-
-
-					// check params
+                    // check params
 					$paramResult = $this->checkParams($parts, $data['parameters']);
+
 					if($paramResult === true) {
 					    $commandFnc = $data['callback'] ;
 					    if ( $commandFnc ) {
@@ -1161,8 +1159,6 @@ class Chat {
                 return $item1['group'] <=> $item2['group'];
             });
 
-            $columns = 5;
-            $col = 0;
             $group = false ;
             foreach($emoticons as $key => $icon ) {
                 if( $icon['hideInHelp']) {
@@ -1175,16 +1171,14 @@ class Chat {
                 }
 
                 if( !$group || trim( $icon['group']) != $group ) {
-                    $col = 0;
                     $group = $icon['group'] ;
                     $out .="<br ><br style=\"clear:both;\"><b onClick=\"javascript:chat_instance.insertCommand('/smilies " . $icon['group'] .  "');\">/smilies " . $icon['group']. "</b><br>";
                 }
-
-                $out .= '<div class="tx-jvchat-cmd-smileys-text">'.$icon['code'].'</div>';
-                $out .= '<div class="tx-jvchat-cmd-smileys-image chatIconColor " onClick="javascript:chat_instance.insertCommand(\'' . $icon['code'] .  '\');" >'.LibUtility::formatMessageEmoji($icon).'</div>';
-                $col++;
-                if($col == $columns || trim( $icon['group']) != $group ) {
-                    $col = 0;
+                $out .= '<span class="tx-jvchat-cmd-smiley">';
+                    $out .= '<span class="tx-jvchat-cmd-smileys-image chatIconColor " onClick="javascript:chat_instance.insertCommand(\'' . $icon['code'] .  '\');" >'.LibUtility::formatMessageEmoji($icon).'</span>';
+                    $out .= '<span class="tx-jvchat-cmd-smileys-text">'.$icon['code'].'</span>';
+                $out .= '</span>';
+                if(trim( $icon['group']) != $group ) {
                     $out = $out.'<br style="clear:both;" />';
                 }
                 $group = $icon['group'] ;
@@ -1269,7 +1263,7 @@ class Chat {
 		return $parts;
 	}
 
-// >> Begin, Ergï¿½nzungen Udo Gerhards
+
 
 	function _whois($params) {
 		// get informations about self
@@ -1298,7 +1292,7 @@ class Chat {
 		return $this->db->getFeUserByName($input);
 
 	}
-// >> End, Ergï¿½nzungen Udo Gerhards
+
 
 	function _msg($params) {
 		$user = $this->getFeUserByInput($params[1]);
@@ -1590,7 +1584,8 @@ class Chat {
 	
 	function _do_invite($user, $room , $params = null ) {
 		$this->db->addMemberToRoom($room, $user['uid']);
-
+        $enterRoom = ' <a href="javascript:openChatWindow('.$room->uid.');">'.$this->lang->getLL('command_invite_enter_room').'</a>' ;
+        $this->db->putMessage($room->uid, $enterRoom, 0, $this->user, true, 0, $user['uid']);
 		if($params[2]) {
 			unset($params[1]);
 			$msg = implode(' ',$params);
@@ -1599,20 +1594,24 @@ class Chat {
 			$msg = sprintf($this->lang->getLL('command_invite_default_message'), $this->getUsername(), $this->getUsername($user) , $room->name);
 		}
 
-		$msg = $msg.' <a href="javascript:openChatWindow('.$room->uid.');">'.$this->lang->getLL('command_invite_enter_room').'</a>' ;
+		$msg = $msg. $enterRoom ;
 
 		$rooms = $this->db->getRoomsOfUser($user['uid']);
 
-		if(count($rooms) == 0) {
-			return sprintf($this->lang->getLL('command_invite_user_not_online'), $this->getUsername($user));
-		}
+		if(count($rooms) > 0) {
+            // send private system messages to all rooms
+            foreach($rooms as $room) {
+                $this->db->putMessage($room->uid, $msg, 0, $this->user, true, 0, $user['uid']);
+            }
 
-		// send private system messages to all rooms
-		foreach($rooms as $room) {
-			$this->db->putMessage($room->uid, $msg, 0, $this->user, true, 0, $user['uid']);
-		}
+		} else {
 
-		return sprintf($this->lang->getLL('command_invite_enter_room_ok'), $this->getUsername($user), count($rooms));
+            //  return sprintf($this->lang->getLL('command_invite_user_not_online'), $this->getUsername($user));
+        }
+
+
+
+		return sprintf($this->lang->getLL('command_invite_enter_room_ok'), $this->getUsername($user), count($rooms)) . $enterRoom ;
 
 	}
 

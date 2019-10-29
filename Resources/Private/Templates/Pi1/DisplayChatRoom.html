@@ -81,9 +81,10 @@
                                         <i class="btn btn-default fas fa-smile" id="tx-jvchat-button-smilies" onClick="javascript:chat_instance.toggleEmoticons();" title="{f:translate(key: 'chatbutton.smilies_on')}"></i>
                                     </span>
                                 </f:if>
-
-                                <i class="btn btn-default fas fa-play" style="display:none" id="tx-jvchat-button-start-on" onClick="javascript:chat_instance.chat_instance.start();" title="{f:translate(key: 'chatbutton.start')}"></i>
-                                <i class="btn btn-default fas fa-stop" id="tx-jvchat-button-start" onClick="javascript:chat_instance.start();" title="{f:translate(key: 'chatbutton.stop')}"></i>
+                                <f:if condition="{extConf.enableStartStop}">
+                                    <i class="btn btn-default fas fa-play" style="display:none" id="tx-jvchat-button-start-on" onClick="javascript:chat_instance.chat_instance.start();" title="{f:translate(key: 'chatbutton.start')}"></i>
+                                    <i class="btn btn-default fas fa-stop" id="tx-jvchat-button-start" onClick="javascript:chat_instance.start();" title="{f:translate(key: 'chatbutton.stop')}"></i>
+                                </f:if>
                                 <i class="btn btn-default fa fa-question" id="tx-jvchat-button-help" onClick="javascript:chat_instance.sendMessage('/help');" title="{f:translate(key: 'chatbutton.help')}"></i>
 
                                 <f:if condition="{roomData.enableImageUpload}">
@@ -92,7 +93,12 @@
 
 
                             </div>
-                            <div id="tx-jvchat-emoticons" style="display:none;" class="chatIconColor"><span class="btn btn-default"><i class="fa fa-lg fa-bars" onClick="javascript:chat_instance.sendMessage('/smilies');"></i></span><f:format.raw>{emoticons}</f:format.raw></div>
+                            <div id="tx-jvchat-emoticons" style="display:none;" class="chatIconColor">
+                                <span class="{settings.emoticonBtnClass}">
+                                    <i class="fa fa-lg fa-bars" onClick="javascript:chat_instance.sendMessage('/smilies');"></i>
+                                </span>
+                                <f:format.raw>{emoticons}</f:format.raw>
+                            </div>
                         </div>
 
                         <div id="tx-jvchat-input-container" class="row" style="display:none;">

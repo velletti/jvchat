@@ -300,8 +300,8 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		/* ***********************************   LTS 9 ******************************** */
         /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
         $renderer = LibUtility::getRenderer($this->settings , "DisplayChatRoom" , "html" ) ;
-
-        $renderer->assign('settings', $this->settings );
+        $setup = LibUtility::getSetUp();
+        $renderer->assign('settings', $setup['settings'] );
         $renderer->assign('server',  \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'));
 
         $this->db->updateUserInRoom($roomId, $this->user['uid']);

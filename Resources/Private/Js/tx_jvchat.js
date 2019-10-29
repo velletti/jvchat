@@ -632,7 +632,7 @@ function tx_jvchat_pi1_js_chat() {
 		if( parseInt( this.userId ) == parseInt(id )) {
 			$('#userid-'+ id +" .tx-jvchat-userlist-buttons").hide() ;
 		} else {
-			$('#userid-'+ id +" .tx-jvchat-username").bind("click", function(evt) {
+			$('#userid-'+ id +" .tx-jvchat-userlist-username").bind("click", function(evt) {
 				self.setValueToInput(username, true);
 			} );
 			if(this.allowPrivateMessages ) {
@@ -646,6 +646,7 @@ function tx_jvchat_pi1_js_chat() {
 				$('#userid-' + id + " .tx-jvchat-pr-link").bind("click", function(evt) {
 					var name = self.talkToNewRoomName.replace(/\%s/, username);
 					var command = "/talkTo #"+id+" "+name ;
+					self.sendMessage(command);
 				});
 			}
 		}

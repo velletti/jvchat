@@ -16,11 +16,11 @@
     },
     "minimum-stability": "dev",
     "prefer-stable": true,
-    "homepage": "https://velletti.de",
+    "homepage": "https://github.com/velletti/jvchat/",
     "license": "GPL-2.0-or-later",
     "autoload": {
         "psr-4": {
-            "JVE\\jvchat\\": "classes/"
+            "JVE\\jvchat\\": "Classes/"
         },
         "classmap": [
             "pi1"

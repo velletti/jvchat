@@ -421,7 +421,7 @@ plugin.tx_jvchat_pi1 {
 		#            ':C:' => 'coffee.gif',
 		#
 		#### ###################
-		emoticonBtnClass = btn btn-default
+		emoticonBtnClass = btn btn-default btn-secondary btn-xs
 		emoticons {
 
 			###  list of icons for the first visible menu
@@ -491,11 +491,13 @@ plugin.tx_jvchat_pi1 {
 			111 {
 				code = :D
 				group = emoji
+				inMenu2 = 1
 				html = fa fa-lg fa-grin-beam
 			}
 			112 {
 				code = !-)
 				group = emoji
+				inMenu2 = 1
 				html = fa fa-lg fa-grin-tongue-wink
 			}
 
@@ -518,6 +520,7 @@ plugin.tx_jvchat_pi1 {
 			118 {
 				code = :-(
 				group = emoji
+				inMenu2 = 1
 				html = fa fa-lg fa-angry
 			}
 
@@ -536,6 +539,7 @@ plugin.tx_jvchat_pi1 {
 			201 {
 				code = :WB:
 				group = food
+				inMenu2 = 1
 				html = fa fa-lg fa-wine-bottle
 			}
 
@@ -547,11 +551,13 @@ plugin.tx_jvchat_pi1 {
 			203 {
 				code = :cheers:
 				group = food
+				inMenu2 = 1
 				html = fa fa-lg fa-glass-cheers
 			}
 			204 {
 				code = :pizza:
 				group = food
+				inMenu2 = 1
 				html = fa fa-lg fa-pizza-slice
 			}
 
@@ -599,5 +605,4 @@ page {
 
 [usergroup = 4,5,22,16]
 	plugin.tx_jvchat_pi1.enableImageUpload = 1
-
 [global]

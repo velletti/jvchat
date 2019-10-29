@@ -190,8 +190,8 @@ class LibUtility {
 
     static function formatMessage($text, $emoticons , $enableEmoticons = true ) {
 
-		// replace line breaks with <br>
-        $text = strip_tags( $text) ;
+        // removing HTML Tags will  brake Links from System !! this should be done befor storing to database ..
+        //   $text = strip_tags( $text) ;
 
         $faSize = "fa-lg" ;
         if( strlen( $text ) > 100 ) {
@@ -221,6 +221,7 @@ class LibUtility {
             }
 
         }
+        // replace line breaks with <br>
         $text = str_replace(chr(10), '<br />', $text);
 
         $text = preg_replace('/\[b\](.*?)\[\/b\]/i', '<span class="tx-jvchat-bold">\1</span>', $text);
@@ -349,6 +350,7 @@ class LibUtility {
 
 	}
 
+
     static function getEmoticonsForChatRoom() {
 		$setup = self::getSetUp();
 
@@ -358,14 +360,18 @@ class LibUtility {
         $emoticons = $setup["settings"]["emoticons"] ;
         $emoticonBtnClass = $setup["settings"]["emoticonBtnClass"] ;
 		$out = "";
+		$out2 = "";
 		foreach($emoticons as $key => $emoji) {
 		    if (  $emoji['inMenu']) {
                 $out .= '<span class="'. $emoticonBtnClass. '"><span class="' . $emoji['html'] . '" onClick="setValueToInput(\''.$emoji['code'].'\');" alt="emoji-' . $key . '" title="'.self::unicode_encode($emoji['code']).'"> </span></span>';
             }
+            if (  $emoji['inMenu2']) {
+                $out2 .= '<span class="'. $emoticonBtnClass. '"><span class="' . $emoji['html'] . '" onClick="setValueToInput(\''.$emoji['code'].'\');" alt="emoji-' . $key . '" title="'.self::unicode_encode($emoji['code']).'"> </span></span>';
+            }
 
 		}
 
-		return $out;
+		return "<span class=\"tx-jvchat-emoticons tx-jvchat-emoticons1\">" . $out . "</span><span class=\"tx-jvchat-emoticons tx-jvchat-emoticons2\">" . $out2 . "</span>";
 	}
 
     static function getExtConf() {

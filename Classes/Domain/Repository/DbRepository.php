@@ -169,6 +169,10 @@ class DbRepository {
 		$data['crdate'] = time();
 		$data['tstamp'] = time();
 
+        unset( $data['enableEmoticons'] );
+        unset( $data['enableTime'] );
+        unset( $data['imageUpload'] );
+
         $connection = $this->connectionPool->getConnectionForTable('tx_jvchat_room') ;
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_room') ;
 

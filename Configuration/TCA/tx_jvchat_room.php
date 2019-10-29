@@ -20,7 +20,7 @@ $return = array (
         "iconfile" => "EXT:jvchat/Resources/Public/Icons/icon_tx_jvchat_room.svg",
     ),
     "feInterface" => Array (
-        "fe_admin_fieldList" => "hidden, starttime, endtime, fe_group, name, description, closed, owner, moderators, experts, groupaccess, maxusercount, showfullnames, bannedusers, welcomemessage, showuserinfo_experts, showuserinfo_moderators, showuserinfo_users, showuserinfo_superusers, members, private, page",
+        "fe_admin_fieldList" => "hidden, starttime, endtime, fe_group, name, description, closed, enableEmoticons, owner, moderators, experts, groupaccess, maxusercount, showfullnames, bannedusers, welcomemessage, showuserinfo_experts, showuserinfo_moderators, showuserinfo_users, showuserinfo_superusers, members, private, page",
     ) ,
     "interface" => Array (
         "showRecordFieldList" => "hidden,starttime,endtime,fe_group,name,description,welcomemessage,mode,showfullnames,closed,maxusercount,owner,moderators,experts,bannedusers,superusergroup,groupaccess,members,private"
@@ -114,6 +114,14 @@ $return = array (
                 "type" => "check",
             )
         ),
+        "enableEmoticons" => Array (
+            "exclude" => 1,
+            "label" => "LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tx_jvchat_room.closed",
+            "config" => Array (
+                "type" => "check",
+            )
+        ),
+
         "mode" => Array (
             "exclude" => 1,
             "label" => "LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tx_jvchat_room.mode",
@@ -305,20 +313,11 @@ $return = array (
     ),
 
     "types" => Array (
-        "0" => Array("showitem" => "--div--;General,hidden, name, description, welcomemessage, mode, showfullnames, closed, page, maxusercount, image, --div--;Users,moderators, experts, groupaccess, superusergroup, bannedusers, showuserinfo_experts, showuserinfo_moderators, showuserinfo_users, showuserinfo_superusers,--div--;Private Room,private,owner,members")
+        "0" => Array("showitem" => "--div--;General,hidden, name, description, welcomemessage, mode, showfullnames, closed, enableEmoticons, page, maxusercount, image, --div--;Users,moderators, experts, groupaccess, superusergroup, bannedusers, showuserinfo_experts, showuserinfo_moderators, showuserinfo_users, showuserinfo_superusers,--div--;Private Room,private,owner,members")
     ),
     "palettes" => Array (
         "1" => Array("showitem" => "starttime, endtime, fe_group")
     )
 );
 
-
-if (TYPO3_MODE == 'BE')	{
-    $conf = unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['jvchat']);
-    if($conf['showRealNamesListing']) {
-        $return['columns']['experts']['config']['itemsProcFunc'] = 'tx_jvchat_itemsProcFunc->user_jvchat_getFeUser';
-        $return['columns']['moderators']['config']['itemsProcFunc'] = 'tx_jvchat_itemsProcFunc->user_jvchat_getFeUser';
-        $return['columns']['bannedusers']['config']['itemsProcFunc'] = 'tx_jvchat_itemsProcFunc->user_jvchat_getFeUser';
-    }
-}
 return $return ;

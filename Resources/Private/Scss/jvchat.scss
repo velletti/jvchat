@@ -1,17 +1,29 @@
 /* FRAME AND MAIN CONTAINERS */
 
-div#tx-jvchat-container .navbar-default {
-    margin: 1px;
-    position: absolute ;
-    left: 0;
-    top: 0 ;
-}
 
-div#tx-jvchat-container {
+$jvchat-borderColor:            #c8c8c8;
+$jvchat-msg-borderColor:        #F1F1F1;
+$jvchat-msg-Background:         #F6F6F6;
+$jvchat-textColor:              #333;
+$jvchat-all-msg-Background:     lighten($jvchat-borderColor , 20%) ;
+$jvchat-lightBackground:        #FFF;
+$jvchat-textColorWarning:        #99221a;
+
+$jvchat-icon-color1: #FEE30E ;
+$jvchat-icon-color2: #FEA200 ;
+$jvchat-icon-colorShadow: rgba( 256 , 99 , 0 , 0.1) ;
+
+#tx-jvchat-container {
     min-height: 30px;
+    .navbar-default {
+        margin: 1px;
+        position: absolute ;
+        left: 0;
+        top: 0 ;
+    }
 }
 
-div#tx-jvchat-content {
+#tx-jvchat-content {
     min-height: 30px;
     height: auto;
     position: relative;
@@ -19,13 +31,13 @@ div#tx-jvchat-content {
 }
 
 
-div#tx-jvchat-loadinginfo {
+#tx-jvchat-loadinginfo {
     position: absolute;
     width: 250px;
     height: 2em;
     padding: 2em;
-    border: 1px solid #CFCFCF;
-    background-color: #fff;
+    border: 1px solid $jvchat-borderColor;
+    background-color: $jvchat-lightBackground;
     left:50%;
     margin-left:-120px;
     margin-top: 5%;
@@ -37,42 +49,41 @@ div#tx-jvchat-loadinginfo {
     opacity: 0.8;
 }
 
-div#tx-jvchat-messages {
-    border: 1px solid #CFCFCF;
+#tx-jvchat-messages {
+    border: 1px solid $jvchat-borderColor;
     overflow: auto;
-    background-color: #F1F1F1;
+    background-color: $jvchat-all-msg-Background;
+    padding: 4px 4px 12px 16px;
+    word-break: break-word;
 }
 
-div#tx-jvchat-userlist {
+#tx-jvchat-userlist {
     padding: 0;
     overflow: hidden;
-    border: #CFCFCF solid 1px;
-    color: #000;
-    background-color: #FFF;
+    border: $jvchat-borderColor solid 1px;
+    color: $jvchat-textColor;
+    background-color: $jvchat-msg-Background;
+    .tx-jvchat-username {
+        margin-top: 8px;
+    }
 }
 
-div#tx-jvchat-format,
-div#tx-jvchat-format a,
-div#tx-jvchat-format img {
+
+#tx-jvchat-format  {
     margin: 0;
     padding: 0;
-    cursor: pointer;
 }
 
-div#tx-jvchat-emoticons {
+#tx-jvchat-emoticons {
     padding: 0;
-    height: 40px;
+    height: 28px;
     .fa , .fab , .fas {
         cursor:pointer;
         line-height: unset !important;
     }
 }
 
-div#tx-jvchat-style {
-    padding: 0.2em 0.2em 0.2em 0.265em;
-}
-
-div#tx-jvchat-input-container {
+#tx-jvchat-input-container {
     clear:both;
 }
 
@@ -80,21 +91,31 @@ div#tx-jvchat-input-container {
     .fa ,
     .fas ,
     .fab {
-        background: linear-gradient(#FEE30E,#FEA200);
+        background: linear-gradient($jvchat-icon-color1,$jvchat-icon-color2);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
     }
     .fa-2x ,
     .fa-3x ,
     .fa-4x {
-        text-shadow: 1px 1px 3px rgba( 256 , 99 , 0 , 0.1);
+        text-shadow: 1px 1px 3px $jvchat-icon-colorShadow;
+    }
+}
+.tx-jvchat-cmd-smiley {
+    float: left;
+    display: inline-block;
+    width: 120px;
+    .fa , .fab , .fas .fa-lg {
+        cursor:pointer;
+        line-height: unset !important;
+        margin-right: 8px;
     }
 }
 
 textarea#txjvchatnewMessage {
     width: 99%;
     height: 6em;
-    border: #CFCFCF solid 1px;
+    border: $jvchat-borderColor solid 1px;
     margin: 0;
 }
 
@@ -105,20 +126,37 @@ textarea#txjvchatnewMessage {
     clear: both;
 }
 .tx-jvchat-message {
-    border: 4px solid #F1F1F1;
-    background-color: #fff;
+    border: 4px solid $jvchat-msg-borderColor ;
+    background-color: $jvchat-lightBackground;
     padding: 6px 12px;
     border-radius: 16px;
     display: inline-block;
     margin-right: 40px;
+    margin-top: 4px;
+    position: relative;
+
 }
+.tx-jvchat-message:before {
+    content:"";
+    position: absolute;
+    width: 0;
+    height: 0;
+    border-top: 8px solid transparent;
+    border-right: 18px solid $jvchat-msg-borderColor;
+    border-bottom: 6px solid transparent;
+    margin: 3px 0 0 -30px;
+}
+
+
 
 .tx-jvchat-message.tx-jvchat-message-ownMsg {
     float: right;
     padding-right: 16px;
     margin-left: 40px;
-    margin-right: 0px;
+    margin-right: 0;
+
 }
+
 .tx-jvchat-message-ownMsg .tx-jvchat-entry-text {
     float: left;
 }
@@ -127,11 +165,11 @@ textarea#txjvchatnewMessage {
 }
 
 div.tx-jvchat-expert {
-    color: #99221a;
+    color: $jvchat-textColorWarning;
 }
 .tx-jvchat-superuser {
-    color: #608174;
-    background-color: #FFFFFF;
+    color: darken($jvchat-textColorWarning, 30%) ;
+    background-color: $jvchat-msg-Background;
 }
 
 div.tx-jvchat-entry span.tx-jvchat-user {
@@ -140,13 +178,13 @@ div.tx-jvchat-entry span.tx-jvchat-user {
 
 div.tx-jvchat-system,
 div.tx-jvchat-system .tx-jvchat-entry {
-    color: #cc0000;
+    color:  darken( $jvchat-textColor , 20% );
     font-size: 0.9em;
     font-style: italic;
 }
 div.tx-jvchat-hidden {
     background-color: #F2F2F2;
-    color: #333333;
+    color: darken( $jvchat-textColor , 20% );
 }
 
 div.tx-jvchat-committed {
@@ -155,7 +193,7 @@ div.tx-jvchat-committed {
 
 span.tx-jvchat-time {
     font-size: 90%;
-    color: #9E9E9E;
+    color:  lighten( $jvchat-textColor , 20% );
 }
 
 span.tx-jvchat-bold {
@@ -176,17 +214,17 @@ span.tx-jvchat-stroke {
 
 p.tx-jvchat-error {
     font-weight: bold;
-    color: #f00;
+    color: lighten($jvchat-textColorWarning, 10%);
 }
 
 a.tx-jvchat-actionlink {
     cursor:pointer;
     font-size: 8pt;
-    color: #337236;
+    color: lighten( $jvchat-textColor , 10% );
 }
 
 a.tx-jvchat-actionlink:hover {
-    color: #0F3D11;
+    color: darken( $jvchat-textColor , 20% );
     text-decoration: underline;
 }
 
@@ -199,7 +237,7 @@ a.tx-jvchat-actionlink:hover {
 }
 
 .tx-jvchat-error {
-    color: #99221a;
+    color: lighten($jvchat-textColorWarning, 10%) ;
 }
 div.tx-jvchat-cmd-help,
 div.tx-jvchat-cmd-help * {
@@ -249,10 +287,11 @@ div.tx-jvchat-cmd-help-command span.tx-jvchat-cmd-help-parameter-descr {
         font-weight: bold;
         cursor: pointer;
         float:left;
+        margin-top: 8px;
     }
     img {
         float: left;
-        margin-right: 2px;
+        margin: 0 8px 0 4px;
     }
     .tx-jvchat-userlist-item {
         clear: both;

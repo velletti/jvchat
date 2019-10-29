@@ -57,6 +57,7 @@ CREATE TABLE tx_jvchat_room (
     showuserinfo_moderators blob NOT NULL,
     showuserinfo_users blob NOT NULL,
 	showuserinfo_superusers blob NOT NULL,
+	enableEmoticons SMALLINT(4) DEFAULT '0' NOT NULL,
 	page  int(11) NOT NULL,
 	image blob NOT NULL,
 	owner int(11) DEFAULT '0' NOT NULL,

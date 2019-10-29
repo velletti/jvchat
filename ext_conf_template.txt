@@ -12,13 +12,13 @@
 
 	serverTimeOffset = 0 hour
 
-	# cat=basic; type=string; label=time Format for messages f.e.: %d.%M | %H:%i  or something else ..
+	# cat=basic; type=string; label=time Format for messages f.e.: %d.%M | %H:%I  or something else ..
 	timeFormat = %H:%I
 
 	# cat=basic; type=string; label=Firstname If option showFullnames is activated, this Fieldname 1 will be used, maybe togester with fieldname 2
-	usernameField1 = firstname
+	usernameField1 = first_name
 	# cat=basic; type=string; label=Lastname If option showFullnames is activated, this Fieldname 2 will be used, maybe togester with fieldname 1
-	usernameField2 = lastname
+	usernameField2 = last_name
 
 
 	# cat=basic; type=string; label=Emoticons: Path to emoticons

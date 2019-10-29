@@ -20,7 +20,7 @@
     "license": "GPL-2.0-or-later",
     "autoload": {
         "psr-4": {
-            "JV\\jvchat\\": "Classes/"
+            "JV\\Jvchat\\": "Classes/"
         },
         "classmap": [
             "pi1"

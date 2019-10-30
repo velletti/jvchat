@@ -49,7 +49,7 @@ Update the psr-4 and classmapp folders .. (classmap maybe not needed in the near
     
 		"psr-4": {
 
-			"JVE\\jvchat\\": "http/typo3conf/ext/jvchat/Classes/"
+			"JV\\jvchat\\": "http/typo3conf/ext/jvchat/Classes/"
 		},
 		"classmap": [
 			"http/typo3conf/ext/jvchat/pi1"

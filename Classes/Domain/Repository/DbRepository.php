@@ -17,8 +17,6 @@ use \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser ;
 
 class DbRepository {
 
-    var $db;
-
     /**
      * @var array
      */
@@ -38,7 +36,6 @@ class DbRepository {
 
 
 	function __construct() {
-		$this->db = $GLOBALS['TYPO3_DB'];
 		$this->extCONF = LibUtility::getExtConf();
 
         $this->connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);

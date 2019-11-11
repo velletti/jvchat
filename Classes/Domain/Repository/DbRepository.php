@@ -1,10 +1,6 @@
 <?php
 namespace JV\Jvchat\Domain\Repository;
 
-// require_once('class.tx_jvchat_room.php');
-// require_once('class.tx_jvchat_session.php');
-// require_once('class.tx_jvchat_entry.php');
-//require_once('class.tx_jvchat_lib.php');
 
 use JV\Jvchat\Utility\LibUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
@@ -30,7 +26,7 @@ class DbRepository {
 
 
     /**
-     * @var TYPO3\CMS\Core\Database\ConnectionPool
+     * @var \TYPO3\CMS\Core\Database\ConnectionPool
      */
     public $connectionPool ;
 

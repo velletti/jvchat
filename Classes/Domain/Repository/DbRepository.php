@@ -3,6 +3,7 @@ namespace JV\Jvchat\Domain\Repository;
 
 
 use JV\Jvchat\Utility\LibUtility;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -508,7 +509,7 @@ class DbRepository {
 
 		$roomId = intval($roomId);
 		$userId = intval($userId);
-
+        /** @var  QueryBuilder $queryBuilder */
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_entry') ;
 
 		$data = array(

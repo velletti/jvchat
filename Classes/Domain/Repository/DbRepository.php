@@ -6,6 +6,7 @@ namespace JV\Jvchat\Domain\Repository;
 // require_once('class.tx_jvchat_entry.php');
 //require_once('class.tx_jvchat_lib.php');
 
+use JV\Jvchat\Domain\Model\Room;
 use JV\Jvchat\Utility\LibUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\Connection;
@@ -76,7 +77,12 @@ class DbRepository {
 
 	}
 
-	function getRoomsOfUser($userId)
+    /** get an array of Room where user is member
+     * @param int $userId
+     * @param bool $alsoPrivate
+     * @return array
+     */
+	function getRoomsOfUser($userId = 0 , $alsoPrivate = true )
     {
 
         $userId = intval($userId);
@@ -98,19 +104,28 @@ class DbRepository {
         $rooms = array();
 
         /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
-        $queryBuilder = $this->connectionPool->getConnectionForTable('tx_jvchat_room')->createQueryBuilder();
+        $queryBuilderRoom = $this->connectionPool->getConnectionForTable('tx_jvchat_room')->createQueryBuilder();
 
         foreach ($allRooms as $roomId) {
-            $row = $queryBuilder->select('*')
+            $query = $queryBuilderRoom->select('*')
                 ->from('tx_jvchat_room')
-                ->where('uid', $roomId['uid_local'])
-                ->execute()
-                ->fetch();
+                ->where( $expr->eq('uid', $queryBuilderRoom->createNamedParameter($roomId['uid_local'], Connection::PARAM_INT)) )
+                 ;
 
-            /** @var \JV\Jvchat\Domain\Model\Room $room */
-            $room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
-            $room->fromArray($row);
-            $rooms[] = $room;
+            $row = $query->execute()->fetch();
+            //$this->debugQuery( $query);
+            if( $row ) {
+                    if ( $alsoPrivate ||  ! $row['private'] ) {
+                        /** @var \JV\Jvchat\Domain\Model\Room $room */
+                        $room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
+                        $room->fromArray($row);
+                        $rooms[] = $room;
+                        unset($room) ;
+                    }
+
+            }
+
+
         }
         return $rooms;
 	}
@@ -394,7 +409,11 @@ class DbRepository {
 		return true;
 
 	}
-	
+
+    /**
+     * @param int $uid
+     * @return array
+     */
 	function getFeUser($uid) {
 
 		if(!$uid)
@@ -508,7 +527,16 @@ class DbRepository {
         }
 		return $time;
 	}
-	
+
+    /**
+     * @param int $roomId  Id of the Room
+     * @param string $msg   The message as String
+     * @param int $style  unused
+     * @param mixed $user  Array of a user or user Uid as int
+     * @param bool $hidden is this a hdden message taht needs moderation ?
+     * @param int $cruser_id  Created user UID  userfull for backend system messages
+     * @param int $tofeuserid  UID for private messages
+     */
 	function putMessage($roomId, $msg, $style = 0, $user = NULL, $hidden = false, $cruser_id = 0, $tofeuserid = 0) {
 
 		$userId = is_array($user) ? $user['uid'] : $user;
@@ -544,11 +572,18 @@ class DbRepository {
      * @var mixed $room the Room as object
      * @var integer $id - latest Entry Uid if available
      * @var Integer $time - onyl entrys after a specific time
-	  * @return Array all messages in this room after $id
+     * @var Integer $maxEntries - only specific # of entrys  usefull to see if room is new and we should show help..
+     * @var Integer $cruser_id - only specific  entrys of one User use full to see user is new and we should show help..
+     * @var boolean $noHidden     - get all is default. if you do not want to get hidden messages set to false
+     * @var boolean $noPrivate     - get all is default. if you do not want to get private messages (with tofeuser > 0  set to false
+	  * @return array all messages in this room after $id
 	  */
-	function getEntries($room, $id = 0 , $time = 0 ) {
-
-        $max = max( 10 , $this->extCONF['maxGetEntries'] ) ;
+	function getEntries($room, $id = 0 , $time = 0 , $maxEntries = 0 , $cruser_id = 0 , $noHidden = FALSE , $noPrivate = FALSE ) {
+        if ( $maxEntries ) {
+            $max = $maxEntries ;
+        } else {
+            $max = max( 10 , $this->extCONF['maxGetEntries'] ) ;
+        }
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_entry') ;
         $queryBuilder->select('*')->from('tx_jvchat_entry')
             ->where( $queryBuilder->expr()->eq('room', $queryBuilder->createNamedParameter( intval($room->uid) , Connection::PARAM_INT )) )
@@ -562,12 +597,19 @@ class DbRepository {
         if ( $time > 0 ) {
             $queryBuilder->andWhere($queryBuilder->expr()->gte('crdate', $queryBuilder->createNamedParameter( intval($time) , Connection::PARAM_INT )) );
         }
+        if ( $noHidden ) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('hidden', 0 ) );
+        }
+        if ( $noPrivate) {
+            $queryBuilder->andWhere($queryBuilder->expr()->eq('tofeuser', 0) );
+        }
 
         // get also Hidden Entries . as this is handled by Template if the user may seee them (private Messages from A to B )
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-       // $this->debugQuery($queryBuilder) ;
+        // $this->debugQuery($queryBuilder) ;
+        $entries = array() ;
         $rows = $queryBuilder->execute() ;
         while ( $row = $rows->fetch() ) {
             /** @var \JV\Jvchat\Domain\Model\Entry $entry */
@@ -581,12 +623,34 @@ class DbRepository {
         return $entries;
 
 	}
-	
-	function getEntriesAfterTime($room, $time) {
+
+    /**
+     * @param Room $room
+     * @param integer  $seconds  Number of seconds you want to get. if not set, latest 24 hour s
+     * @return array
+     */
+    function getEntrieslastXseconds($room, $seconds=0  ) {
+        if ( $seconds == 0 ) {
+            $seconds = 60 * 60 * 24 ;
+        }
+        $time = time() - $seconds ;
+        if( $this->extConf['serverTimeOffset'] ) {
+            $time = strtotime($this->extConf['serverTimeOffset'], $time);
+        }
+
+        return $this->getEntries($room, 0 , $time , 999)  ;
+
+    }
+    /**
+     * @param Room $room
+     * @param integer $time
+     * @return array
+     */
+	function getEntriesAfterTime($room, $time  ) {
 
 		$time = intval($time);
 
-		return $this->getEntries($room, 0 , $time )  ;
+		return $this->getEntries($room, 0 , $time , 999)  ;
 
 	}
 	
@@ -1245,6 +1309,24 @@ class DbRepository {
 
 	}
 
+    /**
+     * @param $room
+     * @return array|null
+     */
+    function getFeUsersMayAccessRoom($room ) {
+        if(!$room) {
+            return NULL;
+        }
+        $users[] = $this->getFeUser($room->owner)  ;
+        $uids = GeneralUtility::trimExplode("," , $room->members ) ;
+        foreach ( $uids as $uid ) {
+            if( $user = $this->getFeUser($uid) ) {
+                $users[] = $user ;
+            }
+        }
+        return $users ;
+
+    }
 	function getFeUsersOfRoom($room, $getHidden = false) {
 
 		if(!$room) {

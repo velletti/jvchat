@@ -116,6 +116,9 @@
 			<trans-unit id="user_leaves_chat">
 				<source>%s leaves chat.</source>
 			</trans-unit>
+			<trans-unit id="after_welcome_message_in_private_room">
+                <source>Enter '/email' to notifiy the other user(s) in this chat via E-Mail about the latest messages</source>
+            </trans-unit>
 			<trans-unit id="after_welcome_message">
 				<source>If you need help try '/help'</source>
 			</trans-unit>

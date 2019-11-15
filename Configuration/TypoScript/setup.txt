@@ -7,7 +7,11 @@
 ###############################################################################################################
 
 plugin.tx_jvchat_pi1 {
-
+    view {
+		templateRootPaths.0 = typo3conf/ext/jvchat/Resources/Private/Templates/Bootstrap4/
+		partialRootPaths.0 = typo3conf/ext/jvchat/Resources/Private/Partials/
+		layoutRootPaths.0 = typo3conf/ext/jvchat/Resources/Private/Layouts/
+	}
 		# if not defined anything in the configuration form
 	pidList = 
 	
@@ -285,7 +289,7 @@ plugin.tx_jvchat_pi1 {
 	
 	chatwindow.typeNum = 999
 
-	chatPopupJSWindowParams = width=840,height=760,status=1,resizable=1,location=1
+	chatPopupJSWindowParams = width=600,height=760,status=1,resizable=1,location=1
 	
 	# USERLIST LABELS /stdWrap
 	userlistPMContent = &nbsp;PM&nbsp;

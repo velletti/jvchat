@@ -34,6 +34,7 @@ namespace JV\Jvchat\Eid;
  */
  
 use \JV\Jvchat\Utility\LibUtility;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 
 // was : class tx_jvchat_chat {
@@ -289,6 +290,12 @@ class Chat {
                     'rights' => '0001',
                 ),
 
+                'email' => array(
+                    'callback' => '_email',
+                    'description' => $this->lang->getLL('command_email'),
+                    'rights' => '1111',
+                ),
+
 				'makesession' => array(
 					'callback' => '_makesession',
 					'description' => $this->lang->getLL('command_makesession'),
@@ -500,15 +507,16 @@ class Chat {
         if($resUpdate === "full")
             return $this->returnMessage('full');
 
-        $roomData =
+
 
         $entries = $this->db->getEntries($this->room, $lastid);
 
-        if(count($entries) == 0)
+        if(count($entries) == 0) {
             return '' ;
+        }
 
         /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
-        $renderer = LibUtility::getRenderer($this->settings , "GetMessages" , "html" )  ;
+        $renderer = LibUtility::getRenderer($this->setup , "GetMessages" , "html" )  ;
 
 
         $messages = array() ;
@@ -631,7 +639,6 @@ class Chat {
         // if just entered chat
         if($resUpdate === "entered") {
             // welcome message
-//			$messages[] = htmlentities($this->room->welcomemessage);
             $messages[] = $this->room->welcomemessage;
             $messages[] = $this->lang->getLL('after_welcome_message');
         }
@@ -640,184 +647,6 @@ class Chat {
         return $this->returnMessage($messages);
 	}
 
-
-	function getMessagesX($lastid) {
-
-		$this->debugMessage('getMessage');
-
-		if(!LibUtility::isSuperuser($this->room, $this->user)) {
-			// check if user is banned
-			if(LibUtility::isBanned($this->room, $this->user['uid']))
-				return $this->returnMessage(array('<span class="tx-jvchat-error">'.$this->lang->getLL('error_banned').'</span>', '/quit'));
-
-			// check if user is kicked
-			if($res = $this->db->isUserKicked($this->room->uid, $this->user['uid']))
-				return $this->returnMessage(array('<span class="tx-jvchat-error">'.sprintf($this->lang->getLL('error_kicked'),$res).'</span>', '/quit'));
-
-			// check if this is a private room and if the user is an invited member
-			if($this->room->private && !LibUtility::isMember($this->room, $this->user['uid']))
-				return $this->returnMessage(array('<span class="tx-jvchat-error">'.$this->lang->getLL('error_not_invited').'</span>', '/quit'));
-
-			// remove user who left room and remove system messages
-			$this->db->cleanUpUserInRoom($this->room->uid, 20, true, $this->lang->getLL('user_leaves_chat'));
-
-			// check if user is allowed to put a message into this room
-			if(!LibUtility::checkAccessToRoom($this->room, $this->user))
-				return $this->returnMessage(array('<span class="tx-jvchat-error">'.$this->lang->getLL('error_room_access_denied').'</span>','/quit'));
-
-		}
-
-		// updateUserData
-		// if user not already in room try to add
-		$resUpdate = $this->db->updateUserInRoom($this->room->uid, $this->user['uid'], LibUtility::isSuperuser($this->room, $this->user), $this->lang->getLL('user_enters_chat'));
-
-		// quit here if room is full
-		if($resUpdate === "full")
-			return $this->returnMessage('full');
-
-		$this->debugMessage('getMessage:AccessChecksDone');
-
-		$entries = $this->db->getEntries($this->room, $lastid);
-		$this->debugMessage('getMessage:getEntries');
-
-		if(count($entries) == 0)
-			return '' ;
-
-		$messages = array() ;
-		foreach($entries as $entry) {
-
-			// if message is a quit message for current client
-			if((preg_match('/^\/quit/i', $entry->entry)) && ($this->user['uid'] == $entry->feuser)) {
-				$this->db->leaveRoom($this->room->uid, $entry->feuser);
-				$this->db->deleteEntry($entry->uid);
-				return '/quit';		// will be handled by client javascript
-			}
-
-			// delete from db if entry is a command and continue with next entry
-			if(preg_match('/^\//i', $entry->entry)) {
-				$this->db->deleteEntry($entry->uid);
-				continue;
-			}
-
-			// first check if this entry should be sent to client
-			// a) expert mode
-			// - sent if message is not hidden
-			// - if it is hidden only sent to moderators client
-			// b) normal mode
-			// - sent message without checking anything
-			// c) private message
-			// - sent message only to dest user
-			// d) a superuser should receive all messages
-			if(!$entry->isPrivate()) {
-				if($this->room->isExpertMode() && $entry->hidden) {
-					if(!LibUtility::isSuperuser($this->room, $this->user) && !LibUtility::isModerator($this->room, $this->user['uid']) && ($this->user['uid'] != $entry->feuser))
-						continue;	// skip to next entry
-				}
-			}
-			else {
-
-				$involved = ($entry->tofeuserid == $this->user['uid']) || ($entry->feuser == $this->user['uid']);
-
-				// if this is a private message check if this message should be received by the current user
-				// if superuser skip message if he is not allowed to view private messages
-				if(LibUtility::isSuperuser($this->room, $this->user) && !$this->extConf['superuserCanReadPMs'] && !$involved)
-					continue;
-
-				// if not a superuser check show message to sender an recipient only
-				if(!LibUtility::isSuperuser($this->room, $this->user) && !$involved)
-						continue;	// skip to next entry
-			}
-
-			// get User of entry
-			// if this entry was sent by system we cannot get a FeUser
-			// so we have to assign the username SYSTEM
-			$entryUser = NULL;
-			if(LibUtility::isSystem($entry->feuser))
-				$username = $this->lang->getLL('system_name');
-			else {
-				$entryUser = $this->db->getFeUser($entry->feuser);	// this holds the complete user array
-				$username = $this->room->showFullNames() ? $entryUser['name'] : $entryUser['username'];
-			}
-
-			// j.v. umwandlung in htm l entities führt zu problemen ....
-			// $username = htmlentities($username);
-			$username = htmlspecialchars($username);
-			$username = "<a href=\"/user/" . $username . "\" target=\"_blank\" title=\"UserProfile\">" . $username . "</a>";
-
-
-			// the superuser should know the recipient of a private message
-			//if(LibUtility::isSuperuser($this->room, $this->user) && $entry->isPrivate()) {
-			if($entry->isPrivate()) {
-				$recipient = $this->db->getFeUser($entry->tofeuserid);
-				$recipient['username'] = "<a href=\"/user/" . $recipient['username'] . "\" target=\"_blank\" title=\"UserProfile\">" . $recipient['username'] . "</a>";
-                $username = sprintf($this->lang->getLL('privateMsgUsernamens'), $username, $recipient['username']);
-			}
-
-
-			$entryText = LibUtility::formatMessage($entry->entry, $this->setup['settings']['emoticons'] );
-
-
-			$id = "";
-			if(LibUtility::isModerator($this->room, $this->user['uid']))
-				$id = '#'.$entry->uid.'&nbsp;';
-
-			$time = $entry->crdate;
-			if( $this->extConf['serverTimeOffset'] ) {
-
-				$time = strtotime($this->extConf['serverTimeOffset'], $time);
-			}
-            if( array_key_exists( 'timeFormat' , $this->extConf )) {
-                $timeFormat = $this->extConf['timeFormat'];
-            } else {
-                $timeFormat = "%H:%i" ;
-            }
-
-
-			// prepare message that should be sent to client
-			$message = '<span id="msg-' . $id . '" class="tx-jvchat-time">'.strftime($timeFormat, $time).'</span><span class="tx-jvchat-user tx-jvchat-userid-'.$entry->feuser.'">'.$username.'</span>&gt;&nbsp;<span class="tx-jvchat-entry">'.$entryText.'</span>';
-
-
-			// if entry is hidden and user is a moderator then add a commit link
-			if($entry->hidden) {
-				$message = '<div class="tx-jvchat-hidden" id="tx-jvchat-entry-'.$entry->uid.'">'.$message.'</div>';
-				if(LibUtility::isModerator($this->room, $this->user['uid']) && !$entry->isPrivate())
-					$message = $message.'<div class="tx-jvchat-commit" id="tx-jvchat-entry-commitlink-'.$entry->uid.'"><a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.commitEntry('.$entry->uid.');">'.$this->lang->getLL('commit_message').'</a> | <a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.hideEntry('.$entry->uid.');">'.$this->lang->getLL('hide_message').'</a> <span id="tx-jvchat-storelink-'.$entry->uid.'">| <a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.storeEntry('.$entry->uid.');">'.$this->lang->getLL('store_message').'</a></span></div>';
-
-				if($entry->isPrivate()) {
-					$message = '<div class="tx-jvchat-private">'.$message.'</div>';
-				}
-			}
-
-
-			if($entryUser)
-				$message = '<div class="tx-jvchat-'.LibUtility::getUserTypeString($this->room, $entryUser).'">'.$message.'</div>';
-			else
-				$message = '<div class="tx-jvchat-system">'.$message.'</div>';
-
-			$this->lastMessageId = $entry->uid;
-
-			$groupstyles = $this->getUserGroupStyles($entryUser);
-
-			$mid = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(($entry->tstamp).($entry->uid));
-			$message = '<div id="cid'.$mid.'" class="tx-jvchat-message-style-'.($entry->style).$groupstyles.'">'.$message.'</div>';
-
-			$messages[] = $message;
-
-		}
-
-		// if just entered chat
-		if($resUpdate === "entered") {
-			// welcome message
-//			$messages[] = htmlentities($this->room->welcomemessage);
-			$messages[] = $this->room->welcomemessage;
-			$messages[] = $this->lang->getLL('after_welcome_message');
-		}
-
-//		var_dump(htmlentities($this->returnMessage($messages)));
-		return $this->returnMessage($messages);
-
-	}
-	
 	/**
 	  * Prepares an array of messages for client. This means prepending each message with [MSG] and adding a timestamp after [TIME]
 	  * @param mixed
@@ -886,6 +715,7 @@ class Chat {
 			header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
 			header('Cache-Control: no-cache, must-revalidate');
 			header('Pragma: no-cache');
+		//	header('Access-Control-Allow-Origin: ' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'));
 			header('Content-Length: ' . strlen($returnMsg));
 			header('Content-Type: application/xml; charset=utf-8');
 			header('Content-Transfer-Encoding: 8bit');
@@ -969,6 +799,11 @@ class Chat {
 						$out .= $this->returnMessage('<span class="tx-jvchat-error">'.$this->lang->getLL('error_access_denied').'</span>');
 						continue;
 					}
+                    if ( ! $this->room->isPrivate() && $command == "email") {
+                        continue;
+                    }
+
+
                     // check params
 					$paramResult = $this->checkParams($parts, $data['parameters']);
 
@@ -1083,6 +918,7 @@ class Chat {
                 }
                 if( $this->extConf['usernameField2']) {
                     $userName .= "_" .$user[$this->extConf['usernameField2']]  ;
+
                 }
             }
             $userName = str_replace(" " , "_" , $userName ) ;
@@ -1110,19 +946,128 @@ class Chat {
 		else
 			return $this->returnMessage('<span class="tx-jvchat-error">'.$this->lang->getLL('error_commit').'</span>');
 	}
-	
+
+    /**
+     * @param array $entries An array with entries of Type \JV\Jvchat\Domain\Model\Entry
+     * @return string
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
+     */
+	function getEntryTextForEmail( $entries) {
+        /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
+        $renderer = LibUtility::getRenderer($this->setup , "GetEmailMessages" , "html" )  ;
+
+
+        $messages = "" ;
+        /** @var \JV\Jvchat\Domain\Model\Entry $entry */
+        foreach($entries as $entry) {
+            // if entry is a command and continue with next entry
+            if(preg_match('/^\//i', $entry->entry) || $entry->isPrivate() ) {
+                continue;
+            }
+
+            if( LibUtility::isSystem($entry->feuser)) {
+                continue;
+            }
+
+
+            // FIRST Convert  all BB Code to HTML and then remove it.
+            $entryText = trim(strip_tags( LibUtility::formatMessage($entry->entry, $this->setup['settings']['emoticons'] )) ) ;
+            if( strlen($entryText) < 2 ) {
+                continue;
+            }
+
+            $entryUser = $this->db->getFeUser($entry->feuser);	// this holds the complete user array
+            $time = $entry->crdate;
+            if( $this->extConf['serverTimeOffset'] ) {
+                $time = strtotime($this->extConf['serverTimeOffset'], $time);
+            }
+            if( array_key_exists( 'timeFormat' , $this->extConf )) {
+                $timeFormat = $this->extConf['timeFormat'];
+            } else {
+                $timeFormat = "%H:%I:%S" ;
+            }
+
+            $ownMsg = $entryUser['uid'] == $this->user['uid'] ? 1 : 0 ;
+            $renderer->assign("entry" , $entry ) ;
+            $renderer->assign("entryText" , $entryText ) ;
+            $renderer->assign("entryUser" , $entryUser ) ;
+            $renderer->assign("ownMsg" , $ownMsg ) ;
+            $renderer->assign("time" , $time ) ;
+            $renderer->assign("timeFormat" , $timeFormat ) ;
+            $renderer->assign("showFullNames" , $this->room->showFullNames() ) ;
+            $renderer->assign("extConf" , $this->extConf ) ;
+
+            // $messages[] = $message;
+            $messages  .=   trim( $renderer->render() )  ;
+        }
+        return $messages ;
+    }
+    function _email() {
+
+        $entries = $this->db->getEntrieslastXseconds($this->room , 60*60*24 , TRUE , TRUE ) ;
+        $entryCount =  count($entries)  ;
+        $members = $this->db->getFeUsersMayAccessRoom($this->room  ) ;
+        $memberCount = count( $members) ;
+        if ( $entryCount && $memberCount > 1 ) {
+
+            $params['message'] = "Neue Chat Nachrichten " . GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
+            $params['message'] .= "\n" ;
+            $params['message'] .= "\n(smilies, images or links are only visible online)" ;
+
+
+            $params['message'] .= "<hr>" . $this->getEntryTextForEmail( $entries) ;
+
+            $params['message'] .=  " \n" . GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . "/index.php?id=" . $this->env['pid']
+                . "&tx_jvchat_pi1[uid]=" .$this->room->uid . "&tx_jvchat_pi1[view]=chat ";
+            $params['message'] .= " \n" ;
+            $params['email_from'] = "noreply@tangomuenchen.de" ;
+            $params['email_fromName'] = "TangoMünchen" ;
+            $params['sendCCmail'] = false  ;
+
+            /** @var \Velletti\Mailsignature\Service\SignatureService $mailService */
+            $mailService = GeneralUtility::makeInstance("Velletti\\Mailsignature\\Service\\SignatureService");
+            $signatur = $mailService->getSignature() ;
+            $params['message'] .= $signatur['html'] ;
+            $memberCount = 0 ;
+
+
+            try{
+                foreach ($members as $member ) {
+                    if( $member['email']) {
+                        $params['user']['email'] = $member['email'] ;
+                        $memberCount++ ;
+                        $mailService->sentHTMLmailService($params) ;
+                    }
+                }
+            }
+            catch(\Exception $e) {
+                // ''  ;
+            }
+
+
+            return '<div class="tx-jvchat-cmd-help">Email with ' . $entryCount. ' entries of last 24h was sent to ' .  $memberCount . ' members in this room<br></div>';
+        } else {
+            if ( $entryCount ) {
+                return '<div class="tx-jvchat-cmd-error">No other Room Members Found</div>' ;
+            } else {
+                return '<div class="tx-jvchat-cmd-error">No Room Entries Found in last 24 hours. Please Write something before you send email</div>' ;
+            }
+        }
+    }
 	function _help($params) {
 
 		$out = array();
 		$out[] = $this->lang->getLL('command_title').'<br />';
 		$out[] = $this->lang->getLL('command_header');
 		foreach($this->commands as $name => $data) {
+		    // the _email Command is only available in private Rooms
+            if ( ! $this->room->isPrivate() && $name == "email") {
+                continue;
+            }
 
-			if($data['hideinhelp'])
-				continue;
-
-			if(!$this->grantAccessToCommand($name, $this->env['user']))
-				continue;
+			if($data['hideinhelp'] || !$this->grantAccessToCommand($name, $this->env['user'])) {
+                continue;
+            }
 
 			$title = '<div class="tx-jvchat-cmd-help-command-title"><span class="tx-jvchat-cmd-help-link" onClick="javascript:tx_jvchat_pi1_js_chat_instance.insertCommand(\'/'.$name.' \');">/'.$name.'</span></div>';
 			$parameterList = '';
@@ -1140,9 +1085,9 @@ class Chat {
 
 			if($this->extConf['showParameterDescription']) {
 				$parameterDscr = $parameterDscr ? ('<span class="tx-jvchat-cmd-help-parameter-descr">'.$parameterDscr.'</span>') : '';
-			}
-			else
-				$parameterDscr = '';
+			} else {
+                $parameterDscr = '';
+            }
 
 			$out[] = '<div class="tx-jvchat-cmd-help-command">'.$title.$parameterList.$commandDscr.$parameterDscr.'</div>';
 		}
@@ -1504,7 +1449,7 @@ class Chat {
 		$newRoom->name = $this->db->getUniqueRoomName($name);
 		$newRoom->superusergroup = $this->room->superusergroup;
 		$newRoom->description = sprintf($this->lang->getLL('command_newroom_room_default_description'), $username);
-		$newRoom->welcomemessage = $name ;
+		$newRoom->welcomemessage = $this->room->welcomemessage;
 		$newRoom->owner = $this->user['uid'];
 		$newRoom->moderators = $this->user['uid'];
 		$newRoom->private = true;
@@ -1528,7 +1473,8 @@ class Chat {
 
 		$roomId = $this->db->createNewRoom($newRoom);
 		if ( $roomId > 0 ) {
-			$this->db->updateUserInRoom($roomId, $this->user['uid']);
+		    // this is done when user really enteres !
+			// $this->db->updateUserInRoom($roomId, $this->user['uid']);
 
 			$msg = sprintf($this->lang->getLL('command_newroom_ok'), $newRoom->name) ;
 			$msg .= ' <br/><a href="javascript:openChatWindow('.$roomId.');" onClick="javascript:openChatWindow('.$roomId.'); return false;">'
@@ -1537,7 +1483,13 @@ class Chat {
 
             if ( $returnRoom ) {
                 $newRoom->uid =$roomId ;
-                $this->db->putMessage($this->room->uid, $msg, 0, $this->user, true, 0, 0 );
+                if ( $members ) {
+                    $this->db->putMessage($this->room->uid, $msg, 0, $members , true, 0, $this->user['uid'] );
+                } else {
+                    $this->db->putMessage($this->room->uid, $msg, 0, $this->user['uid'], true, 0, 0 );
+
+                }
+
                 return $newRoom ;
             }
 
@@ -1594,22 +1546,20 @@ class Chat {
 			$msg = sprintf($this->lang->getLL('command_invite_default_message'), $this->getUsername(), $this->getUsername($user) , $room->name);
 		}
 
+		// $msg = $msg. "Uid User: " . $this->user['uid'] . " toUser: " . $user['uid'] ;
 		$msg = $msg. $enterRoom ;
 
-		$rooms = $this->db->getRoomsOfUser($user['uid']);
+		$rooms = $this->db->getRoomsOfUser($user['uid'] , false );
 
 		if(count($rooms) > 0) {
             // send private system messages to all rooms
+            /** @var \JV\Jvchat\Domain\Model\Room $room */
             foreach($rooms as $room) {
-                $this->db->putMessage($room->uid, $msg, 0, $this->user, true, 0, $user['uid']);
+                if(! $room->isPrivate()  ) {
+                    $this->db->putMessage($room->uid, $msg, 0, $this->user , true, 0,  $user['uid'] );
+                }
             }
-
-		} else {
-
-            //  return sprintf($this->lang->getLL('command_invite_user_not_online'), $this->getUsername($user));
         }
-
-
 
 		return sprintf($this->lang->getLL('command_invite_enter_room_ok'), $this->getUsername($user), count($rooms)) . $enterRoom ;
 

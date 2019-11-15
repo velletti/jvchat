@@ -65,4 +65,4 @@
 
 
 	# cat=basic; type=int; label=Maximum user idle time (seconds): When a user does not fetch any messages during this period of time it is assumed that the user has left the chat and a message is shown.
-	maxAwayTime = 15
+	maxAwayTime = 60

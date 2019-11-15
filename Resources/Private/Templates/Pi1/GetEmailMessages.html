@@ -1,0 +1,30 @@
+<f:layout name="Ajax" />
+
+<f:section name="main">
+    <f:format.raw><f:spaceless>
+            <div>
+                <div>
+                    <f:format.date format="{timeFormat}">{time}</f:format.date> : <f:render section="userNameUnlinked" arguments="{showFullNames: showFullNames, user: entryUser , extConf: extConf}"/>
+                </div>
+                <div class="tx-jvchat-entry-text"><f:format.raw>{entryText}</f:format.raw></div>
+            </div>
+            <hr>
+        </f:spaceless></f:format.raw>
+</f:section>
+
+<f:section name="userNameUnlinked">
+    <f:spaceless>
+        <f:if condition="{user}">
+            <f:then>
+                <f:if condition="{showFullNames}">
+                    <f:then>
+                        {user.{extConf.usernameField1}}<f:if condition="{usernameField2}"> {user.{extConf.usernameField2}}</f:if>
+                    </f:then>
+                    <f:else>
+                        {user.username}
+                    </f:else>
+                </f:if>
+            </f:then>
+        </f:if>
+    </f:spaceless>
+</f:section>

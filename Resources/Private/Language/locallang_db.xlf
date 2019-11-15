@@ -47,7 +47,7 @@
 				<source>Chat mode</source>
 			</trans-unit>
 			<trans-unit id="tx_jvchat_room.showfullnames">
-				<source>Show real names (experimental! commands may not work)</source>
+				<source>Show real names</source>
 			</trans-unit>
 			<trans-unit id="tx_jvchat_room.moderators">
 				<source>moderators</source>

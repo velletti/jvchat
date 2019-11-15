@@ -476,21 +476,30 @@ class LibUtility {
 
         $renderer->setControllerContext($controllerContext);
 
+        $layoutPaths = $settings['view']['layoutRootPaths'] ;
+       // var_dump($settings['view']);
+        // echo "<hr>" ;
+        // var_dump($layoutPaths);
 
-        $layoutPaths = $settings['layoutPaths'] ;
         if(!$layoutPaths || count($layoutPaths) < 1) {
             $layoutPaths = array( 0 => "typo3conf/ext/jvchat/Resources/Private/Layouts/" ) ;
         }
-        $template = $settings['template'] ;
+        $template = $settings['view']['template'] ;
         if(!$template) {
             $template = $templateDefault ;
         }
-        $templatePaths = $settings['templatePaths'] ;
+
+        $templatePaths = $settings['view']['templateRootPaths'] ;
         if(!$templatePaths) {
             $templatePaths = array( 0 => "typo3conf/ext/jvchat/Resources/Private/Templates/" ) ;
         }
+        $partialPaths = $settings['view']['partialRootPaths'] ;
+        if(!$partialPaths) {
+            $partialPaths = array( 0 => "typo3conf/ext/jvchat/Resources/Private/Partials/" ) ;
+        }
         $renderer->setLayoutRootPaths($layoutPaths);
         $renderer->setTemplateRootPaths($templatePaths);
+        $renderer->setPartialRootPaths($partialPaths);
 
         $renderer->setFormat($format) ;
         $renderer->setTemplate($template);

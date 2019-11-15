@@ -121,6 +121,10 @@
 			<trans-unit id="after_welcome_message">
 				<target>Für Hilfe geben Sie bitte ein: '/help'</target>
 			</trans-unit>
+			<trans-unit id="after_welcome_message_in_private_room">
+                <source>Enter '/email' to send the latest messages to the other users in this room</source>
+                <target>Nutze den Befehl '/email' um die letzten Nachrichten an den/die anderen in diesem Chat per E-Mail zu senden.</target>
+            </trans-unit>
 			<trans-unit id="command_title">
 				<target>--== Chat Befehle ==--</target>
 			</trans-unit>

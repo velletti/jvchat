@@ -28,6 +28,7 @@
  */
 
 use \JV\Jvchat\Utility\LibUtility ;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
@@ -267,9 +268,10 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
             $this->db->deleteEntries($this->db->extCONF['autoDeleteEntries']);
         }
 
-       // $debug = $this->db->changeRoomMembership( $this->db->getRoom(394) , 128927 , 'members' , true   ) ;
+        // $debug = $this->db->getFeUsersMayAccessRoom( $this->db->getRoom(10 )   ) ;
+        // $entries = $this->db->getEntrieslastXseconds($this->db->getRoom(12 ), 60*60*24*21  ) ;
         // var_dump($debug) ;
-        // die;
+        //  die;
 		$roomData = $this->getRoomData($room);
 		$this->cObj->data = $roomData ;
 		if(!$this->conf['FLEX']['showDescriptionInChat'])
@@ -299,13 +301,28 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 		/* ***********************************   LTS 9 ******************************** */
         /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
-        $renderer = LibUtility::getRenderer($this->settings , "DisplayChatRoom" , "html" ) ;
         $setup = LibUtility::getSetUp();
+        $renderer = LibUtility::getRenderer( $setup, "DisplayChatRoom" , "html" ) ;
         $renderer->assign('settings', $setup['settings'] );
         $renderer->assign('server',  \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'));
 
-        $this->db->updateUserInRoom($roomId, $this->user['uid']);
+        $resUpdate = $this->db->updateUserInRoom($roomId, $this->user['uid']);
 
+
+        if ( $resUpdate == "entered") {
+
+            // check if we need to put a message for NEW Users in the Room:  Wir Holen 3 und wenn da keine SInd schien Wir die welcom message..
+            $entries = $this->db->getEntries($room, 0 , 0 ,2 ,  $this->user['uid']);
+            if ( count( $entries ) < 2 ) {
+                $msg = $room->welcomemessage ;
+                if ( $room->isPrivate() ) {
+                    $msg .= "\n" . $this->pi_getLL('after_welcome_message') ;
+                }
+                $msg .= "\n" . $this->pi_getLL('after_welcome_message_in_private_room') ;
+                $this->db->putMessage( $room->uid ,  $msg , 0 , 0 , 1 , 0 , $this->user['uid']);
+
+            }
+        }
         // there are two subparts: CHATROOM and CHATROOM_FULL
         // these markers can be used by both types
         $marker['CHATROOM_NAME'] = $room->name;
@@ -526,7 +543,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
         $extConf = LibUtility::getExtConf() ;
 
         /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
-        $renderer = LibUtility::getRenderer($this->settings , "GetUsers" , "html" )  ;
+        $renderer = LibUtility::getRenderer($setup , "GetUsers" , "html" )  ;
         $renderer->assign("showFullNames" , $room->showFullNames() ) ;
         if( $setup['settings']['userlist']['avatar']['useNemUserImgPath']) {
             $setup['settings']['userlist']['avatar']['nemUserImgPath']  = 'uploads/tx_feusers_img/' . $subPath = substr( "0000" . intval( round( $user['uid'] / 1000 , 0 )) , -4 , 4 ) . "/"  ;

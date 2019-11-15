@@ -27,9 +27,9 @@
 
                 <f:if condition="{marker.isFull}">
                     <f:else>
-                        <div id="tx-jvchat-showUserlist" class="hidden-sm hidden-md hidden-lg navbar-default" style="margin-right: -20px;">
+                        <div id="tx-jvchat-showUserlist" class="d-none-sm d-block d-none-lg d-none-xl" style="margin-right: -20px;">
 
-                            <button class="navbar-toggle collapsed" style="margin:0;" aria-expanded="false" aria-controls="collapsed" type="button" data-toggle="collapse" data-target="#tx-jvchat-userlist">
+                            <button class="btn btn-outline-secondary mr-3" type="button" data-toggle="collapse" data-target="#tx-jvchat-userlist">
                                 <i class="fa fa-lg fa-bars" ></i>
                             </button>
                             <span class="left" style="margin: 4px 20px 0 0 ;">Show Userlist</span>
@@ -52,15 +52,18 @@
 
 
                     <div id="tx-jvchat-loadinginfo">
-                        <img src="/typo3conf/ext/connect_template/Resources/Public/Images/loading-big.gif" height="30" width="30">
-                        <f:format.raw>{marker.LOADING_MESSAGE}</f:format.raw>
+                        <div class="text-center">
+                            <span class="fa fa-spin fa-spinner fa-4x"></span><br>
+                            <f:format.raw>{marker.LOADING_MESSAGE}</f:format.raw>
+                        </div>
+
                     </div>
 
                     <div id="tx-jvchat-container" class="container">
                         <div id="tx-jvchat-content" class="row">
-                            <div id="tx-jvchat-userlist" class="collapse in col-sm-3" style="height:auto;" aria-expanded="true"></div>
+                            <div id="tx-jvchat-userlist" class="collapse col-sm-3"></div>
 
-                            <div id="tx-jvchat-messages" class="col-xs-12 col-sm-9" style="height: 100%; display:none;"></div>
+                            <div id="tx-jvchat-messages" class="col-12 col-sm-9" style="height: 100%; display:none;"></div>
                         </div>
 
                         <div id="tx-jvchat-tools-container" class="row" style="display:none;">
@@ -84,11 +87,18 @@
                                         <i class="fas fa-clock" id="tx-jvchat-button-c" onClick="javascript:chat_instance.toggleAllTime();" title="{f:translate(key: 'chatbutton.clock_on')}"></i>
                                     </span>
                                 </f:if>
+
                                 <f:if condition="{roomData.enableEmoticons}">
                                     <span class="chatIconColor {settings.emoticonBtnClass}">
                                         <i class="fas fa-smile" id="tx-jvchat-button-smilies" onClick="javascript:chat_instance.toggleEmoticons();" title="{f:translate(key: 'chatbutton.smilies_on')}"></i>
                                     </span>
                                 </f:if>
+                                <f:if condition="{room.private}">
+                                    <span class="{settings.emoticonBtnClass} chatIconColor">
+                                        <i class="fas fa-envelope" id="tx-jvchat-button-email" onClick="javascript:chat_instance.sendMessage('/email');" title="{f:translate(key: 'chatbutton.email')}"></i>
+                                    </span>
+                                </f:if>
+
                                 <f:if condition="{extConf.enableStartStop}">
                                     <span class="{settings.emoticonBtnClass}">
                                         <i class=" fas fa-play" style="display:none" id="tx-jvchat-button-start-on" onClick="javascript:chat_instance.chat_instance.start();" title="{f:translate(key: 'chatbutton.start')}"></i>
@@ -153,27 +163,20 @@
             $('#tx-jvchat-container').show();
 
             $('#tx-jvchat-messages').show();
-            $('#tx-jvchat-userlist').show();
+
             $('#tx-jvchat-tools-container').show();
             $('#tx-jvchat-input-container').show();
             $('#tx-jvchat-loadinginfo').hide();
             $('#txjvchatnewMessage').focus();
 
             if ( $(window).width() < 767 ) {
-                $('#tx-jvchat-userlist').removeClass("in").attr("aria-expanded" , "false").css('height' , '2px') ;
+                $('#tx-jvchat-userlist').removeClass("in").attr("aria-expanded" , "false") ;
+            } else {
+                $('#tx-jvchat-userlist').show();
             }
             tx_jvchat_resize() ;
 
             $(window).bind("resize", tx_jvchat_resize);
-            $('#tx-jvchat-showUserlist button').click( function() {
-                event.preventDefault() ;
-                if( $('#tx-jvchat-userlist').attr("aria-expanded" ) ==  "true") {
-                    $('#tx-jvchat-userlist').addClass("in").attr("aria-expanded" , "false").css('height' , '2px') ;
-                }  else {
-                    $('#tx-jvchat-userlist').removeClass("in").attr("aria-expanded" , "true").css('height' , 'auto') ;
-                }
-                tx_jvchat_resize() ;
-            } );
         }) ;
 
     </script>

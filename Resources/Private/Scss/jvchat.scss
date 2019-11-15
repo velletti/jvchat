@@ -34,7 +34,7 @@ $jvchat-icon-colorShadow: rgba( 256 , 99 , 0 , 0.1) ;
 #tx-jvchat-loadinginfo {
     position: absolute;
     width: 250px;
-    height: 2em;
+    height: 8em;
     padding: 2em;
     border: 1px solid $jvchat-borderColor;
     background-color: $jvchat-lightBackground;
@@ -76,7 +76,7 @@ $jvchat-icon-colorShadow: rgba( 256 , 99 , 0 , 0.1) ;
 
 #tx-jvchat-emoticons {
     padding: 0;
-    height: 28px;
+    height: 38px;
     .fa , .fab , .fas {
         cursor:pointer;
         line-height: unset !important;
@@ -136,6 +136,7 @@ textarea#txjvchatnewMessage {
     position: relative;
 
 }
+.tx-jvchat-message-ownMsg:after ,
 .tx-jvchat-message:before {
     content:"";
     position: absolute;
@@ -146,14 +147,23 @@ textarea#txjvchatnewMessage {
     border-bottom: 6px solid transparent;
     margin: 3px 0 0 -30px;
 }
-
+.tx-jvchat-message-ownMsg:before{
+    display: none;
+}
+.tx-jvchat-message-ownMsg:after {
+    border-left: 18px solid $jvchat-msg-borderColor;
+    border-right: none;
+    margin: 0;
+    right: -18px ;
+    top: 5px;
+}
 
 
 .tx-jvchat-message.tx-jvchat-message-ownMsg {
     float: right;
     padding-right: 16px;
     margin-left: 40px;
-    margin-right: 0;
+    margin-right: 12px;
 
 }
 

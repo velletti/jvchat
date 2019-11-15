@@ -1,13 +1,10 @@
 <?php
 namespace JV\Jvchat\Domain\Repository;
 
-// require_once('class.tx_jvchat_room.php');
-// require_once('class.tx_jvchat_session.php');
-// require_once('class.tx_jvchat_entry.php');
-//require_once('class.tx_jvchat_lib.php');
 
 use JV\Jvchat\Domain\Model\Room;
 use JV\Jvchat\Utility\LibUtility;
+use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -17,8 +14,6 @@ use \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser ;
 // was : class.tx_jvchat_db.php
 
 class DbRepository {
-
-    var $db;
 
     /**
      * @var array
@@ -33,13 +28,12 @@ class DbRepository {
 
 
     /**
-     * @var TYPO3\CMS\Core\Database\ConnectionPool
+     * @var \TYPO3\CMS\Core\Database\ConnectionPool
      */
     public $connectionPool ;
 
 
 	function __construct() {
-		$this->db = $GLOBALS['TYPO3_DB'];
 		$this->extCONF = LibUtility::getExtConf();
 
         $this->connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
@@ -543,7 +537,7 @@ class DbRepository {
 
 		$roomId = intval($roomId);
 		$userId = intval($userId);
-
+        /** @var  QueryBuilder $queryBuilder */
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_entry') ;
 
 		$data = array(

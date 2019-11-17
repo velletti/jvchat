@@ -1,355 +1,359 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file source-language="en" target-language="fr" datatype="plaintext" original="messages" date="2016-07-22T08:55:26Z" product-name="jvchat">
+	<file target-language="en" target-language="fr" datatype="plaintext" original="messages" date="2016-07-22T08:55:26Z" product-name="jvchat">
 		<header/>
 		<body>
 			<trans-unit id="session_not_found">
-				<source>La session n 'a pas été trouvée. Elle a probablement été supprimée.</source>
+				<target>La session n 'a pas été trouvée. Elle a probablement été supprimée.</target>
 			</trans-unit>
 			<trans-unit id="sessions_not_found">
-				<source>Aucune session disponible.</source>
+				<target>Aucune session disponible.</target>
 			</trans-unit>
 			<trans-unit id="entries_not_found">
-				<source>Aucun message.</source>
+				<target>Aucun message.</target>
 			</trans-unit>
 			<trans-unit id="new_message">
-				<source>Nouveau message</source>
+				<target>Nouveau message</target>
 			</trans-unit>
 			<trans-unit id="submit_message">
-				<source>Envoyer</source>
+				<target>Envoyer</target>
 			</trans-unit>
 			<trans-unit id="back_to_rooms">
-				<source>Retour à l 'aperçu du salon</source>
+				<target>Retour à l 'aperçu du salon</target>
 			</trans-unit>
 			<trans-unit id="back_to_sessions">
-				<source>Retour à l 'aperçu de la session</source>
+				<target>Retour à l 'aperçu de la session</target>
 			</trans-unit>
 			<trans-unit id="user_in_chat">
-				<source>Des utilisateurs participent à la discussion.</source>
+				<target>Des utilisateurs participent à la discussion.</target>
 			</trans-unit>
 			<trans-unit id="no_user_in_chat">
-				<source>Le salon de discussion est vide.</source>
+				<target>Le salon de discussion est vide.</target>
 			</trans-unit>
 			<trans-unit id="max_user">
-				<source>Nombre maximum de participants : </source>
+				<target>Nombre maximum de participants : </target>
 			</trans-unit>
 			<trans-unit id="error_access_denied">
-				<source>Vous n 'êtes pas autorisé à effectuer cette action.</source>
+				<target>Vous n 'êtes pas autorisé à effectuer cette action.</target>
 			</trans-unit>
 			<trans-unit id="error_room_access_denied">
-				<source>Vous n 'êtes pas autorisé à entrer dans ce salon ni à voir ces entrées. Veuillez ouvrir une session.</source>
+				<target>Vous n 'êtes pas autorisé à entrer dans ce salon ni à voir ces entrées. Veuillez ouvrir une session.</target>
 			</trans-unit>
 			<trans-unit id="error_room_full">
-				<source>Le salon est plein. Le nombre maximum d 'utilisateurs a été atteint. Vous pourrez entrer automatiquement dans le salon dès qu 'une place se libère. Sinon, veuillez réessayer plus tard.</source>
+				<target>Le salon est plein. Le nombre maximum d 'utilisateurs a été atteint. Vous pourrez entrer automatiquement dans le salon dès qu 'une place se libère. Sinon, veuillez réessayer plus tard.</target>
 			</trans-unit>
 			<trans-unit id="error_room_not_found">
-				<source>Impossible de trouver le salon. Il a probablement été supprimé.</source>
+				<target>Impossible de trouver le salon. Il a probablement été supprimé.</target>
 			</trans-unit>
 			<trans-unit id="error_kicked">
-				<source>Vous avez été verrouillé pour ce salon. Encore %d minutes.</source>
+				<target>Vous avez été verrouillé pour ce salon. Encore %d minutes.</target>
 			</trans-unit>
 			<trans-unit id="error_banned">
-				<source>Vous avez été verrouillé pour ce salon.</source>
+				<target>Vous avez été verrouillé pour ce salon.</target>
 			</trans-unit>
 			<trans-unit id="error_not_invited">
-				<source>Ce salon de discussion est privé et son accès n 'est possible que sur invitation.</source>
+				<target>Ce salon de discussion est privé et son accès n 'est possible que sur invitation.</target>
 			</trans-unit>
+             <trans-unit id="room_is_private">
+                <source>This is a private chat room and can only be entered after an invitation.</source>
+                <target>Ce salon de discussion est privé et son accès n 'est possible que sur invitation.</target>
+            </trans-unit>
 			<trans-unit id="message_committed">
-				<source>Le message #%d a été autorisé</source>
+				<target>Le message #%d a été autorisé</target>
 			</trans-unit>
 			<trans-unit id="error_commit">
-				<source>Impossible d 'autoriser le message. Il a peut-être déjà été autorisé.</source>
+				<target>Impossible d 'autoriser le message. Il a peut-être déjà été autorisé.</target>
 			</trans-unit>
 			<trans-unit id="enter_chat">
-				<source>Participer à la discussion</source>
+				<target>Participer à la discussion</target>
 			</trans-unit>
 			<trans-unit id="leave_chat">
-				<source>Quitter la discussion</source>
+				<target>Quitter la discussion</target>
 			</trans-unit>
 			<trans-unit id="new_window">
-				<source>Nouvelle fenêtre</source>
+				<target>Nouvelle fenêtre</target>
 			</trans-unit>
 			<trans-unit id="close_window">
-				<source>Terminer la discussion</source>
+				<target>Terminer la discussion</target>
 			</trans-unit>
 			<trans-unit id="sessions">
-				<source>Consigner les sessions</source>
+				<target>Consigner les sessions</target>
 			</trans-unit>
 			<trans-unit id="experts">
-				<source>Expert(s) en ligne :</source>
+				<target>Expert(s) en ligne :</target>
 			</trans-unit>
 			<trans-unit id="superusers">
-				<source>Superutilisateur en ligne : </source>
+				<target>Superutilisateur en ligne : </target>
 			</trans-unit>
 			<trans-unit id="moderators">
-				<source>Animateur(s) en ligne :</source>
+				<target>Animateur(s) en ligne :</target>
 			</trans-unit>
 			<trans-unit id="users">
-				<source>Utilisateur en ligne : </source>
+				<target>Utilisateur en ligne : </target>
 			</trans-unit>
 			<trans-unit id="system_name">
-				<source>*</source>
+				<target>*</target>
 			</trans-unit>
 			<trans-unit id="hide_message">
-				<source>Masquer le message</source>
+				<target>Masquer le message</target>
 			</trans-unit>
 			<trans-unit id="commit_message">
-				<source>Déverrouiller le message</source>
+				<target>Déverrouiller le message</target>
 			</trans-unit>
 			<trans-unit id="store_message">
-				<source>Rétablir le message</source>
+				<target>Rétablir le message</target>
 			</trans-unit>
 			<trans-unit id="user_enters_chat">
-				<source>%s est entré dans le salon.</source>
+				<target>%s est entré dans le salon.</target>
 			</trans-unit>
 			<trans-unit id="user_leaves_chat">
-				<source>%s quitte le salon.</source>
+				<target>%s quitte le salon.</target>
 			</trans-unit>
 			<trans-unit id="after_welcome_message">
-				<source>Pour obtenir de l 'aide, entrez :  '/help '</source>
+				<target>Pour obtenir de l 'aide, entrez :  '/help '</target>
 			</trans-unit>
 			<trans-unit id="command_title">
-				<source>--== Commandes de discussion ==--</source>
+				<target>--== Commandes de discussion ==--</target>
 			</trans-unit>
 			<trans-unit id="command_header">
-				<source>Bienvenue dans notre salon de discussion. Astuce : appuyez sur CTRL+ENTREE afin de créer un saut de ligne. Les commandes suivantes sont disponibles pendant la discussion :<br/></source>
+				<target>Bienvenue dans notre salon de discussion. Astuce : appuyez sur CTRL+ENTREE afin de créer un saut de ligne. Les commandes suivantes sont disponibles pendant la discussion :<br/></target>
 			</trans-unit>
 			<trans-unit id="command_help">
-				<source>Affiche les commandes possibles.</source>
+				<target>Affiche les commandes possibles.</target>
 			</trans-unit>
 			<trans-unit id="command_msg">
-				<source>Envoie un message privé.</source>
+				<target>Envoie un message privé.</target>
 			</trans-unit>
 			<trans-unit id="command_roomlist">
-				<source>Indique à l 'utilisateur les autres salons de discussion.</source>
+				<target>Indique à l 'utilisateur les autres salons de discussion.</target>
 			</trans-unit>
 			<trans-unit id="command_smileys">
-				<source>Affiche les icônes disponibles avec leurs raccourcis respectifs.</source>
+				<target>Affiche les icônes disponibles avec leurs raccourcis respectifs.</target>
 			</trans-unit>
 			<trans-unit id="command_who">
-				<source>Affiche la liste des utilisateurs participant à la discussion.</source>
+				<target>Affiche la liste des utilisateurs participant à la discussion.</target>
 			</trans-unit>
 			<trans-unit id="command_whois">
-				<source>Affiche les détails d 'un utilisateur.</source>
+				<target>Affiche les détails d 'un utilisateur.</target>
 			</trans-unit>
 			<trans-unit id="command_kick">
-				<source>Supprime un utilisateur pour une période déterminée. Cette action peut être annulée avec la commande  '/redeem '.</source>
+				<target>Supprime un utilisateur pour une période déterminée. Cette action peut être annulée avec la commande  '/redeem '.</target>
 			</trans-unit>
 			<trans-unit id="command_kick_param_time">
-				<source>Nombre de minutes pendant lesquelles l 'utilisateur est verrouillé.</source>
+				<target>Nombre de minutes pendant lesquelles l 'utilisateur est verrouillé.</target>
 			</trans-unit>
 			<trans-unit id="command_kick_ok">
-				<source>%s a été supprimé de %s pendant %d minutes.</source>
+				<target>%s a été supprimé de %s pendant %d minutes.</target>
 			</trans-unit>
 			<trans-unit id="command_kick_reason">
-				<source>Raison :  '%s '</source>
+				<target>Raison :  '%s '</target>
 			</trans-unit>
 			<trans-unit id="command_ban">
-				<source>Supprime un utilisateur du salon pour une période indéterminée.</source>
+				<target>Supprime un utilisateur du salon pour une période indéterminée.</target>
 			</trans-unit>
 			<trans-unit id="command_ban_ok">
-				<source>%s a été verrouillé de %s.</source>
+				<target>%s a été verrouillé de %s.</target>
 			</trans-unit>
 			<trans-unit id="command_ban_reason">
-				<source>Raison :  '%s '</source>
+				<target>Raison :  '%s '</target>
 			</trans-unit>
 			<trans-unit id="command_redeem">
-				<source>Déverrouille un utilisateur pour le salon actuel.</source>
+				<target>Déverrouille un utilisateur pour le salon actuel.</target>
 			</trans-unit>
 			<trans-unit id="command_redeem_ok">
-				<source>%s a été déverrouillé de %s.</source>
+				<target>%s a été déverrouillé de %s.</target>
 			</trans-unit>
 			<trans-unit id="command_redeem_reason">
-				<source>Raison :  '%s '</source>
+				<target>Raison :  '%s '</target>
 			</trans-unit>
 			<trans-unit id="command_restart">
-				<source>Démarre le chargement de la discussion avec de nouveaux messages.</source>
+				<target>Démarre le chargement de la discussion avec de nouveaux messages.</target>
 			</trans-unit>
 			<trans-unit id="command_stop">
-				<source>Arrête le chargement de la discussion (mode Archive).</source>
+				<target>Arrête le chargement de la discussion (mode Archive).</target>
 			</trans-unit>
 			<trans-unit id="command_quit">
-				<source>Quitter le salon avec un message facultatif.</source>
+				<target>Quitter le salon avec un message facultatif.</target>
 			</trans-unit>
 			<trans-unit id="command_quit_ok">
-				<source>%s quitte le salon.</source>
+				<target>%s quitte le salon.</target>
 			</trans-unit>
 			<trans-unit id="command_quit_reason">
-				<source>Raison :  '%s '</source>
+				<target>Raison :  '%s '</target>
 			</trans-unit>
 			<trans-unit id="command_makesession">
-				<source>Crée un protocole de discussion.</source>
+				<target>Crée un protocole de discussion.</target>
 			</trans-unit>
 			<trans-unit id="command_makesession_param_name">
-				<source>Un nom pour le protocole.</source>
+				<target>Un nom pour le protocole.</target>
 			</trans-unit>
 			<trans-unit id="command_makesession_param_firstid">
-				<source>ID du premier message</source>
+				<target>ID du premier message</target>
 			</trans-unit>
 			<trans-unit id="command_makesession_param_lastid">
-				<source>ID du dernier message</source>
+				<target>ID du dernier message</target>
 			</trans-unit>
 			<trans-unit id="command_makeexpert">
-				<source>Place un utilisateur sur la liste des experts</source>
+				<target>Place un utilisateur sur la liste des experts</target>
 			</trans-unit>
 			<trans-unit id="command_makeuser">
-				<source>Supprime un utilisateur de la liste des experts</source>
+				<target>Supprime un utilisateur de la liste des experts</target>
 			</trans-unit>
 			<trans-unit id="command_cleanup">
-				<source>Supprime toutes les entrées de ce salon qui n 'appartiennent pas à une session.</source>
+				<target>Supprime toutes les entrées de ce salon qui n 'appartiennent pas à une session.</target>
 			</trans-unit>
 			<trans-unit id="command_cleanupall">
-				<source>Supprime toutes les entrées de tous les salons qui n 'appartiennent à aucune session.</source>
+				<target>Supprime toutes les entrées de tous les salons qui n 'appartiennent à aucune session.</target>
 			</trans-unit>
 			<trans-unit id="command_setstatus">
-				<source>Modifie le statut de l 'utilisateur (par ex.  'hidden ')</source>
+				<target>Modifie le statut de l 'utilisateur (par ex.  'hidden ')</target>
 			</trans-unit>
 			<trans-unit id="command_error_user_not_found">
-				<source>Utilisateur  '%1%s ' introuvable</source>
+				<target>Utilisateur  '%1%s ' introuvable</target>
 			</trans-unit>
 			<trans-unit id="command_parameter_wrong">
-				<source>Paramètre %s incorrect. Devrait être %s</source>
+				<target>Paramètre %s incorrect. Devrait être %s</target>
 			</trans-unit>
 			<trans-unit id="command_not_found">
-				<source>Commande  '%s ' introuvable. Veuillez saisir  '/help ' afin d 'obtenir une liste des commandes possibles.</source>
+				<target>Commande  '%s ' introuvable. Veuillez saisir  '/help ' afin d 'obtenir une liste des commandes possibles.</target>
 			</trans-unit>
 			<trans-unit id="command_param_userid">
-				<source>#ID utilisateur ou nom d 'utilisateur</source>
+				<target>#ID utilisateur ou nom d 'utilisateur</target>
 			</trans-unit>
 			<trans-unit id="command_param_roomid">
-				<source>ID salon</source>
+				<target>ID salon</target>
 			</trans-unit>
 			<trans-unit id="command_param_reason">
-				<source>Une raison</source>
+				<target>Une raison</target>
 			</trans-unit>
 			<trans-unit id="command_param_status">
-				<source>Par exemple  'hidden '</source>
+				<target>Par exemple  'hidden '</target>
 			</trans-unit>
 			<trans-unit id="command_param_message">
-				<source>Un message</source>
+				<target>Un message</target>
 			</trans-unit>
 			<trans-unit id="command_newroom">
-				<source>Crée un nouveau salon privé. Les utilisateurs peuvent ensuite être invités à l 'aide de /invite.</source>
+				<target>Crée un nouveau salon privé. Les utilisateurs peuvent ensuite être invités à l 'aide de /invite.</target>
 			</trans-unit>
 			<trans-unit id="command_newroom_param_name">
-				<source>Nom du salon</source>
+				<target>Nom du salon</target>
 			</trans-unit>
 			<trans-unit id="command_newroom_param_description">
-				<source>Une description plus précise du salon.</source>
+				<target>Une description plus précise du salon.</target>
 			</trans-unit>
 			<trans-unit id="command_newroom_room_default_title">
-				<source>Salon privé de %s</source>
+				<target>Salon privé de %s</target>
 			</trans-unit>
 			<trans-unit id="command_newroom_room_default_description">
-				<source>Pour entrer dans ce salon de discussion privé, vous devez disposer d 'une invitation de %s.</source>
+				<target>Pour entrer dans ce salon de discussion privé, vous devez disposer d 'une invitation de %s.</target>
 			</trans-unit>
 			<trans-unit id="command_newroom_ok">
-				<source>Un nouveau salon *%s* a été créé.</source>
+				<target>Un nouveau salon *%s* a été créé.</target>
 			</trans-unit>
 			<trans-unit id="command_invite">
-				<source>Invite un utilisateur dans un salon privé.</source>
+				<target>Invite un utilisateur dans un salon privé.</target>
 			</trans-unit>
 			<trans-unit id="command_invite_default_message">
-				<source>*%s* invite *%s* dans son salon de discussion *%s*.</source>
+				<target>*%s* invite *%s* dans son salon de discussion *%s*.</target>
 			</trans-unit>
 			<trans-unit id="command_invite_enter_room">
-				<source>Entrer dans le salon</source>
+				<target>Entrer dans le salon</target>
 			</trans-unit>
 			<trans-unit id="command_invite_enter_room_ok">
-				<source>*%s* peut maintenant entrer dans ce salon. L 'invitation a été envoyée.</source>
+				<target>*%s* peut maintenant entrer dans ce salon. L 'invitation a été envoyée.</target>
 			</trans-unit>
 			<trans-unit id="command_invite_user_not_online">
-				<source>*%s* ne se trouve dans aucun salon. L 'invitation n 'a pas été envoyée.</source>
+				<target>*%s* ne se trouve dans aucun salon. L 'invitation n 'a pas été envoyée.</target>
 			</trans-unit>
 			<trans-unit id="command_recent_invite">
-				<source>Invite un utilisateur dans le dernier salon créé.</source>
+				<target>Invite un utilisateur dans le dernier salon créé.</target>
 			</trans-unit>
 			<trans-unit id="command_setroomstatus">
-				<source>Modifie le statut du salon (par ex.  'hidden", 'private ')</source>
+				<target>Modifie le statut du salon (par ex.  'hidden", 'private ')</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.bold">
-				<source>Gras [b]texte[/b] ou *texte*</source>
+				<target>Gras [b]texte[/b] ou *texte*</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.italic">
-				<source>Italique [i]texte[/i]</source>
+				<target>Italique [i]texte[/i]</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.underlined">
-				<source>Souligné [u]texte[/u]</source>
+				<target>Souligné [u]texte[/u]</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.stroke">
-				<source>Barré [s]texte[/s]</source>
+				<target>Barré [s]texte[/s]</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.email">
-				<source>E-mail [email]texte[/email]</source>
+				<target>E-mail [email]texte[/email]</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.http">
-				<source>URL [url]texte[/url]</source>
+				<target>URL [url]texte[/url]</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.clock_on">
-				<source>Afficher l 'heure</source>
+				<target>Afficher l 'heure</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.clock_off">
-				<source>Masquer l \'heure</source>
+				<target>Masquer l \'heure</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.usercolor_on">
-				<source>Colorer le nom de l 'utilisateur</source>
+				<target>Colorer le nom de l 'utilisateur</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.usercolor_off">
-				<source>Ne pas colorer le nom de l \'utilisateur</source>
+				<target>Ne pas colorer le nom de l \'utilisateur</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.smilies_on">
-				<source>Afficher les émoticônes</source>
+				<target>Afficher les émoticônes</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.smilies_off">
-				<source>Masquer les émoticônes</source>
+				<target>Masquer les émoticônes</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.colors_on">
-				<source>Afficher les styles de message</source>
+				<target>Afficher les styles de message</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.colors_off">
-				<source>Masquer les styles de message</source>
+				<target>Masquer les styles de message</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.help">
-				<source>Aide - Affiche les commandes de discussion disponibles</source>
+				<target>Aide - Affiche les commandes de discussion disponibles</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.autofocus_on">
-				<source>Autofocus : place la fenêtre en avant-plan lorsque de nouveaux messages sont disponibles.</source>
+				<target>Autofocus : place la fenêtre en avant-plan lorsque de nouveaux messages sont disponibles.</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.autofocus_off">
-				<source>Désactiver l \'autofocus.</source>
+				<target>Désactiver l \'autofocus.</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.enablesound_on">
-				<source>Son activé</source>
+				<target>Son activé</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.enablesound_off">
-				<source>Son désactivé</source>
+				<target>Son désactivé</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.restart">
-				<source>Démarre le chargement de la discussion avec de nouveaux messages. (Quitter le mode Archive)</source>
+				<target>Démarre le chargement de la discussion avec de nouveaux messages. (Quitter le mode Archive)</target>
 			</trans-unit>
 			<trans-unit id="chatbutton.stop">
-				<source>Arrête le chargement de la discussion (mode Archive) afin de pouvoir lire les entrées existantes.</source>
+				<target>Arrête le chargement de la discussion (mode Archive) afin de pouvoir lire les entrées existantes.</target>
 			</trans-unit>
 			<trans-unit id="privateMsgUsernamens">
-				<source>MP de %s à %s</source>
+				<target>MP de %s à %s</target>
 			</trans-unit>
 			<trans-unit id="userlistPMInfo">
-				<source>Envoyer un message privé à  '%s '</source>
+				<target>Envoyer un message privé à  '%s '</target>
 			</trans-unit>
 			<trans-unit id="userlistPRInfo">
-				<source>Ouvrir un nouveau salon et inviter  '%s '.</source>
+				<target>Ouvrir un nouveau salon et inviter  '%s '.</target>
 			</trans-unit>
 			<trans-unit id="talktoroomname">
-				<source>Salon privé avec %s</source>
+				<target>Salon privé avec %s</target>
 			</trans-unit>
 			<trans-unit id="closed">
-				<source>Clos</source>
+				<target>Clos</target>
 			</trans-unit>
 			<trans-unit id="loading_message">
-				<source>L 'interface de discussion est en cours de chargement...</source>
+				<target>L 'interface de discussion est en cours de chargement...</target>
 			</trans-unit>
 			<trans-unit id="snippetsError">
-				<source>Une erreur s'est produite. Vous devez recharger la fenêtre de discussion. Voulez-vous la recharger maintenant ?</source>
+				<target>Une erreur s'est produite. Vous devez recharger la fenêtre de discussion. Voulez-vous la recharger maintenant ?</target>
 			</trans-unit>
 		</body>
 	</file>

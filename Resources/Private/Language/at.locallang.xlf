@@ -62,6 +62,10 @@
 			<trans-unit id="error_not_invited">
 				<source>Dies ist ein privater Chatraum und kann nur nach einer Einladung betreten werden.</source>
 			</trans-unit>
+			 <trans-unit id="room_is_private">
+                <source>This is a private chat room and can only be entered after an invitation.</source>
+                <target>Dies ist ein privater Chatraum und kann nur nach einer Einladung betreten werden.</target>
+            </trans-unit>
 			<trans-unit id="message_committed">
 				<source>Nachricht #%d wurde freigegeben</source>
 			</trans-unit>

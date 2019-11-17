@@ -5,6 +5,8 @@ namespace JV\Jvchat\Domain\Repository;
 use JV\Jvchat\Domain\Model\Room;
 use JV\Jvchat\Utility\LibUtility;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
+use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
+use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionInterface;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
@@ -85,17 +87,20 @@ class DbRepository {
         /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
         $queryBuilder = $this->connectionPool->getConnectionForTable('tx_jvchat_room_feusers_mm')->createQueryBuilder();
         $expr = $queryBuilder->expr();
-        $allRooms = $queryBuilder->select('uid_local')
+        $queryBuilder->select('uid_local')
             ->from('tx_jvchat_room_feusers_mm')
-            ->where($expr->eq('uid_foreign', $queryBuilder->createNamedParameter($userId, Connection::PARAM_INT)))
-            ->execute()
-            ->fetchAll();
+            ->where($expr->eq('uid_foreign', $queryBuilder->createNamedParameter($userId, Connection::PARAM_INT))) ;
+
+
+       //  $this->debugQuery( $queryBuilder);
+        $allRooms = $queryBuilder->execute()->fetchAll();
 
         if (count($allRooms) < 1) {
             return array();
         }
 
         $rooms = array();
+        $roomsPrivate = array();
 
         /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
         $queryBuilderRoom = $this->connectionPool->getConnectionForTable('tx_jvchat_room')->createQueryBuilder();
@@ -106,21 +111,36 @@ class DbRepository {
                 ->where( $expr->eq('uid', $queryBuilderRoom->createNamedParameter($roomId['uid_local'], Connection::PARAM_INT)) )
                  ;
 
-            $row = $query->execute()->fetch();
-            //$this->debugQuery( $query);
-            if( $row ) {
-                    if ( $alsoPrivate ||  ! $row['private'] ) {
-                        /** @var \JV\Jvchat\Domain\Model\Room $room */
-                        $room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
-                        $room->fromArray($row);
-                        $rooms[] = $room;
-                        unset($room) ;
-                    }
 
+            if ( $alsoPrivate ) {
+                /** @var  QueryRestrictionInterface $deleteRestriction */
+                $deleteRestriction = GeneralUtility::makeInstance(DeletedRestriction::class) ;
+                /** @var  QueryRestrictionInterface $groupRestriction */
+                $groupRestriction  = GeneralUtility::makeInstance(FrontendGroupRestriction::class) ;
+                $query->getRestrictions()->removeAll()
+                    ->add($deleteRestriction)
+                    ->add($groupRestriction);
             }
 
 
+            $row = $query->execute()->fetch();
+            //$this->debugQuery( $query);
+            if( $row ) {
+                /** @var \JV\Jvchat\Domain\Model\Room $room */
+                $room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
+                $room->fromArray($row);
+                if( $room->isPrivate()) {
+                    $roomsPrivate[] = $room;
+                } else {
+                    $rooms[] = $room;
+                }
+                unset($room) ;
+            }
         }
+        foreach ($roomsPrivate as $room ) {
+            $rooms[] = $room;
+        }
+
         return $rooms;
 	}
 	
@@ -211,7 +231,7 @@ class DbRepository {
 
         $row =  $rows->fetch() ;
         if( is_array($row)) {
-            trim($row['name']) . "#" . ( $row['uid'] + 1 ) ;
+            return trim($row['name']) . "#" . ( $row['uid'] + 1 ) ;
         } else {
             return $roomName ."#1";
         }
@@ -219,11 +239,7 @@ class DbRepository {
 
 
 	}
-	
-	function enableFields($table, $show_hidden = 0)	{
-		$hidden = $show_hidden ? '' : 'AND hidden = 0';
-		return ' AND deleted = 0 '.$hidden.' AND (starttime<='.time().') AND (endtime=0 OR endtime>'.time().')';
-	}
+
 	
 	function getSession($sessionId) {
         $sessionId = intval($sessionId);
@@ -465,7 +481,6 @@ class DbRepository {
 
         $roomQuery = $queryBuilder->select( '*' )->from('tx_jvchat_room' )
             ->where( $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter( $uid)) )
-         //   ->andWhere( $queryBuilder->expr()->eq('deleted', 0 ))
             ->setMaxResults(1)  ;
 
         $row = $roomQuery->execute()->fetch() ;

@@ -65,8 +65,13 @@
 				<target>Sie wurden für diesen Raum gesperrt.</target>
 			</trans-unit>
 			<trans-unit id="error_not_invited">
+				<source>This is a private chat room and can only be entered after an invitation.</source>
 				<target>Dies ist ein privater Chatraum und kann nur nach einer Einladung betreten werden.</target>
 			</trans-unit>
+            <trans-unit id="room_is_private">
+            	<source>This is a private chat room and can only be entered after an invitation.</source>
+                <target>Dies ist ein privater Chatraum und kann nur nach einer Einladung betreten werden.</target>
+            </trans-unit>
 			<trans-unit id="message_committed">
 				<target>Nachricht #%d wurde freigegeben</target>
 			</trans-unit>

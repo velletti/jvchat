@@ -48,6 +48,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
     /** @var  \JV\Jvchat\Domain\Repository\DbRepository  */
     var $db;
 
+    /** @var array  */
     var $user;
 
 	/**
@@ -109,8 +110,11 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 				case 'chat':
 					$content = $this->displayChatRoom($this->piVars['uid']);
 					break;
-				case 'sessions' :
-					$content = $this->displaySessionsOfRoom($this->piVars['uid']);
+                case 'sessions' :
+                    $content = $this->displaySessionsOfRoom($this->piVars['uid']);
+                    break;
+				case 'myrooms' :
+					$content = $this->displayRooms(TRUE);
 					break;
 				case 'session' :
 					$content = $this->displaySession($this->piVars['uid']);
@@ -120,11 +124,17 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		else
 			// if nothing set use default view from FLEX form
 			switch($this->conf['FLEX']['display']) {
-				case 'rooms': $content = $this->displayRooms();
-				break;
-				case 'chat': $content = $this->displayChatRoom($this->conf['FLEX']['chatroom']);
-				break;
-				case 'overallusercount': $content = $this->displayOverallChatuserNumber();
+				case 'rooms':
+				    $content = $this->displayRooms();
+				    break;
+                case 'myrooms':
+                    $content = $this->displayRooms(TRUE);
+                    break;
+				case 'chat':
+				    $content = $this->displayChatRoom($this->conf['FLEX']['chatroom']);
+				    break;
+				case 'overallusercount':
+				    $content = $this->displayOverallChatuserNumber();
 				break;
 			}
 
@@ -311,14 +321,15 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
         if ( $resUpdate == "entered") {
 
-            // check if we need to put a message for NEW Users in the Room:  Wir Holen 3 und wenn da keine SInd schien Wir die welcom message..
+            // check if we need to put a message for NEW Users in the Room:  We fetch 3 and if not enugh, we show the welcome message..
             $entries = $this->db->getEntries($room, 0 , 0 ,2 ,  $this->user['uid']);
             if ( count( $entries ) < 2 ) {
                 $msg = $room->welcomemessage ;
                 if ( $room->isPrivate() ) {
-                    $msg .= "\n" . $this->pi_getLL('after_welcome_message') ;
+                    $msg .= "\n" . $this->pi_getLL('after_welcome_message_in_private_room') ;
                 }
-                $msg .= "\n" . $this->pi_getLL('after_welcome_message_in_private_room') ;
+
+                $msg .= "\n" . $this->pi_getLL('after_welcome_message') ;
                 $this->db->putMessage( $room->uid ,  $msg , 0 , 0 , 1 , 0 , $this->user['uid']);
 
             }
@@ -660,24 +671,34 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 	}
 	
-	function displayRooms() {
+	function displayRooms($myRooms) {
+        if ( $myRooms ) {
+            $rooms = $this->db->getRoomsOfUser($this->user['uid'] , true ) ;
 
-		$rooms = $this->getRoomsFromFlexConf();
-        $theValue = '' ;
-		foreach($rooms as $room) {
+        } else {
+            $rooms = $this->getRoomsFromFlexConf();
+        }
+        $setup = LibUtility::getSetUp();
 
-			$this->cObj->data = $this->getRoomData($room);
+        /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
+        $renderer = LibUtility::getRenderer($setup , "DisplayRooms" , "html" )  ;
 
-			if(!$this->conf['FLEX']['showDescription'])
-				unset($this->cObj->data['description']);
+        $setup['settings']['currentPid'] = $GLOBALS['TSFE']->id ;
 
-			// render COBJ from TS with current data
-			$theValue .= $this->cObj->cObjGet($this->conf['views.'][$this->conf['tsRooms'].'.']['oneRoom.']);
-		}
+        if (class_exists(\TYPO3\CMS\Core\Context\Context::class)) {
+            $languageAspect = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Context\Context::class)->getAspect('language') ;
+            // (previously known as TSFE->sys_language_uid)
+            $setup['settings']['currentLng']  = $languageAspect->getId() ;
+        } else {
+            $setup['settings']['currentLng']  = $GLOBALS['TSFE']->sys_language_uid ;
+        }
 
-		$this->cObj->data['popup'] = $this->piVars['popup'];
+        $renderer->assign("setup" , $setup ) ;
+        $renderer->assign("flex" , $this->conf['FLEX'] ) ;
+        $renderer->assign("extConf" , LibUtility::getExtConf()) ;
+        $renderer->assign("rooms" , $rooms ) ;
 
-		return $this->cObj->stdWrap($theValue, $this->conf['views.'][$this->conf['tsRooms'].'.']['stdWrap.']);
+        return $renderer->render() ;
 
 	}
 	

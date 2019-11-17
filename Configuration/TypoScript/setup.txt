@@ -397,34 +397,6 @@ plugin.tx_jvchat_pi1 {
 
 		}
 
-		###  ####################
-		#        ':arrow:' => 'arrow.gif',
-		#            ':?' => 'confused.gif',
-		#            '8-)' => 'cool.gif',
-		#            ':(' => 'cry.gif',
-		#            ':doubt:' => 'doubt.gif',
-		#            ':evil:' => 'evil.gif',
-		#            ':!:' => 'exclaim.gif',
-		#            ':idea:' => 'idea.gif',
-		#            ':lol:' => 'lol.gif',
-		#            ':mad:' => 'mad.gif',
-		#            ':neutral:' => 'neutral.gif',
-		#            ':question:' => 'question.gif',
-		#            ':razz:' => 'razz.gif',
-		#            ':*' => 'kiss.gif',
-		#            ':oops:' => 'redface.gif',
-		#            ':roll:' => 'rolleyes.gif',
-		#            ':-(' => 'sad.gif',
-		#            ':shock:' => 'shock.gif',
-		#            ':)' => 'smile.gif',
-		#            ':-)' => 'smile.gif',
-		#            ';)' => 'smile.gif',
-		#            ';-)' => 'smile.gif',
-		#            ':-o' => 'surprised.gif',
-		#            ':wink:' => 'wink.gif',
-		#            ':C:' => 'coffee.gif',
-		#
-		#### ###################
 		emoticonBtnClass = btn btn-default btn-secondary btn-xs
 		emoticons {
 

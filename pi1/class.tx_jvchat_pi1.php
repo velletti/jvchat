@@ -671,7 +671,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 	}
 	
-	function displayRooms($myRooms) {
+	function displayRooms($myRooms=false) {
         if ( $myRooms ) {
             $rooms = $this->db->getRoomsOfUser($this->user['uid'] , true ) ;
 

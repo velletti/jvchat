@@ -34,7 +34,7 @@ $iconRegistry->registerIcon(
     'mod {
             wizards.newContentElement.wizardItems.plugins {
                 elements {
-                    inforequest {
+                    jvchat {
                         iconIdentifier = extension-jvchat
                         title = LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:pi1_title
                         description = LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:pi1_plus_wiz_description

@@ -556,8 +556,8 @@ class DbRepository {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_entry') ;
 
 		$data = array(
-			'crdate' => $this->getTime(),
-			'tstamp' => $this->getTime(),
+			'crdate' => time(),
+			'tstamp' => time(),
 			'cruser_id' => $cruser_id,
 			'feuser' => $userId ? $userId : '',
 			'tofeuser' => $tofeuserid,

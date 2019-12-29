@@ -491,7 +491,7 @@ class Chat {
                 return $this->returnMessage(array('<span class="tx-jvchat-error">'.$this->lang->getLL('error_not_invited').'</span>', '/quit'));
 
             // remove user who left room and remove system messages
-            $this->db->cleanUpUserInRoom($this->room->uid, 20, true, $this->lang->getLL('user_leaves_chat'));
+        //    $this->db->cleanUpUserInRoom($this->room->uid, 20, true, $this->lang->getLL('user_leaves_chat'));
 
             // check if user is allowed to put a message into this room
             if(!LibUtility::checkAccessToRoom($this->room, $this->user))
@@ -504,15 +504,18 @@ class Chat {
         $resUpdate = $this->db->updateUserInRoom($this->room->uid, $this->user['uid'], LibUtility::isSuperuser($this->room, $this->user), $this->lang->getLL('user_enters_chat'));
 
         // quit here if room is full
-        if($resUpdate === "full")
+        if($resUpdate === "full") {
             return $this->returnMessage('full');
+        }
+
 
 
 
         $entries = $this->db->getEntries($this->room, $lastid);
 
         if(count($entries) == 0) {
-            return '' ;
+
+            return $this->returnMessage('NO Messages');
         }
 
         /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
@@ -642,6 +645,7 @@ class Chat {
             $messages[] = $this->room->welcomemessage;
             $messages[] = $this->lang->getLL('after_welcome_message');
         }
+        // $messages[] = " JVEDEBUG: --- " . $resUpdate . " --- " ;
 
 
         return $this->returnMessage($messages);
@@ -1551,17 +1555,22 @@ class Chat {
 
 		$rooms = $this->db->getRoomsOfUser($user['uid'] , false );
 
+		$roomNums = 0 ;
 		if(count($rooms) > 0) {
             // send private system messages to all rooms
             /** @var \JV\Jvchat\Domain\Model\Room $room */
-            foreach($rooms as $room) {
-                if(! $room->isPrivate()  ) {
-                    $this->db->putMessage($room->uid, $msg, 0, $this->user , true, 0,  $user['uid'] );
+            foreach($rooms as $otherroom) {
+                if(! $otherroom->isPrivate()  ) {
+                    $roomNums ++ ;
+                    $this->db->putMessage($otherroom->uid, $msg, 0, $this->user , false, 0,  $user['uid'] );
                 }
             }
+            return "#" . $room->uid . " -> " . sprintf($this->lang->getLL('command_invite_enter_room_ok'), $this->getUsername($user), count($rooms)) . $enterRoom ;
+
+        } else {
+		    return "Invited user is Offline. " . $enterRoom ;
         }
 
-		return sprintf($this->lang->getLL('command_invite_enter_room_ok'), $this->getUsername($user), count($rooms)) . $enterRoom ;
 
 	}
 

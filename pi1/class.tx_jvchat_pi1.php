@@ -279,9 +279,10 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
         }
 
         // $debug = $this->db->getFeUsersMayAccessRoom( $this->db->getRoom(10 )   ) ;
+        // $debug = $this->db->getLatestPrivateRoomOfUsers(479 , 3071 ) ;
         // $entries = $this->db->getEntrieslastXseconds($this->db->getRoom(12 ), 60*60*24*21  ) ;
         // var_dump($debug) ;
-        //  die;
+        // die;
 		$roomData = $this->getRoomData($room);
 		$this->cObj->data = $roomData ;
 		if(!$this->conf['FLEX']['showDescriptionInChat'])

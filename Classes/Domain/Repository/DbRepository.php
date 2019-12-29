@@ -2,7 +2,10 @@
 namespace JV\Jvchat\Domain\Repository;
 
 
+use Doctrine\DBAL\Driver\Statement;
+use JV\Jvchat\Domain\Model\Entry;
 use JV\Jvchat\Domain\Model\Room;
+use JV\Jvchat\Domain\Model\Session;
 use JV\Jvchat\Utility\LibUtility;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
@@ -11,6 +14,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction ;
+use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser ;
 
 // was : class.tx_jvchat_db.php
@@ -23,14 +27,14 @@ class DbRepository {
     var $extCONF;
 
     /**
-     * @var \TYPO3\CMS\Extbase\Object\ObjectManagerInterface
+     * @var ObjectManagerInterface
      */
     protected $objectManager;
 
 
 
     /**
-     * @var \TYPO3\CMS\Core\Database\ConnectionPool
+     * @var ConnectionPool
      */
     public $connectionPool ;
 
@@ -45,7 +49,7 @@ class DbRepository {
 
 		$pageId = intval($pageId);
 
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->connectionPool->getConnectionForTable('tx_jvchat_room')->createQueryBuilder();
         $queryBuilder->select('*')
             ->from('tx_jvchat_room')
@@ -61,8 +65,8 @@ class DbRepository {
 
 		$rooms = array();
 		foreach ($rows as $row ) {
-            /** @var \JV\Jvchat\Domain\Model\Room $room */
-			$room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
+            /** @var Room $room */
+			$room = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
 			$room->fromArray($row);
 
 			$rooms[] = $room;
@@ -84,7 +88,7 @@ class DbRepository {
         $userId = intval($userId);
 
 
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->connectionPool->getConnectionForTable('tx_jvchat_room_feusers_mm')->createQueryBuilder();
         $expr = $queryBuilder->expr();
         $queryBuilder->select('uid_local')
@@ -102,7 +106,7 @@ class DbRepository {
         $rooms = array();
         $roomsPrivate = array();
 
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        /** @var QueryBuilder $queryBuilder */
         $queryBuilderRoom = $this->connectionPool->getConnectionForTable('tx_jvchat_room')->createQueryBuilder();
 
         foreach ($allRooms as $roomId) {
@@ -126,8 +130,8 @@ class DbRepository {
             $row = $query->execute()->fetch();
             //$this->debugQuery( $query);
             if( $row ) {
-                /** @var \JV\Jvchat\Domain\Model\Room $room */
-                $room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
+                /** @var Room $room */
+                $room = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
                 $room->fromArray($row);
                 if( $room->isPrivate()) {
                     $roomsPrivate[] = $room;
@@ -149,7 +153,7 @@ class DbRepository {
 		$userId = intval($userId);
 
         $rooms = array();
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->connectionPool->getConnectionForTable('tx_jvchat_room')->createQueryBuilder();
 
         $rows = $queryBuilder->select('*')
@@ -159,8 +163,8 @@ class DbRepository {
             ->execute()->fetchAll() ;
             ;
         foreach ( $rows as $row ) {
-            /** @var \JV\Jvchat\Domain\Model\Room $room */
-            $room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
+            /** @var Room $room */
+            $room = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
             $room->fromArray($row);
             $rooms[] = $room;
         }
@@ -172,21 +176,33 @@ class DbRepository {
         $ownerId = intval($ownerId);
         $userId = intval($userId);
 
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->connectionPool->getConnectionForTable('tx_jvchat_room')->createQueryBuilder();
+        $queryBuilder->getRestrictions()->removeAll()
+            ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
         $expr = $queryBuilder->expr();
-        $rows = $queryBuilder->select('*')
+        $query = $queryBuilder->select('*')
             ->from('tx_jvchat_room')
-            ->where( $expr->eq('owner', $queryBuilder->createNamedParameter(($ownerId) , Connection::PARAM_INT )))
-            ->andWhere($expr->eq('private', 1 ))
-            ->andWhere($expr->inSet('members' , $queryBuilder->createNamedParameter(($userId) , Connection::PARAM_INT )))
+            ->where(
+                $expr->orX(
+                    $expr->eq('owner', $queryBuilder->createNamedParameter(($ownerId) , Connection::PARAM_INT )) ,
+                    $expr->eq('owner', $queryBuilder->createNamedParameter(($userId) , Connection::PARAM_INT ))
+                )
+            )->andWhere(
+                $expr->orX(
+                    $expr->inSet('members' , $queryBuilder->createNamedParameter(($ownerId) , Connection::PARAM_INT )),
+                    $expr->inSet('members' , $queryBuilder->createNamedParameter(($userId) , Connection::PARAM_INT ))
+                )
+
+            )->andWhere($expr->eq('private', 1 ))
             ->orderBy('uid' , "DESC")
             ->setMaxResults(1)
-            ->execute() ;
+            ;
         ;
-        if ( $row =  $rows->fetch()  ) {
-            /** @var \JV\Jvchat\Domain\Model\Room $room */
-            $room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
+       // $this->debugQuery($query);
+        if ( $row =  $query->execute()->fetch()  ) {
+            /** @var Room $room */
+            $room = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
             $room->fromArray($row);
             return  $room;
         }
@@ -261,8 +277,8 @@ class DbRepository {
             return false;
         }
 
-        /** @var \JV\Jvchat\Domain\Model\Session $session */
-		$session = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Session');
+        /** @var Session $session */
+		$session = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Session');
 		$session->fromArray($row);
 		return $session;
 	}
@@ -307,8 +323,8 @@ class DbRepository {
 
 		$sessions = array();
 		while($row = $rows->fetch() ) {
-            /** @var \JV\Jvchat\Domain\Model\Session $session */
-			$session = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Session');
+            /** @var Session $session */
+			$session = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Session');
 			$session->fromArray($row);
 			$sessions[] = $session;
 		}
@@ -337,8 +353,8 @@ class DbRepository {
 
 		$entries = array();
 		while( $row = $rows->fetch() ) {
-            /** @var \JV\Jvchat\Domain\Model\Entry $entry */
-            $entry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Entry');
+            /** @var Entry $entry */
+            $entry = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Entry');
 			$entry->fromArray($row);
 			$entries[] = $entry;
 		}
@@ -487,8 +503,8 @@ class DbRepository {
         if ( ! $row ) {
             return false ;
         }
-        /** @var \JV\Jvchat\Domain\Model\Room $room */
-        $room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
+        /** @var Room $room */
+        $room = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
         $room->fromArray($row);
         return $room;
 
@@ -621,8 +637,8 @@ class DbRepository {
         $entries = array() ;
         $rows = $queryBuilder->execute() ;
         while ( $row = $rows->fetch() ) {
-            /** @var \JV\Jvchat\Domain\Model\Entry $entry */
-            $entry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Entry');
+            /** @var Entry $entry */
+            $entry = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Entry');
             $entry->fromArray($row);
             $entries[] = $entry;
             if ( count( $entries) > $max ) {
@@ -643,8 +659,8 @@ class DbRepository {
             $seconds = 60 * 60 * 24 ;
         }
         $time = time() - $seconds ;
-        if( $this->extConf['serverTimeOffset'] ) {
-            $time = strtotime($this->extConf['serverTimeOffset'], $time);
+        if( $this->extCONF['serverTimeOffset'] ) {
+            $time = strtotime($this->extCONF['serverTimeOffset'], $time);
         }
 
         return $this->getEntries($room, 0 , $time , 999)  ;
@@ -766,11 +782,11 @@ class DbRepository {
 
     /**
      * @param integer $time autodelete entries if tstamp is older than given value ( in Seconds )
-     * @return \Doctrine\DBAL\Driver\Statement|int
+     * @return Statement|int
      */
 	function deleteEntries( $time) {
 		$time = $this->getTime()  - intval($time);
-		/** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+		/** @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_entry') ;
 		return $queryBuilder->delete('tx_jvchat_entry')
             ->where( $queryBuilder->expr()->lte('tstamp', $queryBuilder->createNamedParameter($time), Connection::PARAM_INT) )
@@ -793,8 +809,8 @@ class DbRepository {
             if( $asArray ) {
                 return $row ;
             }
-            /** @var \JV\Jvchat\Domain\Model\Entry $entry */
-            $entry = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Entry');
+            /** @var Entry $entry */
+            $entry = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Entry');
 			$entry->fromArray($row);
 
 			return $entry;
@@ -808,7 +824,7 @@ class DbRepository {
 
 		$entry = $this->getEntry($entryId , true ) ;
 		if ( ! $entry ) {
-		    return ;
+		    return false ;
         }
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_entry') ;
         unset( $entry['uid'] ) ;
@@ -817,8 +833,7 @@ class DbRepository {
         $entry['tstamp'] = $this->getTime() ;
         $queryBuilder->insert('tx_jvchat_entry')->values($entry)->execute() ;
 
-        $this->deleteEntry($entryId ) ;
-        return ;
+        return $this->deleteEntry($entryId ) ;
 
 	}
 
@@ -878,7 +893,7 @@ class DbRepository {
             ->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(intval($room->uid) , Connection::PARAM_INT ))
             )
-            ->set('bannedusers', (\TYPO3\CMS\Core\Utility\GeneralUtility::uniqueList($banned)) )
+            ->set('bannedusers', (GeneralUtility::uniqueList($banned)) )
             ->execute();
 
         return true;
@@ -886,6 +901,9 @@ class DbRepository {
 
     /**
      * Revive user by setting a proper timestamo
+     * @param integer $roomId
+     * @param integer $userId
+     * @return bool
      */
     function redeemUser($roomId, $userId) {
 
@@ -899,7 +917,7 @@ class DbRepository {
         $room = $this->getRoom($roomId);
 
         // is banned? remove from banned list
-        $bannedusers = \TYPO3\CMS\Core\Utility\GeneralUtility::rmFromList($userId, $room->bannedusers);
+        $bannedusers = GeneralUtility::rmFromList($userId, $room->bannedusers);
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_room') ;
 
@@ -948,7 +966,7 @@ class DbRepository {
      * @param integer $userId Uid Of the user
      * @param string $field Field nam : "experts" "moderators" or Members"
      * @param bool $add
-     * @return \Doctrine\DBAL\Driver\Statement|int
+     * @return Statement|int
      */
 	function changeRoomMembership( $room , $userId , $field , $add=true   ) {
         $userId = intval($userId);
@@ -993,7 +1011,7 @@ class DbRepository {
 	
 	/**
 	  * @param int Page ID (optional), if not set it returns all rooms
-	  * @return Array Room
+	  * @return array Room
 	  */
 
 	function getRooms($pidList = NULL) {
@@ -1018,7 +1036,7 @@ class DbRepository {
         }
         $private = $getPrivate ? 1 : 0 ;
 
-        /** @var \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->connectionPool->getConnectionForTable('tx_jvchat_room')->createQueryBuilder();
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
@@ -1054,7 +1072,7 @@ class DbRepository {
 		$rooms = array();
 		while($row = $rows->fetch() ) {
             /** @var \JV\Jvchat\Domain\Model\Room $room */
-            $room = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
+            $room = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
 			if (!$row) {
                 return $rooms;
             }
@@ -1091,10 +1109,16 @@ class DbRepository {
             }
         }
 	}
-	
-	/**
-	  * Removes all users from all rooms if they idle for 30 seconds
-	  */
+
+    /**
+     * Removes all users from all rooms if they idle for 30 seconds
+     * @param int $roomId
+     * @param int $idle
+     * @param bool $systemMessageOnLeaving
+     * @param string $leaveMessage
+     * @param int $removeSystemMessagsOlderThan
+     * @return null
+     */
 	function cleanUpUserInRoom($roomId, $idle = 15, $systemMessageOnLeaving = true, $leaveMessage = '%s leaves chat.', $removeSystemMessagsOlderThan = 60) {
 
 		if(!$roomId) {
@@ -1105,7 +1129,7 @@ class DbRepository {
 		$idle = intval($idle);
 		$removeSystemMessagsOlderThan = intval($removeSystemMessagsOlderThan);
 
-        /** @var  \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        /** @var  QueryBuilder $queryBuilder */
         $queryBuilder = $this->select_mm_query(
             'fe_users.*,tx_jvchat_room_feusers_mm.invisible as invisible, tx_jvchat_room.moderators as moderator , tx_jvchat_room.experts as experts' ,
             'tx_jvchat_room',
@@ -1119,7 +1143,7 @@ class DbRepository {
         $expr = $queryBuilder->expr();
         $queryBuilder->andWhere($expr->lte('tx_jvchat_room_feusers_mm.tstamp' , ($this->getTime()-$idle) )) ;
 
-        /** @var \Doctrine\DBAL\Driver\Statement $rows */
+        /** @var Statement $rows */
         $rows = $queryBuilder->execute() ;
         // $this->debugQuery( $queryBuilder ) ;
         $users = array();
@@ -1223,12 +1247,18 @@ class DbRepository {
 	}
 	
 	/** Removes all entries that are not in a session and all entries that are marked hidden or deleted
-	  * @param integer $room
+	  * @param Room|integer $room
 	  * @param integer $time Delete only entries that are older than time
 	  * @return integer amount of deleted rows
 	  */
 
 	function cleanUpRoom($room, $time = 0) {
+
+	    if( is_object($room)) {
+            $roomuid = $room->uid ;
+        } else {
+            $roomuid = $room ;
+        }
 
 		// get sessions of all rooms
 		$sessions = $this->getSessions();
@@ -1256,7 +1286,7 @@ class DbRepository {
             ->where( $expr->notIn( 'uid', $queryBuilder->createNamedParameter($list , Connection::PARAM_STR )  ) )
             ->orWhere( $expr->eq( 'hidden', $queryBuilder->createNamedParameter(1 , Connection::PARAM_INT )  ) )
             ->orWhere( $expr->eq( 'deleted', $queryBuilder->createNamedParameter(1 , Connection::PARAM_INT )  ) )
-            ->andWhere( $expr->eq( 'room', $queryBuilder->createNamedParameter(intval($room->uid) , Connection::PARAM_INT ) ) )
+            ->andWhere( $expr->eq( 'room', $queryBuilder->createNamedParameter(intval($roomuid) , Connection::PARAM_INT ) ) )
             ->andWhere( $expr->lt( 'tstamp', $queryBuilder->createNamedParameter(intval(($this->getTime() - $time)) , Connection::PARAM_INT )  ))
 
         ;
@@ -1278,8 +1308,8 @@ class DbRepository {
 
         $sessions = array();
         while($row = $rows->fetch() ) {
-            /** @var \JV\Jvchat\Domain\Model\Session $session */
-            $session = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Session');
+            /** @var Session $session */
+            $session = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Session');
             $session->fromArray($row);
             $sessions[] = $session;
         }
@@ -1380,7 +1410,7 @@ class DbRepository {
     function getUserList($roomId, $userType = false , $inroom = true , $getHidden = false , $notuserTypeArray = false ) {
         $roomId = intval($roomId);
 
-        /** @var  \TYPO3\CMS\Core\Database\Query\QueryBuilder $queryBuilder */
+        /** @var  QueryBuilder $queryBuilder */
         $queryBuilder = $this->select_mm_query(
             'fe_users.*,tx_jvchat_room_feusers_mm.invisible as invisible,tx_jvchat_room_feusers_mm.userlistsnippet as userlistsnippet, tx_jvchat_room.moderators as moderator , tx_jvchat_room.experts as experts' ,
             'tx_jvchat_room',
@@ -1401,7 +1431,7 @@ class DbRepository {
         if( $inroom ) {
             $queryBuilder->andWhere($expr->eq('tx_jvchat_room_feusers_mm.in_room' , 1 )) ;
         }
-        /** @var \Doctrine\DBAL\Driver\Statement $rows */
+        /** @var Statement $rows */
         $rows = $queryBuilder->execute() ;
         // $this->debugQuery( $queryBuilder ) ;
         $users = array();
@@ -1437,7 +1467,7 @@ class DbRepository {
      * @param string $local     TableName ol Local Table
      * @param integer $itemUid  UID of the Item
      * @param integer $maxItems  max Items if set
-     * @return \TYPO3\CMS\Core\Database\Query\QueryBuilder
+     * @return QueryBuilder
      */
 
 	function select_mm_query($fields , $foreign , $mm , $local , $itemUid , $maxItems=0 ){

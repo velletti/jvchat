@@ -119,7 +119,7 @@
 				<target>--== Comandos del chat ==--</target>
 			</trans-unit>
 			<trans-unit id="command_header">
-				<target>Bienviendo a nuestro chat. Sugerencia: Pulse CTRL+ retroceso, para enviar un mensaje con múltiples líneas. Puede utilizar las siguientes órdenes en el chat:<br/></target>
+				<target>Bienviendo a nuestro chat. Pulse retroceso para enviar un mensaje. Sugerencia: Pulse CTRL+ retroceso, para enviar un mensaje con múltiples líneas. Puede utilizar las siguientes órdenes en el chat:<br/></target>
 			</trans-unit>
 			<trans-unit id="command_help">
 				<target>Muestra esta pantalla.</target>

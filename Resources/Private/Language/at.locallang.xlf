@@ -124,7 +124,7 @@
 				<source>--== Chat Befehle ==--</source>
 			</trans-unit>
 			<trans-unit id="command_header">
-				<source>Willkommen zu unserem Chat. Tipp: Drücken SHIFT+ENTER, um einen Zeilenumbruch zu erzeugen. Folgende Befehle stehen während des Chats zu Verfügung:<br/></source>
+				<source>Willkommen zu unserem Chat. Zum Abschicken einer Eingabe bitte ENTER drücken. Tipp: Drücken SHIFT+ENTER, um einen Zeilenumbruch zu erzeugen. Folgende Befehle stehen während des Chats zu Verfügung:<br/></source>
 			</trans-unit>
 			<trans-unit id="command_help">
 				<source>Zeigt die möglichen Befehle an.</source>

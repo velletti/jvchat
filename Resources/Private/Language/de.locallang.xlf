@@ -134,7 +134,7 @@
 				<target>--== Chat Befehle ==--</target>
 			</trans-unit>
 			<trans-unit id="command_header">
-				<target>Willkommen zu unserem Chat. Tipp: Drücken SHIFT+ENTER, um einen Zeilenumbruch zu erzeugen. Folgende Befehle stehen während des Chats zu Verfügung:<br/></target>
+				<target>Willkommen zu unserem Chat. Zum Abschicken einer Eingabe bitte ENTER drücken. Tipp: Drücken SHIFT+ENTER, um einen Zeilenumbruch zu erzeugen. Folgende Befehle stehen während des Chats zu Verfügung:<br/></target>
 			</trans-unit>
 			<trans-unit id="command_help">
 				<target>Zeigt die möglichen Befehle an.</target>
@@ -251,7 +251,7 @@
 				<target>Eine Nachricht</target>
 			</trans-unit>
 			<trans-unit id="command_talkto">
-				<target>Erstellt einen neuen privaten Raum. Benutzer können anschließend mit /invite eingeladen werden.</target>
+				<target>Erstellt einen neuen privaten Raum. Benutzer können anschließend mit /invite eingeladen werden. Nutzen Sie das Icon hinter dem Usernamen!</target>
 			</trans-unit>
 			<trans-unit id="command_talkto_param_name">
 				<target>UID des Benutzers beginnend mit #</target>

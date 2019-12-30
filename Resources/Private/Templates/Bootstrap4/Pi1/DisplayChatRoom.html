@@ -14,7 +14,7 @@
                         <button class="btn btn-outline-secondary rounded-circle mr-3" type="button" data-toggle="collapse" data-target="#tx-jvchat-userlist">
                             <i class="badge badge-secondary" id="tx-jvchat-usercount">{roomData.userCount}</i>
                         </button>
-                        <f:if condition="room.isPrivate">
+                        <f:if condition="{room.private} || {room.isPrivate} || ">
                             <f:then>
                                 <f:translate key="privateRoomTitle">Privater Chat</f:translate>
                             </f:then>
@@ -27,7 +27,7 @@
                         </button>
                     </h3>
                 </div>
-                <div class="collapse border-bottom" id="chatroomInfo">
+                <div class="collapse alert alert-info " id="chatroomInfo">
                     <f:if condition="{room.name}">
                         <h2>{room.name}</h2>
                     </f:if>
@@ -50,7 +50,7 @@
 
                 <f:if condition="{marker.isFull}">
                     <f:else>
-                        <div id="tx-jvchat-userlist" class="collapse"></div>
+                        <div id="tx-jvchat-userlist" class="collapse alert alert-info"></div>
                     </f:else>
                 </f:if>
             </div>

@@ -129,7 +129,7 @@
 				<target>--== Chat Commands ==--</target>
 			</trans-unit>
 			<trans-unit id="command_header">
-				<target>Welcome to our chat. One tip for you: Press CTRL+RETURN to send a multiline message. The following commands you can use during the chat:<br/></target>
+				<target>Welcome to our chat. Press RETURN to send your message. You can Press CTRL+RETURN to send a multiline message. The following commands you can use during the chat:<br/></target>
 			</trans-unit>
 			<trans-unit id="command_help">
 				<target>Shows this screen.</target>
@@ -252,7 +252,7 @@
 				<target>A name for the new room</target>
 			</trans-unit>
 			<trans-unit id="command_talkto">
-				<target>Creates a new private room. More users can then be added by /invite, the user #uid from params is automatically added</target>
+				<target>Creates a new private room. More users can then be added by /invite, the user #uid from params is automatically added if you use the ICON behind his username.</target>
 			</trans-unit>
 			<trans-unit id="command_talkto_param_name">
 				<target>User UID starting with #</target>

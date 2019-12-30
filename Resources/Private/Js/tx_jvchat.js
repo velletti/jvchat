@@ -599,6 +599,9 @@ function tx_jvchat_pi1_js_chat() {
 				continue;
 			this.createNewUserNode( $.trim(x.childNodes[i].firstChild.data));
 		}
+		if( $('#tx-jvchat-usercount'))  {
+			$('#tx-jvchat-usercount').html(i) ;
+		}
 
 		this.notifyUserListChange();
 
@@ -974,25 +977,47 @@ function setValueToInput(value) {
 
 
 function tx_jvchat_resize() {
-	var totalH= $(window).height() ;
+	var totalH= parseInt( $(window).height()) ;
 	var otherH = 60 ;
-	if ( $(window).width() < 767 ) {
-		otherH = $('#tx-jvchat-userlist').height() + 60 ;
-	} else {
-		$('#tx-jvchat-userlist').addClass("in").attr("aria-expanded" , "true").css('height' , 'auto') ;
-	}
-	if( totalH < 400 ) {
+	// if ( $(window).width() < 767 ) {
+	// otherH = $('#tx-jvchat-userlist').height() + 60 ;
+	// } else {
+	// 	$('#tx-jvchat-userlist').addClass("in").attr("aria-expanded" , "true").css('height' , 'auto') ;
+	// }
+	var inputH = parseInt($('#tx-jvchat-input-container').height()) ;
+	if( totalH < 700 ) {
 		$('#txjvchatnewMessage').css("height" , "46px") ;
+		if ( isNaN(inputH ) ) { inputH = 46 ;}
 	} else {
-		$('#txjvchatnewMessage').css("height" , "92px") ;
+		$('#txjvchatnewMessage').css("height" , "96px") ;
+		if ( isNaN(inputH ) ) { inputH = 96 ;}
 	}
-	var infoH = $('.tx-jvchat-chat-intro').height() ;
-	var toolsH = $('#tx-jvchat-tools-container').height() ;
-	var usersH = $('#tx-jvchat-showUserlist').height() ;
-	var inputH = $('#tx-jvchat-input-container').height() ;
-	var messH = totalH - infoH - toolsH - inputH - otherH - usersH ;
+	var mainnavH = parseInt( $('#mainnavIcons').height()) ;
+	if ( isNaN(mainnavH ) ) { mainnavH = 0 ;} else { mainnavH = mainnavH + 10 ;}
+
+	var subnavH = parseInt( $('#jvEventsAjaxMenu').height()) ;
+	if ( isNaN(subnavH ) ) { subnavH = 0 ;}
+
+	var footerH = parseInt( $('.fixed-bottom').height()) ;
+	if ( isNaN(footerH ) ) { footerH = 0 ;} else { footerH = footerH + 8 ;}
+
+	var infoH = parseInt( $('.tx-jvchat-chat-intro').height()) ;
+	if ( isNaN(infoH ) ) { infoH = 0 ;}
+
+
+	var toolsH = parseInt($('#tx-jvchat-tools-container').height()) ;
+	if ( isNaN(toolsH ) ) { toolsH = 0 ;}
+
+	var usersH = parseInt($('#tx-jvchat-userlist').height()) ;
+	if ( isNaN(usersH ) ) { usersH = 0 ;}
+
+	var messH = parseInt( totalH - mainnavH - subnavH - footerH - otherH - infoH - toolsH - inputH  - usersH - 20 );
+
+	if ( messH < 300  || isNaN(messH ) ) {
+		messH = 300 ;
+	}
 	// debug needed ??
-	// $('#txjvchatnewMessage').val( "TotalH : " + totalH + " | infoH : " + infoH + " | toolsH: " + toolsH + "  inputH: " + inputH + " | Result: " + messH ) ;
+	//	$('#txjvchatnewMessage').val( "TotalH : " + totalH + " | mainnavH: " + mainnavH + " | subnavH: " + subnavH + " | footerH: " + footerH + " | otherH : " + otherH + "  | infoH : " + infoH + " | usersH: " + usersH + " | toolsH: " + toolsH + " | inputH: " + inputH + " | Result: " + messH ) ;
 	$('#tx-jvchat-messages').css("height" , messH + "px") ;
 }
 

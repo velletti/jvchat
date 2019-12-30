@@ -3,43 +3,57 @@
 <f:section name="main">
     <f:if condition="{DisplayIcons}">
         <f:then>
+            <f:comment><!-- only for debug purposes ..  --></f:comment>
             <f:render partial="DisplayIcons" arguments="{_all}"></f:render>
         </f:then>
         <f:else>
             <div class="p-2 tx-jvchat-chat-intro" id="tx-jvchat-config" {dataString -> f:format.raw()} >
-                <f:if condition="{room.name}">
-                    <h2>{room.name}</h2>
-                </f:if>
-                <f:if condition="{room.image}">
-                    <p class="hidden-xs"><img src="uploads/tx_jvchat/{room.image}" alt="logo" ></p>
-                </f:if>
-                <f:if condition="{room.description}">
-                    <f:then>
-                        <p class="hidden-xs">{room.description}</p>
-                    </f:then>
-                    <f:else>
-                        <p class="hidden-xs">{room.description}</p>
-                    </f:else>
+                <div >
+                    <h3 class="bg-gradient-dark text-white px-3 py-1">
 
-                </f:if>
-                <p class="hidden-xs">{user.uid}: {user.username} ({roomData.userCount} <f:translate key="user_in_chat"></f:translate> )</p>
+                        <button class="btn btn-outline-secondary rounded-circle mr-3" type="button" data-toggle="collapse" data-target="#tx-jvchat-userlist">
+                            <i class="badge badge-secondary" id="tx-jvchat-usercount">{roomData.userCount}</i>
+                        </button>
+                        <f:if condition="room.isPrivate">
+                            <f:then>
+                                <f:translate key="privateRoomTitle">Privater Chat</f:translate>
+                            </f:then>
+                            <f:else>
+                                 <f:translate key="publicRoomTitle">Öffentlicher Chat</f:translate>
+                            </f:else>
+                        </f:if>
+                        <button class="btn btn-outline-secondary rounded-circle position-right mr-4" type="button" data-toggle="collapse" data-target="#chatroomInfo" aria-expanded="false" aria-controls="chatroomInfo">
+                            <i class="fas fa-info-circle"> </i>
+                        </button>
+                    </h3>
+                </div>
+                <div class="collapse border-bottom" id="chatroomInfo">
+                    <f:if condition="{room.name}">
+                        <h2>{room.name}</h2>
+                    </f:if>
+                    <f:if condition="{room.image}">
+                        <p class="hidden-xs"><img src="uploads/tx_jvchat/{room.image}" alt="logo" ></p>
+                    </f:if>
+                    <f:if condition="{room.description}">
+                        <f:then>
+                            <p class="hidden-xs">{room.description}</p>
+                        </f:then>
+                        <f:else>
+                            <p class="hidden-xs">{flex.description}</p>
+                        </f:else>
 
+                    </f:if>
+                    You are: #{user.uid}: {user.username} ({user.first_name} {user.last_name})
+                    <br />
+
+                </div>
 
                 <f:if condition="{marker.isFull}">
                     <f:else>
-                        <div id="tx-jvchat-showUserlist" class="d-none-sm d-block d-none-lg d-none-xl" style="margin-right: -20px;">
-
-                            <button class="btn btn-outline-secondary mr-3" type="button" data-toggle="collapse" data-target="#tx-jvchat-userlist">
-                                <i class="fa fa-lg fa-bars" ></i>
-                            </button>
-                            <span class="left" style="margin: 4px 20px 0 0 ;">Show Userlist</span>
-                        </div>
+                        <div id="tx-jvchat-userlist" class="collapse"></div>
                     </f:else>
                 </f:if>
             </div>
-
-
-
 
             <f:if condition="{marker.isFull}">
                 <f:then>
@@ -47,9 +61,6 @@
                 </f:then>
 
                 <f:else>
-
-
-
 
                     <div id="tx-jvchat-loadinginfo">
                         <div class="text-center">
@@ -61,9 +72,7 @@
 
                     <div id="tx-jvchat-container" class="container">
                         <div id="tx-jvchat-content" class="row">
-                            <div id="tx-jvchat-userlist" class="collapse col-sm-3"></div>
-
-                            <div id="tx-jvchat-messages" class="col-12 col-sm-9" style="height: 100%; display:none;"></div>
+                            <div id="tx-jvchat-messages" class="col-12" style="height: 100%; display:none;"></div>
                         </div>
 
                         <div id="tx-jvchat-tools-container" class="row" style="display:none;">
@@ -169,11 +178,11 @@
             $('#tx-jvchat-loadinginfo').hide();
             $('#txjvchatnewMessage').focus();
 
-            if ( $(window).width() < 767 ) {
-                $('#tx-jvchat-userlist').removeClass("in").attr("aria-expanded" , "false") ;
-            } else {
-                $('#tx-jvchat-userlist').show();
-            }
+          //  if ( $(window).width() < 767 ) {
+            //      $('#tx-jvchat-userlist').removeClass("in").attr("aria-expanded" , "false") ;
+            //  } else {
+            //      $('#tx-jvchat-userlist').show();
+            //   }
             tx_jvchat_resize() ;
 
             $(window).bind("resize", tx_jvchat_resize);
@@ -184,10 +193,10 @@
 
 <f:section name="roomIsFull">
     <script language="JavaScript" type="text/javascript">
-        var chat_instance = new tx_jvchat_pi1_js_chat();
-        var roomId = {marker.CHATROOM_ID} ;
-        var checkFullTime = {marker.RELOAD_TIME} ;
-        var scriptUrl = "{marker.SCRIPTURL}" ;
+        let chat_instance = new tx_jvchat_pi1_js_chat();
+        let roomId = {marker.CHATROOM_ID} ;
+        let checkFullTime = {marker.RELOAD_TIME} ;
+        let scriptUrl = "{marker.SCRIPTURL}" ;
 
         chat_instance.configuration = {
             roomId : roomId,

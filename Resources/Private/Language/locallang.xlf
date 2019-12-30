@@ -264,6 +264,8 @@
 			<trans-unit id="command_newroom_room_default_title">
 				<target>Private room of %s</target>
 			</trans-unit>
+
+
 			<trans-unit id="command_newroom_room_default_description">
 				<target>This private chat room you can enter if you received an invitation of %s.</target>
 			</trans-unit>
@@ -372,6 +374,16 @@
 			<trans-unit id="UploadImage.help">
 				<target>Upload Image to you Private Album and show in Chat</target>
 			</trans-unit>
+
+			<trans-unit id="privateRoomTitle">
+                <target>Private room</target>
+            </trans-unit>
+            <trans-unit id="publicRoomTitle">
+                <target>Public room</target>
+            </trans-unit>
+             <trans-unit id="inviteByButton">
+                <target>You can easyly use the icon behind the username to Invite this user to a private chat room</target>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

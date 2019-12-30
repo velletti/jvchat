@@ -384,6 +384,16 @@
 			<trans-unit id="UploadImage.help">
 				<target>Bild aus Album im Chat anzeigen</target>
 			</trans-unit>
+
+			<trans-unit id="privateRoomTitle">
+                <target>Privater Chat</target>
+            </trans-unit>
+            <trans-unit id="publicRoomTitle">
+                <target>Öffentlicher Chat</target>
+            </trans-unit>
+             <trans-unit id="inviteByButton">
+                <target>Nutzen Sie das Icon hinter dem Usernamen, um diesen User in einen privaten Chat einzuladen.</target>
+            </trans-unit>
 		</body>
 	</file>
 </xliff>

@@ -1457,10 +1457,10 @@ class Chat {
 		$newRoom->owner = $this->user['uid'];
 		$newRoom->moderators = $this->user['uid'];
 		$newRoom->private = true;
-		$newRoom->fe_group = 1;
+		// $newRoom->fe_group = 1;
 		$newRoom->closed = 0;
 		$newRoom->experts = FALSE;
-		$newRoom->groupaccess = 1;
+		// $newRoom->groupaccess = 1;
 		$newRoom->page = $this->room->page;
 		$newRoom->mode = $this->room->mode;
 		$newRoom->bannedusers = $this->room->bannedusers;

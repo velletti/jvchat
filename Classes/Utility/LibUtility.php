@@ -19,6 +19,11 @@ class LibUtility {
 		return '<id>';
 	}
 
+    /**
+     * @param \JV\Jvchat\Domain\Model\Room $room
+     * @param array $user
+     * @return bool
+     */
     static function checkAccessToRoom($room, $user) {
 
 		if(!$user)

@@ -589,6 +589,7 @@ function tx_jvchat_pi1_js_chat() {
 		// remove previous userlist
 		$('#tx-jvchat-userlist').html('') ;
 
+		var userCount = 0 ;
 		// go through all Users and add them to the userlist window by calling createNewUserNode()
 		for (i = 0; i<x.childNodes.length; i++) {
 			if(!x.childNodes[i])
@@ -598,9 +599,10 @@ function tx_jvchat_pi1_js_chat() {
 			if(!x.childNodes[i].firstChild.data)
 				continue;
 			this.createNewUserNode( $.trim(x.childNodes[i].firstChild.data));
+			userCount++ ;
 		}
 		if( $('#tx-jvchat-usercount'))  {
-			$('#tx-jvchat-usercount').html(i) ;
+			$('#tx-jvchat-usercount').html(userCount) ;
 		}
 
 		this.notifyUserListChange();

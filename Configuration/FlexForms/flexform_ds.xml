@@ -23,10 +23,14 @@
 										<numIndex index="1">rooms</numIndex>
 									</numIndex>
 									<numIndex index="1" type="array">
+										<numIndex index="0">My Rooms (public and Private Chats)</numIndex>
+										<numIndex index="1">myrooms</numIndex>
+									</numIndex>
+									<numIndex index="2" type="array">
 										<numIndex index="0">LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.conf_view_2</numIndex>
 										<numIndex index="1">chat</numIndex>
 									</numIndex>
-									<numIndex index="2" type="array">
+									<numIndex index="3" type="array">
 										<numIndex index="0">LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.conf_view_3</numIndex>
 										<numIndex index="1">overallusercount</numIndex>
 									</numIndex>

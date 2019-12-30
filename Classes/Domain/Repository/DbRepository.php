@@ -538,6 +538,7 @@ class DbRepository {
         if( !$getHidden) {
             $userQuery->andWhere($queryBuilder->expr()->eq('invisible', 0 ) ) ;
         }
+        $userQuery->andWhere($queryBuilder->expr()->eq('in_room', 1 ) ) ;
         return $userQuery->execute()->fetchColumn(0) ;
 	}
 	

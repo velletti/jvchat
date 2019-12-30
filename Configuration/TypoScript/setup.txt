@@ -478,7 +478,7 @@ plugin.tx_jvchat_pi1 {
 			}
 
 			114 {
-				code = 8)
+				code = 8-)
 				group = emoji
 				html = fa fa-lg fa-mask
 			}

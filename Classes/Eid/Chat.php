@@ -1460,7 +1460,7 @@ class Chat {
 		$newRoom->fe_group = 1;
 		$newRoom->closed = 0;
 		$newRoom->experts = FALSE;
-		// $newRoom->groupaccess = 1;
+		$newRoom->groupaccess = "-2";
 		$newRoom->page = $this->room->page;
 		$newRoom->mode = $this->room->mode;
 		$newRoom->bannedusers = $this->room->bannedusers;

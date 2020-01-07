@@ -87,6 +87,56 @@ class DbRepository {
 
         $userId = intval($userId);
 
+        $rooms = array();
+        $roomsPrivate = array();
+
+        /** @var QueryBuilder $queryBuilder */
+        $queryBuilderRoom = $this->connectionPool->getConnectionForTable('tx_jvchat_room')->createQueryBuilder();
+        $expr = $queryBuilderRoom->expr();
+
+        $query = $queryBuilderRoom->select('*')
+            ->from('tx_jvchat_room')
+            ->where( $expr->eq('owner', $queryBuilderRoom->createNamedParameter( $userId, Connection::PARAM_INT)) )
+            ->orWhere(  $expr->inSet( "members" ,   $queryBuilderRoom->createNamedParameter( $userId, Connection::PARAM_INT) ) )
+            ->orderBy("private", "ASC")->addOrderBy('sorting' , "ASC") ;
+
+
+        if ( $alsoPrivate ) {
+            $query->orWhere(  $expr->eq( "private" ,   0 ) ) ;
+            /** @var  QueryRestrictionInterface $deleteRestriction */
+            $deleteRestriction = GeneralUtility::makeInstance(DeletedRestriction::class) ;
+            /** @var  QueryRestrictionInterface $groupRestriction */
+            $groupRestriction  = GeneralUtility::makeInstance(FrontendGroupRestriction::class) ;
+            $query->getRestrictions()->removeAll()
+                ->add($deleteRestriction)
+                ->add($groupRestriction);
+        }
+        /** @var \Doctrine\DBAL\Driver\Statement $result */
+        $result = $query->execute() ;
+        while ( $row = $result->fetch() ) {
+
+
+            // $this->debugQuery( $query);
+            /** @var Room $room */
+            $room = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
+            $room->fromArray($row);
+            $rooms[] = $room;
+            unset($room) ;
+        }
+
+        return $rooms;
+	}
+
+    /** get an array of Room where user is member
+     * @param int $userId
+     * @param bool $alsoPrivate
+     * @return array
+     */
+    function getRoomsOfUserNotWorking($userId = 0 , $alsoPrivate = true )
+    {
+
+        $userId = intval($userId);
+
 
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->connectionPool->getConnectionForTable('tx_jvchat_room_feusers_mm')->createQueryBuilder();
@@ -96,7 +146,7 @@ class DbRepository {
             ->where($expr->eq('uid_foreign', $queryBuilder->createNamedParameter($userId, Connection::PARAM_INT))) ;
 
 
-       //  $this->debugQuery( $queryBuilder);
+        //  $this->debugQuery( $queryBuilder);
         $allRooms = $queryBuilder->execute()->fetchAll();
 
         if (count($allRooms) < 1) {
@@ -113,7 +163,7 @@ class DbRepository {
             $query = $queryBuilderRoom->select('*')
                 ->from('tx_jvchat_room')
                 ->where( $expr->eq('uid', $queryBuilderRoom->createNamedParameter($roomId['uid_local'], Connection::PARAM_INT)) )
-                 ;
+            ;
 
 
             if ( $alsoPrivate ) {
@@ -146,7 +196,7 @@ class DbRepository {
         }
 
         return $rooms;
-	}
+    }
 	
 	function getRoomsOfUserAsOwner($userId) {
 

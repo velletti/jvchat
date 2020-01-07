@@ -15,7 +15,7 @@ $return = array (
             "disabled" => "hidden",
             "starttime" => "starttime",
             "endtime" => "endtime",
-            "fe_group" => "fe_group",
+            "fe_group" => "groupaccess",
         ),
         "iconfile" => "EXT:jvchat/Resources/Public/Icons/icon_tx_jvchat_room.svg",
     ),

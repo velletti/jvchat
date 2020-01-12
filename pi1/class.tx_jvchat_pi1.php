@@ -351,6 +351,22 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
         $dataString  = ' data-roomid="' . $roomId  . '"' ;
         $dataString .= ' data-userid="' . $this->user['uid']  . '"' ;
+        $userName = $this->user['username']  ;
+        if( $this->extConf['usernameField1']) {
+            $userName = $this->user[$this->extConf['usernameField1']]  ;
+        }
+        if( $room->showFullNames() ) {
+            if( $this->extConf['usernameField1']) {
+                $userName = $this->user[$this->extConf['usernameField1']]  ;
+            }
+            if( $this->extConf['usernameField2']) {
+                $userName .= "_" .$this->user[$this->extConf['usernameField2']]  ;
+
+            }
+        }
+
+        $dataString .= ' data-username="' . $userName . '"' ;
+
 
 
         $dataString .= ' data-lang="' . $GLOBALS['TSFE']->config['config']['language']  . '"' ;

@@ -50,6 +50,7 @@ function tx_jvchat_pi1_js_chat() {
 		this.roomId					= initConfig.data('roomid');
 		this.pid					= initConfig.data('pid');
 		this.userId					= initConfig.data('userid');
+		this.usernameSelf			= initConfig.data('username');
 		this.scriptUrl 				= initConfig.data('scripturl');
 		this.leaveUrl 				= initConfig.data('leaveurl');
 		this.newWindowUrl 			= initConfig.data('newwindowurl');
@@ -649,7 +650,7 @@ function tx_jvchat_pi1_js_chat() {
 
 			if( this.allowPrivateRooms ) {
 				$('#userid-' + id + " .tx-jvchat-pr-link").bind("click", function(evt) {
-					var name = self.talkToNewRoomName.replace(/\%s/, username);
+					var name = self.talkToNewRoomName.replace(/\%s/, username) + " - " + self.usernameSelf;
 					var command = "/talkTo #"+id+" "+name ;
 					self.sendMessage(command);
 				});

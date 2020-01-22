@@ -197,16 +197,16 @@ class LibUtility {
 
         // removing HTML Tags will  brake Links from System !! this should be done befor storing to database ..
         //   $text = strip_tags( $text) ;
-
+        // we start with doubel size 2x as messages as using smaller Fontsize!
         $faSize = "fa-lg" ;
         if( strlen( $text ) > 100 ) {
-            $faSize = "" ;
-        }
-        if( strlen( $text ) < 30 ) {
             $faSize = "fa-2x" ;
         }
-        if( strlen( $text ) < 20 ) {
+        if( strlen( $text ) < 30 ) {
             $faSize = "fa-3x" ;
+        }
+        if( strlen( $text ) < 20 ) {
+            $faSize = "fa-4x" ;
         }
 
 

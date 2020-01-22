@@ -10,6 +10,14 @@
             <div class="p-2 tx-jvchat-chat-intro" id="tx-jvchat-config" {dataString -> f:format.raw()} >
                 <div >
                     <h3 class="bg-gradient-dark text-white px-3 py-1">
+                        <f:if condition="{confFLEX.pluginRoomlistPid}">
+                            <f:link.typolink parameter="t3://page?uid={confFLEX.pluginRoomlistPid}" title="{f:translate(key: 'LLL:EXT:jv_chat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.conf_view_1' , default: 'back to room list')}">
+                                <button class="btn btn-outline-secondary rounded-circle mr-3" type="button">
+                                    <i class="fa fa-arrow-circle-left" > </i>
+                                </button>
+                            </f:link.typolink>
+
+                        </f:if>
 
                         <button class="btn btn-outline-secondary rounded-circle mr-3" type="button" data-toggle="collapse" data-target="#tx-jvchat-userlist">
                             <i class="badge badge-secondary" id="tx-jvchat-usercount">{roomData.userCount}</i>
@@ -72,7 +80,7 @@
 
                     <div id="tx-jvchat-container" class="container">
                         <div id="tx-jvchat-content" class="row">
-                            <div id="tx-jvchat-messages" class="col-12" style="height: 100%; display:none;"></div>
+                            <div id="tx-jvchat-messages" class="col-12 small" style="height: 100%; display:none;"></div>
                         </div>
 
                         <div id="tx-jvchat-tools-container" class="row" style="display:none;">
@@ -97,11 +105,10 @@
                                     </span>
                                 </f:if>
 
-                                <f:if condition="{roomData.enableEmoticons}">
-                                    <span class="chatIconColor {settings.emoticonBtnClass}">
-                                        <i class="fas fa-smile" id="tx-jvchat-button-smilies" onClick="javascript:chat_instance.toggleEmoticons();" title="{f:translate(key: 'chatbutton.smilies_on')}"></i>
-                                    </span>
-                                </f:if>
+
+                                <span class="chatIconColor {settings.emoticonBtnClass}">
+                                    <i class="fas fa-smile" id="tx-jvchat-button-smilies" onClick="javascript:chat_instance.toggleEmoticons();" title="{f:translate(key: 'chatbutton.smilies_on')}"></i>
+                                </span>
                                 <f:if condition="{room.private}">
                                     <span class="{settings.emoticonBtnClass} chatIconColor">
                                         <i class="fas fa-envelope" id="tx-jvchat-button-email" onClick="javascript:chat_instance.sendMessage('/email');" title="{f:translate(key: 'chatbutton.email')}"></i>

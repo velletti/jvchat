@@ -71,12 +71,12 @@
                         <f:then>
                             <span class="tx-jvchat-entry-text"><f:format.raw>{entryText}</f:format.raw></span> | &nbsp;
                             <span id="msg-{entry.uid}" class="tx-jvchat-time"><f:format.date format="{timeFormat}">{time}</f:format.date></span><span class="tx-jvchat-user tx-jvchat-userid-{entry.uid}">
-                                <f:render section="userName" arguments="{showFullNames: showFullNames, user: entryUser , entry: entry , extConf: extConf, ownMsg: ownMsg}"/>
+                                <f:render section="userName" arguments="{showFullNames: showFullNames, isPrivateRoom: isPrivateRoom , user: entryUser , entry: entry , extConf: extConf, ownMsg: ownMsg}"/>
                             </span>
                         </f:then>
                         <f:else>
                             <span id="msg-{entry.uid}" class="tx-jvchat-time"><f:format.date format="{timeFormat}">{time}</f:format.date></span><span class="tx-jvchat-user tx-jvchat-userid-{entry.uid}">
-                                <f:render section="userName" arguments="{showFullNames: showFullNames, user: entryUser , entry: entry , extConf: extConf, ownMsg: ownMsg}"/>
+                                <f:render section="userName" arguments="{showFullNames: showFullNames, isPrivateRoom: isPrivateRoom , user: entryUser , entry: entry , extConf: extConf, ownMsg: ownMsg}"/>
                             </span>  &nbsp; | <span class="tx-jvchat-entry-text"><f:format.raw>{entryText}</f:format.raw></span>
                         </f:else>
                     </f:if>
@@ -93,22 +93,23 @@
             <f:then>
 
                 <f:variable name="Button"></f:variable>
-                <f:if condition="{ownMsg}">
+                <f:if condition="{ownMsg} || {isPrivateRoom}">
                     <f:else>
                         <f:if condition="{extConf.allowPrivateRooms}">
-                            <f:variable name="Button"><span class=" btn btn-sm  btn-outline-secondary" title="{extConf.LLL.command_invite}">&nbsp;
+                            <f:variable name="Button"><span class=" btn btn-sm  btn-outline-secondary" data-userid="#{user.uid}" data-entry="#tx-jvchat-msg-{entry.uid}" title="{extConf.LLL.command_invite}">&nbsp;
                                 <span class="fa fa-user-friends"></span>&nbsp;
                             </span></f:variable>
 
 
                             <script type="application/javascript">
                                 var id = '{entry.uid}' ;
-                                var userid = '#{user.uid}' ;
-                                $('#tx-jvchat-msg-' + id + " span.btn").bind("click", function(evt) {
+                                $('#tx-jvchat-msg-' +  id + " span.btn").bind("click", function(evt) {
                                     evt.preventDefault();
-                                    var username = $('#tx-jvchat-msg-' + id ).data("username") ;
+                                    var entryid = $(this).data("entry") ;
+                                    var username = $(entryid ).data("username") ;
+                                    var userid = $(entryid ).data("user") ;
                                     var name = chat_instance.talkToNewRoomName.replace(/\%s/, username);
-                                    var command = "/talkTo "+ userid + " " + name ;
+                                    var command = "/talkTo #"+ userid + " " + name ;
                                     chat_instance.sendMessage(command);
                                 });
 

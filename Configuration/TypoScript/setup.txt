@@ -18,6 +18,9 @@ plugin.tx_jvchat_pi1 {
 		# if you set this you do not need to define it in each flexform
 	defaultChatpopupPid =
 
+	# a page ID whre the a Plugin is placed that shows a list of all Rooms to get pabck from public or private chat to overview
+	pluginRoomlistPid =
+
 		# tooltipOffset (might be useful)
 	tooltipOffsetXY = 20,10
 	

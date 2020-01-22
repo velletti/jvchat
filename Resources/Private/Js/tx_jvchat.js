@@ -85,22 +85,23 @@ function tx_jvchat_pi1_js_chat() {
 
 		globalInstanceName = tx_jvchat_pi1_js_chat_instance;
 
-
-
 		if(Cookie.get('tx-jvchat-emoticons_visible') != null) {
 			var show = (Cookie.get('tx-jvchat-emoticons_visible') == '1');
 			this.setEmoticons(show);
 		}
 		else
-			this.setEmoticons(this.showEmoticons);
+			//  this.showEmoticons from flexform ? better start with 0
+			this.setEmoticons(0);
 
-
-		if(Cookie.get('tx_jvchat_showtime') != null) {
-			var show = Cookie.get('tx_jvchat_showtime') == '1';
-			this.setAllTime(show);
+		if ( this.showTime ) {
+			if(Cookie.get('tx_jvchat_showtime') != null) {
+				var show = Cookie.get('tx_jvchat_showtime') == '1';
+				this.setAllTime(show);
+			}
+			else
+				this.setAllTime(this.showTime );
 		}
-		else
-			this.setAllTime(this.showTime );
+
 
 		self = this;
 		chat_instance = this;

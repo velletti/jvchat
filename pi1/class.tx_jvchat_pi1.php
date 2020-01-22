@@ -177,7 +177,9 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'chatwindow', 'sDEF');
 		$value = $value ? $value : $this->conf['defaultChatpopupPid'];
-		$this->conf['FLEX']['chatwindow'] = $value;
+        $this->conf['FLEX']['chatwindow'] = $value;
+
+        $this->conf['FLEX']['pluginRoomlistPid'] = $this->conf['pluginRoomlistPid'] ;
 
 		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'targetwindow', 'sDEF');
 		$value = $value ? $value : $this->conf['targetwindow'];

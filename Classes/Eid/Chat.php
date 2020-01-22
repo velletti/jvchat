@@ -82,24 +82,24 @@ class Chat {
 
 		// get parameters
 		$this->env['user'] = $user->user;
-		$this->env['room_id'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('r'));
-		$this->env['pid'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('p'));
+		$this->env['room_id'] = intval(GeneralUtility::_GP('r'));
+		$this->env['pid'] = intval(GeneralUtility::_GP('p'));
 		$this->env['charset'] = $charset;
 
-		$this->env['msg'] = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP('m');
+		$this->env['msg'] = GeneralUtility::_GP('m');
 
 		$this->env['msg'] = rawurldecode($this->env['msg']) ;
 		$this->env['msg'] = str_replace('<', '&lt;', $this->env['msg']);
 		$this->env['msg'] = str_replace('>', '&gt;', $this->env['msg']);
 
-		$this->env['action'] = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('a'));
-		$this->env['lastid'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('t'));
-		$this->env['uid'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('uid'));
-		$this->env['usercolor'] = intval(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('uc'));
-		$this->env['LLKey'] = htmlspecialchars(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('l'));
+		$this->env['action'] = htmlspecialchars(GeneralUtility::_GP('a'));
+		$this->env['lastid'] = intval(GeneralUtility::_GP('t'));
+		$this->env['uid'] = intval(GeneralUtility::_GP('uid'));
+		$this->env['usercolor'] = intval(GeneralUtility::_GP('uc'));
+		$this->env['LLKey'] = htmlspecialchars(GeneralUtility::_GP('l'));
 
 
-		$this->lang = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
+		$this->lang = GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
 		$this->lang->init($this->env['LLKey']);
 		if( $this->env['LLKey'] == "en" || $this->env['LLKey'] == "default" || $this->env['LLKey'] == '') {
 			$this->lang->includeLLFile("EXT:jvchat/Resources/Private/Language/locallang.xlf");
@@ -108,13 +108,13 @@ class Chat {
 		}
 
 	        /** @var \JV\Jvchat\Domain\Repository\DbRepository db */
-		$this->db = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\Jvchat\Domain\Repository\DbRepository');
+		$this->db = GeneralUtility::makeInstance('JV\Jvchat\Domain\Repository\DbRepository');
 		$this->db->lang = $this->lang;
 
 		$this->room = $this->db->getRoom($this->env['room_id']);
 		$this->user = $this->env['user'];
 
-		if(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('d') == 'true')
+		if(GeneralUtility::_GP('d') == 'true')
 			$this->debug = true;
 
 		$this->debugMessage('init');
@@ -606,7 +606,7 @@ class Chat {
 
             $groupstyles = $this->getUserGroupStyles($entryUser);
 
-            $mid = \TYPO3\CMS\Core\Utility\GeneralUtility::shortMD5(($entry->tstamp).($entry->uid));
+            $mid = GeneralUtility::shortMD5(($entry->tstamp).($entry->uid));
 
             if(LibUtility::isModerator($this->room, $this->user['uid']) && !$entry->isPrivate()) {
                 $renderer->assign("needsModeration" , true ) ;
@@ -618,6 +618,7 @@ class Chat {
             $renderer->assign("entry" , $entry ) ;
             $renderer->assign("entryText" , $entryText ) ;
             $renderer->assign("user" , $this->user ) ;
+            $renderer->assign("isPrivateRoom" , $this->room->private ) ;
             $renderer->assign("entryUser" , $entryUser ) ;
             $renderer->assign("ownMsg" , $ownMsg ) ;
             $renderer->assign("recipient" , $recipient ) ;
@@ -661,7 +662,7 @@ class Chat {
 		if(!is_array($messages))
 			$messages = array($messages);
 
-		if(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('d') == 'alltime')  {
+		if(GeneralUtility::_GP('d') == 'alltime')  {
 			$messages[] = "ALL: ".($this->getMicrotimeAsFloat() - $this->getMicrotimeAsFloat($GLOBALS['TYPO3_MISC']['microtime_start']));
 		}
 
@@ -671,7 +672,7 @@ class Chat {
 		}
 
 		$out = '';
-		if(\TYPO3\CMS\Core\Utility\GeneralUtility::_GP('showJson') == '1')  {
+		if(GeneralUtility::_GP('showJson') == '1')  {
 
 			$jsonMes = array() ;
 			$i = 0 ;
@@ -730,7 +731,7 @@ class Chat {
 	}
 	
 	function getUserGroupStyles($user) {
-		$groupsOfUser = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $user['usergroup']);
+		$groupsOfUser = GeneralUtility::intExplode(',', $user['usergroup']);
 
 		if(!is_array($groupsOfUser) || !count($groupsOfUser))
 			return '';
@@ -785,12 +786,12 @@ class Chat {
 		if(!LibUtility::checkAccessToRoom($this->room, $this->env['user']))
 			return $this->lang->getLL('error_room_access_denied');
 
-		$lines = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(chr(10), $lines);
+		$lines = GeneralUtility::trimExplode(chr(10), $lines);
 
 		foreach($lines as $line) {
 
 				// check if message contains commands
-			$parts = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(' ', $line);
+			$parts = GeneralUtility::trimExplode(' ', $line);
 
 			$found = false;
             $out = '' ;
@@ -933,11 +934,24 @@ class Chat {
 
 	}
 	
-	function getUsername($user = NULL) {
-		if(!$user)
-			return ($this->room->showFullNames() ? ($this->user['name'] ? $this->user['name'] : $this->user['username']) : $this->user['username']);
-		else
-			return ($this->room->showFullNames() ? ($user['name'] ? $user['name'] : $user['username']) : $user['username']);
+	function getUsername($user = NULL)
+    {
+        if (!$user) {
+            $user = $this->user;
+        }
+        $field1 = $this->extConf['usernameField1'] ;
+        if ( !$field1) {
+            $field1 = 'name' ;
+        }
+        $return = $user[$field1] ;
+        if( $this->room->showFullNames() ) {
+            $field2 = $this->extConf['usernameField2'] ;
+            if ( $field2) {
+                $return .= " " . $user[$field2] ;
+            }
+        }
+        return $return ;
+
 	}
 	
 	function commitMessage($entryId) {
@@ -1011,7 +1025,10 @@ class Chat {
         $entries = $this->db->getEntrieslastXseconds($this->room , 60*60*24 , TRUE , TRUE ) ;
         $entryCount =  count($entries)  ;
         $members = $this->db->getFeUsersMayAccessRoom($this->room  ) ;
-        $memberCount = count( $members) ;
+        if( is_array($members)) {
+            $memberCount = count( $members) ;
+        }
+
         if ( $entryCount && $memberCount > 1 ) {
 
             $params['message'] = "Neue Chat Nachrichten " . GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
@@ -1037,11 +1054,14 @@ class Chat {
 
             try{
                 foreach ($members as $member ) {
-                    if( $member['email']) {
-                        $params['user']['email'] = $member['email'] ;
-                        $memberCount++ ;
-                        $mailService->sentHTMLmailService($params) ;
+                    if( $this->user['email'] != $member['email'] ) {
+                        if( $member['email'] && GeneralUtility::validEmail($member['email'])) {
+                            $params['user']['email'] = $member['email'] ;
+                            $memberCount++ ;
+                            $mailService->sentHTMLmailService($params) ;
+                        }
                     }
+
                 }
             }
             catch(\Exception $e) {
@@ -1440,13 +1460,13 @@ class Chat {
 		$username = $this->getUsername();
 
 		if(!$params[1]) {
-			$name = sprintf($this->lang->getLL('command_newroom_room_default_title'), $username);
+			$name = sprintf($this->lang->getLL('command_newroom_room_default_title'), implode(' ',$params) . " & " . $username);
 		}
 		else
-			$name = implode(' ',$params);
+			$name = implode(' ',$params) .  " & " . $username ;
 
         /** @var \JV\Jvchat\Domain\Model\Room $newRoom */
-        $newRoom = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
+        $newRoom = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
 		$newRoom->pid = $this->room->pid;
 
 

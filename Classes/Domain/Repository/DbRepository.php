@@ -297,7 +297,7 @@ class DbRepository {
 
         $row =  $rows->fetch() ;
         if( is_array($row)) {
-            return trim($row['name']) . "#" . ( $row['uid'] + 1 ) ;
+            return trim($row['name']) . "#" . ( $row['uid']  ) ;
         } else {
             return $roomName ."#1";
         }

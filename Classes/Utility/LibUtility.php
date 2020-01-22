@@ -197,11 +197,9 @@ class LibUtility {
 
         // removing HTML Tags will  brake Links from System !! this should be done befor storing to database ..
         //   $text = strip_tags( $text) ;
-        // we start with doubel size 2x as messages as using smaller Fontsize!
-        $faSize = "fa-lg" ;
-        if( strlen( $text ) > 100 ) {
-            $faSize = "fa-2x" ;
-        }
+        // we start with double size 2x as messages as using smaller Fontsize!
+        $faSize = "fa-2x" ;
+
         if( strlen( $text ) < 30 ) {
             $faSize = "fa-3x" ;
         }
@@ -216,7 +214,7 @@ class LibUtility {
                 // Replace all emoticon codes with images
                 foreach($emoticons as $key => $emoji ) {
                     if( trim($text) == trim($emoji['code'])) {
-                        $faSize = "fa-4x" ;
+                        $faSize = "fa-5x" ;
                     }
                     $emoji['html'] = str_replace("fa-lg", $faSize , $emoji['html']);
 

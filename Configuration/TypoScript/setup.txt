@@ -400,7 +400,7 @@ plugin.tx_jvchat_pi1 {
 
 		}
 
-		emoticonBtnClass = btn btn-default btn-secondary btn-xs
+		emoticonBtnClass = btn btn-default btn-secondary btn-sm
 		emoticons {
 
 			###  list of icons for the first visible menu

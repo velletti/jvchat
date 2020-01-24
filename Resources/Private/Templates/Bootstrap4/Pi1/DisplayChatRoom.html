@@ -9,28 +9,30 @@
         <f:else>
             <div class="p-2 tx-jvchat-chat-intro" id="tx-jvchat-config" {dataString -> f:format.raw()} >
                 <div >
-                    <h3 class="bg-gradient-dark text-white px-3 py-1">
+                    <h3 class="bg-gradient-dark text-white pl-2 pr-3 py-1">
                         <f:if condition="{confFLEX.pluginRoomlistPid}">
                             <f:link.typolink parameter="t3://page?uid={confFLEX.pluginRoomlistPid}" title="{f:translate(key: 'LLL:EXT:jv_chat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.conf_view_1' , default: 'back to room list')}">
-                                <button class="btn btn-outline-secondary rounded-circle mr-3" type="button">
+                                <button class="btn btn-sm btn-outline-secondary rounded-circle mr-1" type="button">
                                     <i class="fa fa-arrow-circle-left" > </i>
                                 </button>
                             </f:link.typolink>
 
                         </f:if>
 
-                        <button class="btn btn-outline-secondary rounded-circle mr-3" type="button" data-toggle="collapse" data-target="#tx-jvchat-userlist">
+                        <button class="btn btn-sm  btn-outline-secondary rounded-circle mr-1" type="button" data-toggle="collapse" data-target="#tx-jvchat-userlist">
                             <i class="badge badge-secondary" id="tx-jvchat-usercount">{roomData.userCount}</i>
                         </button>
-                        <f:if condition="{room.private} || {room.isPrivate} || ">
-                            <f:then>
-                                <f:translate key="privateRoomTitle">Privater Chat</f:translate>
-                            </f:then>
-                            <f:else>
-                                 <f:translate key="publicRoomTitle">Öffentlicher Chat</f:translate>
-                            </f:else>
-                        </f:if>
-                        <button class="btn btn-outline-secondary rounded-circle position-right mr-4" type="button" data-toggle="collapse" data-target="#chatroomInfo" aria-expanded="false" aria-controls="chatroomInfo">
+                        <span class="small">
+                            <f:if condition="{room.private} || {room.isPrivate} || ">
+                                <f:then>
+                                    <f:translate key="privateRoomTitle">Privater Chat</f:translate>
+                                </f:then>
+                                <f:else>
+                                     <f:translate key="publicRoomTitle">Öffentlicher Chat</f:translate>
+                                </f:else>
+                            </f:if>
+                        </span>
+                        <button class="btn btn-sm btn-outline-secondary rounded-circle position-right mr-4" type="button" data-toggle="collapse" data-target="#chatroomInfo" aria-expanded="false" aria-controls="chatroomInfo">
                             <i class="fas fa-info-circle"> </i>
                         </button>
                     </h3>
@@ -51,7 +53,7 @@
                         </f:else>
 
                     </f:if>
-                    You are: #{user.uid}: {user.username} ({user.first_name} {user.last_name})
+                    <p class="small">You are: #{user.uid}: {user.first_name} {user.last_name}</p>
                     <br />
 
                 </div>

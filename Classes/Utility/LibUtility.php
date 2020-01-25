@@ -56,15 +56,25 @@ class LibUtility {
 		if(!$room->groupaccess)
 			return true;
 
-		// is user in usergroup?
-		$groupsOfUser = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $user['usergroup']);
-		foreach($groupsOfUser as $g) {
+		// Show at any login ??
+        if( $room->groupaccess == "-2" && $room->isPrivate() ) {
+            $members = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',',  $room->members );
+            if(\TYPO3\CMS\Core\Utility\GeneralUtility::inList($members, $user['uid'])) {
+                return true;
+            }
+        } else {
+            // is user in usergroup?
+            $groupsOfUser = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $user['usergroup']);
+            foreach($groupsOfUser as $g) {
 
-			if(\TYPO3\CMS\Core\Utility\GeneralUtility::inList($room->groupaccess, $g))
-				return true;
-			if($g === $room->fe_group)
-				return true;
-		}
+                if(\TYPO3\CMS\Core\Utility\GeneralUtility::inList($room->groupaccess, $g))
+                    return true;
+                if($g === $room->fe_group)
+                    return true;
+            }
+        }
+
+
 
 
 		// restricted

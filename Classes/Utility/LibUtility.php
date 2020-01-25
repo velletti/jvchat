@@ -58,8 +58,8 @@ class LibUtility {
 
 		// Show at any login ??
         if( $room->groupaccess == "-2" && $room->isPrivate() ) {
-            $members = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',',  $room->members );
-            if(\TYPO3\CMS\Core\Utility\GeneralUtility::inList($members, $user['uid'])) {
+
+            if(\TYPO3\CMS\Core\Utility\GeneralUtility::inList($room->members, $user['uid'])) {
                 return true;
             }
         } else {

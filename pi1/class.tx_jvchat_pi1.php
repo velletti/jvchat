@@ -92,53 +92,65 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$this->db = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\Jvchat\Domain\Repository\DbRepository');
 
 
-		if($this->piVars['leaveRoom'] && $this->db->isMemberOfRoom($this->piVars['leaveRoom'], $this->user['uid'])) {
+		if($this->piVars['leaveRoom'] ) {
+		    $roomId = intval( $this->piVars['leaveRoom'] )  ;
+            if(!$room = $this->db->getRoom($roomId)) {
+                return $this->displayErrorMessage($this->pi_getLL('error_room_not_found'), $this->conf['views.']['chat.']['stdWrap.']);
+            }
+
+            if(!LibUtility::checkAccessToRoom($room, $this->user)) {
+                return $this->displayErrorMessage($this->pi_getLL('access_denied'));
+            }
+
 			$this->db->leaveRoom($this->piVars['leaveRoom'], $this->user['uid'], true, $this->pi_getLL('user_leaves_chat'));
+            $this->db->changeRoomMembership( $room , $this->user['uid'] , "members" , false  ) ;
+            $this->db->changeRoomMembership( $room , $this->user['uid'] , "owner" , false  ) ;
 		}
 
 
-		if($action = $this->piVars['action'])
-			switch($action) {
-				case 'delete':
-					$content = $this->deleteEntry($this->piVars['entryId']);
-				break;
-			}
+		if($action = $this->piVars['action']) {
+            switch($action) {
+                case 'delete':
+                    $content = $this->deleteEntry($this->piVars['entryId']);
+                    break;
+            }
+        }
+
 
 		// dynamic view set in frontend
-		if($view = $this->piVars['view'])
-			switch($view) {
-				case 'chat':
-					$content = $this->displayChatRoom($this->piVars['uid']);
-					break;
+		if($view = $this->piVars['view']) {
+            switch($view) {
+                case 'chat':
+                    $content = $this->displayChatRoom($this->piVars['uid']);
+                    break;
                 case 'sessions' :
                     $content = $this->displaySessionsOfRoom($this->piVars['uid']);
                     break;
-				case 'myrooms' :
-					$content = $this->displayRooms(TRUE);
-					break;
-				case 'session' :
-					$content = $this->displaySession($this->piVars['uid']);
-					break;
+                case 'myrooms' :
+                    $content = $this->displayRooms(TRUE);
+                    break;
+                case 'session' :
+                    $content = $this->displaySession($this->piVars['uid']);
+                    break;
 
-			}
-		else
-			// if nothing set use default view from FLEX form
-			switch($this->conf['FLEX']['display']) {
-				case 'rooms':
-				    $content = $this->displayRooms();
-				    break;
+            }
+        } else {
+            // if nothing set use default view from FLEX form
+            switch($this->conf['FLEX']['display']) {
+                case 'rooms':
+                    $content = $this->displayRooms();
+                    break;
                 case 'myrooms':
                     $content = $this->displayRooms(TRUE);
                     break;
-				case 'chat':
-				    $content = $this->displayChatRoom($this->conf['FLEX']['chatroom']);
-				    break;
-				case 'overallusercount':
-				    $content = $this->displayOverallChatuserNumber();
-				break;
-			}
-
-
+                case 'chat':
+                    $content = $this->displayChatRoom($this->conf['FLEX']['chatroom']);
+                    break;
+                case 'overallusercount':
+                    $content = $this->displayOverallChatuserNumber();
+                    break;
+            }
+        }
 
 		//\TYPO3\CMS\Core\Utility\GeneralUtility::debug($this->conf);
 		return $this->pi_wrapInBaseClass($content);
@@ -252,11 +264,14 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
         /** @var \JV\Jvchat\Domain\Model\Room $newRoom */
 		$room = $this->db->getRoom($entry->room);
 
-		if(!LibUtility::checkAccessToRoom($room, $this->user))
+		if(!LibUtility::checkAccessToRoom($room, $this->user) || !$this->user['uid'] )
 			return $this->displayErrorMessage($this->pi_getLL('access_denied'));
 
-		if(!LibUtility::isModerator($room, $this->user['uid']))
-			return $this->displayErrorMessage($this->pi_getLL('access_denied'));
+        if( ! $entry->feuser == $this->user['uid'] ) {
+		    if(!LibUtility::isModerator($room, $this->user['uid'])) {
+                return $this->displayErrorMessage($this->pi_getLL('access_denied'));
+		    }
+        }
 
 		return $this->db->deleteEntry($entryId);
 	}

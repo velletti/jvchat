@@ -5,7 +5,6 @@
     <f:variable name="user2Name"><f:render section="userNameUnlinked" arguments="{showFullNames: showFullNames, user: recipient , extConf: extConf}"/></f:variable>
     <f:format.raw>
         <f:spaceless>
-
             <f:comment><!-- Hidden or private message: From User To User OR needs moderation
             entry.uid: {entry.uid} | involved : {involved} | entry.tofeuserid : {entry.tofeuserid}<br>
             --> </f:comment>
@@ -70,13 +69,21 @@
                     <f:if condition="{ownMsg}">
                         <f:then>
                             <span class="tx-jvchat-entry-text"><f:format.raw>{entryText}</f:format.raw></span> | &nbsp;
+                            <a class="small btn btn-sm btn-outline-danger mr-2 " onClick="javascript:chat_instance.hideEntry('#cid{mid}','{entry.uid}');" title="{f:translate(key: 'hide_message')}">
+                                <span class="text-danger fas fa-trash"></span>
+                            </a>
                             <span id="msg-{entry.uid}" class="tx-jvchat-time"><f:format.date format="{timeFormat}">{time}</f:format.date></span><span class="tx-jvchat-user tx-jvchat-userid-{entry.uid}">
                                 <f:render section="userName" arguments="{showFullNames: showFullNames, isPrivateRoom: isPrivateRoom , user: entryUser , entry: entry , extConf: extConf, ownMsg: ownMsg}"/>
                             </span>
                         </f:then>
                         <f:else>
+                            <f:if condition="{isModerator}">
+                                <a class="btn btn-sm p-0 px-1  btn-outline-primary mr-2 " onClick="javascript:chat_instance.hideEntry('#cid{mid}','{entry.uid}');" title="{f:translate(key: 'hide_message')}">
+                                    <span class="text-danger fas fa-trash"></span>
+                                </a>
+                            </f:if>
                             <span id="msg-{entry.uid}" class="tx-jvchat-time"><f:format.date format="{timeFormat}">{time}</f:format.date></span><span class="tx-jvchat-user tx-jvchat-userid-{entry.uid}">
-                                <f:render section="userName" arguments="{showFullNames: showFullNames, isPrivateRoom: isPrivateRoom , user: entryUser , entry: entry , extConf: extConf, ownMsg: ownMsg}"/>
+                                <f:render section="userName" arguments="{showFullNames: showFullNames, isPrivateRoom: isPrivateRoom , user: entryUser , entry: entry , extConf: extConf, ownMsg: ownMsg, isModerator: isModerator}"/>
                             </span>  &nbsp; | <span class="tx-jvchat-entry-text"><f:format.raw>{entryText}</f:format.raw></span>
                         </f:else>
                     </f:if>
@@ -95,6 +102,7 @@
                 <f:variable name="Button"></f:variable>
                 <f:if condition="{ownMsg} || {isPrivateRoom}">
                     <f:else>
+
                         <f:if condition="{extConf.allowPrivateRooms}">
                             <f:variable name="Button"><span class=" btn btn-sm  btn-outline-secondary" data-userid="#{user.uid}" data-entry="#tx-jvchat-msg-{entry.uid}" title="{extConf.LLL.command_invite}">&nbsp;
                                 <span class="fa fa-user-friends"></span>&nbsp;

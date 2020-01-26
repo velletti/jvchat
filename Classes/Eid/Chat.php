@@ -448,7 +448,7 @@ class Chat {
 				// get messages
 			case 'gm':
 				return $this->getMessages($this->env['lastid']);
-			break;
+			    break;
 				// send message
 			case 'sm':
 				return $this->putMessage($this->env['msg'],$this->env['lastid']);
@@ -461,10 +461,33 @@ class Chat {
 			case 'commit':
 				return $this->commitMessage($this->env['uid']);
 			    break;
+            case 'del':
+                return $this->deleteEntry($this->env['uid']);
+                break;
 		}
         return '' ;
 	}
-	
+
+
+    function deleteEntry($entryId) {
+        // check rights
+        $entry = $this->db->getEntry($entryId);
+        /** @var \JV\Jvchat\Domain\Model\Room $newRoom */
+        $room = $this->db->getRoom($entry->room);
+
+        if(!LibUtility::checkAccessToRoom($room, $this->user) || !$this->user['uid'] ) {
+            echo __LINE__ . "-" . $this->lang->getLL('access_denied') ;
+        }
+
+        if( ! $entry->feuser == $this->user['uid'] ) {
+            if(!LibUtility::isModerator($room, $this->user['uid'])) {
+                echo __LINE__ . $this->lang->getLL('access_denied') ;
+            }
+        }
+
+        return $this->db->deleteEntry($entryId);
+    }
+
 	function checkFull() {
 		return ($this->db->isRoomFull($this->room) && !$this->db->isMemberOfRoom($this->room->uid, $this->user['uid'])) ? 'full' : 'notfull';
 	}
@@ -622,6 +645,8 @@ class Chat {
             $renderer->assign("entryUser" , $entryUser ) ;
             $renderer->assign("ownMsg" , $ownMsg ) ;
             $renderer->assign("recipient" , $recipient ) ;
+            $renderer->assign("isModerator" , LibUtility::isModerator($this->room, $this->user['uid']) ) ;
+
             $renderer->assign("involved"  , $involved ) ;
 
             $renderer->assign("userType" , $userType ) ;

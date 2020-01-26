@@ -482,14 +482,36 @@ function tx_jvchat_pi1_js_chat() {
 
 	}
 
-	this.hideEntry = function(uid) {
-		var node = $("tx-jvchat-entry-"+uid).parentNode;
-		node.parentNode.removeChild(node);
+	this.hideEntry = function(cidid , uid) {
+		if( confirm( "Delete really | Wirklich löschen?") ) {
+			jQuery.ajax({
+				type:       "get",
+				url:        this.scriptUrl ,
+				cache:      false,
+				data:       "a=del&uid="+uid+  "&showJason=0",
 
-		if(this.storedMessagesElement.childNodes.length == 0) {
-			this.toogleStoredMessages(false);
+				beforeSend:	function() {
+				},
+				success:    function(result) {
+					getMessagesResponseHandler(result) ;
+				} ,
+				onFailure: handleAjaxError,
+				on404: handleAjax404
+
+			});
+			if( $(cidid).length ) {
+				$(cidid).parent().remove() ;
+			}
+
+
+			if(this.storedMessagesElement.length) {
+				if(this.storedMessagesElement.childNodes) {
+					if(this.storedMessagesElement.childNodes.length == 0) {
+						this.toogleStoredMessages(false);
+					}
+				}
+			}
 		}
-
 	}
 
 	this.storeEntry = function(uid) {

@@ -17,37 +17,63 @@
                         <br>
                     </div>
                 </f:if>
+                <f:if condition="{setup.settings.currentPid}">
+                    <f:variable name="targetPage">{setup.settings.currentPid}</f:variable>
+                </f:if>
+                <f:if condition="{flex.chatwindow}">
+                    <f:variable name="targetPage">{flex.chatwindow}</f:variable>
+                </f:if>
+                <f:if condition="{room.page}">
+                    <f:variable name="targetPage">{room.page}</f:variable>
+                </f:if>
 
                 <div class="tx-cat-rooms-list-row card w-100 my-2">
                     <div class="tx-cat-rooms-list-row card-heading p-2">
-                        <f:if condition="{room.private}">
-                            <f:then>
-                                 <span class="chatIconColor">
-                                    <i class="fas fa-user-lock" title="{f:translate(key: 'chatbutton.email')}"></i>
-                                </span>
-                            </f:then>
-                            <f:else>
-                                 <span class="chatIconColor">
-                                    <i class="fas fa-users" title="{f:translate(key: 'chatbutton.email')}"></i>
-                                </span>
-                            </f:else>
+                        <span class="col-1">
+                            <f:if condition="{room.private}">
+                                <f:then>
+                                     <span class="chatIconColor">
+                                        <i class="fas fa-user-lock" title="{f:translate(key: 'chatbutton.email')}"></i>
+                                    </span>
+                                </f:then>
+                                <f:else>
+                                     <span class="chatIconColor">
+                                        <i class="fas fa-users" title="{f:translate(key: 'chatbutton.email')}"></i>
+                                    </span>
+                                </f:else>
 
-                        </f:if>
-                        <span class="p-2 big">
-                             <f:if condition="{setup.settings.currentPid}">
-                                <f:variable name="targetPage">{setup.settings.currentPid}</f:variable>
                             </f:if>
-                            <f:if condition="{flex.chatwindow}">
-                                <f:variable name="targetPage">{flex.chatwindow}</f:variable>
-                            </f:if>
-                            <f:if condition="{room.page}">
-                                <f:variable name="targetPage">{room.page}</f:variable>
-                            </f:if>
-                            <a href="/index.php?id={targetPage}&tx_jvchat_pi1[uid]={room.uid}&tx_jvchat_pi1[view]=chat&L={setup.settings.currentLng}" title="{f:translate(key:'command_enter_room')}">
-                                {room.name} >>
-                            </a>
-
                         </span>
+                        <span class="col-10">
+                            <span class="p-2 big">
+
+                                <a href="/index.php?id={targetPage}&tx_jvchat_pi1[uid]={room.uid}&tx_jvchat_pi1[view]=chat&L={setup.settings.currentLng}" title="{f:translate(key:'command_enter_room')}">
+                                    {room.name} >>
+                                </a>
+                            </span>
+                        </span>
+                        <f:if condition="{room.private} || {room.isPrivate}">
+                            <span class="col-1 position-absolute position-right">
+                                 <span class="chatIconColor" data-toggle="collapse" data-target="#chat-del-{room.uid}">
+                                    <i class="fas fa-trash" title="{f:translate(key: 'leave_chat')}"></i>
+                                </span>
+                            </span>
+                        </f:if>
+
+                    </div>
+                    <div class="alert alert-warning collapse m-2 p-2 pb-3" id="chat-del-{room.uid}">
+                        <div class="position-absolute position-right" data-toggle="collapse" data-target="#chat-del-{room.uid}">
+                            <i class="fas fa-arrow-circle-up" title="X"></i>
+                        </div>
+                        <f:translate key="leave_chat_remove_entries">
+                            Sind Sie sicher? Wenn Sie den Chat verlassen, verschwindet der Chat Raum aus ihrer Liste und sie haben keinen Zugriff mehr auf.
+                        </f:translate>
+                        <br>
+                        <br>
+
+                        <a class="btn btn-outline-danger" href="/index.php?id={targetPage}&tx_jvchat_pi1[leaveRoom]={room.uid}&L={setup.settings.currentLng}" title="{f:translate(key:'leave_chat')}">
+                            {f:translate(key:'leave_chat')}
+                        </a>
                     </div>
                     <div class="tx-cat-rooms-list-row card-body p-2 small">
                         <f:if condition="{room.private} || {room.isPrivate}">

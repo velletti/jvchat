@@ -1215,7 +1215,7 @@ class DbRepository {
 
 	}
 	
-	function leaveRoom($roomId, $userId, $systemMessageOnLeaving = true, $leaveMessage = '%s leaves chat') {
+	function leaveRoom($roomId, $userId, $systemMessageOnLeaving = true, $leaveMessage = '%s leaves chat' ,$user=null) {
 
 		if(!$roomId || !$userId)
 			return false;
@@ -1227,10 +1227,13 @@ class DbRepository {
 		if($this->isUserKicked($roomId, $userId))
 			return false;
 
-		if($systemMessageOnLeaving && !$this->getUserStatus($roomId, $userId, 'invisible') && $this->getUserStatus($roomId, $userId, 'in_room')) {
 
-		    // ToDo 2029 : J.V.  make "$systemMessageOnLeaving"  configurable  ?
-			//	$this->putMessage($roomId, sprintf($leaveMessage, $user['username']));
+		if($systemMessageOnLeaving && !$this->getUserStatus($roomId, $userId, 'invisible') && $this->getUserStatus($roomId, $userId, 'in_room')) {
+            // ToDo 2029 : J.V.  make "$systemMessageOnLeaving"  configurable  ?
+		    if( $user['uid'] == $userId ) {
+                $this->putMessage($roomId, sprintf($leaveMessage, $user['username']));
+            }
+
 		}
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_room_feusers_mm') ;

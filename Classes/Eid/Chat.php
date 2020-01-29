@@ -972,7 +972,7 @@ class Chat {
         if( $this->room->showFullNames() ) {
             $field2 = $this->extConf['usernameField2'] ;
             if ( $field2) {
-                $return .= " " . $user[$field2] ;
+                $return .= " " . Substr( $user[$field2], 0, 1 ) . "." ;
             }
         }
         return $return ;

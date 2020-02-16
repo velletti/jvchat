@@ -63,6 +63,7 @@ CREATE TABLE tx_jvchat_room (
 	owner int(11) DEFAULT '0' NOT NULL,
 	private SMALLINT(4) DEFAULT '0' NOT NULL,
 	members blob NOT NULL,	
+	notifyme blob NOT NULL,
 	PRIMARY KEY (uid),
 	KEY parent (pid)
 );

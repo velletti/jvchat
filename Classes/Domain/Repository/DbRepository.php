@@ -1014,6 +1014,13 @@ class DbRepository {
         return $this->changeRoomMembership( $room , $userId , 'members' , true   ) ;
     }
 
+    function addNotifymeToRoom($room, $userId) {
+        return $this->changeRoomMembership( $room , $userId , 'notifyme' , true   ) ;
+    }
+    function removeNotifymeToRoom($room, $userId) {
+        return $this->changeRoomMembership( $room , $userId , 'notifyme' , false   ) ;
+    }
+
     /**
      * @param mixed $room Room as object
      * @param integer $userId Uid Of the user
@@ -1119,7 +1126,8 @@ class DbRepository {
             ) ;
 
         }
-
+        // $this->debugQuery( $queryBuilder ) ;
+        // die;
         $rows = $queryBuilder->execute() ;
 
 		$rooms = array();
@@ -1422,6 +1430,29 @@ class DbRepository {
         return $users ;
 
     }
+    /**
+     * @param $room
+     * @return array|null
+     */
+    function getFeUsersToNotifyRoom($room ) {
+        if(!$room) {
+            return NULL;
+        }
+        $uids = GeneralUtility::trimExplode("," , $room->notifyme , true ) ;
+        $users = array() ;
+        foreach ( $uids as $uid ) {
+          //  if( GeneralUtility::inList( $room->members , $uid ) ||  $room->owner == $uid ) {
+                if( $user = $this->getFeUser($uid) ) {
+                    $users[] = $user ;
+                }
+         //   }
+
+        }
+        return $users ;
+
+    }
+
+
 	function getFeUsersOfRoom($room, $getHidden = false) {
 
 		if(!$room) {

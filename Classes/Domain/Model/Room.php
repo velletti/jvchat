@@ -34,6 +34,7 @@ class Room {
 		$this->welcomemessage = $array['welcomemessage'];
 		$this->private = $array['private'] ? true : false;
 		$this->members = $array['members'];
+		$this->notifyme = $array['notifyme'];
 		$this->page = $array['page'];
 		$this->image = $array['image'];
 		$this->enableEmoticons = $array['enableEmoticons'];
@@ -68,6 +69,7 @@ class Room {
 			'welcomemessage' => $this->welcomemessage,
 			'private' => $this->private ? 1 : 0,
 			'members' => $this->members,
+			'notifyme' => $this->notifyme,
 			'page' => $this->page,
 			'image' => $this->image,
 			'enableEmoticons' => $this->enableEmoticons,
@@ -172,6 +174,7 @@ class Room {
 	var $private;
 	
 	var $members;
+	var $notifyme;
 
 	var $page;
 	

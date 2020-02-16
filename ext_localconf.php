@@ -48,3 +48,10 @@ $iconRegistry->registerIcon(
             }
        }'
 );
+
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['JV\Jvchat\Scheduler\MailchatsTask'] = array(
+    'extension'        =>  $_EXTKEY,
+    'title'            => 'Send New Chat Notifications',
+    'description'      => 'set only frequency ',
+    'additionalFields' => 'JV\Jvchat\Scheduler\MailchatsTaskAdditionalFieldProvider'
+);

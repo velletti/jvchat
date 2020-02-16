@@ -154,6 +154,15 @@
 			<trans-unit id="command_whois">
 				<target>Zeigt Details über einen Nutzer.</target>
 			</trans-unit>
+			<trans-unit id="command_notifyme">
+                <source>Lassen Sie sich Emails schicken wenn ein neuer Eintrag geschrieben wurde. Die Häufigkeit solcher Benachrichtigungen liegt zwischen 10 Minute oder nur einmal täglich. je nach Einstellung des Servers.</source>
+            </trans-unit>
+            <trans-unit id="command_notifyme_enabled">
+                <source>Email Benachrichtigung für diesen Raum wurde aktiviert.</source>
+            </trans-unit>
+            <trans-unit id="command_notifyme_disabled">
+                <source>Email Benachrichtigung für diesen Raum wurde deaktiviert.</source>
+            </trans-unit>
 			<trans-unit id="command_kick">
 				<target>Entfernt einen Nutzer für eine bestimmte Zeit. Mit '/redeem' kann diese Aktion rückgängig gemacht werden.</target>
 			</trans-unit>

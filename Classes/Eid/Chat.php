@@ -70,7 +70,7 @@ class Chat {
 
     var $extConf;
 
-	function init($user, $charset) {
+	function init($user, $charset , $room ) {
 		// load language files
 		// at this moment it is impossible to modify this via TypoScript
 		//$LLKey = $GLOBALS['TSFE']->config['config']['language'];
@@ -111,7 +111,11 @@ class Chat {
 		$this->db = GeneralUtility::makeInstance('JV\Jvchat\Domain\Repository\DbRepository');
 		$this->db->lang = $this->lang;
 
-		$this->room = $this->db->getRoom($this->env['room_id']);
+		if ( $room ) {
+            $this->room = $room ;
+        } else {
+            $this->room = $this->db->getRoom($this->env['room_id']);
+        }
 		$this->user = $this->env['user'];
 
 		if(GeneralUtility::_GP('d') == 'true')
@@ -123,7 +127,7 @@ class Chat {
         $this->setup = LibUtility::getSetUp( $this->env['pid'] );
 
 		// init commands
-		$this->initCommands();
+		$this->initCommands($this->room );
 
 	}
 
@@ -145,7 +149,7 @@ class Chat {
 		return ((float)$usec + (float)$sec);
 	}
 
-	function initCommands() {
+	function initCommands($room) {
 		$initCmd = array(
 			'help' => array(
 				'callback' => '_help',
@@ -223,6 +227,13 @@ class Chat {
 					),
 					'rights' => $this->extConf['allowPrivateMessages'] ? '1111' : '0001',
 				),
+                'notifyme' => array(
+                    'callback' => '_notifyme',
+                    'hidefeedback' => '1',
+                    'hideinhelp' => '1',
+                    'description' => $this->lang->getLL('command_notifyme') ,
+                    'rights' =>  ( $this->room->private ? '0001' : '1111' ) ,
+                ),
 				'kick' => array(
 					'callback' => '_kick',
 					'description' => $this->lang->getLL('command_kick'),
@@ -992,10 +1003,14 @@ class Chat {
 
     /**
      * @param array $entries An array with entries of Type \JV\Jvchat\Domain\Model\Entry
+     * @param \JV\Jvchat\Domain\Model\Room $room An array
      * @return string
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
      */
-	function getEntryTextForEmail( $entries) {
+	function getEntryTextForEmail( $entries, $room=false ) {
+	    if( !$room ) {
+            $room = $this->room ;
+        }
         /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
         $renderer = LibUtility::getRenderer($this->setup , "GetEmailMessages" , "html" )  ;
 
@@ -1037,7 +1052,7 @@ class Chat {
             $renderer->assign("ownMsg" , $ownMsg ) ;
             $renderer->assign("time" , $time ) ;
             $renderer->assign("timeFormat" , $timeFormat ) ;
-            $renderer->assign("showFullNames" , $this->room->showFullNames() ) ;
+            $renderer->assign("showFullNames" , $room->showFullNames() ) ;
             $renderer->assign("extConf" , $this->extConf ) ;
 
             // $messages[] = $message;
@@ -1045,23 +1060,48 @@ class Chat {
         }
         return $messages ;
     }
-    function _email() {
 
-        $entries = $this->db->getEntrieslastXseconds($this->room , 60*60*24 , TRUE , TRUE ) ;
+    function _notifyme() {
+        if (  GeneralUtility::inList($this->room->notifyme , $this->user['uid'] ) ) {
+            $this->db->removeNotifymeToRoom($this->room , $this->user['uid'] ) ;
+            return '<div class="tx-jvchat-cmd-success">' . $this->lang->getLL( 'command_notifyme_disabled')  . ' </div>' ;
+        } else {
+            $this->db->addNotifymeToRoom($this->room , $this->user['uid'] ) ;
+            return '<div class="tx-jvchat-cmd-success">' . $this->lang->getLL( 'command_notifyme_enabled') . '</div>' ;
+        }
+    }
+
+
+    function _email()
+    {
+        $entries = $this->db->getEntrieslastXseconds($this->room, 60 * 60 * 24, TRUE, TRUE);
+        $members = $this->db->getFeUsersMayAccessRoom($this->room);
+        $this->sendEmails( $entries , $members , $this->room) ;
+    }
+
+    /**
+     * @param array  $entries elements of type  \JV\Jvchat\Domain\Model\Entry
+     * @param array $members type Users
+     * @param \JV\Jvchat\Domain\Model\Room  $room
+     * @return string
+     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
+     */
+    function sendEmails($entries , $members , $room , $sendall=false ) {
+
         $entryCount =  count($entries)  ;
-        $members = $this->db->getFeUsersMayAccessRoom($this->room  ) ;
         if( is_array($members)) {
             $memberCount = count( $members) ;
         }
+        if ( $entryCount && $memberCount > 0 ) {
 
-        if ( $entryCount && $memberCount > 1 ) {
-
-            $params['message'] = "Neue Chat Nachrichten " . GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY');
+            $params['message'] = "Neue Chat Nachrichten " . GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY') . " - " .  $room->name;
+            $params['message'] .= "\n" ;
+            $params['message'] .= "Room: #" . $room->uid . " " . $room->name;
             $params['message'] .= "\n" ;
             $params['message'] .= "\n(smilies, images or links are only visible online)" ;
 
 
-            $params['message'] .= "<hr>" . $this->getEntryTextForEmail( $entries) ;
+            $params['message'] .= "<hr>" . $this->getEntryTextForEmail( $entries , $room ) ;
 
             $params['message'] .=  " \n" . GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . "/index.php?id=" . $this->env['pid']
                 . "&tx_jvchat_pi1[uid]=" .$this->room->uid . "&tx_jvchat_pi1[view]=chat ";
@@ -1079,7 +1119,7 @@ class Chat {
 
             try{
                 foreach ($members as $member ) {
-                    if( $this->user['email'] != $member['email'] ) {
+                    if( $this->user['email'] != $member['email']   ||  $sendall  ) {
                         if( $member['email'] && GeneralUtility::validEmail($member['email'])) {
                             $params['user']['email'] = $member['email'] ;
                             $memberCount++ ;

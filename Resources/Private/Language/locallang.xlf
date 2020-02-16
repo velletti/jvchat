@@ -5,385 +5,401 @@
 		<body>
 
 			<trans-unit id="pi1_title">
-				<target>Ajax Chat</target>
+				<source>Ajax Chat</source>
 			</trans-unit>
 			<trans-unit id="pi1_plus_wiz_description">
-				<target>Adds a chat box to the page</target>
+				<source>Adds a chat box to the page</source>
 			</trans-unit>
 
 			<trans-unit id="session_not_found">
-				<target>Session not found. Problably it was removed.</target>
+				<source>Session not found. Problably it was removed.</source>
 			</trans-unit>
 			<trans-unit id="sessions_not_found">
-				<target>No sessions.</target>
+				<source>No sessions.</source>
 			</trans-unit>
 			<trans-unit id="entries_not_found">
-				<target>No messages.</target>
+				<source>No messages.</source>
 			</trans-unit>
 			<trans-unit id="back">
-				<target>Back</target>
+				<source>Back</source>
 			</trans-unit>
 			<trans-unit id="new_message">
-				<target>New Message</target>
+				<source>New Message</source>
 			</trans-unit>
 			<trans-unit id="submit_message">
-				<target>Send</target>
+				<source>Send</source>
 			</trans-unit>
 			<trans-unit id="back_to_rooms">
-				<target>Back to rooms</target>
+				<source>Back to rooms</source>
 			</trans-unit>
 			<trans-unit id="back_to_sessions">
-				<target>Back to sessions</target>
+				<source>Back to sessions</source>
 			</trans-unit>
 			<trans-unit id="user_in_chat">
-				<target>user in chat room.</target>
+				<source>user in chat room.</source>
 			</trans-unit>
 			<trans-unit id="no_user_in_chat">
-				<target>No user in chat room.</target>
+				<source>No user in chat room.</source>
 			</trans-unit>
 			<trans-unit id="max_user">
-				<target>Maximum usercount</target>
+				<source>Maximum usercount</source>
 			</trans-unit>
 			<trans-unit id="error_access_denied">
-				<target>Action not allowed. Access denied.</target>
+				<source>Action not allowed. Access denied.</source>
 			</trans-unit>
 			<trans-unit id="error_room_access_denied">
-				<target>You are not allowed to access this chat room. Please login.</target>
+				<source>You are not allowed to access this chat room. Please login.</source>
 			</trans-unit>
 			<trans-unit id="error_room_full">
-				<target>Room is full. Maximum amount of users is reached.</target>
+				<source>Room is full. Maximum amount of users is reached.</source>
 			</trans-unit>
 			<trans-unit id="error_room_not_found">
-				<target>Room not found. Probably it was removed.</target>
+				<source>Room not found. Probably it was removed.</source>
 			</trans-unit>
 			<trans-unit id="error_kicked">
-				<target>You are banned from this room for %d minutes.</target>
+				<source>You are banned from this room for %d minutes.</source>
 			</trans-unit>
 			<trans-unit id="error_banned">
-				<target>You are banned from this room.</target>
+				<source>You are banned from this room.</source>
 			</trans-unit>
 			<trans-unit id="error_not_invited">
-				<target>This is a private chat room and can only be entered after an invitation.</target>
+				<source>This is a private chat room and can only be entered after an invitation.</source>
 			</trans-unit>
             <trans-unit id="room_is_private">
-                <target>This is a private chat room and can only be entered after an invitation.</target>
+                <source>This is a private chat room and can only be entered after an invitation.</source>
             </trans-unit>
 			<trans-unit id="message_committed">
-				<target>Message #%d committed</target>
+				<source>Message #%d committed</source>
 			</trans-unit>
 			<trans-unit id="error_commit">
-				<target>An error occurred. Maybe message was already committed.</target>
+				<source>An error occurred. Maybe message was already committed.</source>
 			</trans-unit>
 			<trans-unit id="enter_chat">
-				<target>Enter Chat</target>
+				<source>Enter Chat</source>
 			</trans-unit>
 			<trans-unit id="leave_chat">
-				<target>Leave Chat</target>
+				<source>Leave Chat</source>
 			</trans-unit>
 			<trans-unit id="new_window">
-				<target>New window</target>
+				<source>New window</source>
 			</trans-unit>
 			<trans-unit id="close_window">
-				<target>Close window</target>
+				<source>Close window</source>
 			</trans-unit>
 			<trans-unit id="sessions">
-				<target>sessions</target>
+				<source>sessions</source>
 			</trans-unit>
 			<trans-unit id="experts">
-				<target>Expert(s) online:</target>
+				<source>Expert(s) online:</source>
 			</trans-unit>
 			<trans-unit id="superusers">
-				<target>Superuser(s) online:</target>
+				<source>Superuser(s) online:</source>
 			</trans-unit>
 			<trans-unit id="moderators">
-				<target>Moderator(s) online:</target>
+				<source>Moderator(s) online:</source>
 			</trans-unit>
 			<trans-unit id="users">
-				<target>User online:</target>
+				<source>User online:</source>
 			</trans-unit>
 			<trans-unit id="system_name">
-				<target>*</target>
+				<source>*</source>
 			</trans-unit>
 			<trans-unit id="hide_message">
-				<target>Hide message</target>
+				<source>Hide message</source>
 			</trans-unit>
 			<trans-unit id="commit_message">
-				<target>Commit message</target>
+				<source>Commit message</source>
 			</trans-unit>
 			<trans-unit id="store_message">
-				<target>Store message</target>
+				<source>Store message</source>
 			</trans-unit>
 			<trans-unit id="user_enters_chat">
-				<target>%s enters chat.</target>
+				<source>%s enters chat.</source>
 			</trans-unit>
 			<trans-unit id="user_leaves_chat">
-				<target>%s leaves chat.</target>
+				<source>%s leaves chat.</source>
 			</trans-unit>
 			<trans-unit id="after_welcome_message_in_private_room">
-                <target>Enter '/email' to notifiy the other user(s) in this chat via E-Mail about the latest messages</target>
+                <source>Enter '/email' to notifiy the other user(s) in this chat via E-Mail about the latest messages</source>
             </trans-unit>
 			<trans-unit id="after_welcome_message">
-				<target>If you need help try '/help'</target>
+				<source>If you need help try '/help'</source>
 			</trans-unit>
 			<trans-unit id="command_title">
-				<target>--== Chat Commands ==--</target>
+				<source>--== Chat Commands ==--</source>
 			</trans-unit>
 			<trans-unit id="command_header">
-				<target>Welcome to our chat. Press RETURN to send your message. You can Press CTRL+RETURN to send a multiline message. The following commands you can use during the chat:<br/></target>
+				<source>Welcome to our chat. Press RETURN to send your message. You can Press CTRL+RETURN to send a multiline message. The following commands you can use during the chat:<br/></source>
 			</trans-unit>
 			<trans-unit id="command_help">
-				<target>Shows this screen.</target>
+				<source>Shows this screen.</source>
 			</trans-unit>
 			<trans-unit id="command_msg">
-				<target>Sends a private message.</target>
+				<source>Sends a private message.</source>
 			</trans-unit>
+			<trans-unit id="command_notifyme">
+                <source>You will get an email when new Chat entries have been posted. The frequency of such notifications may be 10 minutes or only daily. This is depending on the servers settings.</source>
+            </trans-unit>
+             <trans-unit id="command_notifyme_enabled">
+                <source>Email notification for this room was activated.</source>
+            </trans-unit>
+            <trans-unit id="command_notifyme_disabled">
+                <source>Email notification for this room was disactivated.</source>
+            </trans-unit>
+
 			<trans-unit id="command_smileys">
-				<target>Shows all available emoticons with the corresponding code.</target>
+				<source>Shows all available emoticons with the corresponding code.</source>
 			</trans-unit>
 			<trans-unit id="command_roomlist">
-				<target>Shows all online users in other rooms.</target>
+				<source>Shows all online users in other rooms.</source>
 			</trans-unit>
 			<trans-unit id="command_who">
-				<target>Shows the usernames of all people in the current room.</target>
+				<source>Shows the usernames of all people in the current room.</source>
 			</trans-unit>
 			<trans-unit id="command_whois">
-				<target>Detailed information about a user.</target>
+				<source>Detailed information about a user.</source>
 			</trans-unit>
 			<trans-unit id="command_kick">
-				<target>Let you remove a user temporary from the current room with an optional reason. You can call /redeem to undo that.</target>
+				<source>Let you remove a user temporary from the current room with an optional reason. You can call /redeem to undo that.</source>
 			</trans-unit>
 			<trans-unit id="command_kick_param_time">
-				<target>The user will be banned this time in minutes.</target>
+				<source>The user will be banned this time in minutes.</source>
 			</trans-unit>
 			<trans-unit id="command_kick_ok">
-				<target>%s was kicked by %s for %d minutes.</target>
+				<source>%s was kicked by %s for %d minutes.</source>
 			</trans-unit>
 			<trans-unit id="command_kick_reason">
-				<target>Reason: '%s'</target>
+				<source>Reason: '%s'</source>
 			</trans-unit>
 			<trans-unit id="command_ban">
-				<target>Add user to banned list.</target>
+				<source>Add user to banned list.</source>
 			</trans-unit>
 			<trans-unit id="command_ban_ok">
-				<target>%s was banned by %s.</target>
+				<source>%s was banned by %s.</source>
 			</trans-unit>
 			<trans-unit id="command_ban_reason">
-				<target>Reason: '%s'</target>
+				<source>Reason: '%s'</source>
 			</trans-unit>
 			<trans-unit id="command_redeem">
-				<target>Revive user if he or she were kicked or removes user from banned list.</target>
+				<source>Revive user if he or she were kicked or removes user from banned list.</source>
 			</trans-unit>
 			<trans-unit id="command_redeem_ok">
-				<target>%s was redeemed by %s.</target>
+				<source>%s was redeemed by %s.</source>
 			</trans-unit>
 			<trans-unit id="command_redeem_reason">
-				<target>Reason: '%s'</target>
+				<source>Reason: '%s'</source>
 			</trans-unit>
 			<trans-unit id="command_restart">
-				<target>Starts to reload chat with new messages.</target>
+				<source>Starts to reload chat with new messages.</source>
 			</trans-unit>
 			<trans-unit id="command_stop">
-				<target>Stops the Chatreload (archive mode) to be able to read existing entries.</target>
+				<source>Stops the Chatreload (archive mode) to be able to read existing entries.</source>
 			</trans-unit>
 			<trans-unit id="command_quit">
-				<target>Let you quit the current room with an optional message.</target>
+				<source>Let you quit the current room with an optional message.</source>
 			</trans-unit>
 			<trans-unit id="command_quit_ok">
-				<target>%s quits.</target>
+				<source>%s quits.</source>
 			</trans-unit>
 			<trans-unit id="command_quit_reason">
-				<target>Reason: '%s'</target>
+				<source>Reason: '%s'</source>
 			</trans-unit>
 			<trans-unit id="command_makesession">
-				<target>Creates a session.</target>
+				<source>Creates a session.</source>
 			</trans-unit>
 			<trans-unit id="command_makesession_param_name">
-				<target>A name for the session</target>
+				<source>A name for the session</source>
 			</trans-unit>
 			<trans-unit id="command_makesession_param_firstid">
-				<target>Id of the first message</target>
+				<source>Id of the first message</source>
 			</trans-unit>
 			<trans-unit id="command_makesession_param_lastid">
-				<target>Id of the last message</target>
+				<source>Id of the last message</source>
 			</trans-unit>
 			<trans-unit id="command_makeexpert">
-				<target>Adds an user to the expert list</target>
+				<source>Adds an user to the expert list</source>
 			</trans-unit>
 			<trans-unit id="command_makeuser">
-				<target>Removes an user from the expert list</target>
+				<source>Removes an user from the expert list</source>
 			</trans-unit>
 			<trans-unit id="command_cleanup">
-				<target>Deletes all entries of this room that do not belong to a session.</target>
+				<source>Deletes all entries of this room that do not belong to a session.</source>
 			</trans-unit>
 			<trans-unit id="command_cleanupall">
-				<target>Deletes all entries of all rooms that do not belong to a session.</target>
+				<source>Deletes all entries of all rooms that do not belong to a session.</source>
 			</trans-unit>
 			<trans-unit id="command_setstatus">
-				<target>Toggles the status of the user (e.g. 'hidden')</target>
+				<source>Toggles the status of the user (e.g. 'hidden')</source>
 			</trans-unit>
 			<trans-unit id="command_error_user_not_found">
-				<target>User '%1%s' not found</target>
+				<source>User '%1%s' not found</source>
 			</trans-unit>
 			<trans-unit id="command_parameter_wrong">
-				<target>Parameter %s wrong. Should be %s</target>
+				<source>Parameter %s wrong. Should be %s</source>
 			</trans-unit>
 			<trans-unit id="command_not_found">
-				<target>'%1%s' command not found. Try enter '/help'</target>
+				<source>'%1%s' command not found. Try enter '/help'</source>
 			</trans-unit>
 			<trans-unit id="command_param_userid">
-				<target>#UserId or Username</target>
+				<source>#UserId or Username</source>
 			</trans-unit>
 			<trans-unit id="command_param_roomid">
-				<target>RoomId</target>
+				<source>RoomId</source>
 			</trans-unit>
 			<trans-unit id="command_param_reason">
-				<target>A reason</target>
+				<source>A reason</source>
 			</trans-unit>
 			<trans-unit id="command_param_status">
-				<target>E.g. 'hidden'</target>
+				<source>E.g. 'hidden'</source>
 			</trans-unit>
 			<trans-unit id="command_param_message">
-				<target>A message</target>
+				<source>A message</source>
 			</trans-unit>
 			<trans-unit id="command_newroom">
-				<target>Creates a new private room. User can then be added by /invite</target>
+				<source>Creates a new private room. User can then be added by /invite</source>
 			</trans-unit>
 			<trans-unit id="command_newroom_param_name">
-				<target>A name for the new room</target>
+				<source>A name for the new room</source>
 			</trans-unit>
 			<trans-unit id="command_talkto">
-				<target>Creates a new private room. More users can then be added by /invite, the user #uid from params is automatically added if you use the ICON behind his username.</target>
+				<source>Creates a new private room. More users can then be added by /invite, the user #uid from params is automatically added if you use the ICON behind his username.</source>
 			</trans-unit>
 			<trans-unit id="command_talkto_param_name">
-				<target>User UID starting with #</target>
+				<source>User UID starting with #</source>
 			</trans-unit>
 
 			<trans-unit id="command_newroom_param_description">
-				<target>A description for the new room.</target>
+				<source>A description for the new room.</source>
 			</trans-unit>
 			<trans-unit id="command_newroom_room_default_title">
-				<target>Private room of %s</target>
+				<source>Private room of %s</source>
 			</trans-unit>
 
 
 			<trans-unit id="command_newroom_room_default_description">
-				<target>This private chat room you can enter if you received an invitation of %s.</target>
+				<source>This private chat room you can enter if you received an invitation of %s.</source>
 			</trans-unit>
 			<trans-unit id="command_newroom_ok">
-				<target>A new room *%s* has been created.</target>
+				<source>A new room *%s* has been created.</source>
 			</trans-unit>
 			<trans-unit id="command_invite">
-				<target>Invites a user to your private room.</target>
+				<source>Invites a user to your private room.</source>
 			</trans-unit>
 			<trans-unit id="command_invite_default_message">
-				<target>*%s* invites *%s* to enter his or her private room *%s*.</target>
+				<source>*%s* invites *%s* to enter his or her private room *%s*.</source>
 			</trans-unit>
 			<trans-unit id="command_invite_enter_room">
-				<target>Enter room</target>
+				<source>Enter room</source>
 			</trans-unit>
 			<trans-unit id="command_invite_enter_room_ok">
-				<target>*%s* is now authorized to enter this room. invitation was sent.</target>
+				<source>*%s* is now authorized to enter this room. invitation was sent.</source>
 			</trans-unit>
 			<trans-unit id="command_invite_user_not_online">
-				<target>*%s* is not a member of any room. This invitation could not be sent.</target>
+				<source>*%s* is not a member of any room. This invitation could not be sent.</source>
 			</trans-unit>
 			<trans-unit id="command_recent_invite">
-				<target>Invites a user to the latest room created by the current user.</target>
+				<source>Invites a user to the latest room created by the current user.</source>
 			</trans-unit>
 			<trans-unit id="command_setroomstatus">
-				<target>Toggles the status of the room (e.g. 'hidden', 'private')</target>
+				<source>Toggles the status of the room (e.g. 'hidden', 'private')</source>
 			</trans-unit>
 			<trans-unit id="chatbutton.bold">
-				<target>Bold [b]text[/b] or *text*</target>
+				<source>Bold [b]text[/b] or *text*</source>
 			</trans-unit>
 			<trans-unit id="chatbutton.italic">
-				<target>Italic [i]text[/i]</target>
+				<source>Italic [i]text[/i]</source>
 			</trans-unit>
 			<trans-unit id="chatbutton.underlined">
-				<target>Underlined [u]text[/u] </target>
+				<source>Underlined [u]text[/u] </source>
 			</trans-unit>
 			<trans-unit id="chatbutton.stroke">
-				<target>Stroke [s]text[/s]</target>
+				<source>Stroke [s]text[/s]</source>
 			</trans-unit>
 			<trans-unit id="chatbutton.email">
-				<target>E-Mail [email]text[/email]</target>
+				<source>E-Mail [email]text[/email]</source>
 			</trans-unit>
 			<trans-unit id="chatbutton.http">
-				<target>Web-URL [url]text[/url]</target>
+				<source>Web-URL [url]text[/url]</source>
 			</trans-unit>
 			<trans-unit id="chatbutton.clock_on">
-				<target>Show time</target>
+				<source>Show time</source>
 			</trans-unit>
 			<trans-unit id="chatbutton.clock_off">
-				<target>Hide time</target>
+				<source>Hide time</source>
 			</trans-unit>
 			<trans-unit id="chatbutton.usercolor_on">
-				<target>Colorize nicknames</target>
+				<source>Colorize nicknames</source>
 			</trans-unit>
 			<trans-unit id="chatbutton.usercolor_off">
-				<target>Remove colors for nicknames</target>
+				<source>Remove colors for nicknames</source>
 			</trans-unit>
 			<trans-unit id="chatbutton.smilies_on">
-				<target>Show smilies</target>
+				<source>Show smilies</source>
 			</trans-unit>
 			<trans-unit id="chatbutton.smilies_off">
-				<target>Hide smilies</target>
+				<source>Hide smilies</source>
 			</trans-unit>
 			<trans-unit id="chatbutton.colors_on">
-				<target>Show message styles</target>
+				<source>Show message styles</source>
 			</trans-unit>
 			<trans-unit id="chatbutton.colors_off">
-				<target>Hide message styles</target>
+				<source>Hide message styles</source>
 			</trans-unit>
 			<trans-unit id="chatbutton.help">
-				<target>Help - Shows available chat commands</target>
+				<source>Help - Shows available chat commands</source>
 			</trans-unit>
 			<trans-unit id="chatbutton.autofocus_on">
-				<target>Autofocus: brings the chat window to front if there are new messages.</target>
+				<source>Autofocus: brings the chat window to front if there are new messages.</source>
 			</trans-unit>
 			<trans-unit id="chatbutton.autofocus_off">
-				<target>Switch off autofocus.</target>
+				<source>Switch off autofocus.</source>
 			</trans-unit>
 			<trans-unit id="chatbutton.enablesound_on">
-				<target>Sound on</target>
+				<source>Sound on</source>
 			</trans-unit>
 			<trans-unit id="chatbutton.enablesound_off">
-				<target>Sound off</target>
+				<source>Sound off</source>
 			</trans-unit>
 			<trans-unit id="privateMsgUsernamens">
-				<target>From %s to %s</target>
+				<source>From %s to %s</source>
 			</trans-unit>
 			<trans-unit id="userlistPMInfo">
-				<target>Send a private Message to '%s'</target>
+				<source>Send a private Message to '%s'</source>
 			</trans-unit>
 			<trans-unit id="userlistPRInfo">
-				<target>Open a new room and invite '%s'</target>
+				<source>Open a new room and invite '%s'</source>
 			</trans-unit>
 			<trans-unit id="talktoroomname">
-				<target>Private talk to %s</target>
+				<source>Private talk to %s</source>
 			</trans-unit>
 			<trans-unit id="closed">
-				<target>Closed</target>
+				<source>Closed</source>
 			</trans-unit>
 			<trans-unit id="loading_message">
-				<target>Loading the chat interface...</target>
+				<source>Loading the chat interface...</source>
 			</trans-unit>
 			<trans-unit id="snippetsError">
-				<target>An error occured during the chat. You should reload the chat window. Do you want to do this now?</target>
+				<source>An error occured during the chat. You should reload the chat window. Do you want to do this now?</source>
 			</trans-unit>
 			<trans-unit id="UploadImage.help">
-				<target>Upload Image to you Private Album and show in Chat</target>
+				<source>Upload Image to you Private Album and show in Chat</source>
 			</trans-unit>
 
 			<trans-unit id="privateRoomTitle">
-                <target>Private room</target>
+                <source>Private room</source>
             </trans-unit>
             <trans-unit id="publicRoomTitle">
-                <target>Public room</target>
+                <source>Public room</source>
             </trans-unit>
              <trans-unit id="inviteByButton">
-                <target>You can easyly use the icon behind the username to Invite this user to a private chat room</target>
+                <source>You can easyly use the icon behind the username to Invite this user to a private chat room</source>
             </trans-unit>
+
+             <trans-unit id="indexerTask_Amount">
+                <source>Amount in seconds that a chat entries is counted as a new Entry (only new Entries are send via Email)</source>
+            </trans-unit>
+
+
 		</body>
 	</file>
 </xliff>

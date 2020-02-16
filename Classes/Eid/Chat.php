@@ -1571,14 +1571,14 @@ class Chat {
         if(!$this->user) {
             return sprintf($this->lang->getLL('command_error_user_not_found'), $this->user['uid']);
         }
+        $debug[] = "Ich: " . $this->user['uid'] . " anderer: " . $user['uid'] ;
         $room = $this->db->getLatestPrivateRoomOfUsers($this->user['uid'] , $user['uid']) ;
-
+        $debug[] = "Room: " . $room->uid ;
 
         if ( !$room) {
             $room = $this->_newroom($params , true, $user['uid']) ;
-
+            $debug[] = $room->uid ;
         }
-
         return  $this->_do_invite($user, $room , $params);
 
     }

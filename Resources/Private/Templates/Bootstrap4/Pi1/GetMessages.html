@@ -128,11 +128,19 @@
                     </f:else>
                 </f:if>
 
+                <f:if condition="{extConf.usernameField2}">
+                    <f:then>
+                        <f:variable name="lastName"><f:format.crop maxCharacters="1" append=".">{user.{extConf.usernameField2}}</f:format.crop></f:variable>
+                    </f:then>
+                    <f:else>
+                        <f:variable name="lastName"></f:variable>
+                    </f:else>
+                </f:if>
 
                  <f:if condition="{showFullNames}">
                     <f:then>
-                        <span id="tx-jvchat-msg-{entry.uid}" class="tx-jvchat-link-user" data-content="user-{user.uid}" data-user="{user.uid}" data-username="{user.{extConf.usernameField1}} {user.{extConf.usernameField2}}">
-                            <f:format.raw>{Button}</f:format.raw> {user.{extConf.usernameField1}}<f:if condition="{usernameField2}"> {user.{extConf.usernameField2}}</f:if>
+                        <span id="tx-jvchat-msg-{entry.uid}" class="tx-jvchat-link-user" data-content="user-{user.uid}" data-user="{user.uid}" data-username="{user.{extConf.usernameField1}} {lastName}">
+                            <f:format.raw>{Button}</f:format.raw> {user.{extConf.usernameField1}}<f:if condition="{extConf.usernameField2}"> {lastName}</f:if>
                          </span>
                     </f:then>
                      <f:else>

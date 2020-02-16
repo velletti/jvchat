@@ -236,11 +236,12 @@ class DbRepository {
             ->where(
                 $expr->orX(
                     $expr->eq('owner', $queryBuilder->createNamedParameter(($ownerId) , Connection::PARAM_INT )) ,
-                    $expr->eq('owner', $queryBuilder->createNamedParameter(($userId) , Connection::PARAM_INT ))
+                    $expr->inSet('members' , $queryBuilder->createNamedParameter(($ownerId) , Connection::PARAM_INT ))
+
                 )
             )->andWhere(
                 $expr->orX(
-                    $expr->inSet('members' , $queryBuilder->createNamedParameter(($ownerId) , Connection::PARAM_INT )),
+                    $expr->eq('owner', $queryBuilder->createNamedParameter(($userId) , Connection::PARAM_INT )) ,
                     $expr->inSet('members' , $queryBuilder->createNamedParameter(($userId) , Connection::PARAM_INT ))
                 )
 
@@ -250,6 +251,7 @@ class DbRepository {
             ;
         ;
        // $this->debugQuery($query);
+       // die;
         if ( $row =  $query->execute()->fetch()  ) {
             /** @var Room $room */
             $room = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');

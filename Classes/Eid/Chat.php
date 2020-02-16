@@ -70,7 +70,7 @@ class Chat {
 
     var $extConf;
 
-	function init($user, $charset , $room ) {
+	function init($user, $charset , $room = false ) {
 		// load language files
 		// at this moment it is impossible to modify this via TypoScript
 		//$LLKey = $GLOBALS['TSFE']->config['config']['language'];

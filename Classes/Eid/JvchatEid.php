@@ -34,7 +34,7 @@ header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
 $timer->start('chat');
 /** @var \JV\Jvchat\Eid\Chat $chat */
 $chat = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Eid\\Chat');
-$chat->init($feUserObj, $charset);
+$chat->init($feUserObj, $charset, false);
 print $chat->perform();
 
 

@@ -47,7 +47,7 @@ class MailchatsTask extends AbstractTask
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
         $this->fetchConfiguration() ;
-        $this->logger->debug('TYPO3 jv_mailreturn Fetchbounces Task: after fetch config   ');
+        $this->logger->info('TYPO3 jv_mailreturn Fetchbounces Task: after fetch config   ');
 
         /** @var LockFactory $lockFactory */
         $lockFactory = GeneralUtility::makeInstance(LockFactory::class);
@@ -64,21 +64,26 @@ class MailchatsTask extends AbstractTask
         /** @var \JV\Jvchat\Domain\Repository\DbRepository $db */
         $db = GeneralUtility::makeInstance("JV\\Jvchat\\Domain\\Repository\\DbRepository");
         $db->__construct() ;
-
+        $this->logger->info('TYPO3 jv_mailreturn Fetchbounces Task: after db Construct -  Get Room Eintries from PID: ' . $db->extCONF['pids.']['entries'] );
 
         $rooms = $db->_getRooms($db->extCONF['pids.']['entries']) ;
-        /** @var \JV\Jvchat\Domain\Model\Room $room */
-        foreach ( $rooms  as $room ) {
-            $entries =  $db->getEntrieslastXseconds($room , $this->getAmount() ) ;
-            if ( $entries && count ( $entries ) > 0  )  {
+        if( is_array($rooms)) {
+            $this->logger->info('TYPO3 jv_mailreturn _getRooms :   ' . count($rooms) );
+            /** @var \JV\Jvchat\Domain\Model\Room $room */
+            foreach ( $rooms  as $room ) {
+                $this->logger->info('TYPO3 jv_mailreturn getEntries from :   ' . $room->name . " -> " . $this->getAmount() );
+                $entries =  $db->getEntrieslastXseconds($room , $this->getAmount() ) ;
+                if ( $entries && count ( $entries ) > 0  )  {
+                    $this->logger->info('TYPO3 jv_mailreturn getEntrieslastXseconds : found :  ' . count($entries ) );
+                    $membersToNotify = $db->getFeUsersToNotifyRoom($room);
+                    // $membersToNotify = $db->getFeUsersMayAccessRoom($room);
+                    $chatLib->init( null , "UTF-8" , $room ) ;
+                    $chatLib->sendEmails( $entries , $membersToNotify , $room , true ) ;
+                }
 
-                $membersToNotify = $db->getFeUsersToNotifyRoom($room);
-                // $membersToNotify = $db->getFeUsersMayAccessRoom($room);
-                $chatLib->init( null , "UTF-8" , $room ) ;
-                $chatLib->sendEmails( $entries , $membersToNotify , $room , true ) ;
             }
-
         }
+
         $locker->release();
         return true;
     }

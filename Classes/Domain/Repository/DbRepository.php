@@ -260,7 +260,11 @@ class DbRepository {
         }
         return false ;
     }
-	
+
+    /**
+     * @param Room $room
+     * @return int|string
+     */
 	function createNewRoom($room) {
 		$data = $room->toArray();
 		$data['crdate'] = time();

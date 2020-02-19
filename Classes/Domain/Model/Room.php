@@ -174,7 +174,7 @@ class Room {
 	var $private;
 	
 	var $members;
-	var $notifyme;
+	var $notifyme = '' ;
 
 	var $page;
 	

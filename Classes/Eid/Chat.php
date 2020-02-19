@@ -1550,6 +1550,7 @@ class Chat {
 		$newRoom->mode = $this->room->mode;
 		$newRoom->bannedusers = $this->room->bannedusers;
 		$newRoom->members = $members ;
+		$newRoom->notifyme = $this->user['uid']  ;
 		$newRoom->image = '';
 		$newRoom->maxusercount = $this->room->maxusercount;
 

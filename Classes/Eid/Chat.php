@@ -1075,8 +1075,10 @@ class Chat {
     function _email()
     {
         $entries = $this->db->getEntrieslastXseconds($this->room, 60 * 60 * 24, TRUE, TRUE);
+
         $members = $this->db->getFeUsersMayAccessRoom($this->room);
-        $this->sendEmails( $entries , $members , $this->room) ;
+        return $this->sendEmails( $entries , $members , $this->room) ;
+
     }
 
     /**

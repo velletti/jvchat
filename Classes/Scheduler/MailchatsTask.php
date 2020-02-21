@@ -16,6 +16,8 @@ class MailchatsTask extends AbstractTask
     private $amount = 300;
 
 
+    /** @var string email Address if set, debug output will be sent  */
+    private $debugmail = '';
 
     /** @var  Logger */
     protected $logger;
@@ -24,6 +26,7 @@ class MailchatsTask extends AbstractTask
     {
 
         $this->amount = (int) $this->amount;
+        $this->debugmail = trim( $this->debugmail) ;
         // response: skipCertValidation hinzugefügt
 
         return true;
@@ -44,6 +47,7 @@ class MailchatsTask extends AbstractTask
     public function execute()
     {
         $startTime = time() ;
+        $debug[] = date("d.m.Y H:i:s") . " Started" ;
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
         $this->fetchConfiguration() ;
@@ -64,24 +68,32 @@ class MailchatsTask extends AbstractTask
         /** @var \JV\Jvchat\Domain\Repository\DbRepository $db */
         $db = GeneralUtility::makeInstance("JV\\Jvchat\\Domain\\Repository\\DbRepository");
         $db->__construct() ;
-        $this->logger->notice('TYPO3 jv_mailreturn Fetchbounces Task: after db Construct -  Get Room Eintries from PID: ' . $db->extCONF['pids.']['entries'] );
 
         $rooms = $db->_getRooms($db->extCONF['pids.']['entries']) ;
+        $debug[] = date("d.m.Y H:i:s") . " Got Rooms " ;
         if( is_array($rooms)) {
-            $this->logger->notice('TYPO3 jv_mailreturn _getRooms :   ' . count($rooms) );
+            $debug[] = date("d.m.Y H:i:s") . " # of rooms:  " . count($rooms) ;
             /** @var \JV\Jvchat\Domain\Model\Room $room */
             foreach ( $rooms  as $room ) {
-                $this->logger->notice('TYPO3 jv_mailreturn getEntries from :   ' . $room->name . " -> " . $this->getAmount() );
+                $debug[] = date("d.m.Y H:i:s") . " getEntries from of rooms:  " . $room->name . " -> new since " . date( "d.m.Y H:i:s" , Time() - $this->getAmount() )  ;
                 $entries =  $db->getEntrieslastXseconds($room , $this->getAmount() ) ;
                 if ( $entries && count ( $entries ) > 0  )  {
-                    $this->logger->notice('TYPO3 jv_mailreturn getEntrieslastXseconds : found :  ' . count($entries ) );
+                    $debug[] = date("d.m.Y H:i:s") . " # of Entries :  " .count( $entries )  ;
                     $membersToNotify = $db->getFeUsersToNotifyRoom($room);
                     // $membersToNotify = $db->getFeUsersMayAccessRoom($room);
                     $chatLib->init( null , "UTF-8" , $room ) ;
+
                     $chatLib->sendEmails( $entries , $membersToNotify , $room , true ) ;
                 }
 
             }
+        }
+        if( GeneralUtility::validEmail( trim( $this->getDebugmail()) ) ) {
+            /** @var \Velletti\Mailsignature\Service\SignatureService $mailService */
+            $mailService = GeneralUtility::makeInstance("Velletti\\Mailsignature\\Service\\SignatureService");
+            $params['user']['email'] = trim( $this->getDebugmail());
+            $params['message'] = "Debug Output " . implode(" <br>\n" , $debug ) ;
+            $mailService->sentHTMLmailService($params) ;
         }
 
         $locker->release();
@@ -111,6 +123,24 @@ class MailchatsTask extends AbstractTask
     {
         $this->amount = $amount;
     }
+
+    /**
+     * @return string
+     */
+    public function getDebugmail()
+    {
+        return $this->debugmail;
+    }
+
+    /**
+     * @param string $debugmail
+     */
+    public function setDebugmail($debugmail)
+    {
+        $this->debugmail = $debugmail;
+    }
+
+
 
 
 

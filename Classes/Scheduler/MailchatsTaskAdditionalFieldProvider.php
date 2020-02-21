@@ -30,7 +30,7 @@ class MailchatsTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
      * Gets additional fields to render in the form to add/edit a task
      *
      * @param array $taskInfo Values of the fields from the add/edit task form
-     * @param \JVE\JvMailreturn\Scheduler\FetchBouncesTask $task The task object being edited. NULL when adding a task!
+     * @param \JV\Jvchat\Scheduler\MailchatsTask $task The task object being edited. NULL when adding a task!
      * @param SchedulerModuleController $schedulerModule Reference to the scheduler backend module
      * @return array A two dimensional array, array('Identifier' => array('fieldId' => array('code' => '', 'label' => '', 'cshKey' => '', 'cshLabel' => ''))
      */
@@ -39,12 +39,14 @@ class MailchatsTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
 
         if ($schedulerModule->CMD === 'edit') {
             $taskInfo['IndexerAmount'] = $task->getAmount();
+            $taskInfo['IndexerDebugmail'] = $task->getDebugmail();
         }
         $additionalFields = array() ;
 
 
 
         $additionalFields = $this->generateFormField($additionalFields , "Amount" , "text" , $taskInfo ) ;
+        $additionalFields = $this->generateFormField($additionalFields , "Debugmail" , "text" , $taskInfo ) ;
 
 
 
@@ -122,12 +124,13 @@ class MailchatsTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
     {
         if (!$task instanceof AbstractTask ) {
             throw new \InvalidArgumentException(
-                'Expected a task of type \JVE\JvMailreturn\Scheduler\FetchBouncesTask, but got ' . get_class($task),
+                'Expected a task of type \JV\Jvchat\Scheduler\MailchatsTask, but got ' . get_class($task),
                 1329219449
             );
         }
 
         $task->setAmount($submittedData['IndexerAmount']);
+        $task->setDebugmail($submittedData['IndexerDebugmail']);
 
 
     }

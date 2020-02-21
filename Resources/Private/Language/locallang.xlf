@@ -398,7 +398,9 @@
              <trans-unit id="indexerTask_Amount">
                 <source>Amount in seconds that a chat entries is counted as a new Entry (only new Entries are send via Email)</source>
             </trans-unit>
-
+             <trans-unit id="indexerTask_Debugmail">
+                <source>Email receiver . If set, this will get debug infos via Email on each run</source>
+            </trans-unit>
 
 		</body>
 	</file>

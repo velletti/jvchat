@@ -91,7 +91,12 @@ class MailchatsTask extends AbstractTask
         if( GeneralUtility::validEmail( trim( $this->getDebugmail()) ) ) {
             /** @var \Velletti\Mailsignature\Service\SignatureService $mailService */
             $mailService = GeneralUtility::makeInstance("Velletti\\Mailsignature\\Service\\SignatureService");
+            $params = array() ;
+            $params['email_fromName'] = "Debug Tangomuenchen";
+            $params['email_from'] = "info@tangomuenchen.de";
             $params['user']['email'] = trim( $this->getDebugmail());
+            $params['sendCCmail'] = false  ;
+
             $params['message'] = "Debug Output " . implode(" <br>\n" , $debug ) ;
             $mailService->sentHTMLmailService($params) ;
         }

@@ -1091,12 +1091,14 @@ class Chat {
     function sendEmails($entries , $members , $room , $sendall=false ) {
 
         $entryCount =  count($entries)  ;
+        $server = trim( GeneralUtility::getIndpEnv('TYPO3_SITE_URL') , "/" ) ;
+
         if( is_array($members)) {
             $memberCount = count( $members) ;
         }
         if ( $entryCount && $memberCount > 0 ) {
 
-            $params['message'] = "Neue Chat Nachrichten " . GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY') . " - " .  $room->name;
+            $params['message'] = "Neue Chat Nachrichten " . $server. " -> " .  $room->name;
             $params['message'] .= "\n" ;
             $params['message'] .= "Room: #" . $room->uid . " " . $room->name;
             $params['message'] .= "\n" ;
@@ -1105,7 +1107,8 @@ class Chat {
 
             $params['message'] .= "<hr>" . $this->getEntryTextForEmail( $entries , $room ) ;
 
-            $params['message'] .=  " \n" . GeneralUtility::getIndpEnv('TYPO3_SITE_URL') . "/index.php?id=" . $this->env['pid']
+
+            $params['message'] .=  " \n" . $server . "/index.php?id=" . $this->env['pid']
                 . "&tx_jvchat_pi1[uid]=" .$this->room->uid . "&tx_jvchat_pi1[view]=chat ";
             $params['message'] .= " \n" ;
             $params['email_from'] = "noreply@tangomuenchen.de" ;

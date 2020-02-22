@@ -47,7 +47,8 @@ class MailchatsTask extends AbstractTask
     public function execute()
     {
         $startTime = time() ;
-        $debug[] = date("d.m.Y H:i:s") . " Started" ;
+        $debug = array() ;
+        $debug[] = date("d.m.Y H:i:s") . " Started on Server "  . "https://" . $_SERVER['SERVER_NAME'] ;
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
         $this->fetchConfiguration() ;

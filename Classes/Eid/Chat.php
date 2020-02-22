@@ -1093,14 +1093,14 @@ class Chat {
         $entryCount =  count($entries)  ;
         $server = trim( GeneralUtility::getIndpEnv('TYPO3_SITE_URL') , "/" ) ;
         $server = "https://" . $_SERVER['SERVER_NAME']  ;
-        if ( $server== "https://" || $server == "SERVER_NAME"  ) {
+        if ( $server == "https://" || $server == "SERVER_NAME" ||  $_SERVER['SERVER_NAME']  == ''  ) {
             // needed for PHP running via SSh on console !
             $tempArr = explode("/" , $_SERVER['HOME']) ;
             $server = $tempArr[ count( $tempArr) - 1 ] ;
-            // will be set to 'connect', 'connect-dev' ..
+            // will be set to last part of path '91736_81673'
         }
 // needed for cronobs to set the Server name
-        if ( $server == "91736_81673" ) {
+        if ( $server == "91736_81673" || $server == "" ) {
             $server  = "https://www.tangomuenchen.de" ;
         }
 

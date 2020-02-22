@@ -71,6 +71,8 @@ class MailchatsTask extends AbstractTask
 
         $rooms = $db->_getRooms($db->extCONF['pids.']['entries']) ;
         $debug[] = date("d.m.Y H:i:s") . " Got Rooms " ;
+        // needed becaues Chat Lib will not send emails to current $this->user['email']
+        $chatLib->user['email'] = "_cli_Dummy@typo3.xy" ;
         if( is_array($rooms)) {
             $debug[] = date("d.m.Y H:i:s") . " # of rooms:  " . count($rooms) ;
             /** @var \JV\Jvchat\Domain\Model\Room $room */

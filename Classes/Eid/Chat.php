@@ -1092,6 +1092,7 @@ class Chat {
 
         $entryCount =  count($entries)  ;
         $server = trim( GeneralUtility::getIndpEnv('TYPO3_SITE_URL') , "/" ) ;
+        $server = "https://" . $_SERVER['SERVER_NAME']  ;
 
         if( is_array($members)) {
             $memberCount = count( $members) ;

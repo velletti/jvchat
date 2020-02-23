@@ -48,7 +48,9 @@ class MailchatsTask extends AbstractTask
     {
         $startTime = time() ;
         $debug = array() ;
-        $debug[] = date("d.m.Y H:i:s") . " Started on Server "  . "https://" . $_SERVER['SERVER_NAME'] ;
+
+        $debug[] = date("d.m.Y H:i:s") . " Started on Server "  . "https://" . $baseUrl ;
+
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
         $this->fetchConfiguration() ;
@@ -66,6 +68,8 @@ class MailchatsTask extends AbstractTask
         }
         /** @var \JV\Jvchat\Eid\Chat $chatLib */
         $chatLib = GeneralUtility::makeInstance("JV\\Jvchat\\Eid\\Chat");
+        $baseUrl = $chatLib->setBaseUrl() ;
+
         /** @var \JV\Jvchat\Domain\Repository\DbRepository $db */
         $db = GeneralUtility::makeInstance("JV\\Jvchat\\Domain\\Repository\\DbRepository");
         $db->__construct() ;
@@ -86,7 +90,7 @@ class MailchatsTask extends AbstractTask
                     // $membersToNotify = $db->getFeUsersMayAccessRoom($room);
                     $chatLib->init( null , "UTF-8" , $room ) ;
 
-                    $chatLib->sendEmails( $entries , $membersToNotify , $room , true ) ;
+                    $chatLib->sendEmails( $entries , $membersToNotify , $room , true , $baseUrl ) ;
                 }
 
             }

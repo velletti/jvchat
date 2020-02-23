@@ -1082,27 +1082,19 @@ class Chat {
     }
 
     /**
-     * @param array  $entries elements of type  \JV\Jvchat\Domain\Model\Entry
+     * @param array $entries elements of type  \JV\Jvchat\Domain\Model\Entry
      * @param array $members type Users
-     * @param \JV\Jvchat\Domain\Model\Room  $room
+     * @param \JV\Jvchat\Domain\Model\Room $room
+     * @param bool $sendall if false, do not check if currenct login user is post author
+     * @param string $baseUrl  servername with protocol lke https:// without trailing "/"
      * @return string
      * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
      */
-    function sendEmails($entries , $members , $room , $sendall=false ) {
+    function sendEmails($entries , $members , $room , $sendall=false , $baseUrl = '' ) {
 
         $entryCount =  count($entries)  ;
-        $server = trim( GeneralUtility::getIndpEnv('TYPO3_SITE_URL') , "/" ) ;
-        $server = "https://" . $_SERVER['SERVER_NAME']  ;
-        if ( $server == "https://" || $server == "SERVER_NAME" ||  $_SERVER['SERVER_NAME']  == ''  ) {
-            // needed for PHP running via SSh on console !
-            $tempArr = explode("/" , $_SERVER['HOME']) ;
-            $server = $tempArr[ count( $tempArr) - 1 ] ;
-            // will be set to last part of path '91736_81673'
-        }
-// needed for cronobs to set the Server name
-        if ( $server == "91736_81673" || $server == "" ) {
-            $server  = "https://www.tangomuenchen.de" ;
-        }
+        $server = $this->setBaseUrl($baseUrl) ;
+
 
         if( is_array($members)) {
             $memberCount = count( $members) ;
@@ -1158,6 +1150,50 @@ class Chat {
                 return '<div class="tx-jvchat-cmd-error">No Room Entries Found in last 24 hours. Please Write something before you send email</div>' ;
             }
         }
+    }
+
+    /**
+     * @param string $baseUrl   An URL taht should get testet if it has http:/ and looks like an URL
+     * @return bool
+     */
+    function checkBaseUrl($baseUrl) {
+        if ( substr( $baseUrl, 0,4 ) == 'http'    // must start with http: or https: to be used as URL base for images and Links
+            && strlen($baseUrl)  > 11    // at least it must be like http://ab.xy
+            && substr_count( $baseUrl , "." ) > 0     // avoud wrong Hostname if PHP runs  CLI  mode
+            && filter_var( $baseUrl, FILTER_VALIDATE_URL   ) ) {
+            return true ;
+        }
+        return false ;
+    }
+    /**
+     * @param string $baseUrl
+     * @return string
+     */
+    function setBaseUrl($baseUrl) {
+        if ( $this->checkBaseUrl($baseUrl) ) {  return $baseUrl ;
+        }
+        $baseUrl = trim( GeneralUtility::getIndpEnv('TYPO3_SITE_URL') , "/" ) ;
+        if ( $this->checkBaseUrl($baseUrl) ) {  return $baseUrl ;         }
+
+        $baseUrl = "https://" . $_SERVER['SERVER_NAME']  ;
+        if ( $this->checkBaseUrl($baseUrl) ) {  return $baseUrl ;         }
+
+        // needed for PHP running via SSh on console !
+        $tempArr = explode("/" , $_SERVER['HOME']) ;
+        $server = $tempArr[ count( $tempArr) - 1 ] ;
+
+        // needed for cronobs to set the Server name
+        if ( $server == "91736_81673" || $server == "" ) {
+            return "https://www.tangomuenchen.de" ;
+        }
+        // needed for cronobs to set the Server name
+        if ( susbstr( $server, 0 , 6 )  == "connect" ) {
+            return "https://" . $server . ".allplan.com";
+        }
+
+        // maybe other tricks to get a cool base URL ..
+
+        return $baseUrl ;
     }
 	function _help($params) {
 

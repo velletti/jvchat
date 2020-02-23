@@ -1111,17 +1111,18 @@ class Chat {
             $params['message'] .= "<hr>" . $this->getEntryTextForEmail( $entries , $room ) ;
 
 
-            $params['message'] .=  " \n" . $server . "/index.php?id=" . $this->env['pid']
+            $link =  "<hr> \n" . $server . "/index.php?id=" . $this->env['pid']
                 . "&tx_jvchat_pi1[uid]=" .$this->room->uid . "&tx_jvchat_pi1[view]=chat ";
-            $params['message'] .= " \n" ;
+            $params['message'] .=  " \n<a href=\""  .$link . "\"> " . $link . "</a>\n" ;
+
+            $params['message'] .= " <hr>\n" ;
             $params['email_from'] = "noreply@tangomuenchen.de" ;
             $params['email_fromName'] = "TangoMünchen" ;
             $params['sendCCmail'] = false  ;
 
             /** @var \Velletti\Mailsignature\Service\SignatureService $mailService */
             $mailService = GeneralUtility::makeInstance("Velletti\\Mailsignature\\Service\\SignatureService");
-            $signatur = $mailService->getSignature() ;
-            $params['message'] .= $signatur['html'] ;
+            $params['signatureId'] = 1 ;
             $memberCount = 0 ;
 
 

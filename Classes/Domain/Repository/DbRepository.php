@@ -120,6 +120,8 @@ class DbRepository {
             /** @var Room $room */
             $room = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
             $room->fromArray($row);
+            // set correct Value if notificaton is enabled for this user
+            $room->setNotifyMe($userId);
             $rooms[] = $room;
             unset($room) ;
         }
@@ -562,6 +564,7 @@ class DbRepository {
         /** @var Room $room */
         $room = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
         $room->fromArray($row);
+
         return $room;
 
 	}

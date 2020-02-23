@@ -1062,7 +1062,7 @@ class Chat {
     }
 
     function _notifyme() {
-        if (  GeneralUtility::inList($this->room->notifyme , $this->user['uid'] ) ) {
+        if ( GeneralUtility::inList($this->notifyme , $this->user['uid'] ) ) {
             $this->db->removeNotifymeToRoom($this->room , $this->user['uid'] ) ;
             return '<div class="tx-jvchat-cmd-success">' . $this->lang->getLL( 'command_notifyme_disabled')  . ' </div>' ;
         } else {

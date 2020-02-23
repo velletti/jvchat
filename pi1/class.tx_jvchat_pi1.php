@@ -106,9 +106,22 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
             $this->db->changeRoomMembership( $room , $this->user['uid'] , "members" , false  ) ;
             $this->db->changeRoomMembership( $room , $this->user['uid'] , "owner" , false  ) ;
 		}
+        if( $this->piVars['notifyRoom'] ) {
+            $roomId = intval( $this->piVars['notifyRoom'] )  ;
+            if(!$room = $this->db->getRoom($roomId)) {
+                return $this->displayErrorMessage($this->pi_getLL('error_room_not_found'), $this->conf['views.']['chat.']['stdWrap.']);
+            }
+            if(!LibUtility::checkAccessToRoom($room, $this->user)) {
+                return $this->displayErrorMessage($this->pi_getLL('access_denied'));
+            }
+            $room->setNotifyMe($this->user['uid']);
+            $newMode =  ( $room->isNotifyMeEnabled ? false : true )  ;
+
+            $this->db->changeRoomMembership( $room , $this->user['uid'] , "notifyme"  , $newMode ) ;
+        }
 
 
-		if($action = $this->piVars['action']) {
+        if($action = $this->piVars['action']) {
             switch($action) {
                 case 'delete':
                     $content = $this->deleteEntry($this->piVars['entryId']);

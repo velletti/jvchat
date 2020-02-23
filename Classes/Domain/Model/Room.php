@@ -3,6 +3,8 @@ namespace JV\Jvchat\Domain\Model;
 
 // was class tx_jvchat_room
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 class Room {
 
 	function __construct() {
@@ -80,6 +82,10 @@ class Room {
 
 		return $theValue;
 	}
+
+	function setNotifyMe( $user ) {
+        $this->isNotifyMeEnabled = GeneralUtility::inList( $this->notifyme , $user ) ;
+    }
 
 	function isExpertMode() {
 		return ($this->mode == 1);
@@ -183,6 +189,11 @@ class Room {
 	var $enableEmoticons;
 	var $enableTime;
 	var $imageUpload ;
+
+    /**
+     * boolean
+     */
+	var $isNotifyMeEnabled = false ;
 
 /*	function getModeratorIDs() {
 		$moderators = array();

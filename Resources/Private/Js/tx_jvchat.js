@@ -139,11 +139,27 @@ function tx_jvchat_pi1_js_chat() {
 
 		// get userlist
 		this.getUserlist();
+		this.handleImageUpload();
 
 
 
 	}
 
+	this.handleImageUpload = function(){
+		if (jQuery('#chat-uploaded-file')) {
+			jQuery('#chat-uploaded-file').fileupload({
+				url: jQuery('#tx-jvchat-config').data('scripturl') + "&a=pi&r=" + this.roomId ,
+				dataType: 'json',
+
+				start: function() {
+					showSpinner() ;
+				},
+				always: function(e) {
+					hideSpinner() ;
+				},
+			});
+		}
+	}
 
 	var handleAjaxError = function(t) {
 		alert('Error ' + t.status + ' -- ' + t.statusText);
@@ -915,7 +931,7 @@ function tx_jvchat_pi1_js_chat() {
 				cache:      true,
 				data:       '',
 				beforeSend:	function() {
-					jQuery("#wrap").before("<div id=\"tx-jvchat-bigimageLayer\" onclick=\"chat_instance.hideChatImg();\" style=\"position:absolute; display:block;height:100%; width:100%; background: rgba(183,183,183,0.7); z-index: 900;\"></div>")
+					jQuery("#mainContent").before("<div id=\"tx-jvchat-bigimageLayer\" onclick=\"chat_instance.hideChatImg();\" style=\"position:absolute; display:block;height:100%; width:100%; background: rgba(183,183,183,0.7); z-index: 900;overflow: auto\"></div>")
 
 					jQuery("#tx-jvchat-bigimageLayer").css("position", "absolute");
 

@@ -237,7 +237,15 @@ a.tx-jvchat-actionlink:hover {
     color: darken( $jvchat-textColor , 20% );
     text-decoration: underline;
 }
-
+.tx-jvchat-entry-text img.tx-jvchat-img {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+}
+img#tx-jvchat-bigimage {
+    max-width: 100%;
+    height: auto;
+}
 
 /* HELP AND COMMAND OUTPUT */
 

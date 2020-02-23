@@ -34,6 +34,8 @@ namespace JV\Jvchat\Eid;
  */
  
 use \JV\Jvchat\Utility\LibUtility;
+use TYPO3\CMS\Core\Imaging\ImageMagickFile;
+use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 
@@ -475,10 +477,159 @@ class Chat {
             case 'del':
                 return $this->deleteEntry($this->env['uid']);
                 break;
+            case 'pi':
+                return $this->postImage();
+                break;
 		}
         return '' ;
 	}
 
+    function postImage() {
+        $types = 'jpg,jpeg,gif,png';
+        $typesMeta = 'image/jpeg,image/jpg,image/gif,image/png';
+        $maxSize = 10485760 ;
+	    $server = $this->setBaseUrl('') ;
+        $uploadDir = "/uploads/tx_jvchat/" ;
+        $fileArray = $_FILES['tx_chat'];
+
+
+        if ($fileArray['size']['uploaded'] > $maxSize) {
+            return " " . $fileArray['size']['uploaded'] . " > " . $maxSize ;
+        }
+        $fileInfo = pathinfo($fileArray['name']['uploaded']);
+        if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($types, strtolower($fileInfo['extension']))) {
+            return $fileInfo['extension'] . " Type not allowed " ;
+        }
+        if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($typesMeta, strtolower($fileArray['type']['uploaded']))) {
+            return $fileInfo['type']['uploaded'] . " Meta Type not allowed " ;
+        }
+
+        // +++ 2014 j.v. : add user uid to path as subfolder !
+        $pathSite = (class_exists('TYPO3\\CMS\\Core\\Core\\Environment') ? (\TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/') : PATH_site) ;
+        if (! is_dir ( $pathSite . $uploadDir  )) {
+            mkdir( $pathSite . $uploadDir  ) ;
+            $handle = fopen($pathSite . $uploadDir . "/index.html" , "w") ;
+            if ( $handle) {
+                fputs( $handle , "<html><head><title>no direct access</title></head><body>nodirect access</body></html>") ;
+            }
+            fclose( $handle) ;
+        }
+        $uploadDir .= date("Y-m") ;
+        if (! is_dir ( $pathSite . $uploadDir  )) {
+            mkdir( $pathSite . $uploadDir  ) ;
+            $handle = fopen($pathSite . $uploadDir . "/index.html" , "w") ;
+            if ( $handle) {
+                fputs( $handle , "<html><head><title>no direct access</title></head><body>nodirect access</body></html>") ;
+            }
+            fclose( $handle) ;
+        }
+        if (! is_dir ( $pathSite . $uploadDir . "/thumbnail" )) {
+            mkdir( $pathSite . $uploadDir . "/thumbnail"  ) ;
+            $handle = fopen($pathSite . $uploadDir . "/index.html" , "w") ;
+            if ( $handle) {
+                fputs( $handle , "<html><head><title>no direct access</title></head><body>nodirect access</body></html>") ;
+            }
+            fclose( $handle) ;
+        }
+        $uploadDir .= "/" ;
+
+        $destinationFileName = $this->cleanFileName($fileArray['name']['uploaded']);
+        if (\TYPO3\CMS\Core\Utility\GeneralUtility::upload_copy_move($fileArray['tmp_name']['uploaded'], $pathSite . $uploadDir . $destinationFileName)) {
+
+            $originalFileName = $uploadDir . $destinationFileName ;
+            $targetFilePath = $uploadDir . "thumbnail/" . $destinationFileName ;
+
+            $arguments = CommandUtility::escapeShellArguments([
+                'width' => '200',
+                'height' => '150' ,
+            ]);
+            $parameters = '-sample ' . $arguments['width'] . 'x' . $arguments['height']
+                . ' ' . ImageMagickFile::fromFilePath($pathSite . $originalFileName, 0)
+                . ' ' . CommandUtility::escapeShellArgument($pathSite . $targetFilePath);
+
+            $cmd = CommandUtility::imageMagickCommand('convert', $parameters) . ' 2>&1';
+            CommandUtility::exec($cmd);
+
+
+            $answer = array("meta" => array( "success" => true ) ,
+                          "files" => array(
+                                "name" => $destinationFileName ,
+                                "size"=> $fileArray['size']['uploaded'] ,
+                                "url"=>  $originalFileName ,
+                                "thumbnailUrl"=>  $targetFilePath
+                            )
+            ) ;
+            $this->putMessage( "[img=" .$answer['files']['url'] . "]" . $targetFilePath . "[/img]", $this->lastMessageId) ;
+
+        } else {
+            $answer = false ;
+        }
+        $this->showArrayAsJson($answer) ;
+
+
+    }
+
+    /**
+     * Cleans a filename
+     * @author pbenke
+     * @param $filename
+     * @return mixed
+     */
+    protected function cleanFileName($filename) {
+
+        $fileInfo = pathinfo($filename);
+
+        $pattern = array(
+            "|Ä|",
+            "|Ö|",
+            "|Ü|",
+            "|ä|",
+            "|ö|",
+            "|ü|",
+            "|ß|",
+            # "|[^-a-zA-Z0-9.+]|"
+            "|[^-a-zA-Z0-9+]|" // everything but "-" and letters and numbers
+        );
+
+        $replace = array (
+            "Ae",
+            "Oe",
+            "Ue",
+            "ae",
+            "oe",
+            "ue",
+            "ss",
+            "_"
+        );
+
+        $filename = preg_replace($pattern, $replace, $fileInfo['filename']) . '-' . time() . '.' . $fileInfo['extension'];
+
+        return $filename;
+
+    }
+
+    /**
+     * @param $output
+     */
+    public function showArrayAsJson($output) {
+        $jsonOutput = json_encode($output);
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
+        header('Cache-Control: no-cache, must-revalidate');
+        header('Pragma: no-cache');
+        header('Content-Length: ' . strlen($jsonOutput));
+        header('Content-Type: application/json; charset=utf-8');
+        header('Content-Transfer-Encoding: 8bit');
+
+        $callbackId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP("callback");
+        if ( $callbackId == '' ) {
+            echo $jsonOutput;
+        } else {
+            echo $callbackId . "(" . $jsonOutput . ")";
+        }
+
+        die();
+    }
 
     function deleteEntry($entryId) {
         // check rights
@@ -1188,7 +1339,7 @@ class Chat {
             return "https://www.tangomuenchen.de" ;
         }
         // needed for cronobs to set the Server name
-        if ( susbstr( $server, 0 , 6 )  == "connect" ) {
+        if ( substr( $server, 0 , 6 )  == "connect" ) {
             return "https://" . $server . ".allplan.com";
         }
 

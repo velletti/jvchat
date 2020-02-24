@@ -1,6 +1,6 @@
 {
     "name": "velletti/jvchat",
-    "description": "The jvchat compatible for TYPO3 LTS 8 and 9 ",
+    "description": "jv chat , made vjchat compatible for TYPO3 LTS 8 and 9 ",
     "type": "typo3-cms-extension",
     "non-feature-branches": ["development"],
     "support": {

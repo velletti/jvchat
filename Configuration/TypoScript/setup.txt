@@ -574,10 +574,10 @@ includeLibs.jvchat = EXT:jvchat/pi1/class.tx_jvchat_userFunctions.php
 
 page {
 	includeJSFooter {
-		jquery_chat = /typo3conf/ext/jvchat/Resources/Public/Js/tx_jvchat.min.js
+#		jquery_chat = /typo3conf/ext/jvchat/Resources/Public/Js/tx_jvchat.min.js
 	}
     includeCSS {
-		jvchat = EXT:jvchat/Resources/Public/Css/jvchat.min.css
+#		jvchat = EXT:jvchat/Resources/Public/Css/jvchat.min.css
 
 	}
 }

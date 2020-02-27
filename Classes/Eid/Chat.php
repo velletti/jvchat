@@ -1283,7 +1283,7 @@ class Chat {
                         if( $member['email'] && GeneralUtility::validEmail($member['email'])) {
                             $params['user']['email'] = $member['email'] ;
                             $memberCount++ ;
-                            $mailService->sentHTMLmailService($params) ;
+                            $mailService->sentHTMLmailService($params ) ;
                         }
                     }
 
@@ -1400,30 +1400,32 @@ class Chat {
             $group = false ;
             foreach($emoticons as $key => $icon ) {
                 if( $icon['hideInHelp']) {
+                    $group = trim( $icon['group'] );
                     continue ;
                 }
                 if( strlen($param) > 0 ) {
                     if( strtolower( trim($param)) != trim( $icon['group'])) {
+                        $group = trim( $icon['group'] );
                         continue ;
                     }
                 }
 
-                if( !$group || trim( $icon['group']) != $group ) {
-                    $group = $icon['group'] ;
-                    $out .="<br ><br style=\"clear:both;\"><b onClick=\"javascript:chat_instance.insertCommand('/smilies " . $icon['group'] .  "');\">/smilies " . $icon['group']. "</b><br>";
+                if( $group && trim( $icon['group']) != $group ) {
+                    $out .="<br ><br style=\"clear:both;\" />" ;
+
+                }
+                if(  trim( $icon['group']) != $group ) {
+                    $out .= "<b onClick=\"javascript:chat_instance.insertCommand('/smilies " . $icon['group'] . "');\">/smilies " . $icon['group'] . "</b><br>";
                 }
                 $out .= '<span class="tx-jvchat-cmd-smiley">';
-                    $out .= '<span class="tx-jvchat-cmd-smileys-image chatIconColor " onClick="javascript:chat_instance.insertCommand(\'' . $icon['code'] .  '\');" >'.LibUtility::formatMessageEmoji($icon).'</span>';
+                    $out .= '<span class="tx-jvchat-cmd-smileys-image chatIconColor " onClick="javascript:chat_instance.insertCommand(\'' . $icon['code'] .  '\');" > '.LibUtility::formatMessageEmoji($icon).'</span>';
                     $out .= '<span class="tx-jvchat-cmd-smileys-text">'.$icon['code'].'</span>';
                 $out .= '</span>';
-                if(trim( $icon['group']) != $group ) {
-                    $out = $out.'<br style="clear:both;" />';
-                }
-                $group = $icon['group'] ;
+                $group = trim( $icon['group'] ) ;
 
             }
 
-            $out = '<div class="tx-jvchat-cmd-smileys">'.$out.'<br></div>';
+            $out = '<div class="tx-jvchat-cmd-smileys">'.$out.'<br style="clear:both;" /></div>';
 
             return $out;
 		}

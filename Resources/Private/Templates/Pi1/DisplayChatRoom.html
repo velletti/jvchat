@@ -89,6 +89,11 @@
                                         <i class="fas fa-smile" id="tx-jvchat-button-smilies" onClick="javascript:chat_instance.toggleEmoticons();" title="{f:translate(key: 'chatbutton.smilies_on')}"></i>
                                     </span>
                                 </f:if>
+                                <f:if condition="{room.private}">
+                                    <span class="{settings.emoticonBtnClass} chatIconColor">
+                                        <i class="fas fa-envelope" id="tx-jvchat-button-email" onClick="javascript:chat_instance.sendMessage('/email');" title="{f:translate(key: 'chatbutton.email')}"></i>
+                                    </span>
+                                </f:if>
                                 <f:if condition="{extConf.enableStartStop}">
                                     <span class="{settings.emoticonBtnClass}">
                                         <i class=" fas fa-play" style="display:none" id="tx-jvchat-button-start-on" onClick="javascript:chat_instance.chat_instance.start();" title="{f:translate(key: 'chatbutton.start')}"></i>

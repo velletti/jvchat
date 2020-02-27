@@ -14,12 +14,20 @@
                     <f:if condition="{entry.tofeuserid}">
                         <f:then>
                             <f:comment><!-- Private message From User To User --> </f:comment>
-                            <f:if condition="{involved} && {entry.tofeuserid} == {user.uid}">
+                            <f:if condition="{involved}">
                                 <div class="tx-jvchat-private">
                                     <div class="tx-jvchat-hidden" id="tx-jvchat-entry-{entry.uid}">
-                                        Private Msg for: {entry.tofeuserid}:{user2Name}<br>
+                                        <f:if condition="{entry.tofeuserid} == {user.uid}">
+                                            <f:then>
+                                                    Private Msg from: {userName}<br>
+                                            </f:then>
+                                            <f:else>
+                                                    Private Msg to: {entry.tofeuserid}:{user2Name}<br>
+                                            </f:else>
+                                        </f:if>
                                         <f:render section="message" arguments="{_all}"></f:render>
                                     </div>
+
                                 </div>
                             </f:if>
 
@@ -83,6 +91,9 @@
 
                 </div>
             </div>
+            <f:if condition="{ownMsg}">
+                <div class="clearfix">&nbsp;</div>
+            </f:if>
         </f:spaceless>
     </f:format.raw>
 </f:section>
@@ -136,6 +147,9 @@
                     </f:else>
                 </f:if>
             </f:then>
+            <f:else>
+                system
+            </f:else>
         </f:if>
     </f:spaceless>
 </f:section>

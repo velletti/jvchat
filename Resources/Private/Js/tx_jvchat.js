@@ -689,7 +689,7 @@ function tx_jvchat_pi1_js_chat() {
 
 			if( this.allowPrivateRooms ) {
 				$('#userid-' + id + " .tx-jvchat-pr-link").bind("click", function(evt) {
-					var name = self.talkToNewRoomName.replace(/\%s/, username) + " - " + self.usernameSelf;
+					var name = self.talkToNewRoomName.replace(/\%s/, username) ;
 					var command = "/talkTo #"+id+" "+name ;
 					self.sendMessage(command);
 				});
@@ -852,7 +852,7 @@ function tx_jvchat_pi1_js_chat() {
 					if ( jQuery("#tx-jvchat-button-imageForm").parent()) {
 						jQuery("#tx-jvchat-button-imageForm").parent().remove();
 					}
-					jQuery("#tx-jvchat-button-image").after("<img id=\"tx-jvchat-button-imageLoad\" src=\"/fileadmin/templates_2015/img/loading.gif\" alt=\"loading...\" style='height:27px; width:27px;'></div>");
+					jQuery("#tx-jvchat-button-image").after("<span  id='tx-jvchat-button-imageLoad' class='fa fa-spinner fa-spin' />");
 					jQuery("#tx-jvchat-button-image").addClass('hide');
 					jQuery("DIV.tx-community-pi1").remove();
 					tx_jvchat_resize() ;

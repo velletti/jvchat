@@ -1,12 +1,19 @@
 <?php
 namespace JV\Jvchat\Scheduler;
+use JV\Jvchat\Domain\Model\Room;
+use JV\Jvchat\Domain\Repository\DbRepository;
+use JV\Jvchat\Eid\Chat;
+use TYPO3\CMS\Core\Locking\Exception\LockAcquireException;
+use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
+use TYPO3\CMS\Core\Locking\Exception\LockCreateException;
 use TYPO3\CMS\Core\Log\Logger;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
-use TYPO3\CMS\Core\Database\DatabaseConnection;
 use TYPO3\CMS\Core\Locking\LockFactory;
 use TYPO3\CMS\Core\Locking\LockingStrategyInterface;
 use TYPO3\CMS\Core\Log\LogManager;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Velletti\Mailsignature\Service\SignatureService;
 
 class MailchatsTask extends AbstractTask
 {
@@ -32,22 +39,25 @@ class MailchatsTask extends AbstractTask
         return true;
     }
 
-	/**
-	 * This is the main method that is called when a task is executed
-	 * It MUST be implemented by all classes inheriting from this one
-	 * Note that there is no error handling, errors and failures are expected
-	 * to be handled and logged by the client implementations.
-	 * Should return TRUE on successful execution, FALSE on error.
-	 *
-	 * @return bool Returns TRUE on successful execution, FALSE on error
-	 * @throws \TYPO3\CMS\Core\Locking\Exception\LockAcquireException
-	 * @throws \TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException
-	 * @throws \TYPO3\CMS\Core\Locking\Exception\LockCreateException
-	 */
+    /**
+     * This is the main method that is called when a task is executed
+     * It MUST be implemented by all classes inheriting from this one
+     * Note that there is no error handling, errors and failures are expected
+     * to be handled and logged by the client implementations.
+     * Should return TRUE on successful execution, FALSE on error.
+     *
+     * @return bool Returns TRUE on successful execution, FALSE on error
+     * @throws LockAcquireException
+     * @throws LockAcquireWouldBlockException
+     * @throws LockCreateException
+     * @throws InvalidExtensionNameException
+     */
     public function execute()
     {
-        $startTime = time() ;
         $debug = array() ;
+        /** @var Chat $chatLib */
+        $chatLib = GeneralUtility::makeInstance("JV\\Jvchat\\Eid\\Chat");
+        $baseUrl = $chatLib->setBaseUrl("www.tangomuenchen.de") ;
 
         $debug[] = date("d.m.Y H:i:s") . " Started on Server "  . "https://" . $baseUrl ;
 
@@ -66,11 +76,9 @@ class MailchatsTask extends AbstractTask
 
             return false;
         }
-        /** @var \JV\Jvchat\Eid\Chat $chatLib */
-        $chatLib = GeneralUtility::makeInstance("JV\\Jvchat\\Eid\\Chat");
-        $baseUrl = $chatLib->setBaseUrl() ;
 
-        /** @var \JV\Jvchat\Domain\Repository\DbRepository $db */
+
+        /** @var DbRepository $db */
         $db = GeneralUtility::makeInstance("JV\\Jvchat\\Domain\\Repository\\DbRepository");
         $db->__construct() ;
 
@@ -80,7 +88,7 @@ class MailchatsTask extends AbstractTask
         $chatLib->user['email'] = "_cli_Dummy@typo3.xy" ;
         if( is_array($rooms)) {
             $debug[] = date("d.m.Y H:i:s") . " # of rooms:  " . count($rooms) ;
-            /** @var \JV\Jvchat\Domain\Model\Room $room */
+            /** @var Room $room */
             foreach ( $rooms  as $room ) {
                 $debug[] = date("d.m.Y H:i:s") . " getEntries from of rooms:  " . $room->name . " -> new since " . date( "d.m.Y H:i:s" , Time() - $this->getAmount() )  ;
                 $entries =  $db->getEntrieslastXseconds($room , $this->getAmount() ) ;
@@ -96,7 +104,7 @@ class MailchatsTask extends AbstractTask
             }
         }
         if( GeneralUtility::validEmail( trim( $this->getDebugmail()) ) ) {
-            /** @var \Velletti\Mailsignature\Service\SignatureService $mailService */
+            /** @var SignatureService $mailService */
             $mailService = GeneralUtility::makeInstance("Velletti\\Mailsignature\\Service\\SignatureService");
             $params = array() ;
             $params['email_fromName'] = "Debug Tangomuenchen";

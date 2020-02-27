@@ -57,7 +57,7 @@ class MailchatsTask extends AbstractTask
         $debug = array() ;
         /** @var Chat $chatLib */
         $chatLib = GeneralUtility::makeInstance("JV\\Jvchat\\Eid\\Chat");
-        $baseUrl = $chatLib->setBaseUrl("") ;
+        $baseUrl = $chatLib->setBaseUrl("www.tangomuenchen.de") ;
 
         $debug[] = date("d.m.Y H:i:s") . " Started on Server "  . "https://" . $baseUrl ;
 

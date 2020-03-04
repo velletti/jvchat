@@ -1252,7 +1252,7 @@ class Chat {
         }
         if ( $entryCount && $memberCount > 0 ) {
 
-            $params['message'] = "Neue Chat Nachrichten " . $server. " -> " .  $room->name;
+            $params['message'] = "Neue Chat Nachrichten " . $room->name;
             $params['message'] .= "\n" ;
             $params['message'] .= "Room: #" . $room->uid . " " . $room->name;
             $params['message'] .= "\n" ;
@@ -1262,7 +1262,7 @@ class Chat {
             $params['message'] .= "<hr>" . $this->getEntryTextForEmail( $entries , $room ) ;
 
 
-            $link =  "<hr> \n" . $server . "/index.php?id=" . $this->env['pid']
+            $link =  "<hr> \n https:// " . $server . "/index.php?id=" . $this->env['pid']
                 . "&tx_jvchat_pi1[uid]=" .$this->room->uid . "&tx_jvchat_pi1[view]=chat ";
             $params['message'] .=  " \n<a href=\""  .$link . "\"> " . $link . "</a>\n" ;
 
@@ -1322,6 +1322,7 @@ class Chat {
      * @return string
      */
     function setBaseUrl($baseUrl) {
+        return "www.tangomuenchen.de" ;
         if ( $this->checkBaseUrl($baseUrl) ) {  return $baseUrl ;
         }
         $baseUrl = trim( GeneralUtility::getIndpEnv('TYPO3_SITE_URL') , "/" ) ;

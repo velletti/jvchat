@@ -23,8 +23,16 @@
 
 <f:section name="userName">
     <f:spaceless>
+        <f:if condition="{extConf.usernameField2}">
+            <f:then>
+                <f:variable name="lastName"><f:format.crop maxCharacters="1" append=".">{user.{extConf.usernameField2}}</f:format.crop></f:variable>
+            </f:then>
+            <f:else>
+                <f:variable name="lastName"></f:variable>
+            </f:else>
+        </f:if>
         <span class="tx-jvchat-userlist-username">
-            {user.{extConf.usernameField1}}<f:if condition="{extConf.usernameField2}"> {user.{extConf.usernameField2}}</f:if>
+            {user.{extConf.usernameField1}}<f:if condition="{extConf.usernameField2}"> {lastName}</f:if>
         </span>
     </f:spaceless>
 </f:section>
@@ -50,10 +58,8 @@
         <f:if condition="{imgPath}">
             <f:image class="tx_jvchat-avatar" src="{imgPath}" title="{imgPath}" maxWidth="{settings.userlist.avatar.maxwidth}" maxHeight="{settings.userlist.avatar.maxheight}" width="{settings.userlist.avatar.width}" height="{settings.userlist.avatar.height}" alt="I"></f:image>
         </f:if>
-
     </f:spaceless>
 </f:section>
-
 
 <f:section name="PRbutton">
     <f:spaceless>

@@ -59,7 +59,7 @@ class MailchatsTask extends AbstractTask
         $chatLib = GeneralUtility::makeInstance("JV\\Jvchat\\Eid\\Chat");
         $baseUrl = $chatLib->setBaseUrl("www.tangomuenchen.de") ;
 
-        $debug[] = date("d.m.Y H:i:s") . " Started on Server "  . "https://" . $baseUrl ;
+        $debug[] = date("d.m.Y H:i:s") . " Started on Server "  . "https://" . $baseUrl  . " ";
 
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
@@ -112,7 +112,7 @@ class MailchatsTask extends AbstractTask
             $params['user']['email'] = trim( $this->getDebugmail());
             $params['sendCCmail'] = false  ;
 
-            $params['message'] = "Debug Output " . implode(" <br>\n" , $debug ) ;
+            $params['message'] = "Debug Output " . implode(" \n" , $debug ) ;
             $mailService->sentHTMLmailService($params) ;
         }
 

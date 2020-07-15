@@ -384,6 +384,9 @@
 			<trans-unit id="UploadImage.help">
 				<source>Upload Image to you Private Album and show in Chat</source>
 			</trans-unit>
+			<trans-unit id="UploadTempImage.help">
+                <source>Upload Image to show it once in Chat</source>
+            </trans-unit>
 
 			<trans-unit id="privateRoomTitle">
                 <source>Private room</source>

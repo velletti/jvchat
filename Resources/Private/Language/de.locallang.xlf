@@ -393,6 +393,9 @@
 			<trans-unit id="UploadImage.help">
 				<target>Bild aus Album im Chat anzeigen</target>
 			</trans-unit>
+            <trans-unit id="UploadTempImage.help">
+                <source>Einzelnes Bild hochladen und im Chat anzeigen</source>
+            </trans-unit>
 
 			<trans-unit id="privateRoomTitle">
                 <target>Privater Chat</target>

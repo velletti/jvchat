@@ -504,7 +504,7 @@ class Chat {
             return $fileInfo['type']['uploaded'] . " Meta Type not allowed " ;
         }
 
-        // +++ 2014 j.v. : add user uid to path as subfolder !
+        // +++ 2020 j.v. : check if detault path exists, add Date to path as subfolder !
         $pathSite = (class_exists('TYPO3\\CMS\\Core\\Core\\Environment') ? (\TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/') : PATH_site) ;
         if (! is_dir ( $pathSite . $uploadDir  )) {
             mkdir( $pathSite . $uploadDir  ) ;

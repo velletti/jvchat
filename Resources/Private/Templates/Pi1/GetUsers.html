@@ -1,10 +1,11 @@
+{namespace vhs = FluidTYPO3\Vhs\ViewHelpers}
 <f:layout name="Ajax" />
 
 <f:section name="main">
 <f:spaceless>
     <f:format.raw>
-            <f:if condition="{user.hidden}">
-                <f:else>
+        <f:if condition="{user.hidden}">
+            <f:else>
                     <span id="tx-jvchat-msg-user-{user.uid}" class="tx-jvchat-link-user clearfix" data-content="user-{user.uid}" >
                         <f:render section="image" arguments="{showFullNames: showFullNames, user: user , thisUser: thisUser , extConf: extConf , settings: settings }"/>
                         <span class="tx-jvchat-userlist-name">
@@ -15,8 +16,8 @@
                             <f:render section="PMbutton" arguments="{showFullNames: showFullNames, user: user , thisUser: thisUser , extConf: extConf , settings: settings }"/>
                         </span>
                     </span>
-                </f:else>
-            </f:if>
+            </f:else>
+        </f:if>
     </f:format.raw>
 </f:spaceless>
 </f:section>
@@ -48,7 +49,14 @@
 
         </f:if>
         <f:if condition="{imgPath}">
-            <f:image class="tx_jvchat-avatar" src="{imgPath}" title="{imgPath}" maxWidth="{settings.userlist.avatar.maxwidth}" maxHeight="{settings.userlist.avatar.maxheight}" width="{settings.userlist.avatar.width}" height="{settings.userlist.avatar.height}" alt="I"></f:image>
+            <vhs:try>
+                <f:then>
+                    <f:image alt="I" class="tx_jvchat-avatar" height="{settings.userlist.avatar.height}"
+                             maxHeight="{settings.userlist.avatar.maxheight}"
+                             maxWidth="{settings.userlist.avatar.maxwidth}" src="{imgPath}" title="{imgPath}"
+                             width="{settings.userlist.avatar.width}"></f:image>
+                </f:then>
+            </vhs:try>
         </f:if>
 
     </f:spaceless>

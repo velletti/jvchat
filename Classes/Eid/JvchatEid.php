@@ -12,7 +12,6 @@ if (!defined ('PATH_typo3conf')) 	die ('Could not access this script directly!')
 // Initialize FE user object:
 /** @var FrontendUserAuthentication $feUserObj */
 $feUserObj = \TYPO3\CMS\Frontend\Utility\EidUtility::initFeUser();
-
 $charset = 'utf-8';
 
 // ##################

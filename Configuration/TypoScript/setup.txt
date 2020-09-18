@@ -582,6 +582,7 @@ page {
 	}
 }
 
-[usergroup = 4,5,22,16]
-	plugin.tx_jvchat_pi1.enableImageUpload = 1
-[global]
+
+# [usergroup = 4,5,22,16]
+#	plugin.tx_jvchat_pi1.enableImageUpload = 1
+# [global]

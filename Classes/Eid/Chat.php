@@ -119,7 +119,6 @@ class Chat {
             $this->room = $this->db->getRoom($this->env['room_id']);
         }
 		$this->user = $this->env['user'];
-
 		if(GeneralUtility::_GP('d') == 'true')
 			$this->debug = true;
 

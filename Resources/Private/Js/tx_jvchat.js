@@ -154,7 +154,7 @@ function tx_jvchat_pi1_js_chat() {
 				start: function() {
 					showSpinner() ;
 					jQuery('#tx-jvchat-upload-container').removeClass('in');
-					jQuery('#tx-jvchat-button-imageDirect').area('expanded', false);
+					jQuery('#tx-jvchat-button-imageDirect').attr('area-expanded', false);
 				},
 				always: function(e) {
 					// wait at least 3 seconds to hide the spinner. not perfect, but we need to remove spinner in case of errors

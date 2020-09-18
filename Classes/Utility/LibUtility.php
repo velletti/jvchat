@@ -252,7 +252,11 @@ class LibUtility {
 
 	}
     static function formatMessageEmoji($code ) {
-        return '<span class="chatIconColor"><i class="' . $code['html'] . '"> </i></span>' ;
+        if( $code['notFontAwesome'] ) {
+            return $code['html'] ;
+        } else {
+            return '<span class="chatIconColor"><i class="' . $code['html'] . '"> </i></span>' ;
+        }
     }
 
     static function unicode_encode($string) {
@@ -375,11 +379,17 @@ class LibUtility {
 		$out = "";
 		$out2 = "";
 		foreach($emoticons as $key => $emoji) {
-		    if (  $emoji['inMenu']) {
-                $out .= '<span class="'. $emoticonBtnClass. '"><span class="' . $emoji['html'] . '" onClick="setValueToInput(\''.$emoji['code'].'\');" alt="emoji-' . $key . '" title="'.self::unicode_encode($emoji['code']).'"> </span></span>';
+            if (  $emoji['notFontAwesome']) {
+                $code = '<span class="'. $emoticonBtnClass .  '" onClick="setValueToInput(\''.$emoji['code'].'\');" alt="emoji-' . $key . '" title="'.self::unicode_encode($emoji['code']).'">'  .  $emoji['html'] . '</span>';
+            } else {
+                $code = '<span class="'. $emoticonBtnClass. '"><span class="' . $emoji['html'] . '" onClick="setValueToInput(\''.$emoji['code'].'\');" alt="emoji-' . $key . '" title="'.self::unicode_encode($emoji['code']).'"> </span></span>';
+            }
+
+            if (  $emoji['inMenu']) {
+                $out .= $code ;
             }
             if (  $emoji['inMenu2']) {
-                $out2 .= '<span class="'. $emoticonBtnClass. '"><span class="' . $emoji['html'] . '" onClick="setValueToInput(\''.$emoji['code'].'\');" alt="emoji-' . $key . '" title="'.self::unicode_encode($emoji['code']).'"> </span></span>';
+                $out2 .= $code ;
             }
 
 		}

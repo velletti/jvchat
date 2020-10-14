@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xliff version="1.0">
-	<file target-language="en" target-language="es" datatype="plaintext" original="messages" date="2016-07-22T08:55:26Z" product-name="jvchat">
+	<file source-language="en" target-language="es" datatype="plaintext" original="messages" date="2016-07-22T08:55:26Z" product-name="jvchat">
 		<header/>
 		<body>
 			<trans-unit id="session_not_found">

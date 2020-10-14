@@ -776,7 +776,7 @@ class Chat {
             if( array_key_exists( 'timeFormat' , $this->extConf )) {
                 $timeFormat = $this->extConf['timeFormat'];
             } else {
-                $timeFormat = "%H:%I:%S" ;
+                $timeFormat = "H:i:s" ;
             }
 
 
@@ -1192,7 +1192,7 @@ class Chat {
             if( array_key_exists( 'timeFormat' , $this->extConf )) {
                 $timeFormat = $this->extConf['timeFormat'];
             } else {
-                $timeFormat = "%H:%I:%S" ;
+                $timeFormat = "H:i:s" ;
             }
 
             $ownMsg = $entryUser['uid'] == $this->user['uid'] ? 1 : 0 ;

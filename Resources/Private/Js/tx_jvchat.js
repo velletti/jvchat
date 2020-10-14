@@ -90,7 +90,7 @@ function tx_jvchat_pi1_js_chat() {
 			this.setEmoticons(show);
 		}
 		else
-			//  this.showEmoticons from flexform ? better start with 0
+		//  this.showEmoticons from flexform ? better start with 0
 			this.setEmoticons(0);
 
 		if ( this.showTime ) {
@@ -154,7 +154,7 @@ function tx_jvchat_pi1_js_chat() {
 				start: function() {
 					showSpinner() ;
 					jQuery('#tx-jvchat-upload-container').removeClass('in');
-					jQuery('#tx-jvchat-button-imageDirect').area('expanded', false);
+					jQuery('#tx-jvchat-button-imageDirect').attr('area-expanded', false);
 				},
 				always: function(e) {
 					// wait at least 3 seconds to hide the spinner. not perfect, but we need to remove spinner in case of errors
@@ -207,9 +207,9 @@ function tx_jvchat_pi1_js_chat() {
 			type:       "GET",
 			url:        this.scriptUrl ,
 			cache:      false,
-			data:       'r=' + this.roomId + '&p=' + this.pid +'&a=gm&t=' + this.id + '&charset=' + this.charset + '&l=' + this.lang+ "&showJason=0",
+			data:       'r=' + this.roomId + '&p=' + this.pid +'&a=gm&t=' + this.id + '&charset=' + this.charset + '&l=' + this.lang+ "&u=" + this.userId	+ "&showJason=0",
 			beforeSend:	function() {
-				},
+			},
 			success:    function(result) {
 				getMessagesResponseHandler(result) ;
 			} ,
@@ -845,6 +845,7 @@ function tx_jvchat_pi1_js_chat() {
 
 		if( jQuery("#tx-jvchat-button-imageFormWrap").length > 0) {
 			jQuery("#tx-jvchat-button-imageFormWrap").remove();
+			jQuery("#tx-jvchat-button-image").parent().removeClass('tx-jvchat-button-image-action');
 			tx_jvchat_resize() ;
 		} else {
 			jQuery.ajax({
@@ -863,9 +864,11 @@ function tx_jvchat_pi1_js_chat() {
 				},
 				success:    function(result) {
 					jQuery("#tx-jvchat-button-image").removeClass('hide');
+					jQuery("#tx-jvchat-button-image").parent().addClass('tx-jvchat-button-image-action');
 					if (typeof result === 'object' ) {
 						if ( result.count == 0 ) {
-							jQuery("#tx-jvchat-button-imageLoad").removeClass('hide');
+							jQuery("#tx-jvchat-button-imageLoad").addClass('hide');
+							jQuery("#tx-jvchat-button-image").parent().remove() ;
 						} else {
 							if ( result.count == 1 ) {
 								var albums = result.album ;
@@ -915,6 +918,7 @@ function tx_jvchat_pi1_js_chat() {
 				jQuery("#tx-jvchat-button-imageForm").parent().remove();
 				jQuery("#tx-jvchat-button-image").removeClass('hide').after(result) ;
 				jQuery("#tx-jvchat-button-imageLoad").remove();
+
 				tx_jvchat_resize() ;
 			}
 		});
@@ -929,35 +933,35 @@ function tx_jvchat_pi1_js_chat() {
 	}
 
 	this.showChatImg = function(bigImg) {
-			jQuery.ajax({
-				type:       "GET",
-				url:        bigImg ,
-				cache:      true,
-				data:       '',
-				beforeSend:	function() {
-					jQuery("#mainContent").before("<div id=\"tx-jvchat-bigimageLayer\" onclick=\"chat_instance.hideChatImg();\" style=\"position:absolute; display:block;height:100%; width:100%; background: rgba(183,183,183,0.7); z-index: 900;overflow: auto\"></div>")
+		jQuery.ajax({
+			type:       "GET",
+			url:        bigImg ,
+			cache:      true,
+			data:       '',
+			beforeSend:	function() {
+				jQuery("#mainContent").before("<div id=\"tx-jvchat-bigimageLayer\" onclick=\"chat_instance.hideChatImg();\" style=\"position:absolute; display:block;height:100%; width:100%; background: rgba(183,183,183,0.7); z-index: 900;overflow: auto\"></div>")
 
-					jQuery("#tx-jvchat-bigimageLayer").css("position", "absolute");
-
-
-				},
-				success:    function(result) {
-					jQuery("#tx-jvchat-bigimageLayer").html("<div id=\"tx-jvchat-bigimageWrap\"><img  id=\"tx-jvchat-bigimage\" alt=\"click me\" onclick=\"chat_instance.hideChatImg();\" title=\"click me\" src=\"" + bigImg + "\" /></div>")
+				jQuery("#tx-jvchat-bigimageLayer").css("position", "absolute");
 
 
-					jQuery("#tx-jvchat-bigimageWrap").css("z-index", "999");
-					jQuery("#tx-jvchat-bigimageWrap").css("position", "absolute");
+			},
+			success:    function(result) {
+				jQuery("#tx-jvchat-bigimageLayer").html("<div id=\"tx-jvchat-bigimageWrap\"><img  id=\"tx-jvchat-bigimage\" alt=\"click me\" onclick=\"chat_instance.hideChatImg();\" title=\"click me\" src=\"" + bigImg + "\" /></div>")
 
-					jQuery("#tx-jvchat-bigimage").css("display", "block");
-					var marginTop = parseInt((jQuery(window).height() - parseInt( jQuery("#tx-jvchat-bigimageWrap").css("height")) ) / 2 ) ;
-					var marginLeft= parseInt((jQuery(window).width() - parseInt(jQuery("#tx-jvchat-bigimageWrap").css( "width") )) / 2 ) ;
-					if( marginTop < 0 ) {  marginTop = 0 }
-					if( marginLeft < 0 ) {  marginLeft = 0 }
 
-					//jQuery("#tx-jvchat-bigimageWrap").css("top", marginTop +"px");
-					//jQuery("#tx-jvchat-bigimageWrap").css("left", marginLeft +"px");
-				}
-			});
+				jQuery("#tx-jvchat-bigimageWrap").css("z-index", "999");
+				jQuery("#tx-jvchat-bigimageWrap").css("position", "absolute");
+
+				jQuery("#tx-jvchat-bigimage").css("display", "block");
+				var marginTop = parseInt((jQuery(window).height() - parseInt( jQuery("#tx-jvchat-bigimageWrap").css("height")) ) / 2 ) ;
+				var marginLeft= parseInt((jQuery(window).width() - parseInt(jQuery("#tx-jvchat-bigimageWrap").css( "width") )) / 2 ) ;
+				if( marginTop < 0 ) {  marginTop = 0 }
+				if( marginLeft < 0 ) {  marginLeft = 0 }
+
+				//jQuery("#tx-jvchat-bigimageWrap").css("top", marginTop +"px");
+				//jQuery("#tx-jvchat-bigimageWrap").css("left", marginLeft +"px");
+			}
+		});
 	}
 	this.hideChatImg = function() {
 		jQuery("#tx-jvchat-bigimageLayer").remove();

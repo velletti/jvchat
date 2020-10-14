@@ -119,7 +119,6 @@ class Chat {
             $this->room = $this->db->getRoom($this->env['room_id']);
         }
 		$this->user = $this->env['user'];
-
 		if(GeneralUtility::_GP('d') == 'true')
 			$this->debug = true;
 
@@ -540,8 +539,8 @@ class Chat {
             $targetFilePath = $uploadDir . "thumbnail/" . $destinationFileName ;
 
             $arguments = CommandUtility::escapeShellArguments([
-                'width' => '200',
-                'height' => '150' ,
+                'width' => '100',
+                'height' => '75' ,
             ]);
             $parameters = '-sample ' . $arguments['width'] . 'x' . $arguments['height']
                 . ' ' . ImageMagickFile::fromFilePath($pathSite . $originalFileName, 0)

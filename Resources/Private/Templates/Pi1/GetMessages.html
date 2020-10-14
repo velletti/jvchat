@@ -73,7 +73,7 @@
 <f:section name="message">
     <f:format.raw>
         <f:spaceless>
-            <div id="cid{mid}" class="tx-jvchat-message tx-jvchat-message-style-{entryStyle} {groupstyles} {f:if(condition: '{ownMsg}' , then: 'tx-jvchat-message-ownMsg')}">
+            <div id="cid{mid}" class="tx-jvchat-message tx-jvchat-message-style-{entryStyle} {groupstyles} {f:if(condition: '{ownMsg}' , then: 'tx-jvchat-message-ownMsg')}" data-format="{timeFormat}">
                 <div class="tx-jvchat-type-{userType}">
                     <f:if condition="{ownMsg}">
                         <f:then>

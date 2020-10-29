@@ -432,8 +432,6 @@ function tx_jvchat_pi1_js_chat() {
 
 		// clear input field
 		$('#txjvchatnewMessage').val('') ;
-		// toDO check why this was needed. .
-		// Element.cleanWhitespace(self.inputElement);
 
 		if($.trim(newMessage) == "undefined" || $.trim(newMessage) == "") {
 			return;
@@ -443,8 +441,7 @@ function tx_jvchat_pi1_js_chat() {
 		self.sendMessageToServer($.trim(newMessage));
 		// switch back to Play mode reload was disabled !
 		if ( !this.reload  ) {
-			this.setStart(!this.reload);
-
+			this.setStart( 1 );
 		}
 		this.getMessages(true) ;
 		// this.runningTO2 = window.setTimeout("tx_jvchat_pi1_js_chat_instance.getMessages(true)", 500);
@@ -834,24 +831,26 @@ function tx_jvchat_pi1_js_chat() {
 	this.setStart = function(on) {
 		//
 		this.reload = on ;
-
 		Cookie.set('tx_jvchat_reload', this.reload ? '1' : '0', 100);
 		// this.setChatButton('tx-jvchat-button-start', on);
 
 		if ( !this.reload  ) {
-			jQuery("#tx-jvchat-button-start-on").parent().addClass('hide').addClass('d-none');
-			jQuery("#tx-jvchat-button-start").parent().removeClass('hide').removeClass('d-none');
+			jQuery("#tx-jvchat-button-start").parent().addClass('hide').addClass('d-none');
+			jQuery("#tx-jvchat-button-start-on").parent().removeClass('hide').removeClass('d-none');
 
 			if ( this.runningto) {
 				clearTimeout(this.runningto) ;
+				this.runningto = false ;
 			}
 			if ( this.runningTO2) {
 				clearTimeout(this.runningTO2) ;
 			}
 		} else {
-			this.runningto = window.setTimeout("tx_jvchat_pi1_js_chat_instance.getMessages()", this.refreshMessagesTime);
-			jQuery("#tx-jvchat-button-start").parent().addClass('hide').addClass('d-none');
-			jQuery("#tx-jvchat-button-start-on").parent().removeClass('hide').removeClass('d-none');
+			if ( !this.runningto) {
+				this.runningto = window.setTimeout("tx_jvchat_pi1_js_chat_instance.getMessages()", this.refreshMessagesTime);
+			}
+			jQuery("#tx-jvchat-button-start-on").parent().addClass('hide').addClass('d-none');
+			jQuery("#tx-jvchat-button-start").parent().removeClass('hide').removeClass('d-none');
 		}
 
 	}

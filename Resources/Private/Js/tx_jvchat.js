@@ -91,7 +91,7 @@ function tx_jvchat_pi1_js_chat() {
 			this.setEmoticons(show);
 		}
 		else
-		//  this.showEmoticons from flexform ? better start with 0
+			//  this.showEmoticons from flexform ? better start with 0
 			this.setEmoticons(0);
 
 		if ( this.showTime ) {
@@ -294,8 +294,12 @@ function tx_jvchat_pi1_js_chat() {
 					break;
 				case "stop":
 					// alert("command = stop");
-					clearTimeout(this.runningto) ;
-					clearTimeout(this.runningTO2) ;
+					if( this.runningto ) {
+						clearTimeout(this.runningto) ;
+					}
+					if( this.runningTO2 ) {
+						clearTimeout(this.runningTO2);
+					}
 					break;
 				case "rest":
 					// alert("Command = restart");
@@ -311,7 +315,9 @@ function tx_jvchat_pi1_js_chat() {
 	}
 
 	this.quit = function() {
-		clearTimeout(this.runningto) ;
+		if( this.runningto ) {
+			clearTimeout(this.runningto);
+		}
 	}
 
 	this.notifyNewMessage = function() {
@@ -432,14 +438,16 @@ function tx_jvchat_pi1_js_chat() {
 		if($.trim(newMessage) == "undefined" || $.trim(newMessage) == "") {
 			return;
 		}
+
+		// send message to server
+		self.sendMessageToServer($.trim(newMessage));
 		// switch back to Play mode reload was disabled !
 		if ( !this.reload  ) {
 			this.setStart(!this.reload);
-		}
-		// send message to server
-		self.sendMessageToServer($.trim(newMessage));
 
-		this.runningTO2 = window.setTimeout("tx_jvchat_pi1_js_chat_instance.getMessages(true)", 500);
+		}
+		this.getMessages(true) ;
+		// this.runningTO2 = window.setTimeout("tx_jvchat_pi1_js_chat_instance.getMessages(true)", 500);
 
 		return false;
 	}
@@ -830,14 +838,14 @@ function tx_jvchat_pi1_js_chat() {
 		Cookie.set('tx_jvchat_reload', this.reload ? '1' : '0', 100);
 		// this.setChatButton('tx-jvchat-button-start', on);
 
-		if ( this.reload  ) {
+		if ( !this.reload  ) {
 			jQuery("#tx-jvchat-button-start-on").parent().addClass('hide').addClass('d-none');
 			jQuery("#tx-jvchat-button-start").parent().removeClass('hide').removeClass('d-none');
 
 			if ( this.runningto) {
 				clearTimeout(this.runningto) ;
 			}
-			if ( this.runningto) {
+			if ( this.runningTO2) {
 				clearTimeout(this.runningTO2) ;
 			}
 		} else {

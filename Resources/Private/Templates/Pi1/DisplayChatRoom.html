@@ -95,8 +95,8 @@
                                     </span>
                                 </f:if>
                                 <f:if condition="{extConf.enableStartStop}">
-                                    <span class="{settings.emoticonBtnClass}">
-                                        <i class=" fas fa-play" style="display:none" id="tx-jvchat-button-start-on" onClick="javascript:chat_instance.chat_instance.start();" title="{f:translate(key: 'chatbutton.start')}"></i>
+                                    <span class="{settings.emoticonBtnClass} d-none hide" >
+                                        <i class=" fas fa-play" id="tx-jvchat-button-start-on" onClick="javascript:chat_instance.start();" title="{f:translate(key: 'chatbutton.start')}"></i>
                                     </span>
                                     <span class="{settings.emoticonBtnClass}">
                                         <i class="fas fa-stop" id="tx-jvchat-button-start" onClick="javascript:chat_instance.start();" title="{f:translate(key: 'chatbutton.stop')}"></i>

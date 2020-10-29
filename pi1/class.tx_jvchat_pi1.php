@@ -512,6 +512,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
         $renderer->assign("room" , $room ) ;
         $renderer->assign("roomData" , $roomData ) ;
         $renderer->assign("confFLEX" , $this->conf['FLEX'] ) ;
+        $renderer->assign("extConf" , $this->db->extCONF) ;
 
         $renderer->assign("dataString" , $dataString ) ;
 

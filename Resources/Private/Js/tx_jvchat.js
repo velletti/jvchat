@@ -80,6 +80,7 @@ function tx_jvchat_pi1_js_chat() {
 		this.emoticonsElement		= $('#tx-jvchat-emoticons');
 		this.toolsElement			= $('#tx-jvchat-tools-container');
 		this.storedMessagesElement  = $('#tx-jvchat-storedMessages');
+		this.reload                 = Cookie.get('tx_jvchat_reload');
 
 
 
@@ -140,7 +141,7 @@ function tx_jvchat_pi1_js_chat() {
 		// get userlist
 		this.getUserlist();
 		this.handleImageUpload();
-
+		this.setStart(this.reload);
 
 
 	}
@@ -431,7 +432,10 @@ function tx_jvchat_pi1_js_chat() {
 		if($.trim(newMessage) == "undefined" || $.trim(newMessage) == "") {
 			return;
 		}
-
+		// switch back to Play mode reload was disabled !
+		if ( !this.reload  ) {
+			this.setStart(!this.reload);
+		}
 		// send message to server
 		self.sendMessageToServer($.trim(newMessage));
 
@@ -827,6 +831,9 @@ function tx_jvchat_pi1_js_chat() {
 		// this.setChatButton('tx-jvchat-button-start', on);
 
 		if ( this.reload  ) {
+			jQuery("#tx-jvchat-button-start-on").parent().addClass('hide').addClass('d-none');
+			jQuery("#tx-jvchat-button-start").parent().removeClass('hide').removeClass('d-none');
+
 			if ( this.runningto) {
 				clearTimeout(this.runningto) ;
 			}
@@ -835,6 +842,8 @@ function tx_jvchat_pi1_js_chat() {
 			}
 		} else {
 			this.runningto = window.setTimeout("tx_jvchat_pi1_js_chat_instance.getMessages()", this.refreshMessagesTime);
+			jQuery("#tx-jvchat-button-start").parent().addClass('hide').addClass('d-none');
+			jQuery("#tx-jvchat-button-start-on").parent().removeClass('hide').removeClass('d-none');
 		}
 
 	}

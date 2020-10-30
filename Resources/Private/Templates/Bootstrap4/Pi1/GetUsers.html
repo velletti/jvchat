@@ -5,7 +5,7 @@
     <f:format.raw>
             <f:if condition="{user.hidden}">
                 <f:else>
-                    <span id="tx-jvchat-msg-user-{user.uid}" class="tx-jvchat-link-user clearfix" data-content="user-{user.uid}" >
+                    <span id="tx-jvchat-msg-user-{user.uid}" class="tx-jvchat-link-user clearfix " data-comment="bootstrap4-pi1-GetUsers" data-content="user-{user.uid}" >
                         <f:render section="image" arguments="{showFullNames: showFullNames, user: user , thisUser: thisUser , extConf: extConf , settings: settings }"/>
                         <span class="tx-jvchat-userlist-name">
                             <f:render section="userName" arguments="{showFullNames: showFullNames, user: user , thisUser: thisUser , extConf: extConf , settings: settings }"/>

@@ -6,7 +6,7 @@
     <f:format.raw>
         <f:if condition="{user.hidden}">
             <f:else>
-                    <span id="tx-jvchat-msg-user-{user.uid}" class="tx-jvchat-link-user clearfix" data-content="user-{user.uid}" >
+                    <span id="tx-jvchat-msg-user-{user.uid}" class="tx-jvchat-link-user clearfix"  data-comment="pi1-GetUsers"  data-content="user-{user.uid}" >
                         <f:render section="image" arguments="{showFullNames: showFullNames, user: user , thisUser: thisUser , extConf: extConf , settings: settings }"/>
                         <span class="tx-jvchat-userlist-name">
                             <f:render section="userName" arguments="{showFullNames: showFullNames, user: user , thisUser: thisUser , extConf: extConf , settings: settings }"/>
@@ -14,6 +14,7 @@
                         <span class="right tx-jvchat-userlist-buttons">
                             <f:render section="PRbutton" arguments="{showFullNames: showFullNames, user: user , thisUser: thisUser , extConf: extConf , settings: settings }"/>
                             <f:render section="PMbutton" arguments="{showFullNames: showFullNames, user: user , thisUser: thisUser , extConf: extConf , settings: settings }"/>
+                            <f:render section="Infobutton" arguments="{showFullNames: showFullNames, user: user , thisUser: thisUser , extConf: extConf , settings: settings }"/>
                         </span>
                     </span>
             </f:else>
@@ -49,14 +50,10 @@
 
         </f:if>
         <f:if condition="{imgPath}">
-            <vhs:try>
-                <f:then>
-                    <f:image alt="I" class="tx_jvchat-avatar" height="{settings.userlist.avatar.height}"
-                             maxHeight="{settings.userlist.avatar.maxheight}"
-                             maxWidth="{settings.userlist.avatar.maxwidth}" src="{imgPath}" title="{imgPath}"
-                             width="{settings.userlist.avatar.width}"></f:image>
-                </f:then>
-            </vhs:try>
+            <f:image alt="I" class="tx_jvchat-avatar" height="{settings.userlist.avatar.height}"
+                     maxHeight="{settings.userlist.avatar.maxheight}"
+                     maxWidth="{settings.userlist.avatar.maxwidth}" src="{imgPath}" title="{imgPath}"
+                     width="{settings.userlist.avatar.width}"></f:image>
         </f:if>
 
     </f:spaceless>
@@ -81,6 +78,16 @@
                 <span class="fa fa-comments"></span>&nbsp;
             </span>
         </f:if>
+    </f:spaceless>
+</f:section>
+
+<f:section name="Infobutton">
+    <f:spaceless>
+        <a href="/user/{user.username}" target="_blank">
+            <span class=" btn btn-sm  btn-default tx-jvchat-pm-link" title="{f:translate(key: 'LLL:EXT:nem_connections/Resources/Private/Language/locallang.xml:profile5' , default: 'view Profile')}">&nbsp;
+                <span class="fa fa-user"></span>&nbsp;
+            </span>
+        </a>
     </f:spaceless>
 </f:section>
 

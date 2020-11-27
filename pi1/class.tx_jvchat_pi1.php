@@ -412,14 +412,18 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
         $dataString .= ' data-usernamesfieldglue="' . LibUtility::getUserNamesFieldGlue()  . '"' ;
         $dataString .= ' data-idglue="'             . LibUtility::getIdGlue()  . '"' ;
 
-        if($this->conf['FLEX']['chatwindow'])
+        if($this->conf['FLEX']['chatwindow']) {
             $newwindowurl = $this->conf['FLEX']['chatwindow'] ? $this->pi_linkTP_keepPIvars_url(array(), 0, true, $this->conf['FLEX']['chatwindow']) : $marker['LEAVEURL'];
-        else
+        } else {
             $newwindowurl= ($this->pi_linkTP_keepPIvars_url(array(), 0, true)).'&type='.($this->conf['chatwindow.']['typeNum']);
+        }
+        if ( substr( $newwindowurl , 0 , 4 ) != "http") {
+            $newwindowurl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'). $newwindowurl ;
+        }
 
 
 
-        $dataString .= ' data-newwindowurl="' . \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'). $newwindowurl . '"';
+        $dataString .= ' data-newwindowurl="' . $newwindowurl . '"';
         $dataString .= ' data-scripturl="' . $this->chatScript  . '"' ;
         $dataString .= ' data-leaveurl="' . $this->pi_linkTP_keepPIvars_url(array(), 0, true)  . '"' ;
 

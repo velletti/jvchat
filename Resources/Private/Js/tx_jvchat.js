@@ -380,7 +380,7 @@ function tx_jvchat_pi1_js_chat() {
 				start = 3 ;
 			}
 
-			if ( messageArray[ii].substr(0,4) == "s://") {
+			if ( messageArray[ii].substr(0,4) == "s://" || messageArray[ii].substr(0,4) == "S://" ) {
 				start = 4;
 			}
 

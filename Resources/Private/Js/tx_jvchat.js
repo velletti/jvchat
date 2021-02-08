@@ -121,7 +121,7 @@ function tx_jvchat_pi1_js_chat() {
 		$('#txjvchatnewMessage').keypress(function( event ) {
 			if ( event.which == 13 || event.which == 10 ) {
 				if( event.shiftKey ) {
-					this.insertAtCursor(self.inputElement, "\r\n") ;
+					self.insertAtCursor(self.inputElement, "\r\n") ;
 				} else {
 					return self.submitMessage();
 				}

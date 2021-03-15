@@ -15,6 +15,7 @@ namespace JV\Jvchat\Scheduler;
  */
 
 use TYPO3\CMS\Core\Messaging\FlashMessage;
+use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
 use TYPO3\CMS\Scheduler\Task\AbstractTask;
 
@@ -22,7 +23,7 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  * A task that should be run regularly that deletes
  * datasets flagged as "deleted" from the DB.
  */
-class MailchatsTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface
+class MailchatsTaskAdditionalFieldProvider extends  AbstractAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface
 {
 
 
@@ -36,8 +37,7 @@ class MailchatsTaskAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\Addit
      */
     public function getAdditionalFields(array &$taskInfo, $task, SchedulerModuleController $schedulerModule)
     {
-
-        if ($schedulerModule->CMD === 'edit') {
+        if ($schedulerModule->getCurrentAction()  === 'edit') {
             $taskInfo['IndexerAmount'] = $task->getAmount();
             $taskInfo['IndexerDebugmail'] = $task->getDebugmail();
         }

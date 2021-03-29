@@ -102,8 +102,8 @@ class MailchatsTaskAdditionalFieldProvider extends  AbstractAdditionalFieldProvi
         if (empty($period) ||   filter_var($period, FILTER_VALIDATE_INT) !== false  ) {
             $validPeriod = true;
         } else {
-            $schedulerModule->addMessage(
-                $this->getLanguageService()->sL('LLL:EXT:allplan_ke_search_extended/Resources/Private/Language/locallang_tasks.xlf:indexerTaskErrorStoragePid', true),
+            $this->addMessage(
+                htmlspecialchars ($this->getLanguageService()->sL('LLL:EXT:allplan_ke_search_extended/Resources/Private/Language/locallang_tasks.xlf:indexerTaskErrorStoragePid') ),
                 FlashMessage::ERROR
             );
             $validPeriod = false;

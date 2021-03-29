@@ -17,6 +17,7 @@
 							<config>
 								<exclude>1</exclude>							
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<items type="array">
 									<numIndex index="0" type="array">
 										<numIndex index="0">LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.conf_view_1</numIndex>
@@ -115,6 +116,7 @@
 							<config>
 								<exclude>1</exclude>
 								<type>select</type>
+								<renderType>selectSingle</renderType>
 								<items type="array">
 									<numIndex index="0" type="array">
 										<numIndex index="0">Rooms (rooms.)</numIndex>

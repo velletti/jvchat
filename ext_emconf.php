@@ -10,12 +10,12 @@
 # writing. "version" and "dependencies" must not be touched!
 ########################################################################
 
-$EM_CONF[$_EXTKEY] = array(
+$EM_CONF['jvchat'] = array(
 	'title' => 'AJAX Chat',
 	'description' => 'An Ajax chat for TYPO3 ',
 	'category' => 'plugin',
 	'shy' => 0,
-	'version' => '9.5.2',
+	'version' => '10.4.2',
 	'dependencies' => '',
 	'conflicts' => '',
 	'priority' => '',

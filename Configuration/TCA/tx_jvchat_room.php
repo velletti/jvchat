@@ -1,4 +1,7 @@
 <?php
+
+
+
 if (!defined ('TYPO3_MODE')) die ('Access denied.');
 $return = array (
     "ctrl" => Array (
@@ -29,7 +32,7 @@ $return = array (
     "columns" => Array (
         "hidden" => Array (
             "exclude" => 1,
-            "label" => "LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hidden",
+            "label" => "LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hidden",
             "config" => Array (
                 "type" => "check",
                 "default" => "0"
@@ -37,7 +40,7 @@ $return = array (
         ),
         "starttime" => Array (
             "exclude" => 1,
-            "label" => "LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.starttime",
+            "label" => "LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime",
             "config" => Array (
                 "type" => "input",
                 "renderType" => "inputDateTime",
@@ -48,7 +51,7 @@ $return = array (
         ),
         "endtime" => Array (
             "exclude" => 1,
-            "label" => "LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.endtime",
+            "label" => "LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime",
             "config" => Array (
                 "type" => "input",
                 "renderType" => "inputDateTime",
@@ -60,15 +63,15 @@ $return = array (
         ),
         "fe_group" => Array (
             "exclude" => 1,
-            "label" => "LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.fe_group",
+            "label" => "LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.fe_group",
             "config" => Array (
                 "type" => "select",
                 'renderType' => 'selectMultipleSideBySide' ,
                 "items" => Array (
                     Array("", 0),
-                    Array("LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login", -1),
-                    Array("LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.any_login", -2),
-                    Array("LLL:EXT:lang/Resources/Private/Language/locallang_general.xlf:LGL.usergroups", "--div--")
+                    Array("LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login", -1),
+                    Array("LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login", -2),
+                    Array("LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups", "--div--")
                 ),
                 "foreign_table" => "fe_groups"
             )
@@ -320,5 +323,14 @@ $return = array (
         "checkBoxes" => Array("showitem" => "showfullnames, closed, enable_emoticons")
     )
 );
+
+if (TYPO3_MODE == 'BE')	{
+    $conf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get('jvchat');
+    if($conf['showRealNamesListing']) {
+        $return['columns']['experts']['config']['itemsProcFunc'] = 'tx_jvchat_itemsProcFunc->user_jvchat_getFeUser';
+        $return['columns']['moderators']['config']['itemsProcFunc'] = 'tx_jvchat_itemsProcFunc->user_jvchat_getFeUser';
+        $return['columns']['bannedusers']['config']['itemsProcFunc'] = 'tx_jvchat_itemsProcFunc->user_jvchat_getFeUser';
+    }
+}
 
 return $return ;

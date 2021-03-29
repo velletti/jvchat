@@ -1,6 +1,9 @@
 <?php
 namespace JV\Jvchat\Utility;
 
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+
 class LibUtility {
 
     static function getUserNamesGlue() {
@@ -59,15 +62,15 @@ class LibUtility {
 		// Show at any login ??
         if( $room->groupaccess == "-2" && $room->isPrivate() ) {
 
-            if(\TYPO3\CMS\Core\Utility\GeneralUtility::inList($room->members, $user['uid'])) {
+            if(GeneralUtility::inList($room->members, $user['uid'])) {
                 return true;
             }
         } else {
             // is user in usergroup?
-            $groupsOfUser = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $user['usergroup']);
+            $groupsOfUser = GeneralUtility::intExplode(',', $user['usergroup']);
             foreach($groupsOfUser as $g) {
 
-                if(\TYPO3\CMS\Core\Utility\GeneralUtility::inList($room->groupaccess, $g))
+                if(GeneralUtility::inList($room->groupaccess, $g))
                     return true;
                 if($g === $room->fe_group)
                     return true;
@@ -87,9 +90,9 @@ class LibUtility {
 			return false;
 
 		// is user in usergroup of superusers?
-		$groupsOfUser = \TYPO3\CMS\Core\Utility\GeneralUtility::intExplode(',', $user['usergroup']);
+		$groupsOfUser = GeneralUtility::intExplode(',', $user['usergroup']);
 		foreach($groupsOfUser as $g) {
-			if(\TYPO3\CMS\Core\Utility\GeneralUtility::inList($room->superusergroup, $g)) {
+			if(GeneralUtility::inList($room->superusergroup, $g)) {
 				return true;
 			}
 		}
@@ -104,7 +107,7 @@ class LibUtility {
 			return false;
 
 		// is moderator?
-		if(\TYPO3\CMS\Core\Utility\GeneralUtility::inList($room->moderators, $userid))
+		if(GeneralUtility::inList($room->moderators, $userid))
 			return true;
 
 		return false;
@@ -116,7 +119,7 @@ class LibUtility {
 			return false;
 
 		// is banned?
-		if(\TYPO3\CMS\Core\Utility\GeneralUtility::inList($room->bannedusers, $userid)) {
+		if(GeneralUtility::inList($room->bannedusers, $userid)) {
 			return true;
 		}
 
@@ -129,7 +132,7 @@ class LibUtility {
 			return false;
 
 		// is member?
-		if(\TYPO3\CMS\Core\Utility\GeneralUtility::inList($room->members, $userid))
+		if(GeneralUtility::inList($room->members, $userid))
 			return true;
 
 		// is owner?
@@ -161,7 +164,7 @@ class LibUtility {
 			return false;
 
 		// is expert?
-		if(\TYPO3\CMS\Core\Utility\GeneralUtility::inList($room->experts, $userid))
+		if(GeneralUtility::inList($room->experts, $userid))
 			return true;
 
 		return false;
@@ -398,15 +401,7 @@ class LibUtility {
 	}
 
     static function getExtConf() {
-
-        if (class_exists(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)) {
-            return
-                \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)
-                    ->get('jvchat');
-        } else {
-            return unserialize($GLOBALS['TYPO3_CONF_VARS']['EXT']['extConf']['jvchat']);
-        }
-
+       return GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('jvchat');
 	}
 
     static function getSetUp( $pid = 0 ) {
@@ -481,13 +476,13 @@ class LibUtility {
 	static function getRenderer( $settings= array()  , $templateDefault='DisplayChatRoom' , $format="html") {
 
         /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
-        $renderer = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+        $renderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 
         /** @var \TYPO3\CMS\Extbase\MVC\Controller\ControllerContext $controllerContext */
-        $controllerContext = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\MVC\\Controller\\ControllerContext');
+        $controllerContext = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\MVC\\Controller\\ControllerContext');
 
         /** @var \TYPO3\CMS\Extbase\MVC\Request $request */
-        $request = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\MVC\\Request') ;
+        $request = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\MVC\\Request') ;
         try {
             $request->setControllerExtensionName("jvchat") ;
             $request->setControllerName('Pi1') ;

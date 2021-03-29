@@ -31,7 +31,8 @@ class DbRepository {
      */
     protected $objectManager;
 
-
+    /** @var \TYPO3\CMS\Lang\LanguageService $lang */
+    var $lang;
 
     /**
      * @var ConnectionPool
@@ -640,7 +641,7 @@ class DbRepository {
 			'room' => $roomId,
 			'entry' => $msg,
 			'hidden' => ($hidden ? '1' : '0'),
-			'style' => $style,
+			'style' => (int)$style,
 			'pid' => $this->extCONF['pids.']['entries'] ? $this->extCONF['pids.']['entries'] : 0,
 			);
         $queryBuilder->insert('tx_jvchat_entry')->values($data)->execute() ;

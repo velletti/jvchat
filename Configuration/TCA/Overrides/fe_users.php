@@ -1,6 +1,5 @@
 <?php
 if (!defined ('TYPO3_MODE')) die ('Access denied.');
-$_EXTKEY = "jvchat" ;
 
 $tempColumns = Array (
     "tx_jvchat_chatstyle" => Array (

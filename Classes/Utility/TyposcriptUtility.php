@@ -3,80 +3,102 @@ namespace JV\Jvchat\Utility;
 
 class TyposcriptUtility{
 
-	/**
-	 * Loads the typoscript from scratch
-	 * @author Peter Benke <pbenke@allplan.com>
-	 * @param int $pageUid
-	 * @param string $extKey
-     * @throws \Exception
-     * @throws \RuntimeException
-	 * @return array
-	 */
-	public static function loadTypoScriptFromScratch($pageUid = 0, $extKey = '') {
+    /**
+     * Loads the typoscript from scratch
+     * @author Peter Benke <pbenke@allplan.com>
+     * @param int $pageUid
+     * @param string $extKey
+     * @param mixed $conditions array with Constants Conditions if needed
+     *                          this
+     *                          The Condition must be either :
+     *                          a) one of the following Common Vars: (i did not test this, but found it in source !)
+     *                         'usergroup' , 'treeLevel' , PIDupinRootline' or  'PIDinRootline':
+     *                         f.e. : array( 'usergroup=2,4' )
+     *
+     *                          or ( this is tested)
+     *                          b) the exact Condition from YOUR Constants.ts file
+     *                          f.e. [globalVar = GP:L = 1] or [globalString = IENV:HTTP_HOST = dev.domain.com]
+     *                          As this must be an array, also multiple Conditions can be handed over:
+     *                          f.e. array( [globalVar = GP:L = 1] , [globalString = IENV:HTTP_HOST = yoursub.domain.com] )
+     *
+     * @param bool $getConstants default=false,  will return  Constants (all or those from an extension) instaed of Setup
+     * @return array
+     */
+    public static function loadTypoScriptFromScratch($pageUid = 0, $extKey = '' , $conditions = false , $getConstants = false  ) {
 
-		/**
-		 * @var $pageRepository \TYPO3\CMS\Frontend\Page\PageRepository
-		 * @var $extendedTemplateService \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
-		 */
-		$pageRepository =  \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Frontend\Page\PageRepository');
+        /**
+         * @var $pageRepository \FluidTYPO3\Vhs\Service\PageService
+         * @var $extendedTemplateService \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
+         */
+        $pageService =  \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('FluidTYPO3\Vhs\Service\PageService');
 
-		$rootLine = $pageRepository->getRootLine($pageUid);
+        $rootLine = $pageService->getRootLine($pageUid);
 
-		$extendedTemplateService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\TypoScript\ExtendedTemplateService');
+        $extendedTemplateService = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\TypoScript\ExtendedTemplateService');
 
-		$extendedTemplateService->tt_track = 0;
-		$extendedTemplateService->init();
+        $extendedTemplateService->tt_track = 0;
+        // $extendedTemplateService->init();
 
-		// To get static files also
-		$extendedTemplateService->setProcessExtensionStatics(true);
-		$extendedTemplateService->runThroughTemplates($rootLine);
-		$extendedTemplateService->generateConfig();
+        // To get static files also
+        $extendedTemplateService->setProcessExtensionStatics(true);
+        $extendedTemplateService->runThroughTemplates($rootLine);
+        if( $conditions) {
+            $extendedTemplateService->matchAlternative = $conditions ;
+        }
+        $extendedTemplateService->generateConfig();
+        if( $getConstants ) {
+            if(!empty($extKey)){
+                $typoScript = self::removeDotsFromTypoScriptArray($extendedTemplateService->setup_constants['plugin.'][$extKey . '.']);
+            }else{
+                $typoScript = self::removeDotsFromTypoScriptArray($extendedTemplateService->setup_constants);
+            }
+        } else {
+            if(!empty($extKey)){
+                $typoScript = self::removeDotsFromTypoScriptArray($extendedTemplateService->setup['plugin.'][$extKey . '.']);
+            }else{
+                $typoScript = self::removeDotsFromTypoScriptArray($extendedTemplateService->setup);
+            }
+        }
 
-		if(!empty($extKey)){
-			$typoScript = self::removeDotsFromTypoScriptArray($extendedTemplateService->setup['plugin.'][$extKey . '.']);
-		}else{
-			$typoScript = self::removeDotsFromTypoScriptArray($extendedTemplateService->setup);
-		}
+        return $typoScript;
 
-		return $typoScript;
+    }
 
-	}
+    /**
+     * Removes the dots from an typoscript array
+     * @author Peter Benke <pbenke@allplan.com>
+     * @param $array
+     * @return array
+     */
+    private static function removeDotsFromTypoScriptArray($array) {
 
-	/**
-	 * Removes the dots from an typoscript array
-	 * @author Peter Benke <pbenke@allplan.com>
-	 * @param $array
-	 * @return array
-	 */
-	private static function removeDotsFromTypoScriptArray($array) {
+        $newArray = Array();
 
-		$newArray = Array();
+        if(is_array($array)){
 
-		if(is_array($array)){
+            foreach ($array as $key => $val) {
 
-			foreach ($array as $key => $val) {
+                if (is_array($val)) {
 
-				if (is_array($val)) {
+                    // Remove last character (dot)
+                    $newKey = substr($key, 0, -1);
+                    $newVal = self::removeDotsFromTypoScriptArray($val);
 
-					// Remove last character (dot)
-					$newKey = substr($key, 0, -1);
-					$newVal = self::removeDotsFromTypoScriptArray($val);
+                } else {
 
-				} else {
+                    $newKey = $key;
+                    $newVal = $val;
 
-					$newKey = $key;
-					$newVal = $val;
+                }
 
-				}
+                $newArray[$newKey] = $newVal;
 
-				$newArray[$newKey] = $newVal;
+            }
 
-			}
+        }
 
-		}
+        return $newArray;
 
-		return $newArray;
-
-	}
+    }
 
 }

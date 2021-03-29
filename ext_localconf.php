@@ -1,25 +1,12 @@
 <?php
+
+
 if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
 
- \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43($_EXTKEY,'pi1/class.tx_jvchat_pi1.php','_pi1','list_type',0);
+ \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43('jvchat','pi1/class.tx_jvchat_pi1.php','_pi1','list_type',0);
 
-$TYPO3_CONF_VARS['FE']['eID_include']['tx_jvchat_pi1'] = 'EXT:jvchat/Classes/Eid/JvchatEid.php';
 
-/*
-\TYPO3\CMS\Extbase\Utility\ExtensionUtility::configurePlugin(
-    'JV.' . $_EXTKEY,
-    'pi1',
-    array(
-        'Base' => 'chat,rooms,overallusercount',
 
-    ),
-    // non-cacheable actions
-    array(
-        'Base' => 'chat,rooms,overallusercount',
-
-    )
-);
-*/
 $iconRegistry =
     \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Imaging\IconRegistry::class);
 
@@ -49,9 +36,19 @@ $iconRegistry->registerIcon(
        }'
 );
 
+/** @var \TYPO3\CMS\Core\Information\Typo3Version $version */
+$version = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Information\Typo3Version');
+
+if ($version->getMajorVersion()  < 10) {
+    // @todo remove once TYPO3 8.6.x support is dropped
+    $TYPO3_CONF_VARS['FE']['eID_include']['tx_jvchat_pi1'] = 'EXT:jvchat/Classes/Eid/JvchatEid.php';
+}
+
+
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['JV\Jvchat\Scheduler\MailchatsTask'] = array(
-    'extension'        =>  $_EXTKEY,
+    'extension'        =>  'jvchat',
     'title'            => 'Send New Chat Notifications',
     'description'      => 'set only frequency ',
     'additionalFields' => 'JV\Jvchat\Scheduler\MailchatsTaskAdditionalFieldProvider'
 );
+

@@ -35,6 +35,7 @@ namespace JV\Jvchat\Eid;
  
 use \JV\Jvchat\Utility\LibUtility;
 use TYPO3\CMS\Core\Imaging\ImageMagickFile;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\CommandUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -42,7 +43,7 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 // was : class tx_jvchat_chat {
 class Chat {
 
-    /** @var \TYPO3\CMS\Lang\LanguageService $lang */
+    /** @var LanguageService $lang */
     var $lang;
 
     var $commands;
@@ -101,7 +102,9 @@ class Chat {
 		$this->env['LLKey'] = htmlspecialchars(GeneralUtility::_GP('l'));
 
 
-		$this->lang = GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
+		//$this->lang = GeneralUtility::makeInstance('TYPO3\\CMS\\Lang\\LanguageService');
+
+		$this->lang = $GLOBALS['LANG'] ;
 		$this->lang->init($this->env['LLKey']);
 		if( $this->env['LLKey'] == "en" || $this->env['LLKey'] == "default" || $this->env['LLKey'] == '') {
 			$this->lang->includeLLFile("EXT:jvchat/Resources/Private/Language/locallang.xlf");
@@ -849,7 +852,7 @@ class Chat {
 			$messages = array($messages);
 
 		if(GeneralUtility::_GP('d') == 'alltime')  {
-			$messages[] = "ALL: ".($this->getMicrotimeAsFloat() - $this->getMicrotimeAsFloat($GLOBALS['TYPO3_MISC']['microtime_start']));
+			$messages[] = "ALL: ".($this->getMicrotimeAsFloat() - $this->getMicrotimeAsFloat( microtime() ));
 		}
 
 		if($this->debug) {

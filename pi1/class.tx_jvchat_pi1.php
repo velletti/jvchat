@@ -51,16 +51,18 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
     /** @var array  */
     var $user;
 
+
+
 	/**
 	 */
 	function main($content,$conf)	{
 		$this->conf = $conf;
 		$this->settings = $conf;
 
-		$chatScript = 'https://' . $_SERVER['SERVER_NAME'] . '/index.php?eID=tx_jvchat_pi1';
+		$chatScript = 'https://' . $_SERVER['SERVER_NAME'] . '/index.php?id=' . $GLOBALS['TSFE']->id .  '&eIDMW=tx_jvchat_pi1';
 
 		$GLOBALS['TSFE']->additionalHeaderData['tx_jvchat_inc'] = '
-			<script language="JavaScript" type="text/javascript">
+			<script type="text/javascript">
 			//<![CDATA[
 				function tx_jvchat_openNewChatWindow(url, chatId) {
 					var concatinator = "&";
@@ -737,13 +739,9 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
         $setup['settings']['currentPid'] = $GLOBALS['TSFE']->id ;
 
-        if (class_exists(\TYPO3\CMS\Core\Context\Context::class)) {
-            $languageAspect = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Context\Context::class)->getAspect('language') ;
-            // (previously known as TSFE->sys_language_uid)
-            $setup['settings']['currentLng']  = $languageAspect->getId() ;
-        } else {
-            $setup['settings']['currentLng']  = $GLOBALS['TSFE']->sys_language_uid ;
-        }
+        $languageAspect = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Context\Context::class)->getAspect('language') ;
+        // (previously known as TSFE->sys_language_uid)
+        $setup['settings']['currentLng']  = $languageAspect->getId() ;
 
         $renderer->assign("setup" , $setup ) ;
         $renderer->assign("flex" , $this->conf['FLEX'] ) ;

@@ -19,9 +19,6 @@ return Array (
     "feInterface" => Array (
         "fe_admin_fieldList" => "hidden, entry, feuser, room, style",
     ),
-    "interface" => Array (
-        "showRecordFieldList" => "hidden,starttime,entry,room"
-    ),
     "columns" => Array (
         "hidden" => Array (
             "exclude" => 1,

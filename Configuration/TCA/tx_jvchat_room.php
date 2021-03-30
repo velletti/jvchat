@@ -25,9 +25,6 @@ $return = array (
     "feInterface" => Array (
         "fe_admin_fieldList" => "hidden, starttime, endtime, fe_group, name, description, closed, enable_emoticons, owner, moderators, experts, groupaccess, maxusercount, showfullnames, bannedusers, welcomemessage, showuserinfo_experts, showuserinfo_moderators, showuserinfo_users, showuserinfo_superusers, members, private, page",
     ) ,
-    "interface" => Array (
-        "showRecordFieldList" => "hidden,starttime,endtime,fe_group,name,description,welcomemessage,mode,showfullnames,closed,maxusercount,owner,moderators,experts,bannedusers,superusergroup,groupaccess,members,private"
-    ),
 
     "columns" => Array (
         "hidden" => Array (

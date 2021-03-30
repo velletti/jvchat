@@ -15,9 +15,6 @@ return array(
         ),
         "iconfile" => "EXT:jvchat/Resources/Public/Icons/icon_tx_jvchat_session.svg",
     ),
-    "interface" => Array (
-        "showRecordFieldList" => "hidden,starttime,endtime,name,description,startid,endid,room"
-    ),
 
     "feInterface" => Array (
         "fe_admin_fieldList" => "hidden, name, description, startid, endid",

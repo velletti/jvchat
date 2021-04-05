@@ -1,0 +1,14 @@
+services:
+  _defaults:
+    autowire: true
+    autoconfigure: true
+    public: false
+
+  JV\Jvchat\:
+    resource: '../Classes/*'
+
+  JV\Jvchat\Command\NotifyCommand:
+    tags:
+      - name: 'console.command'
+        command: 'jvchat:notify'
+        schedulable: true

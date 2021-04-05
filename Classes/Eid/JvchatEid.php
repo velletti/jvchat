@@ -7,7 +7,7 @@ $timer->enabled = ($_GET['d'] == 'timer' || $_POST['d'] == 'timer');
 $timer->start('all');
 
 // Exit, if script is called directly (must be included via eID in index_ts.php)
-if (!defined ('PATH_typo3conf')) 	die ('Could not access this script directly!');
+if (!defined ('TYPO3_MODE')) die ('JV Chat (old eId): Could not access this script directly!');
 
 // Initialize FE user object:
 /** @var FrontendUserAuthentication $feUserObj */

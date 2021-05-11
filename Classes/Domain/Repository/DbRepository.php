@@ -31,7 +31,7 @@ class DbRepository {
      */
     protected $objectManager;
 
-    /** @var \TYPO3\CMS\Lang\LanguageService $lang */
+    /** @var \TYPO3\CMS\Core\Localization\LanguageService $lang */
     var $lang;
 
     /**

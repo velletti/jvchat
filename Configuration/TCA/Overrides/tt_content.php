@@ -5,7 +5,7 @@ $_EXTKEY = "jvchat" ;
     Array('LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:pi1_title',
     'jvchat_pi1') ,
     'list_type' ,
-    'jvchat',
+    'jvchat'
 );
 
 

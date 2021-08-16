@@ -712,10 +712,13 @@ class DbRepository {
 
     /**
      * @param Room $room
-     * @param integer  $seconds  Number of seconds you want to get. if not set, latest 24 hour s
+     * @param integer $seconds Number of seconds you want to get. if not set, latest 24 hour s
+     * @param int $cruser_id
+     * @param bool $noHidden
+     * @param bool $noPrivate
      * @return array
      */
-    function getEntrieslastXseconds($room, $seconds=0  ) {
+    function getEntrieslastXseconds($room, $seconds=0  , $cruser_id = 0 , $noHidden = FALSE , $noPrivate = FALSE ) {
         if ( $seconds == 0 ) {
             $seconds = 60 * 60 * 24 ;
         }
@@ -723,8 +726,7 @@ class DbRepository {
         if( $this->extCONF['serverTimeOffset'] ) {
             $time = strtotime($this->extCONF['serverTimeOffset'], $time);
         }
-
-        return $this->getEntries($room, 0 , $time , 999)  ;
+        return $this->getEntries($room, 0    , $time , 999 , $cruser_id , $noHidden , $noPrivate )  ;
 
     }
     /**

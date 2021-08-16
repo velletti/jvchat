@@ -116,7 +116,7 @@ class NotifyCommand extends Command {
 
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
-        $this->logger->notice('TYPO3 jv_mailreturn Fetchbounces Task: after fetch config   ');
+        $this->logger->notice('TYPO3 jv_chat notify Command Task: before LOCK  ');
 
         /** @var LockFactory $lockFactory */
         $lockFactory = GeneralUtility::makeInstance(LockFactory::class);
@@ -142,7 +142,7 @@ class NotifyCommand extends Command {
             /** @var Room $room */
             foreach ( $rooms  as $room ) {
                 $debug[] = date("d.m.Y H:i:s") . " getEntries from of rooms:  " . $room->name . " -> new since " . date( "d.m.Y H:i:s" , Time() - $maxRows )  ;
-                $entries =  $db->getEntrieslastXseconds($room , $maxRows ) ;
+                $entries =  $db->getEntrieslastXseconds($room , $maxRows, 0 , true, true ) ;
                 if ( $entries && count ( $entries ) > 0  )  {
                     $debug[] = date("d.m.Y H:i:s") . " # of Entries :  " .count( $entries )  ;
                     $membersToNotify = $db->getFeUsersToNotifyRoom($room);

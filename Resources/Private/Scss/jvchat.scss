@@ -54,6 +54,12 @@ $jvchat-icon-colorShadow: rgba( 256 , 99 , 0 , 0.1) ;
     background-color: #F2F2F2;
     color: darken( $jvchat-textColor , 20% );
 }
+.tx-jvchat-notifymecount {
+    top: -10px;
+    left: -4px;
+    position: relative;
+    font-size: 60%;
+}
 #tx-jvchat-messages {
     border: 1px solid $jvchat-borderColor;
     overflow: auto;

@@ -47,13 +47,15 @@ class NotifyCommand extends Command {
     {
         $this->setDescription('Sends Email notifications.')
             ->setHelp('Get list of Options: .' . LF . 'use the --help option.')
-            ->addArgument(
+            ->addOption(
                 'amount',
+                'a',
                 InputArgument::OPTIONAL,
-                'Number of Emails to be sent'
+                'Seconds until a chat entry is new. should be the same like frequency cron job is running . default 3600'
             )
-            ->addArgument(
+            ->addOption(
                 'debugEmail',
+                'd' ,
                 InputArgument::OPTIONAL,
                 'email Address that should get debug output'
             );
@@ -77,22 +79,22 @@ class NotifyCommand extends Command {
     {
         $io = new SymfonyStyle($input, $output);
         $io->title($this->getDescription());
-        $maxRows = 999999999999 ;
-        if ($input->getArgument('amount') ) {
-            $maxRows = (int)$input->getArgument('amount') ;
-            $io->writeln('max emails to be sent was set to '. $maxRows );
+        $secondsAmount = 3600 ;
+        if ($input->getOption('amount') ) {
+            $secondsAmount = (int)$input->getOption('amount') ;
+            $io->writeln('Seconds an entry may exist to be sent was set to '. $secondsAmount );
 
         }
        // Bootstrap::initializeBackendAuthentication();
         $debugEmail = false ;
 
-        if ($input->getArgument('debugEmail')) {
-            $debugEmail = $input->getArgument('debugEmail');
+        if ($input->getOption('debugEmail')) {
+            $debugEmail = $input->getOption('debugEmail');
             $io->writeln('$debugEmail is set to : '. $debugEmail );
 
         }
 
-            $this->notifyCommand($io , $maxRows, $debugEmail  ) ;
+            $this->notifyCommand($io , $secondsAmount, $debugEmail  ) ;
             return 0 ;
     }
 
@@ -101,9 +103,9 @@ class NotifyCommand extends Command {
      * @param SymfonyStyle $io
      * @param $table
      * @param $slugField
-     * @param $maxRows
+     * @param $secondsAmount
      */
-    public function notifyCommand(SymfonyStyle $io , $maxRows, $debugEmail   ){
+    public function notifyCommand(SymfonyStyle $io , $secondsAmount, $debugEmail   ){
         $progress = false ;
 
 
@@ -141,15 +143,18 @@ class NotifyCommand extends Command {
             $debug[] = date("d.m.Y H:i:s") . " # of rooms:  " . count($rooms) ;
             /** @var Room $room */
             foreach ( $rooms  as $room ) {
-                $debug[] = date("d.m.Y H:i:s") . " getEntries from of rooms:  " . $room->name . " -> new since " . date( "d.m.Y H:i:s" , Time() - $maxRows )  ;
-                $entries =  $db->getEntrieslastXseconds($room , $maxRows, 0 , true, true ) ;
+                $debug[] = date("d.m.Y H:i:s") . " getEntries from of rooms:  " . $room->name . " -> new since " . date( "d.m.Y H:i:s" , Time() - $secondsAmount )  ;
+                $entries =  $db->getEntrieslastXseconds($room , $secondsAmount, 0 , true, true ) ;
+
                 if ( $entries && count ( $entries ) > 0  )  {
                     $debug[] = date("d.m.Y H:i:s") . " # of Entries :  " .count( $entries )  ;
                     $membersToNotify = $db->getFeUsersToNotifyRoom($room);
+                    $debug[] = date("d.m.Y H:i:s") ." # members to notify : " . count($membersToNotify)  ;
+
                     // $membersToNotify = $db->getFeUsersMayAccessRoom($room);
                     $chatLib->init( null , "UTF-8" , $room ) ;
 
-                    $chatLib->sendEmails( $entries , $membersToNotify , $room , true , $baseUrl ) ;
+                    $debug[] = strip_tags( $chatLib->sendEmails( $entries , $membersToNotify , $room , true , $baseUrl ) ) ;
                 }
 
             }

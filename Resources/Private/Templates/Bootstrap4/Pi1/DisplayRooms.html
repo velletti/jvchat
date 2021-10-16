@@ -56,7 +56,7 @@
                             <f:then>
                                  <span class="col-1 position-absolute position-right  cursor-pointer">
                                      <span class="chatIconColor" data-toggle="collapse" data-target="#chat-del-{room.uid}">
-                                        <i class="fas fa-trash" title="{f:translate(key: 'leave_chat')}"></i>
+                                        <i class="fas fa-trash" title="{f:translate(key: 'leave_chat')}"></i> <span class="tx-jvchat-notifymecount" title="users">({room.notifymecount})</span>
                                     </span>
                                 </span>
                             </f:then>
@@ -65,14 +65,14 @@
                                    <f:then>
                                         <span class="col-1 position-absolute position-right chatNotifyme cursor-pointer">
                                             <a class="chatIconColor" href="/index.php?id={setup.settings.currentPid}&tx_jvchat_pi1[notifyRoom]={room.uid}&L={setup.settings.currentLng}" title="{f:translate(key:'leave_chat')}">
-                                                <i class="fas fa-bell" title="{f:translate(key: 'command_notifyme_enabled')}"></i>
+                                                <i class="fas fa-bell" title="{f:translate(key: 'command_notifyme_enabled')}"></i> <span class="tx-jvchat-notifymecount" title="users">({room.notifymecount})</span>
                                             </a>
                                         </span>
                                    </f:then>
                                    <f:else>
                                          <span class="col-1 position-absolute position-right chatNotifyme cursor-pointer">
                                              <a class="chatIconColor" href="/index.php?id={setup.settings.currentPid}&tx_jvchat_pi1[notifyRoom]={room.uid}&L={setup.settings.currentLng}" title="{f:translate(key:'leave_chat')}">
-                                                <i class="fas fa-bell-slash" title="{f:translate(key: 'command_notifyme_enabled')}"></i>
+                                                <i class="fas fa-bell-slash" title="{f:translate(key: 'command_notifyme_enabled')}"></i> <span class="tx-jvchat-notifymecount" title="users">({room.notifymecount})</span>
                                             </a>
                                         </span>
                                    </f:else>
@@ -80,6 +80,7 @@
                            </f:else>
 
                         </f:if>
+
 
                     </div>
                     <div class="alert alert-warning collapse m-2 p-2 pb-3" id="chat-del-{room.uid}">

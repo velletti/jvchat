@@ -120,9 +120,12 @@ class DbRepository {
             // $this->debugQuery( $query);
             /** @var Room $room */
             $room = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
+
             $room->fromArray($row);
             // set correct Value if notificaton is enabled for this user
+            $room->notifimecount = $room->getNotifyMeCount() ;
             $room->setNotifyMe($userId);
+
             $rooms[] = $room;
             unset($room) ;
         }

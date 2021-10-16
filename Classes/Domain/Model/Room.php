@@ -36,9 +36,10 @@ class Room {
 		$this->welcomemessage = $array['welcomemessage'];
 		$this->private = $array['private'] ? true : false;
 		$this->members = $array['members'];
-		$this->notifyme = $array['notifyme'];
-		$this->page = $array['page'];
-		$this->image = $array['image'];
+        $this->page = $array['page'];
+        $this->notifymecount = count( GeneralUtility::trimExplode( "," , $array['notifyme'] )) ;
+        $this->notifyme = $array['notifyme'];
+        $this->image = $array['image'];
 		$this->enableEmoticons = $array['enableEmoticons'];
 		$this->enableTime = $array['enableTime'];
 		$this->imageUpload = $array['imageUpload'];
@@ -71,7 +72,7 @@ class Room {
 			'welcomemessage' => $this->welcomemessage,
 			'private' => $this->private ? 1 : 0,
 			'members' => $this->members,
-			'notifyme' => $this->notifyme,
+            'notifyme' => $this->notifyme,
 			'page' => $this->page,
 			'image' => $this->image,
 			'enableEmoticons' => $this->enableEmoticons,
@@ -85,6 +86,9 @@ class Room {
 
 	function setNotifyMe( $user ) {
         $this->isNotifyMeEnabled = GeneralUtility::inList( $this->notifyme , $user ) ;
+    }
+    function getNotifyMeCount(  ) {
+        return $this->notifymecount   ;
     }
 
 	function isExpertMode() {
@@ -181,6 +185,10 @@ class Room {
 	
 	var $members;
 	var $notifyme = '' ;
+
+	var $notifymecount = 0 ;
+
+
 
 	var $page;
 	

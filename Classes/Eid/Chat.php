@@ -1273,9 +1273,11 @@ class Chat {
             $params['message'] .= "<hr>" . $this->getEntryTextForEmail( $entries , $room ) ;
 
 
-            $link =  "<hr> \n https:// " . $server . "/index.php?id=" . $this->env['pid']
-                . "&tx_jvchat_pi1[uid]=" .$this->room->uid . "&tx_jvchat_pi1[view]=chat ";
-            $params['message'] .=  " \n<a href=\""  .$link . "\"> " . $link . "</a>\n" ;
+            $link =  "https://" . $server . "/index.php?id=" . $this->env['pid']
+                . "&tx_jvchat_pi1[uid]=" .$this->room->uid . "&tx_jvchat_pi1[view]=chat";
+
+           // $params['message'] .=  " <hr>\n<a href=\""  .$link . "\"> " . $link . "</a>\n" ;
+            $params['message'] .=  "\n"  .$link . "\n" ;
 
             $params['message'] .= " <hr>\n" ;
             $params['email_from'] = "noreply@tangomuenchen.de" ;

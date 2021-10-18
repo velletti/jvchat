@@ -21,6 +21,10 @@
 			<trans-unit id="entries_not_found">
 				<target>Keine Nachrichten.</target>
 			</trans-unit>
+			<trans-unit id="latest_entry">
+                <source>Latest entry</source>
+                <target>Letzter Eintrag</target>
+            </trans-unit>
 			<trans-unit id="new_message">
 				<target>Neue Nachricht</target>
 			</trans-unit>

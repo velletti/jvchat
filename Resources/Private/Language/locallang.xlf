@@ -20,6 +20,10 @@
 			<trans-unit id="entries_not_found">
 				<source>No messages.</source>
 			</trans-unit>
+            <trans-unit id="latest_entry">
+                <source>Latest entry</source>
+            </trans-unit>
+
 			<trans-unit id="back">
 				<source>Back</source>
 			</trans-unit>

@@ -14,11 +14,18 @@
             </f:if>
             <div class="alert alert-info">
                 <a href="/index.php?id={targetPage}&tx_jvchat_pi1[uid]={room.uid}&tx_jvchat_pi1[view]=chat&L={setup.settings.currentLng}" title="{f:translate(key:'command_enter_room')}">
-                   {entry.crdate -> f:format.date(format: 'd.M: H:i')} <span class="right" title="{room.name}">(#{entryCount})</span>  :
+                    <h3><f:translate key="latest_entry"/>: {entry.crdate -> f:format.date(format: 'd.M: H:i')} <span class="position-right mr-3" title="{room.name}">(#{entryCount})</span>  </h3>
                 </a>
                 <f:if condition="{user}">
-                    <p class="pb-0 m-0 mt-1">
-                    {entry.entry}
+                    <p class="pb-1 m-0 mt-1">
+                        {entry.entry}
+                        <span class="position-right mb-3">
+                            <a class="btn btn-xs btn-outline-primary mr-3 px-2 py-1" href="/index.php?id={targetPage}&tx_jvchat_pi1[uid]={room.uid}&tx_jvchat_pi1[view]=chat&L={setup.settings.currentLng}"
+                               title="{f:translate(key:'command_enter_room')}">
+                                <span class="fa fa-comments">
+                            </a>
+                        </span>
+                        <br>
                     </p>
                 </f:if>
             </div>

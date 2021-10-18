@@ -18,7 +18,7 @@
                 </a>
                 <f:if condition="{user}">
                     <p class="pb-1 m-0 mt-1">
-                        <f:format.html>{entry.entry}</f:format.html>
+                        <f:format.raw>{entry.entry}</f:format.raw>
                         <span class="position-right mb-3">
                             <a class="btn btn-xs btn-outline-primary mr-3 px-2 py-1" href="/index.php?id={targetPage}&tx_jvchat_pi1[uid]={room.uid}&tx_jvchat_pi1[view]=chat&L={setup.settings.currentLng}"
                                title="{f:translate(key:'command_enter_room')}">

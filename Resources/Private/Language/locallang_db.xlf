@@ -130,6 +130,9 @@
 			<trans-unit id="tt_content.pi_flexform.conf_view_3">
 				<source>Overall user count</source>
 			</trans-unit>
+            <trans-unit id="tt_content.pi_flexform.conf_view_4">
+                <source>Show Amount and latest Entry of a single Room</source>
+            </trans-unit>
 			<trans-unit id="tt_content.pi_flexform.initChatWithMessagesBefore">
 				<source>When entering show messages sent before (minutes)</source>
 			</trans-unit>

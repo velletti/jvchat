@@ -110,7 +110,7 @@
 
 
                             <script type="application/javascript">
-                                var id = '{entry.uid}' ;
+                                var id = '<f:format.raw>{entry.uid}</f:format.raw>' ;
                                 $('#tx-jvchat-msg-' +  id + " span.btn").bind("click", function(evt) {
                                     evt.preventDefault();
                                     var entryid = $(this).data("entry") ;

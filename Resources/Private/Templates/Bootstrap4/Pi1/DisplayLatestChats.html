@@ -1,0 +1,30 @@
+<f:layout name="Default" />
+
+<f:section name="main">
+    <f:if condition="{room}">
+        <f:if condition="{entryCount}">
+            <f:if condition="{setup.settings.currentPid}">
+                <f:variable name="targetPage">{setup.settings.currentPid}</f:variable>
+            </f:if>
+            <f:if condition="{confFLEX.chatwindow}">
+                <f:variable name="targetPage">{flex.chatwindow}</f:variable>
+            </f:if>
+            <f:if condition="{room.page}">
+                <f:variable name="targetPage">{room.page}</f:variable>
+            </f:if>
+            <div class="alert alert-info">
+                <a href="/index.php?id={targetPage}&tx_jvchat_pi1[uid]={room.uid}&tx_jvchat_pi1[view]=chat&L={setup.settings.currentLng}" title="{f:translate(key:'command_enter_room')}">
+                   {entry.crdate -> f:format.date(format: 'd.M: H:i')} <span class="right" title="{room.name}">(#{entryCount})</span>  :
+                </a>
+                <f:if condition="{user}">
+                    <p class="pb-0 m-0 mt-1">
+                    {entry.entry}
+                    </p>
+                </f:if>
+            </div>
+        </f:if>
+    </f:if>
+
+</f:section>
+
+

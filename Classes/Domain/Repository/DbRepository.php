@@ -676,10 +676,16 @@ class DbRepository {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_entry') ;
         $queryBuilder->select('*')->from('tx_jvchat_entry')
             ->where( $queryBuilder->expr()->eq('room', $queryBuilder->createNamedParameter( intval($room->uid) , Connection::PARAM_INT )) )
-            ->orderBy("crdate")
-            ->addOrderBy("uid")
             ->setMaxResults($max)
         ;
+        if( $max == 1 ) {
+            $queryBuilder->orderBy("crdate" ,"DESC")
+            ->addOrderBy("uid" , "DESC") ;
+        } else {
+            $queryBuilder->orderBy("crdate")
+             ->addOrderBy("uid") ;
+        }
+
         if ( $id > 0 ) {
             $queryBuilder->andWhere($queryBuilder->expr()->gt('uid', $queryBuilder->createNamedParameter( intval($id) , Connection::PARAM_INT )) );
         }
@@ -712,6 +718,28 @@ class DbRepository {
         return $entries;
 
 	}
+
+    /**
+     * @var mixed $room the Room as object
+     * @var integer $id - latest Entry Uid if available
+     * @var Integer $time - onyl entrys after a specific time
+     * @var Integer $maxEntries - only specific # of entrys  usefull to see if room is new and we should show help..
+     * @var Integer $cruser_id - only specific  entrys of one User use full to see user is new and we should show help..
+     * @var boolean $noHidden     - get all is default. if you do not want to get hidden messages set to false
+     * @var boolean $noPrivate     - get all is default. if you do not want to get private messages (with tofeuser > 0  set to false
+     * @return array all messages in this room after $id
+     */
+    function getEntryCount($room ) {
+        $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_entry') ;
+        $queryBuilder->select('*')->from('tx_jvchat_entry')
+            ->where( $queryBuilder->expr()->eq('room', $queryBuilder->createNamedParameter( intval($room->uid) , Connection::PARAM_INT )) )
+            ->andWhere($queryBuilder->expr()->eq('hidden', 0 ) )
+            ->andWhere($queryBuilder->expr()->eq('tofeuser', 0) )
+        ;
+        $rows = $queryBuilder->execute() ;
+        return $rows->rowCount() ;
+
+    }
 
     /**
      * @param Room $room

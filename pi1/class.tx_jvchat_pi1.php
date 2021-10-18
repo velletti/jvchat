@@ -147,7 +147,9 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
                 case 'session' :
                     $content = $this->displaySession($this->piVars['uid']);
                     break;
-
+                case 'latestchat':
+                    $content = $this->displayLatestChat($this->conf['FLEX']['chatroom']);
+                    break;
             }
         } else {
             // if nothing set use default view from FLEX form
@@ -161,11 +163,15 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
                 case 'chat':
                     $content = $this->displayChatRoom($this->conf['FLEX']['chatroom']);
                     break;
+                case 'latestchat':
+                    $content = $this->displayLatestChat($this->conf['FLEX']['chatroom']);
+                    break;
                 case 'overallusercount':
                     $content = $this->displayOverallChatuserNumber();
                     break;
             }
         }
+
 
 		//\TYPO3\CMS\Core\Utility\GeneralUtility::debug($this->conf);
 		return $this->pi_wrapInBaseClass($content);
@@ -296,7 +302,50 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
         $theValue = $this->cObj->stdWrap($theValue, $stdWrap);
 		return $this->cObj->stdWrap($theValue, $this->conf['errorMessagesAllWrap.']);
 	}
-	
+
+	function displayLatestChat($roomId) {
+        $this->db->cleanUpRooms();
+        /** @var \JV\Jvchat\Domain\Model\Room $newRoom */
+        if(!$room = $this->db->getRoom($roomId)) {
+            return $this->displayErrorMessage($this->pi_getLL('error_room_not_found'), $this->conf['views.']['chat.']['stdWrap.']);
+        }
+        // remove old message entries if set
+        if($this->db->extCONF['autoDeleteEntries']) {
+            $this->db->deleteEntries($this->db->extCONF['autoDeleteEntries']);
+        }
+        $entryCount = $this->db->getEntryCount( $room  );
+
+        /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
+        $setup = LibUtility::getSetUp();
+        $renderer = LibUtility::getRenderer( $setup, "DisplayLatestChats" , "html" ) ;
+        $renderer->assign('entryCount', $entryCount );
+
+        if( $entryCount > 0 ) {
+            $latestEntry = $this->db->getEntries($room, 0 , 0 ,1 , 0 , true, true );
+           //$entry = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Entry');
+           // $entry->fromArray();
+           // $entry->entry = LibUtility::formatMessage($entry->entry , $this->db->extCONF->setup['settings']['emoticons'] ,  $room->enableEmoticons );
+            $latestEntry[0]->entry =  LibUtility::formatMessage($latestEntry[0]->entry , $this->db->extCONF->setup['settings']['emoticons'] ,  $room->enableEmoticons )
+                                      ;
+            $renderer->assign('entry', $latestEntry[0] );
+
+
+        }
+
+        if(LibUtility::checkAccessToRoom($room, $this->user)) {
+            $this->db->getEntries($room, 0 , 0 ,1 , 0 , true, true );
+            $renderer->assign('user', $this->user );
+        }
+        $renderer->assign('room', $room);
+        $renderer->assign('settings', $setup['settings'] );
+        $renderer->assign('server',  \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'));
+        $renderer->assign("confFLEX" , $this->conf['FLEX'] ) ;
+        $renderer->assign("extConf" , $this->db->extCONF) ;
+
+        $content = $renderer->render();
+        return $content ;
+    }
+
 	function displayChatRoom($roomId) {
 
 

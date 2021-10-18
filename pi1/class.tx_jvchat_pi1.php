@@ -313,7 +313,8 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
         if($this->db->extCONF['autoDeleteEntries']) {
             $this->db->deleteEntries($this->db->extCONF['autoDeleteEntries']);
         }
-        $entryCount = $this->db->getEntryCount( $room  );
+        $seconds = 30 * 24 * 3600 ;
+        $entryCount = $this->db->getEntryCount( $room , $seconds );
 
         /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
         $setup = LibUtility::getSetUp();
@@ -335,6 +336,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
         if(LibUtility::checkAccessToRoom($room, $this->user)) {
             $this->db->getEntries($room, 0 , 0 ,1 , 0 , true, true );
             $renderer->assign('user', $this->user );
+
         }
         $renderer->assign('room', $room);
         $renderer->assign('settings', $setup['settings'] );

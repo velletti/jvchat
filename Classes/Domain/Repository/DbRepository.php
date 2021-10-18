@@ -721,20 +721,25 @@ class DbRepository {
 
     /**
      * @var mixed $room the Room as object
-     * @var integer $id - latest Entry Uid if available
-     * @var Integer $time - onyl entrys after a specific time
-     * @var Integer $maxEntries - only specific # of entrys  usefull to see if room is new and we should show help..
-     * @var Integer $cruser_id - only specific  entrys of one User use full to see user is new and we should show help..
-     * @var boolean $noHidden     - get all is default. if you do not want to get hidden messages set to false
-     * @var boolean $noPrivate     - get all is default. if you do not want to get private messages (with tofeuser > 0  set to false
-     * @return array all messages in this room after $id
+     * @var int $time - onyl entrys after a specific time
+     * @return Integer all messages in this room after $id
      */
-    function getEntryCount($room ) {
+    function getEntryCount(  $room , int $seconds ) {
+
+        if ( $seconds == 0 ) {
+            $seconds = 60 * 60 * 24 ;
+        }
+        $time = time() - $seconds ;
+        if( $this->extCONF['serverTimeOffset'] ) {
+            $time = strtotime($this->extCONF['serverTimeOffset'], $time);
+        }
+
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_entry') ;
         $queryBuilder->select('*')->from('tx_jvchat_entry')
             ->where( $queryBuilder->expr()->eq('room', $queryBuilder->createNamedParameter( intval($room->uid) , Connection::PARAM_INT )) )
             ->andWhere($queryBuilder->expr()->eq('hidden', 0 ) )
             ->andWhere($queryBuilder->expr()->eq('tofeuser', 0) )
+            ->andWhere($queryBuilder->expr()->gte('crdate', $queryBuilder->createNamedParameter( intval($time) , Connection::PARAM_INT )) );
         ;
         $rows = $queryBuilder->execute() ;
         return $rows->rowCount() ;

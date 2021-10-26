@@ -91,11 +91,7 @@ class Chat {
 		// get parameters
 		$this->env['user'] = $user->user;
 		$this->env['room_id'] = intval(GeneralUtility::_GP('r'));
-		$this->env['pid'] = intval(GeneralUtility::_GP('p'));
-		if( $this->env['pid'] < 1 ) {
-		    // todo Solve this for Notifocation Scheduler
-            $this->env['pid'] = 66 ;
-        }
+
 		$this->env['charset'] = $charset;
 
 		$this->env['msg'] = GeneralUtility::_GP('m');
@@ -133,6 +129,15 @@ class Chat {
             $this->room = $room ;
         } else {
             $this->room = $this->db->getRoom($this->env['room_id']);
+        }
+        $this->env['pid'] = intval(GeneralUtility::_GP('p'));
+        if( $this->env['pid'] < 1 ) {
+
+            $this->env['pid'] = $this->room->page ;
+            if( $this->env['pid'] < 1 ) {
+                // todo Solve this for NON Tango
+                $this->env['pid'] = 66;
+            }
         }
 		$this->user = $this->env['user'];
 		if(GeneralUtility::_GP('d') == 'true')

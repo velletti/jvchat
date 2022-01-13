@@ -735,7 +735,7 @@ function tx_jvchat_pi1_js_chat() {
 
 	this.setEmoticons = function(on) {
 		if(on == '1' ) {
-			Cookie.set("tx-jvchat-emoticons_visible", '1' , 100);
+			Cookie.set("tx-jvchat-emoticons_visible", '1' , 100 );
 			this.emoticonsElement.show() ;
 		} else {
 			Cookie.set("tx-jvchat-emoticons_visible", '0', 100);
@@ -1013,7 +1013,7 @@ var Cookie = {
 			d.setTime(d.getTime() + (86400000 * parseFloat(daysToExpire)));
 			expire = '; expires=' + d.toGMTString();
 		}
-		return (document.cookie = encodeURI(name) + '=' + encodeURI(value || '') + expire);
+		return (document.cookie = encodeURI(name) + '=' + encodeURI(value || '') + expire + '; secure; same-site=strict');
 	},
 	get: function(name) {
 		var cookie = document.cookie.match(new RegExp('(^|;)\\s*' + encodeURI(name) + '=([^;\\s]*)'));

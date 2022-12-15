@@ -1,4 +1,9 @@
 <?php
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
+use JV\Jvchat\Domain\Repository\DbRepository;
+use JV\Jvchat\Domain\Model\Room;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Core\Context\Context;
 /***************************************************************
 *  Copyright notice
 *
@@ -30,7 +35,7 @@
 use \JV\Jvchat\Utility\LibUtility ;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
-class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
+class tx_jvchat_pi1 extends AbstractPlugin {
 
     /** @var array */
     public $settings ;
@@ -45,7 +50,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
     var $chatScript;
 
-    /** @var  \JV\Jvchat\Domain\Repository\DbRepository  */
+    /** @var DbRepository  */
     var $db;
 
     /** @var array  */
@@ -90,8 +95,8 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 		$this->loadFLEX();
 
-		/** @var \JV\Jvchat\Domain\Repository\DbRepository db */
-		$this->db = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\Jvchat\Domain\Repository\DbRepository');
+		/** @var DbRepository db */
+  $this->db = GeneralUtility::makeInstance('JV\Jvchat\Domain\Repository\DbRepository');
 
 
 		if($this->piVars['leaveRoom'] ) {
@@ -282,8 +287,8 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	function deleteEntry($entryId) {
 		// check rights
 		$entry = $this->db->getEntry($entryId);
-        /** @var \JV\Jvchat\Domain\Model\Room $newRoom */
-		$room = $this->db->getRoom($entry->room);
+        /** @var Room $newRoom */
+  $room = $this->db->getRoom($entry->room);
 
 		if(!LibUtility::checkAccessToRoom($room, $this->user) || !$this->user['uid'] )
 			return $this->displayErrorMessage($this->pi_getLL('access_denied'));
@@ -305,7 +310,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 	function displayLatestChat($roomId) {
         $this->db->cleanUpRooms();
-        /** @var \JV\Jvchat\Domain\Model\Room $newRoom */
+        /** @var Room $newRoom */
         if(!$room = $this->db->getRoom($roomId)) {
             return $this->displayErrorMessage($this->pi_getLL('error_room_not_found'), $this->conf['views.']['chat.']['stdWrap.']);
         }
@@ -316,7 +321,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
         $seconds = 30 * 24 * 3600 ;
         $entryCount = $this->db->getEntryCount( $room , $seconds );
 
-        /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
+        /** @var StandaloneView $renderer */
         $setup = LibUtility::getSetUp();
         $renderer = LibUtility::getRenderer( $setup, "DisplayLatestChats" , "html" ) ;
         $renderer->assign('entryCount', $entryCount );
@@ -340,7 +345,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
         }
         $renderer->assign('room', $room);
         $renderer->assign('settings', $setup['settings'] );
-        $renderer->assign('server',  \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'));
+        $renderer->assign('server',  GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'));
         $renderer->assign("confFLEX" , $this->conf['FLEX'] ) ;
         $renderer->assign("extConf" , $this->db->extCONF) ;
 
@@ -352,8 +357,8 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 
 		$this->db->cleanUpRooms();
-        /** @var \JV\Jvchat\Domain\Model\Room $newRoom */
-		if(!$room = $this->db->getRoom($roomId)) {
+        /** @var Room $newRoom */
+  if(!$room = $this->db->getRoom($roomId)) {
             return $this->displayErrorMessage($this->pi_getLL('error_room_not_found'), $this->conf['views.']['chat.']['stdWrap.']);
         }
         // remove old message entries if set
@@ -394,11 +399,11 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		}
 
 		/* ***********************************   LTS 9 ******************************** */
-        /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
+        /** @var StandaloneView $renderer */
         $setup = LibUtility::getSetUp();
         $renderer = LibUtility::getRenderer( $setup, "DisplayChatRoom" , "html" ) ;
         $renderer->assign('settings', $setup['settings'] );
-        $renderer->assign('server',  \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'));
+        $renderer->assign('server',  GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'));
 
         $resUpdate = $this->db->updateUserInRoom($roomId, $this->user['uid']);
 
@@ -471,7 +476,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
             $newwindowurl= ($this->pi_linkTP_keepPIvars_url(array(), 0, true)).'&type='.($this->conf['chatwindow.']['typeNum']);
         }
         if ( substr( $newwindowurl , 0 , 4 ) != "http") {
-            $newwindowurl = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL'). $newwindowurl ;
+            $newwindowurl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL'). $newwindowurl ;
         }
 
 
@@ -516,7 +521,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
         $dataString .= ' data-popupparams="' . $this->conf['chatPopupJSWindowParams']  . '"' ;
         $dataString .= ' data-talkToNewRoomName="' . $this->slashJS($this->pi_getLL('talktoroomname'))  . '"' ;
 
-        $tooltipOffsetXY = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->conf['tooltipOffsetXY']);
+        $tooltipOffsetXY = GeneralUtility::trimExplode(',', $this->conf['tooltipOffsetXY']);
         $dataString .= ' data-allowtooltipoffset-x="' . $tooltipOffsetXY[0] . '"' ;
         $dataString .= ' data-allowtooltipoffset-y="' . $tooltipOffsetXY[1] . '"' ;
         $dataString .= ' data-refreshMessagesTime="' . $this->conf['FLEX']['refreshMessagesTime']*1000 . '"' ;
@@ -638,7 +643,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		else
 			$theValue['newWindowUrl'] = ($this->pi_linkTP_keepPIvars_url(array(), 0, true)).'&type='.($this->conf['chatwindow.']['typeNum']);
 
-		$theValue['newWindowUrl'] = \TYPO3\CMS\Core\Utility\GeneralUtility::getIndpEnv('TYPO3_SITE_URL').$theValue['newWindowUrl'];
+		$theValue['newWindowUrl'] = GeneralUtility::getIndpEnv('TYPO3_SITE_URL').$theValue['newWindowUrl'];
 
 //		$theValue['newWindowUrl'] = $this->conf['FLEX']['chatwindow'] ? $this->pi_linkTP_keepPIvars_url(array(), 0, true, $this->conf['FLEX']['chatwindow']) : $marker['###LEAVEURL###'];
 
@@ -658,7 +663,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
         $setup = LibUtility::getSetUp();
         $extConf = LibUtility::getExtConf() ;
 
-        /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
+        /** @var StandaloneView $renderer */
         $renderer = LibUtility::getRenderer($setup , "GetUsers" , "html" )  ;
         $renderer->assign("showFullNames" , $room->showFullNames() ) ;
         if( $setup['settings']['userlist']['avatar']['useNemUserImgPath']) {
@@ -675,8 +680,8 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 	}
 	
 	function displaySessionsOfRoom($roomId) {
-        /** @var \JV\Jvchat\Domain\Model\Room $room */
-		if(!$room = $this->db->getRoom($roomId))
+        /** @var Room $room */
+  if(!$room = $this->db->getRoom($roomId))
 			return	$this->displayErrorMessage($this->pi_getLL('error_room_not_found'), $this->conf['views.']['sessions.']['stdWrap.']);
 
 		//check rights to view room
@@ -724,8 +729,8 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
 		if(!$session = $this->db->getSession($sessionId))
 			return $this->displayErrorMessage($this->pi_getLL('session_not_found'), $this->conf['views.']['session.']['stdWrap.']);
-        /** @var \JV\Jvchat\Domain\Model\Room $room */
-		if(!$room = $this->db->getRoom($session->room))
+        /** @var Room $room */
+  if(!$room = $this->db->getRoom($session->room))
 			return $this->displayErrorMessage($this->pi_getLL('room_not_found'), $this->conf['views.']['session.']['stdWrap.']);
 
 		$this->db->cleanUpUserInRoom($room->uid, 10, true, $this->pi_getLL('user_leaves_chat'));
@@ -770,7 +775,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 		$this->cObj->data['entriesCount'] = count($entries);
 
 
-		$this->cObj->data = \TYPO3\CMS\Core\Utility\GeneralUtility::array_merge($this->cObj->data, $this->prefixAssocArrayKeys('room.', $room->toArray()));
+		$this->cObj->data = $this->cObj->data + $this->prefixAssocArrayKeys('room.', $room->toArray());
 
 		return $this->cObj->stdWrap($theValue, $this->conf['views.']['session.']['stdWrap.']);
 
@@ -785,12 +790,12 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
         }
         $setup = LibUtility::getSetUp();
 
-        /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
+        /** @var StandaloneView $renderer */
         $renderer = LibUtility::getRenderer($setup , "DisplayRooms" , "html" )  ;
 
         $setup['settings']['currentPid'] = $GLOBALS['TSFE']->id ;
 
-        $languageAspect = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Context\Context::class)->getAspect('language') ;
+        $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language') ;
         // (previously known as TSFE->sys_language_uid)
         $setup['settings']['currentLng']  = $languageAspect->getId() ;
 
@@ -813,7 +818,7 @@ class tx_jvchat_pi1 extends \TYPO3\CMS\Frontend\Plugin\AbstractPlugin {
 
         } else {
 			$rooms = array();
-			$roomsIds = \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',', $this->conf['FLEX']['chatrooms']);
+			$roomsIds = GeneralUtility::trimExplode(',', $this->conf['FLEX']['chatrooms']);
 			foreach($roomsIds as $id) {
 				$rooms[] = $this->db->getRoom($id);
 			}

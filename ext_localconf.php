@@ -1,7 +1,7 @@
 <?php
 
 
-if (!defined ('TYPO3_MODE')) 	die ('Access denied.');
+if (!defined ('TYPO3')) 	die ('Access denied.');
 
  \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPItoST43('jvchat','','_pi1','list_type',0);
 
@@ -41,7 +41,7 @@ $version = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\
 
 if ($version->getMajorVersion()  < 10) {
     // @todo remove once TYPO3 8.6.x support is dropped
-    $TYPO3_CONF_VARS['FE']['eID_include']['tx_jvchat_pi1'] = 'EXT:jvchat/Classes/Eid/JvchatEid.php';
+    $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['tx_jvchat_pi1'] = 'EXT:jvchat/Classes/Eid/JvchatEid.php';
 }
 
 

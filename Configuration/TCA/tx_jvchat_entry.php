@@ -1,5 +1,5 @@
 <?php
-if (!defined ('TYPO3_MODE')) die ('Access denied.');
+if (!defined ('TYPO3')) die ('Access denied.');
 return Array (
     "ctrl" => Array (
         "title" => "LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tx_jvchat_entry",
@@ -47,7 +47,6 @@ return Array (
             "label" => "LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tx_jvchat_entry.feuser",
             "config" => Array (
                 "type" => "group",
-                "internal_type" => "db",
                 "allowed" => "fe_users",
                 "size" => 1,
                 "minitems" => 0,
@@ -59,7 +58,6 @@ return Array (
             "label" => "LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tx_jvchat_entry.room",
             "config" => Array (
                 "type" => "group",
-                "internal_type" => "db",
                 "allowed" => "tx_jvchat_room",
                 "size" => 1,
                 "minitems" => 0,

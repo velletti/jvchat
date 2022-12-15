@@ -1,6 +1,10 @@
 <?php
 namespace JV\Jvchat\Utility;
 
+use JV\Jvchat\Domain\Model\Room;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Extbase\MVC\Request;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
@@ -23,7 +27,7 @@ class LibUtility {
 	}
 
     /**
-     * @param \JV\Jvchat\Domain\Model\Room $room
+     * @param Room $room
      * @param array $user
      * @return bool
      */
@@ -408,7 +412,7 @@ class LibUtility {
         if ( $pid == 0) {
             $pid =  $GLOBALS['TSFE']->id ;
         }
-         return \JV\Jvchat\Utility\TyposcriptUtility::loadTypoScriptFromScratch( $pid , 'tx_jvchat_pi1');
+         return TyposcriptUtility::loadTypoScriptFromScratch( $pid , 'tx_jvchat_pi1');
 
     }
 
@@ -467,21 +471,21 @@ class LibUtility {
 	}
 
     /**
-     * @param array $settings
-     * @param string $templateDefault
-     * @param string $format
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException if the extension name is not valid
-     * @return \TYPO3\CMS\Fluid\View\StandaloneView
-     */
-	static function getRenderer( $settings= array()  , $templateDefault='DisplayChatRoom' , $format="html") {
+  * @param array $settings
+  * @param string $templateDefault
+  * @param string $format
+  * @throws InvalidExtensionNameException if the extension name is not valid
+  * @return StandaloneView
+  */
+ static function getRenderer( $settings= array()  , $templateDefault='DisplayChatRoom' , $format="html") {
 
-        /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
+        /** @var StandaloneView $renderer */
         $renderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
 
         /** @var \TYPO3\CMS\Extbase\MVC\Controller\ControllerContext $controllerContext */
         $controllerContext = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\MVC\\Controller\\ControllerContext');
 
-        /** @var \TYPO3\CMS\Extbase\MVC\Request $request */
+        /** @var Request $request */
         $request = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\MVC\\Request') ;
         try {
             $request->setControllerExtensionName("jvchat") ;

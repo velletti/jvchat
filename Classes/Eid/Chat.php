@@ -26,13 +26,18 @@ namespace JV\Jvchat\Eid;
 *
 *  This copyright notice MUST APPEAR in all copies of the script!
 ***************************************************************/
-
 /**
  * Plugin 'Chat' for the 'jvchat' extension.
  *
  * @author	Vincent Tietz <vincent.tietz@vj-media.de>
  */
- 
+use JV\Jvchat\Domain\Repository\DbRepository;
+use JV\Jvchat\Domain\Model\Room;
+use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use JV\Jvchat\Domain\Model\Entry;
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
+use Velletti\Mailsignature\Service\SignatureService;
 use \JV\Jvchat\Utility\LibUtility;
 use TYPO3\CMS\Core\Imaging\ImageMagickFile;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -48,7 +53,7 @@ class Chat {
 
     var $commands;
 
-    /** @var  \JV\Jvchat\Domain\Repository\DbRepository  */
+    /** @var DbRepository  */
     var $db;
 
     var $env;
@@ -61,7 +66,7 @@ class Chat {
 
     var $debugMessages = array();
 
-    /** @var \JV\Jvchat\Domain\Model\Room $newRoom */
+    /** @var Room $newRoom */
     var $room;
 
     var $user;
@@ -121,8 +126,8 @@ class Chat {
 			$this->languageService ->includeLLFile("EXT:jvchat/Resources/Private/Language/"  . $this->env['LLKey'] . ".locallang.xlf"  );
 		}
 
-	        /** @var \JV\Jvchat\Domain\Repository\DbRepository db */
-		$this->db = GeneralUtility::makeInstance('JV\Jvchat\Domain\Repository\DbRepository');
+	        /** @var DbRepository db */
+  $this->db = GeneralUtility::makeInstance('JV\Jvchat\Domain\Repository\DbRepository');
 		$this->db->lang = $this->languageService ;
 
 		if ( $room ) {
@@ -517,15 +522,15 @@ class Chat {
             return " " . $fileArray['size']['uploaded'] . " > " . $maxSize ;
         }
         $fileInfo = pathinfo($fileArray['name']['uploaded']);
-        if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($types, strtolower($fileInfo['extension']))) {
+        if (!GeneralUtility::inList($types, strtolower($fileInfo['extension']))) {
             return $fileInfo['extension'] . " Type not allowed " ;
         }
-        if (!\TYPO3\CMS\Core\Utility\GeneralUtility::inList($typesMeta, strtolower($fileArray['type']['uploaded']))) {
+        if (!GeneralUtility::inList($typesMeta, strtolower($fileArray['type']['uploaded']))) {
             return $fileInfo['type']['uploaded'] . " Meta Type not allowed " ;
         }
 
         // +++ 2020 j.v. : check if detault path exists, add Date to path as subfolder !
-        $pathSite = (class_exists('TYPO3\\CMS\\Core\\Core\\Environment') ? (\TYPO3\CMS\Core\Core\Environment::getPublicPath() . '/') : PATH_site) ;
+        $pathSite = (class_exists('TYPO3\\CMS\\Core\\Core\\Environment') ? (Environment::getPublicPath() . '/') : Environment::getPublicPath() . '/') ;
         if (! is_dir ( $pathSite . $uploadDir  )) {
             mkdir( $pathSite . $uploadDir  ) ;
             $handle = fopen($pathSite . $uploadDir . "/index.html" , "w") ;
@@ -554,7 +559,7 @@ class Chat {
         $uploadDir .= "/" ;
 
         $destinationFileName = $this->cleanFileName($fileArray['name']['uploaded']);
-        if (\TYPO3\CMS\Core\Utility\GeneralUtility::upload_copy_move($fileArray['tmp_name']['uploaded'], $pathSite . $uploadDir . $destinationFileName)) {
+        if (GeneralUtility::upload_copy_move($fileArray['tmp_name']['uploaded'], $pathSite . $uploadDir . $destinationFileName)) {
 
             $originalFileName = $uploadDir . $destinationFileName ;
             $targetFilePath = $uploadDir . "thumbnail/" . $destinationFileName ;
@@ -641,7 +646,7 @@ class Chat {
         header('Content-Type: application/json; charset=utf-8');
         header('Content-Transfer-Encoding: 8bit');
 
-        $callbackId = \TYPO3\CMS\Core\Utility\GeneralUtility::_GP("callback");
+        $callbackId = GeneralUtility::_GP("callback");
         if ( $callbackId == '' ) {
             echo $jsonOutput;
         } else {
@@ -654,7 +659,7 @@ class Chat {
     function deleteEntry($entryId) {
         // check rights
         $entry = $this->db->getEntry($entryId);
-        /** @var \JV\Jvchat\Domain\Model\Room $newRoom */
+        /** @var Room $newRoom */
         $room = $this->db->getRoom($entry->room);
 
         if(!LibUtility::checkAccessToRoom($room, $this->user) || !$this->user['uid'] ) {
@@ -723,12 +728,12 @@ class Chat {
             return $this->returnMessage('NO Messages');
         }
 
-        /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
+        /** @var StandaloneView $renderer */
         $renderer = LibUtility::getRenderer($this->setup , "GetMessages" , "html" )  ;
 
 
         $messages = array() ;
-        /** @var \JV\Jvchat\Domain\Model\Entry $entry */
+        /** @var Entry $entry */
         foreach($entries as $entry) {
 
             // if message is a quit message for current client
@@ -811,7 +816,7 @@ class Chat {
 
             $groupstyles = $this->getUserGroupStyles($entryUser);
 
-            $mid = GeneralUtility::shortMD5(($entry->tstamp).($entry->uid));
+            $mid = substr(md5(($entry->tstamp).($entry->uid)), 0, 10);
 
             if(LibUtility::isModerator($this->room, $this->user['uid']) && !$entry->isPrivate()) {
                 $renderer->assign("needsModeration" , true ) ;
@@ -1103,11 +1108,11 @@ class Chat {
 	}
 
 	/**
-	  * This is for getUserlist() only
-     * @param \JV\Jvchat\Domain\Model\Room $room
-     * @param boolean $roomlistMode
-	  */
-	function getUserlistOfRoom($room, $roomlistMode = false) {
+  * This is for getUserlist() only
+  * @param Room $room
+  * @param boolean $roomlistMode
+  */
+ function getUserlistOfRoom($room, $roomlistMode = false) {
 
 
 		$users = $this->db->getFeUsersOfRoom($room);
@@ -1173,21 +1178,21 @@ class Chat {
 	}
 
     /**
-     * @param array $entries An array with entries of Type \JV\Jvchat\Domain\Model\Entry
-     * @param \JV\Jvchat\Domain\Model\Room $room An array
-     * @return string
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
-     */
-	function getEntryTextForEmail( $entries, $room=false ) {
+  * @param array $entries An array with entries of Type \JV\Jvchat\Domain\Model\Entry
+  * @param Room $room An array
+  * @return string
+  * @throws InvalidExtensionNameException
+  */
+ function getEntryTextForEmail( $entries, $room=false ) {
 	    if( !$room ) {
             $room = $this->room ;
         }
-        /** @var   \TYPO3\CMS\Fluid\View\StandaloneView $renderer */
+        /** @var StandaloneView $renderer */
         $renderer = LibUtility::getRenderer($this->setup , "GetEmailMessages" , "html" )  ;
 
 
         $messages = "" ;
-        /** @var \JV\Jvchat\Domain\Model\Entry $entry */
+        /** @var Entry $entry */
         foreach($entries as $entry) {
             // if entry is a command and continue with next entry
             if(preg_match('/^\//i', $entry->entry) || $entry->isPrivate() ) {
@@ -1255,11 +1260,11 @@ class Chat {
     /**
      * @param array $entries elements of type  \JV\Jvchat\Domain\Model\Entry
      * @param array $members type Users
-     * @param \JV\Jvchat\Domain\Model\Room $room
+     * @param Room $room
      * @param bool $sendall if false, do not check if currenct login user is post author
      * @param string $baseUrl  servername with protocol lke https:// without trailing "/"
      * @return string
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
+     * @throws InvalidExtensionNameException
      */
     function sendEmails($entries , $members , $room , $sendall=false , $baseUrl = '' ) {
 
@@ -1293,7 +1298,7 @@ class Chat {
             $params['email_fromName'] = "TangoMünchen" ;
             $params['sendCCmail'] = false  ;
 
-            /** @var \Velletti\Mailsignature\Service\SignatureService $mailService */
+            /** @var SignatureService $mailService */
             $mailService = GeneralUtility::makeInstance("Velletti\\Mailsignature\\Service\\SignatureService");
             $params['signatureId'] = 1 ;
             $memberCount = 0 ;
@@ -1759,7 +1764,7 @@ class Chat {
 		else
 			$name = implode(' ',$params) .  " & " . $username ;
 
-        /** @var \JV\Jvchat\Domain\Model\Room $newRoom */
+        /** @var Room $newRoom */
         $newRoom = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
 		$newRoom->pid = $this->room->pid;
 
@@ -1873,7 +1878,7 @@ class Chat {
 		$roomNums = 0 ;
 		if(count($rooms) > 0) {
             // send private system messages to all rooms
-            /** @var \JV\Jvchat\Domain\Model\Room $room */
+            /** @var Room $room */
             foreach($rooms as $otherroom) {
                 if(! $otherroom->isPrivate()  ) {
                     $roomNums ++ ;

@@ -2,6 +2,8 @@
 namespace JV\Jvchat\Domain\Repository;
 
 
+use TYPO3\CMS\Core\Localization\LanguageService;
+use TYPO3\CMS\Core\Utility\StringUtility;
 use Doctrine\DBAL\Driver\Statement;
 use JV\Jvchat\Domain\Model\Entry;
 use JV\Jvchat\Domain\Model\Room;
@@ -31,7 +33,7 @@ class DbRepository {
      */
     protected $objectManager;
 
-    /** @var \TYPO3\CMS\Core\Localization\LanguageService $lang */
+    /** @var LanguageService $lang */
     var $lang;
 
     /**
@@ -112,7 +114,7 @@ class DbRepository {
                 ->add($deleteRestriction)
                 ->add($groupRestriction);
         }
-        /** @var \Doctrine\DBAL\Driver\Statement $result */
+        /** @var Statement $result */
         $result = $query->execute() ;
         while ( $row = $result->fetch() ) {
 
@@ -992,7 +994,7 @@ class DbRepository {
             ->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(intval($room->uid) , Connection::PARAM_INT ))
             )
-            ->set('bannedusers', (GeneralUtility::uniqueList($banned)) )
+            ->set('bannedusers', (StringUtility::uniqueList($banned)) )
             ->execute();
 
         return true;
@@ -1016,7 +1018,9 @@ class DbRepository {
         $room = $this->getRoom($roomId);
 
         // is banned? remove from banned list
-        $bannedusers = GeneralUtility::rmFromList($userId, $room->bannedusers);
+        $bannedusers = implode(',', array_filter(explode(',', $room->bannedusers), function ($item) use ($element) {
+            return $element == $item;
+        }));
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_room') ;
 
@@ -1080,9 +1084,11 @@ class DbRepository {
 	    $list = $room->$field;
 
         if ( $add ) {
-            $newList = GeneralUtility::uniqueList($list.','.$userId );
+            $newList = StringUtility::uniqueList($list.','.$userId);
         } else {
-            $newList = GeneralUtility::rmFromList($userId, $list);
+            $newList = implode(',', array_filter(explode(',', $list), function ($item) use ($element) {
+                return $element == $item;
+            }));
         }
 
         if($newList != $list) {
@@ -1178,7 +1184,7 @@ class DbRepository {
 
 		$rooms = array();
 		while($row = $rows->fetch() ) {
-            /** @var \JV\Jvchat\Domain\Model\Room $room */
+            /** @var Room $room */
             $room = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
 			if (!$row) {
                 return $rooms;

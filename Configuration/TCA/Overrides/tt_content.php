@@ -1,5 +1,5 @@
 <?php
-if (!defined ('TYPO3_MODE')) die ('Access denied.');
+if (!defined ('TYPO3')) die ('Access denied.');
 $_EXTKEY = "jvchat" ;
 \TYPO3\CMS\Core\Utility\ExtensionManagementUtility::addPlugin(
     Array('LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:pi1_title',

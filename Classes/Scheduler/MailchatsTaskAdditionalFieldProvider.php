@@ -13,7 +13,8 @@ namespace JV\Jvchat\Scheduler;
  *
  * The TYPO3 project - inspiring people to share!
  */
-
+use TYPO3\CMS\Core\Messaging\AbstractMessage;
+use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Messaging\FlashMessage;
 use TYPO3\CMS\Scheduler\AbstractAdditionalFieldProvider;
 use TYPO3\CMS\Scheduler\Controller\SchedulerModuleController;
@@ -23,15 +24,13 @@ use TYPO3\CMS\Scheduler\Task\AbstractTask;
  * A task that should be run regularly that deletes
  * datasets flagged as "deleted" from the DB.
  */
-class MailchatsTaskAdditionalFieldProvider extends  AbstractAdditionalFieldProvider implements \TYPO3\CMS\Scheduler\AdditionalFieldProviderInterface
+class MailchatsTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvider
 {
-
-
     /**
      * Gets additional fields to render in the form to add/edit a task
      *
      * @param array $taskInfo Values of the fields from the add/edit task form
-     * @param \JV\Jvchat\Scheduler\MailchatsTask $task The task object being edited. NULL when adding a task!
+     * @param MailchatsTask $task The task object being edited. NULL when adding a task!
      * @param SchedulerModuleController $schedulerModule Reference to the scheduler backend module
      * @return array A two dimensional array, array('Identifier' => array('fieldId' => array('code' => '', 'label' => '', 'cshKey' => '', 'cshLabel' => ''))
      */
@@ -52,7 +51,6 @@ class MailchatsTaskAdditionalFieldProvider extends  AbstractAdditionalFieldProvi
 
         return $additionalFields;
     }
-
     public function generateFormField($additionalFields , $name, $type ,$taskInfo, $cshKey = '' , $class='form-control' ) {
         $formField = array() ;
         switch ($type) {
@@ -76,7 +74,7 @@ class MailchatsTaskAdditionalFieldProvider extends  AbstractAdditionalFieldProvi
         $additionalFields['Indexer'. $name] = $formField ;
         return $additionalFields ;
     }
-     /**
+    /**
      * Validates the additional fields' values
      *
      * @param array $submittedData An array containing the data submitted by the add/edit task form
@@ -88,8 +86,6 @@ class MailchatsTaskAdditionalFieldProvider extends  AbstractAdditionalFieldProvi
         $validStoragePid = $this->validateAdditionalFieldStoragePid($submittedData['IndexerStoragePid'], $schedulerModule);
         return $validStoragePid ;
     }
-
-
     /**
      * Validates the input of period
      *
@@ -104,14 +100,13 @@ class MailchatsTaskAdditionalFieldProvider extends  AbstractAdditionalFieldProvi
         } else {
             $this->addMessage(
                 htmlspecialchars ($this->getLanguageService()->sL('LLL:EXT:allplan_ke_search_extended/Resources/Private/Language/locallang_tasks.xlf:indexerTaskErrorStoragePid') ),
-                FlashMessage::ERROR
+                AbstractMessage::ERROR
             );
             $validPeriod = false;
         }
 
         return $validPeriod;
     }
-
     /**
      * Takes care of saving the additional fields' values in the task's object
      *
@@ -134,16 +129,11 @@ class MailchatsTaskAdditionalFieldProvider extends  AbstractAdditionalFieldProvi
 
 
     }
-
     /**
-     * @return \TYPO3\CMS\Core\Localization\LanguageService
+     * @return LanguageService
      */
     protected function getLanguageService()
     {
         return $GLOBALS['LANG'];
     }
-
-
-
-
 }

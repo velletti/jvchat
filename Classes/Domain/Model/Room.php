@@ -110,13 +110,13 @@ class Room {
 	function showDetailOf($type, $what) {
 		switch($type) {
 			case 'user':
-				return \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->showuserinfo_users, $what);
+				return GeneralUtility::inList($this->showuserinfo_users, $what);
 			case 'expert':
-				return \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->showuserinfo_experts, $what);
+				return GeneralUtility::inList($this->showuserinfo_experts, $what);
 			case 'moderator':
-				return \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->showuserinfo_moderators, $what);
+				return GeneralUtility::inList($this->showuserinfo_moderators, $what);
 			case 'superuser':
-				return \TYPO3\CMS\Core\Utility\GeneralUtility::inList($this->showuserinfo_superusers, $what);
+				return GeneralUtility::inList($this->showuserinfo_superusers, $what);
 			default:
 				return false;
 		}
@@ -125,13 +125,13 @@ class Room {
 	function getDetailsField($type) {
 		switch($type) {
 			case 'user':
-				return \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',',$this->showuserinfo_users);
+				return GeneralUtility::trimExplode(',',$this->showuserinfo_users);
 			case 'expert':
-				return \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',',$this->showuserinfo_experts);
+				return GeneralUtility::trimExplode(',',$this->showuserinfo_experts);
 			case 'moderator':
-				return \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',',$this->showuserinfo_moderators);
+				return GeneralUtility::trimExplode(',',$this->showuserinfo_moderators);
 			case 'superuser':
-				return \TYPO3\CMS\Core\Utility\GeneralUtility::trimExplode(',',$this->showuserinfo_superusers);
+				return GeneralUtility::trimExplode(',',$this->showuserinfo_superusers);
 			default:
 				return array();
 		}
@@ -172,7 +172,7 @@ class Room {
 	var $sessions;
 
 	var $bannedusers;
-	
+
 	var $showuserinfo_experts;
 
 	var $showuserinfo_moderators;
@@ -182,7 +182,7 @@ class Room {
 	var $showuserinfo_superusers;
 
 	var $private;
-	
+
 	var $members;
 	var $notifyme = '' ;
 
@@ -191,7 +191,7 @@ class Room {
 
 
 	var $page;
-	
+
 	var $image;
 
 	var $enableEmoticons;
@@ -210,7 +210,7 @@ class Room {
 			$moderators[] = $moderator['uid'];
 
 		return implode(',',$moderators);
-				
+
 	}	
 */
 }

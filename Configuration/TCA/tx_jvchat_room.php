@@ -2,7 +2,7 @@
 
 
 
-if (!defined ('TYPO3_MODE')) die ('Access denied.');
+if (!defined ('TYPO3')) die ('Access denied.');
 $return = array (
     "ctrl" => Array (
         "title" => "LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tx_jvchat_room",
@@ -13,7 +13,6 @@ $return = array (
         "sortby" => "sorting",
         "default_sortby" => "ORDER BY crdate",
         "delete" => "deleted",
-        "dividers2tabs"	=> "1",
         "enablecolumns" => Array (
             "disabled" => "hidden",
             "starttime" => "starttime",
@@ -156,7 +155,6 @@ $return = array (
             "label" => "LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tx_jvchat_room.owner",
             "config" => Array (
                 "type" => "group",
-                "internal_type" => "db",
                 "allowed" => "fe_users",
                 "size" => 1,
                 "minitems" => 0,
@@ -168,7 +166,6 @@ $return = array (
             "label" => "LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tx_jvchat_room.moderators",
             "config" => Array (
                 "type" => "group",
-                "internal_type" => "db",
                 "allowed" => 'fe_users',
                 "size" => 10,
                 "minitems" => 0,
@@ -180,7 +177,6 @@ $return = array (
             "label" => "LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tx_jvchat_room.experts",
             "config" => Array (
                 "type" => "group",
-                "internal_type" => "db",
                 "allowed" => 'fe_users',
                 "size" => 10,
                 "minitems" => 0,
@@ -192,7 +188,6 @@ $return = array (
             "label" => "LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tx_jvchat_room.bannedusers",
             "config" => Array (
                 "type" => "group",
-                "internal_type" => "db",
                 "allowed" => 'fe_users',
                 "size" => 10,
                 "minitems" => 0,
@@ -204,7 +199,6 @@ $return = array (
             "label" => "LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tx_jvchat_room.members",
             "config" => Array (
                 "type" => "group",
-                "internal_type" => "db",
                 "allowed" => 'fe_users',
                 "size" => 10,
                 "minitems" => 0,
@@ -288,7 +282,6 @@ $return = array (
             "label" => "LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tx_jvchat_room.page",
             "config" => Array (
                 "type" => "group",
-                "internal_type" => "db",
                 "allowed" => "pages",
                 "size" => 1,
                 "minitems" => 0,
@@ -321,7 +314,7 @@ $return = array (
     )
 );
 
-if (TYPO3_MODE == 'BE')	{
+if (\TYPO3\CMS\Core\Http\ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend())	{
     $conf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get('jvchat');
     if($conf['showRealNamesListing']) {
         $return['columns']['experts']['config']['itemsProcFunc'] = 'tx_jvchat_itemsProcFunc->user_jvchat_getFeUser';

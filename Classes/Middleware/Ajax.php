@@ -2,6 +2,8 @@
 
 namespace JV\Jvchat\Middleware;
 
+use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
+use JV\Jvchat\Eid\Chat;
 use JVE\JvEvents\Utility\AjaxUtility;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -20,10 +22,10 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 class Ajax implements MiddlewareInterface
 {
     /**
-     * @param \Psr\Http\Message\ServerRequestInterface $request
-     * @param \Psr\Http\Server\RequestHandlerInterface $handler
-     * @return \Psr\Http\Message\ResponseInterface
-     * @throws \TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException
+     * @param ServerRequestInterface $request
+     * @param RequestHandlerInterface $handler
+     * @return ResponseInterface
+     * @throws InvalidExtensionNameException
      */
     public function process(
         ServerRequestInterface $request,
@@ -38,9 +40,8 @@ class Ajax implements MiddlewareInterface
 
             // Initialize FE user object:
             /** @var FrontendUserAuthentication $feUserObj */
-
-            /** @var \JV\Jvchat\Eid\Chat $chat */
-            $chat = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Eid\\Chat');
+            /** @var Chat $chat */
+            $chat = GeneralUtility::makeInstance('JV\\Jvchat\\Eid\\Chat');
             $chat->init( $GLOBALS['TSFE']->fe_user, 'utf-8' , false);
             $result  = $chat->perform();
             $status = 200 ;

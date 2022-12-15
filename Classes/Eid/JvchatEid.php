@@ -1,5 +1,8 @@
 <?php
 
+use TYPO3\CMS\Frontend\Utility\EidUtility;
+use JV\Jvchat\Eid\Chat;
+use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 $timer = new Timer();
@@ -7,11 +10,11 @@ $timer->enabled = ($_GET['d'] == 'timer' || $_POST['d'] == 'timer');
 $timer->start('all');
 
 // Exit, if script is called directly (must be included via eID in index_ts.php)
-if (!defined ('TYPO3_MODE')) die ('JV Chat (old eId): Could not access this script directly!');
+if (!defined ('TYPO3')) die ('JV Chat (old eId): Could not access this script directly!');
 
 // Initialize FE user object:
 /** @var FrontendUserAuthentication $feUserObj */
-$feUserObj = \TYPO3\CMS\Frontend\Utility\EidUtility::initFeUser();
+$feUserObj = EidUtility::initFeUser();
 $charset = 'utf-8';
 
 // ##################
@@ -31,8 +34,8 @@ header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
 // ################
 
 $timer->start('chat');
-/** @var \JV\Jvchat\Eid\Chat $chat */
-$chat = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('JV\\Jvchat\\Eid\\Chat');
+/** @var Chat $chat */
+$chat = GeneralUtility::makeInstance('JV\\Jvchat\\Eid\\Chat');
 $chat->init($feUserObj, $charset, false);
 print $chat->perform();
 

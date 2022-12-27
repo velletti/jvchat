@@ -1,6 +1,8 @@
 <?php
 
 
+use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Http\ApplicationType;
 
 if (!defined ('TYPO3')) die ('Access denied.');
 $return = array (
@@ -314,7 +316,8 @@ $return = array (
     )
 );
 
-if (\TYPO3\CMS\Core\Http\ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend())	{
+if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
+    && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
     $conf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get('jvchat');
     if($conf['showRealNamesListing']) {
         $return['columns']['experts']['config']['itemsProcFunc'] = 'tx_jvchat_itemsProcFunc->user_jvchat_getFeUser';

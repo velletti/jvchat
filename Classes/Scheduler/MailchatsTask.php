@@ -64,7 +64,7 @@ class MailchatsTask extends AbstractTask
         $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
 
         $this->fetchConfiguration() ;
-        $this->logger->notice('TYPO3 jv_mailreturn Fetchbounces Task: after fetch config   ');
+        $this->logger->notice('TYPO3 jvchat  Task: after fetch config   ');
 
         /** @var LockFactory $lockFactory */
         $lockFactory = GeneralUtility::makeInstance(LockFactory::class);
@@ -81,8 +81,18 @@ class MailchatsTask extends AbstractTask
         /** @var DbRepository $db */
         $db = GeneralUtility::makeInstance("JV\\Jvchat\\Domain\\Repository\\DbRepository");
         $db->__construct() ;
+        if ( is_array($db->extCONF ) ) {
+            if ( array_key_exists('pids.' ,  $db->extCONF) && is_array($db->extCONF['pids.'] ) ) {
+                $this->logger->notice('TYPO3 jvchat ext config Pids : : ' . var_export($db->extCONF['pids.'] , true ) );
+            } else {
+                $this->logger->warning('TYPO3 jvchat could not load Find pids in ext config  ' . var_export($db->extCONF  , true )  );
+            }
+        } else {
+            $this->outputLine('TYPO3 jvchat_mailchats Task: ERROR: could not load ext config  ');
+            return false;
+        }
 
-        $rooms = $db->_getRooms($db->extCONF['pids.']['entries']) ;
+        $rooms = $db->_getRooms($db->extCONF['pids.']['rooms']) ;
         $debug[] = date("d.m.Y H:i:s") . " Got Rooms " ;
         // needed becaues Chat Lib will not send emails to current $this->user['email']
         $chatLib->user['email'] = "_cli_Dummy@typo3.xy" ;

@@ -35,7 +35,7 @@ class Ajax implements MiddlewareInterface
         // examples:
 
         if( is_array($_gp) && key_exists("eIDMW" ,$_gp ) && $_gp['eIDMW'] == 'tx_jvchat_pi1' ) {
-            $GLOBALS['TSFE']->set_no_cache();
+           // $GLOBALS['TSFE']->set_no_cache();
 
 
             // Initialize FE user object:
@@ -48,9 +48,9 @@ class Ajax implements MiddlewareInterface
             if( $result ) {
                 $status = 404 ;
             }
-            header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
-            header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");   // always modified
-            header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
+           // header("Expires: Mon, 26 Jul 1997 05:00:00 GMT");    // Date in the past
+           // header("Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT");   // always modified
+           // header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
             //$result = json_encode( $output['data']) ;
             $body = new Stream('php://temp', 'rw');
             $body->write($result);
@@ -59,6 +59,7 @@ class Ajax implements MiddlewareInterface
                 ->withHeader('Last-Modified',  gmdate("D, d M Y H:i:s") . " GMT")
                 ->withHeader('content-type',  'text/plain; charset=utf-8')
                 ->withHeader('Cache-Control',  'no-store, no-cache, must-revalidate')
+                ->withHeader('Pragma' , 'no-cache')
                 ->withBody($body)
                 ->withStatus($status);
         }

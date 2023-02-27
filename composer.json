@@ -11,9 +11,6 @@
         "jvchat",
         "Chat Room"
     ],
-    "config": {
-      "preferred-install": "dist"
-    },
     "minimum-stability": "dev",
     "prefer-stable": true,
     "homepage": "https://github.com/velletti/jvchat/",

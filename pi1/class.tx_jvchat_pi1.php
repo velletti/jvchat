@@ -56,12 +56,16 @@ class tx_jvchat_pi1 extends AbstractPlugin {
     /** @var array  */
     var $user;
 
-
+    /** @var array  */
+    var $extConf;
 
 	/**
 	 */
 	function main($content,$conf)	{
 		$this->conf = $conf;
+
+        $this->extConf = LibUtility::getExtConf();
+
 		$this->settings = $conf;
 
 		$chatScript = 'https://' . $_SERVER['SERVER_NAME'] . '/index.php?id=' . $GLOBALS['TSFE']->id .  '&eIDMW=tx_jvchat_pi1';
@@ -96,10 +100,10 @@ class tx_jvchat_pi1 extends AbstractPlugin {
 		$this->loadFLEX();
 
 		/** @var DbRepository db */
-  $this->db = GeneralUtility::makeInstance('JV\Jvchat\Domain\Repository\DbRepository');
+        $this->db = GeneralUtility::makeInstance('JV\Jvchat\Domain\Repository\DbRepository');
 
 
-		if($this->piVars['leaveRoom'] ) {
+		if( isset($this->piVars['leaveRoom']) && $this->piVars['leaveRoom'] ) {
 		    $roomId = intval( $this->piVars['leaveRoom'] )  ;
             if(!$room = $this->db->getRoom($roomId)) {
                 return $this->displayErrorMessage($this->pi_getLL('error_room_not_found'), $this->conf['views.']['chat.']['stdWrap.']);
@@ -113,7 +117,7 @@ class tx_jvchat_pi1 extends AbstractPlugin {
             $this->db->changeRoomMembership( $room , $this->user['uid'] , "members" , false  ) ;
             $this->db->changeRoomMembership( $room , $this->user['uid'] , "owner" , false  ) ;
 		}
-        if( $this->piVars['notifyRoom'] ) {
+        if( isset($this->piVars['notifyRoom']) && $this->piVars['notifyRoom'] ) {
             $roomId = intval( $this->piVars['notifyRoom'] )  ;
             if(!$room = $this->db->getRoom($roomId)) {
                 return $this->displayErrorMessage($this->pi_getLL('error_room_not_found'), $this->conf['views.']['chat.']['stdWrap.']);
@@ -128,7 +132,7 @@ class tx_jvchat_pi1 extends AbstractPlugin {
         }
 
 
-        if($action = $this->piVars['action']) {
+        if(isset($this->piVars['action']) && $action = $this->piVars['action']) {
             switch($action) {
                 case 'delete':
                     $content = $this->deleteEntry($this->piVars['entryId']);
@@ -138,7 +142,7 @@ class tx_jvchat_pi1 extends AbstractPlugin {
 
 
 		// dynamic view set in frontend
-		if($view = $this->piVars['view']) {
+		if(isset($this->piVars['view']) && $view = $this->piVars['view']) {
             switch($view) {
                 case 'chat':
                     $content = $this->displayChatRoom($this->piVars['uid']);
@@ -220,7 +224,7 @@ class tx_jvchat_pi1 extends AbstractPlugin {
         $this->conf['FLEX']['pluginRoomlistPid'] = $this->conf['pluginRoomlistPid'] ;
 
 		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'targetwindow', 'sDEF');
-		$value = $value ? $value : $this->conf['targetwindow'];
+		$value = $value ? $value : ($this->conf['targetwindow'] ?? '' );
 		$this->conf['FLEX']['targetwindow'] = $value;
 
 
@@ -427,8 +431,11 @@ class tx_jvchat_pi1 extends AbstractPlugin {
         // these markers can be used by both types
         $marker['CHATROOM_NAME'] = $room->name;
         $marker['CHATROOM_ID'] = $roomId;
-
-        $marker['USERLIST_PM_CONTENT'] = $this->cObj->stdWrap($this->conf['userlistPMContent'], $this->conf['userlistPMContent.']);
+        $this->conf['userlistPMContent'] = $this->conf['userlistPMContent'] ?? '' ;
+        $this->conf['userlistPMContent.'] = $this->conf['userlistPMContent.'] ?? [] ;
+        $this->conf['userlistPRContent'] = $this->conf['userlistPRContent'] ?? '' ;
+        $this->conf['userlistPRContent.'] = $this->conf['userlistPRContent.'] ?? []  ;
+        $marker['USERLIST_PM_CONTENT'] = $this->cObj->stdWrap( $this->conf['userlistPMContent'], $this->conf['userlistPMContent.']);
         $marker['USERLIST_PR_CONTENT'] = $this->cObj->stdWrap($this->conf['userlistPRContent'], $this->conf['userlistPRContent.']);
         $marker['USERLIST_PM_INFO'] =    $this->slashJS($this->pi_getLL('userlistPMInfo'));
         $marker['USERLIST_PR_INFO'] =    $this->slashJS($this->pi_getLL('userlistPRInfo'));
@@ -529,7 +536,7 @@ class tx_jvchat_pi1 extends AbstractPlugin {
         $dataString .= ' data-pid="' . $GLOBALS['TSFE']->id  . '"' ;
 
 
-        if( $this->piVars['debug'] ) {
+        if( isset($this->piVars['debug']) && $this->piVars['debug'] ) {
             $dataString .= ' data-debug="true"' ;
         }
 
@@ -550,7 +557,7 @@ class tx_jvchat_pi1 extends AbstractPlugin {
 
             if($this->conf['useSnippets']) {
                 // try to add user
-                $this->db->updateUserInRoom($room->uid, $this->user['uid'], LibUtility::isSuperuser($this->room, $this->user), $this->pi_getLL('user_enters_chat'));
+                $this->db->updateUserInRoom($room->uid, $this->user['uid'], LibUtility::isSuperuser($room, $this->user), $this->pi_getLL('user_enters_chat'));
 
                 // prepare the user's snippets
                 $this->db->setUserlistSnippet($room->uid, $this->user['uid'], $this->getSnippet($room, $this->user ));
@@ -632,9 +639,9 @@ class tx_jvchat_pi1 extends AbstractPlugin {
 		}
 
 		$theValue['allUserSnippets'] = implode($conf['usersGlue'], $snippets);
-
-		if(!$theValue['isFull'] && !$room->isClosed() && !$this->piVars['popup'])
-			$theValue['chatwindow'] = $this->conf['FLEX']['chatwindow'];
+        $this->piVars['popup'] = $this->piVars['popup'] ?? false;
+		if( !$theValue['isFull'] && !$room->isClosed() && !$this->piVars['popup'])
+			$theValue['chatwindow'] = $this->conf['FLEX']['chatwindow'] ?? false ;
 		else
 			$theValue['chatwindow'] = false;
 

@@ -647,7 +647,7 @@ class DbRepository {
 			'entry' => $msg,
 			'hidden' => ($hidden ? '1' : '0'),
 			'style' => (int)$style,
-			'pid' => $this->extCONF['pids.']['entries'] ? $this->extCONF['pids.']['entries'] : 0,
+			'pid' => $this->extCONF['pids.']['entries'] ?? 0,
 			);
         $queryBuilder->insert('tx_jvchat_entry')->values($data)->execute() ;
 

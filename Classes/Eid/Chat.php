@@ -76,6 +76,7 @@ class Chat {
     /** @var array The typoscript setup includings views cObjects and the settings array  */
     var $setup = array() ;
 
+    /** @var array  */
     var $extConf;
 
     public function injectLanguageService( LanguageService $languageService)
@@ -101,18 +102,18 @@ class Chat {
 
 		$this->env['msg'] = GeneralUtility::_GP('m');
 
-		$this->env['msg'] = rawurldecode($this->env['msg']) ;
+		$this->env['msg'] = $this->env['msg'] ? rawurldecode($this->env['msg']) : '' ;
 		$this->env['msg'] = str_replace('<', '&lt;', $this->env['msg']);
 		$this->env['msg'] = str_replace('>', '&gt;', $this->env['msg']);
 
-		$this->env['action'] = htmlspecialchars(GeneralUtility::_GP('a'));
-		$this->env['lastid'] = intval(GeneralUtility::_GP('t'));
-		$this->env['uid'] = intval(GeneralUtility::_GP('uid'));
-		$this->env['usercolor'] = intval(GeneralUtility::_GP('uc'));
-		$this->env['LLKey'] = htmlspecialchars(GeneralUtility::_GP('l'));
+		$this->env['action'] = htmlspecialchars(GeneralUtility::_GP('a') ?? '');
+		$this->env['lastid'] = intval(GeneralUtility::_GP('t')?? 0);
+		$this->env['uid'] = intval(GeneralUtility::_GP('uid') ?? 0);
+		$this->env['usercolor'] = intval(GeneralUtility::_GP('uc') ?? '');
+		$this->env['LLKey'] = htmlspecialchars(GeneralUtility::_GP('l') ?? 'en');
 
 
-		If ( !$this->languageService ) {
+		If ( !$this->languageService && isset($GLOBALS['LANG'] )  ) {
             $this->languageService  = $GLOBALS['LANG'] ;
         }
         If ( !$this->languageService ) {
@@ -127,7 +128,7 @@ class Chat {
 		}
 
 	        /** @var DbRepository db */
-  $this->db = GeneralUtility::makeInstance('JV\Jvchat\Domain\Repository\DbRepository');
+        $this->db = GeneralUtility::makeInstance('JV\Jvchat\Domain\Repository\DbRepository');
 		$this->db->lang = $this->languageService ;
 
 		if ( $room ) {
@@ -808,13 +809,15 @@ class Chat {
 
             if($entryUser) {
                 $userType = LibUtility::getUserTypeString($this->room, $entryUser) ;
+                $groupstyles = $this->getUserGroupStyles($entryUser);
             } else {
+                $groupstyles = '';
                 $userType = 'system' ;
             }
 
             $this->lastMessageId = $entry->uid;
 
-            $groupstyles = $this->getUserGroupStyles($entryUser);
+
 
             $mid = substr(md5(($entry->tstamp).($entry->uid)), 0, 10);
 
@@ -822,7 +825,7 @@ class Chat {
                 $renderer->assign("needsModeration" , true ) ;
             }
 
-            $ownMsg = $entryUser['uid'] == $this->user['uid'] ? 1 : 0 ;
+            $ownMsg = ( isset($entryUser['uid'])  && isset($this->user['uid']) && $entryUser['uid'] == $this->user['uid'] ) ? 1 : 0 ;
             $renderer->assign("id" , $id ) ;
             $renderer->assign("mid" , $mid ) ;
             $renderer->assign("entry" , $entry ) ;

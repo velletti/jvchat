@@ -259,7 +259,7 @@ class LibUtility {
 
 	}
     static function formatMessageEmoji($code ) {
-        if( $code['notFontAwesome'] ) {
+        if( isset($code['notFontAwesome']) && $code['notFontAwesome'] ) {
             return $code['html'] ;
         } else {
             return '<span class="chatIconColor"><i class="' . $code['html'] . '"> </i></span>' ;
@@ -386,16 +386,16 @@ class LibUtility {
 		$out = "";
 		$out2 = "";
 		foreach($emoticons as $key => $emoji) {
-            if (  $emoji['notFontAwesome']) {
+            if ( isset($emoji['notFontAwesome']) && $emoji['notFontAwesome']) {
                 $code = '<span class="'. $emoticonBtnClass .  '" onClick="setValueToInput(\''.$emoji['code'].'\');" alt="emoji-' . $key . '" title="'.self::unicode_encode($emoji['code']).'">'  .  $emoji['html'] . '</span>';
             } else {
                 $code = '<span class="'. $emoticonBtnClass. '"><span class="' . $emoji['html'] . '" onClick="setValueToInput(\''.$emoji['code'].'\');" alt="emoji-' . $key . '" title="'.self::unicode_encode($emoji['code']).'"> </span></span>';
             }
 
-            if (  $emoji['inMenu']) {
+            if ( isset($emoji['inMenu']) && $emoji['inMenu']) {
                 $out .= $code ;
             }
-            if (  $emoji['inMenu2']) {
+            if ( isset($emoji['inMenu2']) &&  $emoji['inMenu2']) {
                 $out2 .= $code ;
             }
 
@@ -506,16 +506,16 @@ class LibUtility {
         if(!$layoutPaths || count($layoutPaths) < 1) {
             $layoutPaths = array( 0 => "typo3conf/ext/jvchat/Resources/Private/Layouts/" ) ;
         }
-        $template = $settings['view']['template'] ;
+        $template = $settings['view']['template'] ?? false ;
         if(!$template) {
             $template = $templateDefault ;
         }
 
-        $templatePaths = $settings['view']['templateRootPaths'] ;
+        $templatePaths = $settings['view']['templateRootPaths'] ?? false ;
         if(!$templatePaths) {
             $templatePaths = array( 0 => "typo3conf/ext/jvchat/Resources/Private/Templates/" ) ;
         }
-        $partialPaths = $settings['view']['partialRootPaths'] ;
+        $partialPaths = $settings['view']['partialRootPaths'] ?? false ;
         if(!$partialPaths) {
             $partialPaths = array( 0 => "typo3conf/ext/jvchat/Resources/Private/Partials/" ) ;
         }

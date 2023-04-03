@@ -19,8 +19,8 @@ class Room {
 
 		$this->name = $array['name'];
 		$this->description = $array['description'];
-		$this->closed = $array['closed'];
-		$this->showfullnames = $array['showfullnames'];
+		$this->closed = $array['closed'] ?? false ;
+		$this->showfullnames = $array['showfullnames'] ?? false ;
 		$this->mode = $array['mode'];
 		$this->maxusercount = $array['maxusercount'];
 		$this->moderators = $array['moderators'];
@@ -29,20 +29,20 @@ class Room {
 		$this->groupaccess = $array['groupaccess'];
 		$this->superusergroup = $array['superusergroup'];
 		$this->bannedusers = $array['bannedusers'];
-		$this->showuserinfo_experts = $array['showuserinfo_experts'];
-		$this->showuserinfo_moderators = $array['showuserinfo_moderators'];
-		$this->showuserinfo_users = $array['showuserinfo_users'];
-		$this->showuserinfo_superusers = $array['showuserinfo_superusers'];
-		$this->welcomemessage = $array['welcomemessage'];
-		$this->private = $array['private'] ? true : false;
-		$this->members = $array['members'];
+		$this->showuserinfo_experts = $array['showuserinfo_experts'] ?? false ;
+		$this->showuserinfo_moderators = $array['showuserinfo_moderators'] ?? false ;
+		$this->showuserinfo_users = $array['showuserinfo_users'] ?? false ;
+		$this->showuserinfo_superusers = $array['showuserinfo_superusers'] ?? false;
+		$this->welcomemessage = $array['welcomemessage'] ?? '';
+		$this->private = (bool)$array['private'];
+		$this->members = $array['members'] ?? null ;
         $this->page = $array['page'];
         $this->notifymecount = count( GeneralUtility::trimExplode( "," , $array['notifyme'] )) ;
-        $this->notifyme = $array['notifyme'];
-        $this->image = $array['image'];
-		$this->enableEmoticons = $array['enableEmoticons'];
-		$this->enableTime = $array['enableTime'];
-		$this->imageUpload = $array['imageUpload'];
+        $this->notifyme = $array['notifyme'] ?? false ;
+        $this->image = $array['image'] ?? false ;
+		$this->enableEmoticons = $array['enableEmoticons'] ?? false ;
+		$this->enableTime = $array['enableTime'] ?? false ;
+		$this->imageUpload = $array['imageUpload'] ?? false ;
 
 	}
 

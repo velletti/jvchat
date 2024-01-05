@@ -1,6 +1,6 @@
 {
     "name": "jv/jvchat",
-    "description": "jv chat , made vjchat compatible for TYPO3 LTS 11  ",
+    "description": "jv chat , made vjchat compatible for TYPO3 LTS 12  ",
     "type": "typo3-cms-extension",
     "non-feature-branches": ["development"],
     "support": {
@@ -25,12 +25,10 @@
     },
 
     "require": {
-        "php": ">=7.4.0",
-        "typo3/cms-core": "^10.4 || ^11.5"
+        "typo3/cms-core": "^12.4"
     },
     "replace": {
         "jvchat": "self.version",
-        "typo3-ter/jvchat": "self.version"
     },
 
     "scripts": {
@@ -38,8 +36,6 @@
     },
     "extra": {
         "typo3/cms": {
-          "cms-package-dir": "{$vendor-dir}/typo3/cms",
-          "web-dir": "build/web",
           "extension-key": "jvchat"
         }
     }

@@ -56,7 +56,7 @@ class MailchatsTask extends AbstractTask
     {
         $debug = array() ;
         /** @var Chat $chatLib */
-        $chatLib = GeneralUtility::makeInstance("JV\\Jvchat\\Eid\\Chat");
+        $chatLib = GeneralUtility::makeInstance(Chat::class);
         $baseUrl = $chatLib->setBaseUrl("www.tangomuenchen.de") ;
 
         $debug[] = date("d.m.Y H:i:s") . " Started on Server "  . "https://" . $baseUrl  . " ";
@@ -79,7 +79,7 @@ class MailchatsTask extends AbstractTask
 
 
         /** @var DbRepository $db */
-        $db = GeneralUtility::makeInstance("JV\\Jvchat\\Domain\\Repository\\DbRepository");
+        $db = GeneralUtility::makeInstance(DbRepository::class);
         $db->__construct() ;
         if ( is_array($db->extCONF ) ) {
             if ( array_key_exists('pids.' ,  $db->extCONF) && is_array($db->extCONF['pids.'] ) ) {
@@ -115,7 +115,7 @@ class MailchatsTask extends AbstractTask
         }
         if( GeneralUtility::validEmail( trim( $this->getDebugmail()) ) ) {
             /** @var SignatureService $mailService */
-            $mailService = GeneralUtility::makeInstance("Velletti\\Mailsignature\\Service\\SignatureService");
+            $mailService = GeneralUtility::makeInstance(SignatureService::class);
             $params = array() ;
             $params['email_fromName'] = "Debug Tangomuenchen";
             $params['email_from'] = "info@tangomuenchen.de";

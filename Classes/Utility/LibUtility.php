@@ -480,7 +480,7 @@ class LibUtility {
  static function getRenderer( $settings= array()  , $templateDefault='DisplayChatRoom' , $format="html") {
 
         /** @var StandaloneView $renderer */
-        $renderer = GeneralUtility::makeInstance('TYPO3\\CMS\\Fluid\\View\\StandaloneView');
+        $renderer = GeneralUtility::makeInstance(StandaloneView::class);
 
         /** @var \TYPO3\CMS\Extbase\MVC\Controller\ControllerContext $controllerContext */
         $controllerContext = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\MVC\\Controller\\ControllerContext');

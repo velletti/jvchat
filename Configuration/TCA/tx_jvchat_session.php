@@ -6,7 +6,6 @@ return array(
         "label" => "name",
         "tstamp" => "tstamp",
         "crdate" => "crdate",
-        "cruser_id" => "cruser_id",
         "sortby" => "sorting",
         "default_sortby" => "ORDER BY crdate",
         "delete" => "deleted",
@@ -32,24 +31,22 @@ return array(
             "exclude" => 1,
             "label" => "LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime",
             "config" => Array (
-                "type" => "input",
-                "renderType" => "inputDateTime",
+                "type" => 'datetime',
                 "size" => "8",
-                "eval" => "date",
-                "default" => "0",
-                "checkbox" => "0"
+                "default" => 0,
+                "checkbox" => "0",
+                'format' => 'date'
             )
         ),
         "endtime" => Array (
             "exclude" => 1,
             "label" => "LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime",
             "config" => Array (
-                "type" => "input",
-                "renderType" => "inputDateTime",
+                "type" => 'datetime',
                 "size" => "8",
-                "eval" => "date",
                 "checkbox" => "0",
-                "default" => "0",
+                "default" => 0,
+                'format' => 'date',
             )
         ),
         "name" => Array (
@@ -58,7 +55,7 @@ return array(
             "config" => Array (
                 "type" => "input",
                 "size" => "30",
-                "eval" => "required",
+                'required' => true,
             )
         ),
         "description" => Array (
@@ -105,7 +102,7 @@ return array(
                 "size" => 1,
                 "minitems" => 0,
                 "maxitems" => 1,
-                "eval" => "required",
+                'required' => true,
             )
         ),
     ),

@@ -35,7 +35,7 @@ header("Cache-Control: no-store, no-cache, must-revalidate");  // HTTP/1.1
 
 $timer->start('chat');
 /** @var Chat $chat */
-$chat = GeneralUtility::makeInstance('JV\\Jvchat\\Eid\\Chat');
+$chat = GeneralUtility::makeInstance(Chat::class);
 $chat->init($feUserObj, $charset, false);
 print $chat->perform();
 

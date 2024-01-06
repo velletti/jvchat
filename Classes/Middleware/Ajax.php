@@ -41,7 +41,7 @@ class Ajax implements MiddlewareInterface
             // Initialize FE user object:
             /** @var FrontendUserAuthentication $feUserObj */
             /** @var Chat $chat */
-            $chat = GeneralUtility::makeInstance('JV\\Jvchat\\Eid\\Chat');
+            $chat = GeneralUtility::makeInstance(Chat::class);
             $chat->init( $GLOBALS['TSFE']->fe_user, 'utf-8' , false);
             $result  = $chat->perform();
             $status = 200 ;

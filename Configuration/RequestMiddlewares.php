@@ -1,9 +1,10 @@
 <?php
 
+use JV\Jvchat\Middleware\Ajax;
 return [
     'frontend' => [
         'jv/jvchat/ajax' => [
-            'target' => \JV\Jvchat\Middleware\Ajax::class,
+            'target' => Ajax::class,
             'after' => [
                 'typo3/cms-frontend/content-length-headers'
             ],

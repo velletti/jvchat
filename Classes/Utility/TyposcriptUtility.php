@@ -1,6 +1,7 @@
 <?php
 namespace JV\Jvchat\Utility;
 
+use FluidTYPO3\Vhs\Service\PageService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 class TyposcriptUtility{
 
@@ -29,7 +30,7 @@ class TyposcriptUtility{
          * @var $pageRepository \FluidTYPO3\Vhs\Service\PageService
          * @var $extendedTemplateService \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
          */
-        $pageService =  GeneralUtility::makeInstance('FluidTYPO3\Vhs\Service\PageService');
+        $pageService =  GeneralUtility::makeInstance(PageService::class);
 
         $rootLine = $pageService->getRootLine($pageUid);
 

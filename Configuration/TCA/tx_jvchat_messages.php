@@ -6,7 +6,6 @@ return Array (
         "label" => "entry",
         "tstamp" => "tstamp",
         "crdate" => "crdate",
-        "cruser_id" => "cruser_id",
         "default_sortby" => "ORDER BY tstamp DESC",
         "delete" => "deleted",
         "enablecolumns" => Array (
@@ -33,7 +32,7 @@ return Array (
             "label" => "LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tx_jvchat_entry.entry",
             "config" => Array (
                 "type" => "text",
-                "eval" => "required",
+                'required' => true,
             )
         ),
         'starttime' => array(
@@ -41,10 +40,8 @@ return Array (
             'exclude' => 1,
             'label' => 'LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime',
             'config' => array(
-                'type' => 'input',
-                'renderType' => 'inputDateTime',
+                'type' => 'datetime',
                 'size' => 13,
-                'eval' => 'datetime',
                 'checkbox' => 0,
                 'default' => 0,
             ),

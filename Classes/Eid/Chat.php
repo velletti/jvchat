@@ -117,7 +117,7 @@ class Chat {
             $this->languageService  = $GLOBALS['LANG'] ;
         }
         If ( !$this->languageService ) {
-            $this->languageService  = GeneralUtility::makeInstance('TYPO3\\CMS\\Core\\Localization\\LanguageService');
+            $this->languageService  = GeneralUtility::makeInstance(LanguageService::class);
         }
 
 		$this->languageService ->init($this->env['LLKey']);
@@ -128,7 +128,7 @@ class Chat {
 		}
 
 	        /** @var DbRepository db */
-        $this->db = GeneralUtility::makeInstance('JV\Jvchat\Domain\Repository\DbRepository');
+        $this->db = GeneralUtility::makeInstance(DbRepository::class);
 		$this->db->lang = $this->languageService ;
 
 		if ( $room ) {
@@ -531,7 +531,7 @@ class Chat {
         }
 
         // +++ 2020 j.v. : check if detault path exists, add Date to path as subfolder !
-        $pathSite = (class_exists('TYPO3\\CMS\\Core\\Core\\Environment') ? (Environment::getPublicPath() . '/') : Environment::getPublicPath() . '/') ;
+        $pathSite = (class_exists(Environment::class) ? (Environment::getPublicPath() . '/') : Environment::getPublicPath() . '/') ;
         if (! is_dir ( $pathSite . $uploadDir  )) {
             mkdir( $pathSite . $uploadDir  ) ;
             $handle = fopen($pathSite . $uploadDir . "/index.html" , "w") ;
@@ -1302,7 +1302,7 @@ class Chat {
             $params['sendCCmail'] = false  ;
 
             /** @var SignatureService $mailService */
-            $mailService = GeneralUtility::makeInstance("Velletti\\Mailsignature\\Service\\SignatureService");
+            $mailService = GeneralUtility::makeInstance(SignatureService::class);
             $params['signatureId'] = 1 ;
             $memberCount = 0 ;
 
@@ -1768,7 +1768,7 @@ class Chat {
 			$name = implode(' ',$params) .  " & " . $username ;
 
         /** @var Room $newRoom */
-        $newRoom = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
+        $newRoom = GeneralUtility::makeInstance(Room::class);
 		$newRoom->pid = $this->room->pid;
 
 

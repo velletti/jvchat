@@ -111,7 +111,7 @@ class NotifyCommand extends Command {
 
         $debug = array() ;
         /** @var Chat $chatLib */
-        $chatLib = GeneralUtility::makeInstance("JV\\Jvchat\\Eid\\Chat");
+        $chatLib = GeneralUtility::makeInstance(Chat::class);
         $baseUrl = $chatLib->setBaseUrl("www.tangomuenchen.de") ;
 
         $debug[] = date("d.m.Y H:i:s") . " Started on Server "  . "https://" . $baseUrl  . " ";
@@ -132,7 +132,7 @@ class NotifyCommand extends Command {
 
 
         /** @var DbRepository $db */
-        $db = GeneralUtility::makeInstance("JV\\Jvchat\\Domain\\Repository\\DbRepository");
+        $db = GeneralUtility::makeInstance(DbRepository::class);
         $db->__construct() ;
 
         $rooms = $db->_getRooms($db->extCONF['pids.']['entries']) ;
@@ -161,7 +161,7 @@ class NotifyCommand extends Command {
         }
         if( GeneralUtility::validEmail( trim( $debugEmail) ) ) {
             /** @var SignatureService $mailService */
-            $mailService = GeneralUtility::makeInstance("Velletti\\Mailsignature\\Service\\SignatureService");
+            $mailService = GeneralUtility::makeInstance(SignatureService::class);
             $params = array() ;
             $params['email_fromName'] = "Debug Tangomuenchen";
             $params['email_from'] = "info@tangomuenchen.de";
@@ -189,7 +189,7 @@ class NotifyCommand extends Command {
 	private function getQueryBuilder(string $table): QueryBuilder
     {
         /** @var ConnectionPool $connectionPool */
-        $connectionPool = GeneralUtility::makeInstance( "TYPO3\\CMS\\Core\\Database\\ConnectionPool");
+        $connectionPool = GeneralUtility::makeInstance( ConnectionPool::class);
         /** @var QueryBuilder $queryBuilder */
         return $connectionPool->getConnectionForTable($table)->createQueryBuilder();
 	}
@@ -249,9 +249,7 @@ class NotifyCommand extends Command {
     private function setSlug($table , $uid , $slugField , $slug)
     {
         $qb = $this->getQueryBuilder($table) ;
-        $qb->update($table)->set($slugField , $slug)
-            ->where($qb->expr()->eq("uid" , $qb->createNamedParameter($uid , PDO::PARAM_INT)))
-            ->execute() ;
+        $qb->update($table)->set($slugField , $slug)->where($qb->expr()->eq("uid" , $qb->createNamedParameter($uid , PDO::PARAM_INT)))->executeStatement() ;
 
     }
 

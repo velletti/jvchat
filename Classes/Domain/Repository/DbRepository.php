@@ -64,12 +64,12 @@ class DbRepository {
                 $expr->eq('pid', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT))
             ) ;
         }
-        $rows = $queryBuilder->execute()->fetchAll();
+        $rows = $queryBuilder->executeQuery()->fetchAll();
 
 		$rooms = array();
 		foreach ($rows as $row ) {
             /** @var Room $room */
-			$room = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
+			$room = GeneralUtility::makeInstance(Room::class);
 			$room->fromArray($row);
 
 			$rooms[] = $room;
@@ -115,13 +115,13 @@ class DbRepository {
                 ->add($groupRestriction);
         }
         /** @var Statement $result */
-        $result = $query->execute() ;
+        $result = $query->executeQuery() ;
         while ( $row = $result->fetch() ) {
 
 
             // $this->debugQuery( $query);
             /** @var Room $room */
-            $room = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
+            $room = GeneralUtility::makeInstance(Room::class);
 
             $room->fromArray($row);
             // set correct Value if notificaton is enabled for this user
@@ -155,7 +155,7 @@ class DbRepository {
 
 
         //  $this->debugQuery( $queryBuilder);
-        $allRooms = $queryBuilder->execute()->fetchAll();
+        $allRooms = $queryBuilder->executeQuery()->fetchAll();
 
         if (count($allRooms) < 1) {
             return array();
@@ -185,11 +185,11 @@ class DbRepository {
             }
 
 
-            $row = $query->execute()->fetch();
+            $row = $query->executeQuery()->fetch();
             //$this->debugQuery( $query);
             if( $row ) {
                 /** @var Room $room */
-                $room = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
+                $room = GeneralUtility::makeInstance(Room::class);
                 $room->fromArray($row);
                 if( $room->isPrivate()) {
                     $roomsPrivate[] = $room;
@@ -216,13 +216,11 @@ class DbRepository {
 
         $rows = $queryBuilder->select('*')
             ->from('tx_jvchat_room')
-            ->where('owner', $userId )
-            ->orderBy('uid')
-            ->execute()->fetchAll() ;
+            ->where('owner', $userId )->orderBy('uid')->executeQuery()->fetchAll() ;
             ;
         foreach ( $rows as $row ) {
             /** @var Room $room */
-            $room = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
+            $room = GeneralUtility::makeInstance(Room::class);
             $room->fromArray($row);
             $rooms[] = $room;
         }
@@ -242,16 +240,9 @@ class DbRepository {
         $query = $queryBuilder->select('*')
             ->from('tx_jvchat_room')
             ->where(
-                $expr->orX(
-                    $expr->eq('owner', $queryBuilder->createNamedParameter(($ownerId) , Connection::PARAM_INT )) ,
-                    $expr->inSet('members' , $queryBuilder->createNamedParameter(($ownerId) , Connection::PARAM_INT ))
-
-                )
+                $expr->or($expr->eq('owner', $queryBuilder->createNamedParameter(($ownerId) , Connection::PARAM_INT )), $expr->inSet('members' , $queryBuilder->createNamedParameter(($ownerId) , Connection::PARAM_INT )))
             )->andWhere(
-                $expr->orX(
-                    $expr->eq('owner', $queryBuilder->createNamedParameter(($userId) , Connection::PARAM_INT )) ,
-                    $expr->inSet('members' , $queryBuilder->createNamedParameter(($userId) , Connection::PARAM_INT ))
-                )
+                $expr->or($expr->eq('owner', $queryBuilder->createNamedParameter(($userId) , Connection::PARAM_INT )), $expr->inSet('members' , $queryBuilder->createNamedParameter(($userId) , Connection::PARAM_INT )))
 
             )->andWhere($expr->eq('private', 1 ))
             ->orderBy('uid' , "DESC")
@@ -260,9 +251,9 @@ class DbRepository {
         ;
        // $this->debugQuery($query);
        // die;
-        if ( $row =  $query->execute()->fetch()  ) {
+        if ( $row =  $query->executeQuery()->fetch()  ) {
             /** @var Room $room */
-            $room = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
+            $room = GeneralUtility::makeInstance(Room::class);
             $room->fromArray($row);
             return  $room;
         }
@@ -285,7 +276,7 @@ class DbRepository {
         $connection = $this->connectionPool->getConnectionForTable('tx_jvchat_room') ;
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_room') ;
 
-        if ( $queryBuilder->insert('tx_jvchat_room')->values($data)->execute() ) {
+        if ( $queryBuilder->insert('tx_jvchat_room')->values($data)->executeStatement() ) {
             return $connection->lastInsertId('tx_jvchat_room') ;
         } else {
             return 0 ;
@@ -304,9 +295,7 @@ class DbRepository {
             ->where(
                 $queryBuilder->expr()->eq('name', $queryBuilder->createNamedParameter($roomName , Connection::PARAM_STR))
             )
-            ->orderBy("uid" , "DESC")
-            ->setMaxResults(1)
-            ->execute();
+            ->orderBy("uid" , "DESC")->setMaxResults(1)->executeQuery();
 
 
         $row =  $rows->fetch() ;
@@ -331,9 +320,7 @@ class DbRepository {
             ->from('tx_jvchat_session')
             ->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((intval($sessionId)) , Connection::PARAM_INT ))
-            )
-            ->setMaxResults(1)
-            ->execute();
+            )->setMaxResults(1)->executeQuery();
 
 
         $row =  $rows->fetch() ;
@@ -342,7 +329,7 @@ class DbRepository {
         }
 
         /** @var Session $session */
-		$session = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Session');
+		$session = GeneralUtility::makeInstance(Session::class);
 		$session->fromArray($row);
 		return $session;
 	}
@@ -355,11 +342,7 @@ class DbRepository {
 
         $rows = $queryBuilder
             ->select('uid')
-            ->from('tx_jvchat_session')
-            ->where(
-                $queryBuilder->expr()->eq('room', $queryBuilder->createNamedParameter((intval($roomId)) , Connection::PARAM_INT ))
-            )
-            ->execute()->fetchAll();
+            ->from('tx_jvchat_session')->where($queryBuilder->expr()->eq('room', $queryBuilder->createNamedParameter((intval($roomId)) , Connection::PARAM_INT )))->executeQuery()->fetchAll();
 
 
         return count($rows) ;
@@ -383,12 +366,12 @@ class DbRepository {
             )
             ->orderBy('sorting') ;
 
-        $rows = $queryBuilder->execute() ;
+        $rows = $queryBuilder->executeQuery() ;
 
 		$sessions = array();
 		while($row = $rows->fetch() ) {
             /** @var Session $session */
-			$session = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Session');
+			$session = GeneralUtility::makeInstance(Session::class);
 			$session->fromArray($row);
 			$sessions[] = $session;
 		}
@@ -413,12 +396,12 @@ class DbRepository {
         ;
 
         // $this->debugQuery($queryBuilder) ;
-        $rows = $queryBuilder->execute() ;
+        $rows = $queryBuilder->executeQuery() ;
 
 		$entries = array();
 		while( $row = $rows->fetch() ) {
             /** @var Entry $entry */
-            $entry = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Entry');
+            $entry = GeneralUtility::makeInstance(Entry::class);
 			$entry->fromArray($row);
 			$entries[] = $entry;
 		}
@@ -469,7 +452,7 @@ class DbRepository {
 				'in_room' => 1,
 			);
 
-            $queryBuilder->insert('tx_jvchat_room_feusers_mm')->values($data)->execute() ;
+            $queryBuilder->insert('tx_jvchat_room_feusers_mm')->values($data)->executeStatement() ;
 
             if(!$invisible && $showmess) {
                 $this->putMessage($roomId, sprintf($enterlabel,$user['username']));
@@ -491,9 +474,7 @@ class DbRepository {
                 )->andWhere(
                     $queryBuilder->expr()->lt('tstamp', $queryBuilder->createNamedParameter($this->getTime() , Connection::PARAM_INT ))
                 )
-                ->set('tstamp', $this->getTime() )
-                ->set('in_room', 1 )
-                ->execute();
+                ->set('tstamp', $this->getTime() )->set('in_room', 1)->executeStatement();
 
 		}
 		return true;
@@ -518,7 +499,7 @@ class DbRepository {
             ->where( $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter( $uid)) )->setMaxResults(1)  ;
 
         // $debug = "Query LastRun : " . $userQuery->getSQL() ;
-        $userRow = $userQuery->execute()->fetch() ;
+        $userRow = $userQuery->executeQuery()->fetch() ;
 
         // $this->debugQuery( $userQuery ) ;
         return $userRow;
@@ -547,7 +528,7 @@ class DbRepository {
 
         // $this->debugQuery( $userQuery ) ;
 
-        return $userQuery->execute()->fetchColumn(0);
+        return $userQuery->executeQuery()->fetchColumn(0);
 	}
 
 	function getRoom($uid) {
@@ -563,12 +544,12 @@ class DbRepository {
             ->where( $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter( $uid)) )
             ->setMaxResults(1)  ;
 
-        $row = $roomQuery->execute()->fetch() ;
+        $row = $roomQuery->executeQuery()->fetch() ;
         if ( ! $row ) {
             return false ;
         }
         /** @var Room $room */
-        $room = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
+        $room = GeneralUtility::makeInstance(Room::class);
         $room->fromArray($row);
 
         return $room;
@@ -604,7 +585,7 @@ class DbRepository {
             $userQuery->andWhere($queryBuilder->expr()->eq('invisible', 0 ) ) ;
         }
         $userQuery->andWhere($queryBuilder->expr()->eq('in_room', 1 ) ) ;
-        return $userQuery->execute()->fetchColumn(0) ;
+        return $userQuery->executeQuery()->fetchColumn(0) ;
 	}
 	
 	function getTime() {
@@ -649,7 +630,7 @@ class DbRepository {
 			'style' => (int)$style,
 			'pid' => $this->extCONF['pids.']['entries'] ?? 0,
 			);
-        $queryBuilder->insert('tx_jvchat_entry')->values($data)->execute() ;
+        $queryBuilder->insert('tx_jvchat_entry')->values($data)->executeStatement() ;
 
 	}
 
@@ -707,10 +688,10 @@ class DbRepository {
 
         // $this->debugQuery($queryBuilder) ;
         $entries = array() ;
-        $rows = $queryBuilder->execute() ;
+        $rows = $queryBuilder->executeQuery() ;
         while ( $row = $rows->fetch() ) {
             /** @var Entry $entry */
-            $entry = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Entry');
+            $entry = GeneralUtility::makeInstance(Entry::class);
             $entry->fromArray($row);
             $entries[] = $entry;
             if ( count( $entries) > $max ) {
@@ -743,7 +724,7 @@ class DbRepository {
             ->andWhere($queryBuilder->expr()->eq('tofeuser', 0) )
             ->andWhere($queryBuilder->expr()->gte('crdate', $queryBuilder->createNamedParameter( intval($time) , Connection::PARAM_INT )) );
         ;
-        $rows = $queryBuilder->execute() ;
+        $rows = $queryBuilder->executeQuery() ;
         return $rows->rowCount() ;
 
     }
@@ -794,7 +775,7 @@ class DbRepository {
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-        $row = $queryBuilder->execute()->fetch() ;
+        $row = $queryBuilder->executeQuery()->fetch() ;
 
         if( $row ) {
             return ( $row['uid'] - 1) ;
@@ -809,7 +790,7 @@ class DbRepository {
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         // $this->debugQuery($queryBuilder) ;
-        $row = $queryBuilder->execute()->fetch() ;
+        $row = $queryBuilder->executeQuery()->fetch() ;
         if( $row ) {
             return ( $row['uid'] - 1) ;
         }
@@ -841,7 +822,7 @@ class DbRepository {
 			'room' => $roomId
 		);
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_session') ;
-        $queryBuilder->insert('tx_jvchat_session')->values($data)->execute() ;
+        $queryBuilder->insert('tx_jvchat_session')->values($data)->executeStatement() ;
 
 
 		return 'makesession success';
@@ -859,7 +840,7 @@ class DbRepository {
                 $queryBuilder->createNamedParameter( $username , Connection::PARAM_STR )) )
         ;
 
-        return $queryBuilder->execute()->fetch() ;
+        return $queryBuilder->executeQuery()->fetch() ;
 
 	}
 
@@ -874,9 +855,7 @@ class DbRepository {
         $queryBuilder->update('tx_jvchat_entry')
             ->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter($entryId , Connection::PARAM_INT ))
-            )
-            ->set('deleted', 1 )
-            ->execute();
+            )->set('deleted', 1)->executeStatement();
 
 		return true;
 	}
@@ -889,9 +868,7 @@ class DbRepository {
 		$time = $this->getTime()  - intval($time);
 		/** @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_entry') ;
-		return $queryBuilder->delete('tx_jvchat_entry')
-            ->where( $queryBuilder->expr()->lte('tstamp', $queryBuilder->createNamedParameter($time), Connection::PARAM_INT) )
-            ->execute() ;
+		return $queryBuilder->delete('tx_jvchat_entry')->where($queryBuilder->expr()->lte('tstamp', $queryBuilder->createNamedParameter($time), Connection::PARAM_INT))->executeStatement() ;
 	}
 	
 	function getEntry($entryId , $asArray = false ) {
@@ -904,14 +881,14 @@ class DbRepository {
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-        $rows = $queryBuilder->execute() ;
+        $rows = $queryBuilder->executeQuery() ;
 
 		if( $row = $rows->fetch() ) {
             if( $asArray ) {
                 return $row ;
             }
             /** @var Entry $entry */
-            $entry = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Entry');
+            $entry = GeneralUtility::makeInstance(Entry::class);
 			$entry->fromArray($row);
 
 			return $entry;
@@ -932,7 +909,7 @@ class DbRepository {
         $entry['hidden'] = 0 ;
         $entry['crdate'] = $this->getTime() ;
         $entry['tstamp'] = $this->getTime() ;
-        $queryBuilder->insert('tx_jvchat_entry')->values($entry)->execute() ;
+        $queryBuilder->insert('tx_jvchat_entry')->values($entry)->executeStatement() ;
 
         return $this->deleteEntry($entryId ) ;
 
@@ -951,7 +928,7 @@ class DbRepository {
             ->where( $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter( intval($roomId) , Connection::PARAM_INT )) )
             ->andWhere( $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter( intval($userId) , Connection::PARAM_INT )) ) ;
         //$this->debugQuery( $queryBuilder ) ;
-        $row = $queryBuilder->execute()->fetch() ;
+        $row = $queryBuilder->executeQuery()->fetch() ;
         if( $row && array_key_exists( $statusLabel , $row)) {
             return $row[$statusLabel];
         }
@@ -975,9 +952,7 @@ class DbRepository {
                 $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(intval($roomId) , Connection::PARAM_INT ))
             )->andWhere(
                 $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter(intval($userId) , Connection::PARAM_INT ))
-            )
-            ->set('tstamp', ($this->getTime()+($time*60)) )
-            ->execute();
+            )->set('tstamp', ($this->getTime()+($time*60)))->executeStatement();
 
         return true;
     }
@@ -993,9 +968,7 @@ class DbRepository {
             ->update('tx_jvchat_room')
             ->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(intval($room->uid) , Connection::PARAM_INT ))
-            )
-            ->set('bannedusers', (StringUtility::uniqueList($banned)) )
-            ->execute();
+            )->set('bannedusers', (StringUtility::uniqueList($banned)))->executeStatement();
 
         return true;
     }
@@ -1028,9 +1001,7 @@ class DbRepository {
             ->update('tx_jvchat_room')
             ->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter( $roomId , Connection::PARAM_INT ))
-            )
-            ->set('bannedusers', $bannedusers )
-            ->execute();
+            )->set('bannedusers', $bannedusers)->executeStatement();
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_room_feusers_mm') ;
 
@@ -1041,9 +1012,7 @@ class DbRepository {
                 $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter(intval($roomId) , Connection::PARAM_INT ))
             )->andWhere(
                 $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter(intval($userId) , Connection::PARAM_INT ))
-            )
-            ->set('tstamp', $this->getTime() )
-            ->execute();
+            )->set('tstamp', $this->getTime())->executeStatement();
 
         return true;
     }
@@ -1101,7 +1070,7 @@ class DbRepository {
                 )
                 ->set( $field , $newList ) ;
             // $this->debugQuery($queryBuilder) ;
-            return $queryBuilder->execute();
+            return $queryBuilder->executeStatement();
 
         }
         return 0;
@@ -1180,12 +1149,12 @@ class DbRepository {
         }
         // $this->debugQuery( $queryBuilder ) ;
         // die;
-        $rows = $queryBuilder->execute() ;
+        $rows = $queryBuilder->executeQuery() ;
 
 		$rooms = array();
 		while($row = $rows->fetch() ) {
             /** @var Room $room */
-            $room = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Room');
+            $room = GeneralUtility::makeInstance(Room::class);
 			if (!$row) {
                 return $rooms;
             }
@@ -1211,7 +1180,7 @@ class DbRepository {
                 $expr->eq('private', $queryBuilder->createNamedParameter( 1 , Connection::PARAM_INT))
             )
         ;
-        $rows = $queryBuilder->execute() ;
+        $rows = $queryBuilder->executeQuery() ;
         while($row = $rows->fetch() ) {
             // clean up, no messages and a longer idle time
             $this->cleanUpUserInRoom($row['uid'], $this->extCONF['maxAwayTime'], false);
@@ -1257,7 +1226,7 @@ class DbRepository {
         $queryBuilder->andWhere($expr->lte('tx_jvchat_room_feusers_mm.tstamp' , ($this->getTime()-$idle) )) ;
 
         /** @var Statement $rows */
-        $rows = $queryBuilder->execute() ;
+        $rows = $queryBuilder->executeQuery() ;
         // $this->debugQuery( $queryBuilder ) ;
         $users = array();
         while (($row = $rows->fetch()) != null) {
@@ -1267,11 +1236,9 @@ class DbRepository {
             $queryBuilder = $this->connectionPool->getQueryBuilderForTable( 'tx_jvchat_entry' ) ;
             $expr = $queryBuilder->expr();
             $queryBuilder->delete('tx_jvchat_entry')
-                ->where( $expr->lt( 'crdate', intval($this->getTime()-$removeSystemMessagsOlderThan) ) )
-                ->andWhere ( $expr->eq( 'feuser', 0 ))->execute() ;
+                ->where( $expr->lt( 'crdate', intval($this->getTime()-$removeSystemMessagsOlderThan) ) )->andWhere($expr->eq( 'feuser', 0 ))->executeStatement() ;
             $queryBuilder->delete('tx_jvchat_entry')
-                ->where( $expr->lt( 'crdate', intval($this->getTime()-$removeSystemMessagsOlderThan) ) )
-                ->andWhere ( $expr->eq( 'cruser_id', 0 ))->execute() ;
+                ->where( $expr->lt( 'crdate', intval($this->getTime()-$removeSystemMessagsOlderThan) ) )->andWhere($expr->eq( 'cruser_id', 0 ))->executeStatement() ;
 
         }
 
@@ -1306,17 +1273,12 @@ class DbRepository {
                 $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter($roomId , Connection::PARAM_INT ))
             )->andWhere(
                 $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter($userId , Connection::PARAM_INT ))
-            )
-            ->set('in_room', 0 )
-            ->execute();
+            )->set('in_room', 0)->executeStatement();
 
         // definitely delete unnecessary  entries
         $idle = 60 * $this->extCONF['maxAwayTime'];
         $queryBuilder
-            ->update('tx_jvchat_room_feusers_mm')
-            ->where(
-                $queryBuilder->expr()->lt('tstamp', $queryBuilder->createNamedParameter( $this->getTime()-$idle , Connection::PARAM_INT ))
-            )->execute() ;
+            ->update('tx_jvchat_room_feusers_mm')->where($queryBuilder->expr()->lt('tstamp', $queryBuilder->createNamedParameter( $this->getTime()-$idle , Connection::PARAM_INT )))->executeStatement() ;
 
 
 
@@ -1339,7 +1301,7 @@ class DbRepository {
             ->andWhere( $queryBuilder->expr()->gt('tstamp', $queryBuilder->createNamedParameter( intval($this->getTime()) , Connection::PARAM_INT )) ) ;
 
         // $this->debugQuery( $queryBuilder ) ;
-        $row = $queryBuilder->execute()->fetch() ;
+        $row = $queryBuilder->executeQuery()->fetch() ;
         if( $row ) {
             return round(($row['tstamp'] - $this->getTime()) / 60);
         }
@@ -1356,9 +1318,7 @@ class DbRepository {
             ->update('tx_jvchat_room')
             ->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter(intval($roomId) , Connection::PARAM_INT ))
-            )
-            ->set('deleted', 1 )
-            ->execute();
+            )->set('deleted', 1)->executeStatement();
 
 	}
 	
@@ -1408,7 +1368,7 @@ class DbRepository {
         ;
 
         // $this->debugQuery( $queryBuilder ) ;
-        return $queryBuilder->execute() ;
+        return $queryBuilder->executeStatement() ;
 
 	}
 
@@ -1420,12 +1380,12 @@ class DbRepository {
             ->from('tx_jvchat_session')
             ->orderBy('sorting') ;
 
-        $rows = $queryBuilder->execute() ;
+        $rows = $queryBuilder->executeQuery() ;
 
         $sessions = array();
         while($row = $rows->fetch() ) {
             /** @var Session $session */
-            $session = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Session');
+            $session = GeneralUtility::makeInstance(Session::class);
             $session->fromArray($row);
             $sessions[] = $session;
         }
@@ -1460,7 +1420,7 @@ class DbRepository {
             ->set('invisible', $newStatus ) ;
          // $this->debugQuery( $queryBuilder ) ;
 
-        return $queryBuilder->execute();
+        return $queryBuilder->executeStatement();
 
 	}
 
@@ -1571,7 +1531,7 @@ class DbRepository {
             $queryBuilder->andWhere($expr->eq('tx_jvchat_room_feusers_mm.in_room' , 1 )) ;
         }
         /** @var Statement $rows */
-        $rows = $queryBuilder->execute() ;
+        $rows = $queryBuilder->executeQuery() ;
         // $this->debugQuery( $queryBuilder ) ;
         $users = array();
         while (($row = $rows->fetch()) != null) {
@@ -1678,7 +1638,7 @@ class DbRepository {
 
         // $this->debugQuery($queryBuilder) ;
 
-        $result = $queryBuilder->execute();
+        $result = $queryBuilder->executeStatement();
 
 		if($result) {
             return $newStatus[$statusLabel] ? 'on' : 'off';
@@ -1702,9 +1662,7 @@ class DbRepository {
             ->from('tx_jvchat_room')
             ->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((intval($roomId)) , Connection::PARAM_INT ))
-            )
-            ->setMaxResults(1)
-            ->execute();
+            )->setMaxResults(1)->executeQuery();
 
 
         return $rows->fetchColumn(0) ;
@@ -1717,9 +1675,7 @@ class DbRepository {
             ->update('fe_users')
             ->where(
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((intval($user['uid'])) , Connection::PARAM_INT ))
-            )
-            ->set('tx_jvchat_chatstyle', $style  )
-            ->execute();
+            )->set('tx_jvchat_chatstyle', $style)->executeStatement();
 
 	}
 	
@@ -1732,9 +1688,7 @@ class DbRepository {
                 $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter((intval($roomId)) , Connection::PARAM_INT ))
             )->andWhere(
                 $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter((intval($userId)) , Connection::PARAM_INT ))
-            )
-            ->set('userlistsnippet',$snippet  )
-            ->execute();
+            )->set('userlistsnippet', $snippet)->executeStatement();
 	}
 		
 	function setTooltipSnippet($roomId, $userId, $snippet) {
@@ -1746,9 +1700,7 @@ class DbRepository {
                 $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter((intval($roomId)) , Connection::PARAM_INT ))
             )->andWhere(
                 $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter((intval($userId)) , Connection::PARAM_INT ))
-            )
-            ->set('tooltipsnippet', $snippet  )
-            ->execute();
+            )->set('tooltipsnippet', $snippet)->executeStatement();
 	}
 	
 	function getSnippets($roomId, $userId) {
@@ -1762,9 +1714,7 @@ class DbRepository {
                 $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter((intval($roomId)) , Connection::PARAM_INT ))
             )->andWhere(
                 $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter((intval($userId)) , Connection::PARAM_INT ))
-            )
-            ->setMaxResults(1)
-            ->execute();
+            )->setMaxResults(1)->executeQuery();
 
 
 		return $rows->fetch() ;

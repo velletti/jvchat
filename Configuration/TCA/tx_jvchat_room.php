@@ -1,6 +1,8 @@
 <?php
 
 
+use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use Psr\Http\Message\ServerRequestInterface;
 use TYPO3\CMS\Core\Http\ApplicationType;
 
@@ -40,23 +42,21 @@ $return = array (
             "exclude" => 1,
             "label" => "LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.starttime",
             "config" => Array (
-                "type" => "input",
-                "renderType" => "inputDateTime",
+                "type" => 'datetime',
                 "size" => "8",
-                "eval" => "date",
-                "default" => "0",
+                "default" => 0,
+                'format' => 'date',
             )
         ),
         "endtime" => Array (
             "exclude" => 1,
             "label" => "LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.endtime",
             "config" => Array (
-                "type" => "input",
-                "renderType" => "inputDateTime",
+                "type" => 'datetime',
                 "size" => "8",
-                "eval" => "date",
                 "checkbox" => "0",
-                "default" => "0",
+                "default" => 0,
+                'format' => 'date',
             )
         ),
         "fe_group" => Array (
@@ -66,10 +66,10 @@ $return = array (
                 "type" => "select",
                 'renderType' => 'selectMultipleSideBySide' ,
                 "items" => Array (
-                    Array("", 0),
-                    Array("LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login", -1),
-                    Array("LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login", -2),
-                    Array("LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups", "--div--")
+                    Array('label' => "", 'value' => 0),
+                    Array('label' => "LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.hide_at_login", 'value' => -1),
+                    Array('label' => "LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.any_login", 'value' => -2),
+                    Array('label' => "LLL:EXT:core/Resources/Private/Language/locallang_general.xlf:LGL.usergroups", 'value' => "--div--")
                 ),
                 "foreign_table" => "fe_groups"
             )
@@ -80,7 +80,7 @@ $return = array (
             "config" => Array (
                 "type" => "input",
                 "size" => "30",
-                "eval" => "required",
+                'required' => true,
             )
         ),
         "description" => Array (
@@ -96,10 +96,9 @@ $return = array (
             "exclude" => 1,
             "label" => "LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tx_jvchat_room.maxusercount",
             "config" => Array (
-                "type" => "input",
+                "type" => 'number',
                 "size" => "4",
                 "max" => "4",
-                "eval" => "int",
                 "checkbox" => "0",
                 "range" => Array (
                     "upper" => "1000",
@@ -130,8 +129,8 @@ $return = array (
                 "type" => "select",
                 'renderType' => 'selectSingle' ,
                 "items" => Array (
-                    Array("LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tx_jvchat_room.mode.I.0", "0"),
-                    Array("LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tx_jvchat_room.mode.I.1", "1"),
+                    Array('label' => "LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tx_jvchat_room.mode.I.0", 'value' => "0"),
+                    Array('label' => "LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tx_jvchat_room.mode.I.1", 'value' => "1"),
                 ),
                 "size" => 1,
                 "maxitems" => 1,
@@ -318,7 +317,7 @@ $return = array (
 
 if (($GLOBALS['TYPO3_REQUEST'] ?? null) instanceof ServerRequestInterface
     && ApplicationType::fromRequest($GLOBALS['TYPO3_REQUEST'])->isBackend()) {
-    $conf = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Configuration\ExtensionConfiguration::class)->get('jvchat');
+    $conf = GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('jvchat');
     if($conf['showRealNamesListing']) {
         $return['columns']['experts']['config']['itemsProcFunc'] = 'tx_jvchat_itemsProcFunc->user_jvchat_getFeUser';
         $return['columns']['moderators']['config']['itemsProcFunc'] = 'tx_jvchat_itemsProcFunc->user_jvchat_getFeUser';

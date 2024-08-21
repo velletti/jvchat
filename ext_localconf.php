@@ -36,15 +36,6 @@ $iconRegistry->registerIcon(
        }'
 );
 
-/** @var \TYPO3\CMS\Core\Information\Typo3Version $version */
-$version = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance('TYPO3\CMS\Core\Information\Typo3Version');
-
-if ($version->getMajorVersion()  < 10) {
-    // @todo remove once TYPO3 8.6.x support is dropped
-    $GLOBALS['TYPO3_CONF_VARS']['FE']['eID_include']['tx_jvchat_pi1'] = 'EXT:jvchat/Classes/Eid/JvchatEid.php';
-}
-
-
 $GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['JV\Jvchat\Scheduler\MailchatsTask'] = array(
     'extension'        =>  'jvchat',
     'title'            => 'Send New Chat Notifications',

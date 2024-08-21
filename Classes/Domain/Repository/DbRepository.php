@@ -522,8 +522,10 @@ class DbRepository {
 
         // $this->debugQuery( $userQuery ) ;
 
-        return $userQuery->executeQuery()->fetchFirstColumn();
-	}
+        $response =  $userQuery->executeQuery()->fetchFirstColumn() ;
+        return (is_array($response) && count($response) > 0 ) ? $response[0] : 0 ;
+
+    }
 
 	function getRoom($uid) {
 
@@ -579,7 +581,8 @@ class DbRepository {
             $userQuery->andWhere($queryBuilder->expr()->eq('invisible', 0 ) ) ;
         }
         $userQuery->andWhere($queryBuilder->expr()->eq('in_room', 1 ) ) ;
-        return $userQuery->executeQuery()->fetchFirstColumn() ;
+        $response =  $userQuery->executeQuery()->fetchFirstColumn() ;
+        return (is_array($response) && count($response) > 0 ) ? $response[0] : 0 ;
 	}
 	
 	function getTime() {
@@ -1635,8 +1638,9 @@ class DbRepository {
                 $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter((intval($roomId)) , Connection::PARAM_INT ))
             )->setMaxResults(1)->executeQuery();
 
+        $response =  $userQuery->executeQuery()->fetchFirstColumn() ;
+        return (is_array($response) && count($response) > 0 ) ? $response[0] : 0 ;
 
-        return $rows->fetchFirstColumn() ;
 	}
 	
 	function setMessageStyle($user, $style) {

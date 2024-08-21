@@ -7,6 +7,7 @@ use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Extbase\MVC\Request;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use Psr\Http\Message\ServerRequestInterface;
 
 class LibUtility {
 
@@ -175,11 +176,11 @@ class LibUtility {
 	}
 
     static function getUsernames($feusers, $name = false, $glue = ',&nbsp;', $cObj = null, $stdWrap = null) {
-		$userNames = array();
+		$userNames = [];
 		foreach($feusers as $user) {
 
 			if($name)
-				$userName = $user['name'] ? $user['name'] : $user['username'];
+				$userName = $user['name'] ?: $user['username'];
 			else
 				$userName = $user['username'];
 
@@ -206,7 +207,7 @@ class LibUtility {
 		//Pattern building across multiple lines to avoid page distortion.
 		$pattern = "/((http\:\/\/)?www\.[a-z0-9\.\:\-\_\/\~\@\%]*)/i";
 		//End pattern building.
-		preg_match_all ($pattern, $body, $matches);
+		preg_match_all ($pattern, (string) $body, $matches);
 		return (is_array($matches)) ? $matches:FALSE;
 	}
 
@@ -217,10 +218,10 @@ class LibUtility {
         // we start with double size 2x as messages as using smaller Fontsize!
         $faSize = "fa-2x" ;
 
-        if( strlen( $text ) < 30 ) {
+        if( strlen( (string) $text ) < 30 ) {
             $faSize = "fa-3x" ;
         }
-        if( strlen( $text ) < 20 ) {
+        if( strlen( (string) $text ) < 20 ) {
             $faSize = "fa-4x" ;
         }
 
@@ -230,19 +231,19 @@ class LibUtility {
             if ( is_array($emoticons)) {
                 // Replace all emoticon codes with images
                 foreach($emoticons as $key => $emoji ) {
-                    if( trim($text) == trim($emoji['code'])) {
+                    if( trim((string) $text) == trim((string) $emoji['code'])) {
                         $faSize = "fa-5x" ;
                     }
-                    $emoji['html'] = str_replace("fa-lg", $faSize , $emoji['html']);
+                    $emoji['html'] = str_replace("fa-lg", $faSize , (string) $emoji['html']);
 
                     $html = self::formatMessageEmoji($emoji) ;
-                    $text = str_replace($emoji['code'], $html , $text);
+                    $text = str_replace($emoji['code'], $html , (string) $text);
                 }
             }
 
         }
         // replace line breaks with <br>
-        $text = str_replace(chr(10), '<br />', $text);
+        $text = str_replace(chr(10), '<br />', (string) $text);
 
         $text = preg_replace('/\[b\](.*?)\[\/b\]/i', '<span class="tx-jvchat-bold">\1</span>', $text);
         $text = preg_replace('/\[u\](.*?)\[\/u\]/i', '<span class="tx-jvchat-underlined">\1</span>', $text);
@@ -267,107 +268,11 @@ class LibUtility {
     }
 
     static function unicode_encode($string) {
-		$chars = array(
-			' ' => '&#32;',
-			'!'	=> '&#33;',
-			'\"'=> '&#34;',
-			'\#'=> '&#35;',
-			'\$'=> '&#36;',
-			'\%'=> '&#37;',
-			'\&'=> '&#38;',
-			'\''=> '&#39;',
-			'('	=> '&#40;',
-			')'	=> '&#41;',
-			'*'	=> '&#42;',
-			'+'	=> '&#43;',
-			','	=> '&#44;',
-			'-'	=> '&#45;',
-			'.'	=> '&#46;',
-			'\/'=> '&#47;',
-			'0'	=> '&#48;',
-			'1'	=> '&#49;',
-			'2'	=> '&#50;',
-			'3'	=> '&#51;',
-			'4'	=> '&#52;',
-			'5'	=> '&#53;',
-			'6'	=> '&#54;',
-			'7'	=> '&#55;',
-			'8'	=> '&#56;',
-			'9'	=> '&#57;',
-			':'	=> '&#58;',
-			';'	=> '&#59;',
-			'<'	=> '&#60;',
-			'='	=> '&#61;',
-			'>'	=> '&#62;',
-			'?'	=> '&#63;',
-			'@'	=> '&#64;',
-			'A'	=> '&#65;',
-			'B'	=> '&#66;',
-			'C'	=> '&#67;',
-			'D'	=> '&#68;',
-			'E'	=> '&#69;',
-			'F'	=> '&#70;',
-			'G'	=> '&#71;',
-			'H'	=> '&#72;',
-			'I'	=> '&#73;',
-			'J'	=> '&#74;',
-			'K'	=> '&#75;',
-			'L'	=> '&#76;',
-			'M'	=> '&#77;',
-			'N'	=> '&#78;',
-			'O'	=> '&#79;',
-			'P'	=> '&#80;',
-			'Q'	=> '&#81;',
-			'R'	=> '&#82;',
-			'S'	=> '&#83;',
-			'T'	=> '&#84;',
-			'U'	=> '&#85;',
-			'V'	=> '&#86;',
-			'W'	=> '&#87;',
-			'X'	=> '&#88;',
-			'Y'	=> '&#89;',
-			'Z'	=> '&#90;',
-			'['	=> '&#91;',
-			'\\'=> '&#92;',
-			']'	=> '&#93;',
-			'^'	=> '&#94;',
-			'_'	=> '&#95;',
-			'\`'=> '&#96;',
-			'a'	=> '&#97;',
-			'b'	=> '&#98;',
-			'c'	=> '&#99;',
-			'd'	=> '&#100;',
-			'e'	=> '&#101;',
-			'f'	=> '&#102;',
-			'g'	=> '&#103;',
-			'h'	=> '&#104;',
-			'i'	=> '&#105;',
-			'j'	=> '&#106;',
-			'k'	=> '&#107;',
-			'l'	=> '&#108;',
-			'm'	=> '&#109;',
-			'n'	=> '&#110;',
-			'o'	=> '&#111;',
-			'p'	=> '&#112;',
-			'q'	=> '&#113;',
-			'r'	=> '&#114;',
-			's'	=> '&#115;',
-			't'	=> '&#116;',
-			'u'	=> '&#117;',
-			'v'	=> '&#118;',
-			'w'	=> '&#119;',
-			'x'	=> '&#120;',
-			'y'	=> '&#121;',
-			'z'	=> '&#122;',
-			'{'	=> '&#123;',
-			'|'	=> '&#124;',
-			'}'	=> '&#125;',
-			'~'	=> '&#126;',
-		);
+		$chars = [' ' => '&#32;', '!'	=> '&#33;', '\"'=> '&#34;', '\#'=> '&#35;', '\$'=> '&#36;', '\%'=> '&#37;', '\&'=> '&#38;', '\''=> '&#39;', '('	=> '&#40;', ')'	=> '&#41;', '*'	=> '&#42;', '+'	=> '&#43;', ','	=> '&#44;', '-'	=> '&#45;', '.'	=> '&#46;', '\/'=> '&#47;', '0'	=> '&#48;', '1'	=> '&#49;', '2'	=> '&#50;', '3'	=> '&#51;', '4'	=> '&#52;', '5'	=> '&#53;', '6'	=> '&#54;', '7'	=> '&#55;', '8'	=> '&#56;', '9'	=> '&#57;', ':'	=> '&#58;', ';'	=> '&#59;', '<'	=> '&#60;', '='	=> '&#61;', '>'	=> '&#62;', '?'	=> '&#63;', '@'	=> '&#64;', 'A'	=> '&#65;', 'B'	=> '&#66;', 'C'	=> '&#67;', 'D'	=> '&#68;', 'E'	=> '&#69;', 'F'	=> '&#70;', 'G'	=> '&#71;', 'H'	=> '&#72;', 'I'	=> '&#73;', 'J'	=> '&#74;', 'K'	=> '&#75;', 'L'	=> '&#76;', 'M'	=> '&#77;', 'N'	=> '&#78;', 'O'	=> '&#79;', 'P'	=> '&#80;', 'Q'	=> '&#81;', 'R'	=> '&#82;', 'S'	=> '&#83;', 'T'	=> '&#84;', 'U'	=> '&#85;', 'V'	=> '&#86;', 'W'	=> '&#87;', 'X'	=> '&#88;', 'Y'	=> '&#89;', 'Z'	=> '&#90;', '['	=> '&#91;', '\\'=> '&#92;', ']'	=> '&#93;', '^'	=> '&#94;', '_'	=> '&#95;', '\`'=> '&#96;', 'a'	=> '&#97;', 'b'	=> '&#98;', 'c'	=> '&#99;', 'd'	=> '&#100;', 'e'	=> '&#101;', 'f'	=> '&#102;', 'g'	=> '&#103;', 'h'	=> '&#104;', 'i'	=> '&#105;', 'j'	=> '&#106;', 'k'	=> '&#107;', 'l'	=> '&#108;', 'm'	=> '&#109;', 'n'	=> '&#110;', 'o'	=> '&#111;', 'p'	=> '&#112;', 'q'	=> '&#113;', 'r'	=> '&#114;', 's'	=> '&#115;', 't'	=> '&#116;', 'u'	=> '&#117;', 'v'	=> '&#118;', 'w'	=> '&#119;', 'x'	=> '&#120;', 'y'	=> '&#121;', 'z'	=> '&#122;', '{'	=> '&#123;', '|'	=> '&#124;', '}'	=> '&#125;', '~'	=> '&#126;'];
 
 		$theValue = '';
-		for($i = 0; $i < strlen($string);$i++) {
-			$theValue .= $chars[$string[$i]] ? $chars[$string[$i]] : $string[$i];
+		for($i = 0; $i < strlen((string) $string);$i++) {
+			$theValue .= $chars[$string[$i]] ?: $string[$i];
 		}
 
 		return $theValue;
@@ -408,12 +313,21 @@ class LibUtility {
        return GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('jvchat');
 	}
 
-    static function getSetUp( $pid = 0 ) {
-        if ( $pid == 0) {
-            $pid =  $GLOBALS['TSFE']->id ;
-        }
-         return TyposcriptUtility::loadTypoScriptFromScratch( $pid , 'tx_jvchat_pi1');
+    static function getPid()
+    {
+        $request = self::getRequest() ;
+        $pageArguments = $request->getAttribute('routing');
+        $pageId = $pageArguments->getPageId();
+    }
 
+    static function getRequest(): ServerRequestInterface
+    {
+        return ( $GLOBALS['TYPO3_REQUEST'] ?? new ServerRequestInterface );
+    }
+
+    static function getSetUp( $pid = 0 ) {
+        $request = self::getRequest() ;
+        return TyposcriptUtility::loadTypoScriptFromRequest( $request  , 'tx_jvchat_pi1');
     }
 
     static function trimImplode($glue, $array) {
@@ -477,34 +391,33 @@ class LibUtility {
   * @throws InvalidExtensionNameException if the extension name is not valid
   * @return StandaloneView
   */
- static function getRenderer( $settings= array()  , $templateDefault='DisplayChatRoom' , $format="html") {
+ static function getRenderer( $settings= []  , $templateDefault='DisplayChatRoom' , $format="html") {
 
-        /** @var StandaloneView $renderer */
-        $renderer = GeneralUtility::makeInstance(StandaloneView::class);
 
-        /** @var \TYPO3\CMS\Extbase\MVC\Controller\ControllerContext $controllerContext */
-        $controllerContext = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\MVC\\Controller\\ControllerContext');
+     /** @var StandaloneView $renderer */
+     $renderer = new StandaloneView ;
 
-        /** @var Request $request */
-        $request = GeneralUtility::makeInstance('TYPO3\\CMS\\Extbase\\MVC\\Request') ;
-        try {
-            $request->setControllerExtensionName("jvchat") ;
-            $request->setControllerName('Pi1') ;
-        }
-        catch (Exception $e) {
-            // ignore it
-        }
-        $controllerContext->setRequest($request);
 
-        $renderer->setControllerContext($controllerContext);
+     /** @var Request $request */
+     $request = new Request ;
+     try {
+         $request->setControllerExtensionName("jvchat") ;
+         $request->setControllerName('Pi1') ;
+         $request->withPluginName("jvchat") ;
+     }
+     catch (Exception) {
+         // ignore it
+     }
+
+     $renderer->setRequest($request);
 
         $layoutPaths = $settings['view']['layoutRootPaths'] ;
        // var_dump($settings['view']);
         // echo "<hr>" ;
         // var_dump($layoutPaths);
 
-        if(!$layoutPaths || count($layoutPaths) < 1) {
-            $layoutPaths = array( 0 => "typo3conf/ext/jvchat/Resources/Private/Layouts/" ) ;
+        if(!$layoutPaths || (is_countable($layoutPaths) ? count($layoutPaths) : 0) < 1) {
+            $layoutPaths = [0 => "typo3conf/ext/jvchat/Resources/Private/Layouts/"] ;
         }
         $template = $settings['view']['template'] ?? false ;
         if(!$template) {
@@ -513,11 +426,11 @@ class LibUtility {
 
         $templatePaths = $settings['view']['templateRootPaths'] ?? false ;
         if(!$templatePaths) {
-            $templatePaths = array( 0 => "typo3conf/ext/jvchat/Resources/Private/Templates/" ) ;
+            $templatePaths = [0 => "typo3conf/ext/jvchat/Resources/Private/Templates/"] ;
         }
         $partialPaths = $settings['view']['partialRootPaths'] ?? false ;
         if(!$partialPaths) {
-            $partialPaths = array( 0 => "typo3conf/ext/jvchat/Resources/Private/Partials/" ) ;
+            $partialPaths = [0 => "typo3conf/ext/jvchat/Resources/Private/Partials/"] ;
         }
         $renderer->setLayoutRootPaths($layoutPaths);
         $renderer->setTemplateRootPaths($templatePaths);

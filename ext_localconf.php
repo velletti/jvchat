@@ -36,10 +36,5 @@ $iconRegistry->registerIcon(
        }'
 );
 
-$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks']['JV\Jvchat\Scheduler\MailchatsTask'] = array(
-    'extension'        =>  'jvchat',
-    'title'            => 'Send New Chat Notifications',
-    'description'      => 'set only frequency ',
-    'additionalFields' => 'JV\Jvchat\Scheduler\MailchatsTaskAdditionalFieldProvider'
-);
+$GLOBALS['TYPO3_CONF_VARS']['SC_OPTIONS']['scheduler']['tasks'][\JV\Jvchat\Scheduler\MailchatsTask::class] = ['extension'        =>  'jvchat', 'title'            => 'Send New Chat Notifications', 'description'      => 'set only frequency ', 'additionalFields' => \JV\Jvchat\Scheduler\MailchatsTaskAdditionalFieldProvider::class];
 

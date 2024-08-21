@@ -26,9 +26,6 @@ class MailchatsTask extends AbstractTask
     /** @var string email Address if set, debug output will be sent  */
     private $debugmail = '';
 
-    /** @var  Logger */
-    protected $logger;
-
     private function fetchConfiguration()
     {
 

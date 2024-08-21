@@ -26,7 +26,7 @@ class DbRepository {
     /**
      * @var array
      */
-    var $extCONF;
+    public $extCONF;
 
     /**
      * @var ObjectManagerInterface
@@ -34,7 +34,7 @@ class DbRepository {
     protected $objectManager;
 
     /** @var LanguageService $lang */
-    var $lang;
+    public $lang;
 
     /**
      * @var ConnectionPool
@@ -64,9 +64,9 @@ class DbRepository {
                 $expr->eq('pid', $queryBuilder->createNamedParameter($pageId, Connection::PARAM_INT))
             ) ;
         }
-        $rows = $queryBuilder->executeQuery()->fetchAll();
+        $rows = $queryBuilder->executeQuery()->fetchAllAssociative();
 
-		$rooms = array();
+		$rooms = [];
 		foreach ($rows as $row ) {
             /** @var Room $room */
 			$room = GeneralUtility::makeInstance(Room::class);
@@ -90,8 +90,8 @@ class DbRepository {
 
         $userId = intval($userId);
 
-        $rooms = array();
-        $roomsPrivate = array();
+        $rooms = [];
+        $roomsPrivate = [];
 
         /** @var QueryBuilder $queryBuilder */
         $queryBuilderRoom = $this->connectionPool->getConnectionForTable('tx_jvchat_room')->createQueryBuilder();
@@ -155,14 +155,14 @@ class DbRepository {
 
 
         //  $this->debugQuery( $queryBuilder);
-        $allRooms = $queryBuilder->executeQuery()->fetchAll();
+        $allRooms = $queryBuilder->executeQuery()->fetchAllAssociative();
 
         if (count($allRooms) < 1) {
-            return array();
+            return [];
         }
 
-        $rooms = array();
-        $roomsPrivate = array();
+        $rooms = [];
+        $roomsPrivate = [];
 
         /** @var QueryBuilder $queryBuilder */
         $queryBuilderRoom = $this->connectionPool->getConnectionForTable('tx_jvchat_room')->createQueryBuilder();
@@ -185,7 +185,7 @@ class DbRepository {
             }
 
 
-            $row = $query->executeQuery()->fetch();
+            $row = $query->executeQuery()->fetchAssociative();
             //$this->debugQuery( $query);
             if( $row ) {
                 /** @var Room $room */
@@ -210,13 +210,13 @@ class DbRepository {
 
 		$userId = intval($userId);
 
-        $rooms = array();
+        $rooms = [];
         /** @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->connectionPool->getConnectionForTable('tx_jvchat_room')->createQueryBuilder();
 
         $rows = $queryBuilder->select('*')
             ->from('tx_jvchat_room')
-            ->where('owner', $userId )->orderBy('uid')->executeQuery()->fetchAll() ;
+            ->where('owner', $userId )->orderBy('uid')->executeQuery()->fetchAllAssociative() ;
             ;
         foreach ( $rows as $row ) {
             /** @var Room $room */
@@ -251,7 +251,7 @@ class DbRepository {
         ;
        // $this->debugQuery($query);
        // die;
-        if ( $row =  $query->executeQuery()->fetch()  ) {
+        if ( $row =  $query->executeQuery()->fetchAssociative()  ) {
             /** @var Room $room */
             $room = GeneralUtility::makeInstance(Room::class);
             $room->fromArray($row);
@@ -285,7 +285,7 @@ class DbRepository {
 
 	function getUniqueRoomName($roomName) {
 
-        $roomName = trim(strip_tags($roomName));
+        $roomName = trim(strip_tags((string) $roomName));
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_room') ;
 
@@ -298,9 +298,9 @@ class DbRepository {
             ->orderBy("uid" , "DESC")->setMaxResults(1)->executeQuery();
 
 
-        $row =  $rows->fetch() ;
+        $row =  $rows->fetchAssociative() ;
         if( is_array($row)) {
-            return trim($row['name']) . "#" . ( $row['uid']  ) ;
+            return trim((string) $row['name']) . "#" . ( $row['uid']  ) ;
         } else {
             return $roomName ."#1";
         }
@@ -323,7 +323,7 @@ class DbRepository {
             )->setMaxResults(1)->executeQuery();
 
 
-        $row =  $rows->fetch() ;
+        $row =  $rows->fetchAssociative() ;
         if( ! $row ) {
             return false;
         }
@@ -342,7 +342,7 @@ class DbRepository {
 
         $rows = $queryBuilder
             ->select('uid')
-            ->from('tx_jvchat_session')->where($queryBuilder->expr()->eq('room', $queryBuilder->createNamedParameter((intval($roomId)) , Connection::PARAM_INT )))->executeQuery()->fetchAll();
+            ->from('tx_jvchat_session')->where($queryBuilder->expr()->eq('room', $queryBuilder->createNamedParameter((intval($roomId)) , Connection::PARAM_INT )))->executeQuery()->fetchAllAssociative();
 
 
         return count($rows) ;
@@ -354,7 +354,7 @@ class DbRepository {
 		$roomId = intval($roomId);
 
 		if(!$roomId)
-			return array();
+			return [];
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_session') ;
 
@@ -368,8 +368,8 @@ class DbRepository {
 
         $rows = $queryBuilder->executeQuery() ;
 
-		$sessions = array();
-		while($row = $rows->fetch() ) {
+		$sessions = [];
+		while($row = $rows->fetchAssociative() ) {
             /** @var Session $session */
 			$session = GeneralUtility::makeInstance(Session::class);
 			$session->fromArray($row);
@@ -381,7 +381,7 @@ class DbRepository {
 	}
 
 	function getEntriesCountOfSession($session) {
-		return count($this->getEntriesOfSession($session));
+		return is_countable($this->getEntriesOfSession($session)) ? count($this->getEntriesOfSession($session)) : 0;
 	}
 
 	function getEntriesOfSession($session) {
@@ -398,8 +398,8 @@ class DbRepository {
         // $this->debugQuery($queryBuilder) ;
         $rows = $queryBuilder->executeQuery() ;
 
-		$entries = array();
-		while( $row = $rows->fetch() ) {
+		$entries = [];
+		while( $row = $rows->fetchAssociative() ) {
             /** @var Entry $entry */
             $entry = GeneralUtility::makeInstance(Entry::class);
 			$entry->fromArray($row);
@@ -444,13 +444,7 @@ class DbRepository {
                 return 'full';
             }
 
-            $data = array(
-				'uid_local' => $roomId,
-				'uid_foreign' => $userId,
-				'tstamp' => $this->getTime(),
-				'invisible' => $invisible,
-				'in_room' => 1,
-			);
+            $data = ['uid_local' => $roomId, 'uid_foreign' => $userId, 'tstamp' => $this->getTime(), 'invisible' => $invisible, 'in_room' => 1];
 
             $queryBuilder->insert('tx_jvchat_room_feusers_mm')->values($data)->executeStatement() ;
 
@@ -488,7 +482,7 @@ class DbRepository {
 	function getFeUser($uid) {
 
 		if(!$uid)
-			return array();
+			return [];
 
 		$uid = intval($uid);
 
@@ -499,7 +493,7 @@ class DbRepository {
             ->where( $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter( $uid)) )->setMaxResults(1)  ;
 
         // $debug = "Query LastRun : " . $userQuery->getSQL() ;
-        $userRow = $userQuery->executeQuery()->fetch() ;
+        $userRow = $userQuery->executeQuery()->fetchAssociative() ;
 
         // $this->debugQuery( $userQuery ) ;
         return $userRow;
@@ -528,7 +522,7 @@ class DbRepository {
 
         // $this->debugQuery( $userQuery ) ;
 
-        return $userQuery->executeQuery()->fetchColumn(0);
+        return $userQuery->executeQuery()->fetchFirstColumn();
 	}
 
 	function getRoom($uid) {
@@ -544,7 +538,7 @@ class DbRepository {
             ->where( $queryBuilder->expr()->eq('uid', $queryBuilder->createNamedParameter( $uid)) )
             ->setMaxResults(1)  ;
 
-        $row = $roomQuery->executeQuery()->fetch() ;
+        $row = $roomQuery->executeQuery()->fetchAssociative() ;
         if ( ! $row ) {
             return false ;
         }
@@ -585,7 +579,7 @@ class DbRepository {
             $userQuery->andWhere($queryBuilder->expr()->eq('invisible', 0 ) ) ;
         }
         $userQuery->andWhere($queryBuilder->expr()->eq('in_room', 1 ) ) ;
-        return $userQuery->executeQuery()->fetchColumn(0) ;
+        return $userQuery->executeQuery()->fetchFirstColumn() ;
 	}
 	
 	function getTime() {
@@ -593,7 +587,7 @@ class DbRepository {
             return time();
         }
 
-		$time = strtotime($this->extCONF['serverTimeOffset'], time());
+		$time = strtotime((string) $this->extCONF['serverTimeOffset'], time());
 		if($time == -1  || !$time ) {
             return time();
         }
@@ -609,7 +603,7 @@ class DbRepository {
      * @param int $cruser_id  Created user UID  userfull for backend system messages
      * @param int $tofeuserid  UID for private messages
      */
-	function putMessage($roomId, $msg, $style = 0, $user = NULL, $hidden = false, $cruser_id = 0, $tofeuserid = 0) {
+	function putMessage($roomId, $msg, $style = 0, mixed $user = NULL, $hidden = false, $cruser_id = 0, $tofeuserid = 0) {
 
 		$userId = is_array($user) ? $user['uid'] : $user;
 
@@ -618,18 +612,7 @@ class DbRepository {
         /** @var  QueryBuilder $queryBuilder */
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_entry') ;
 
-		$data = array(
-			'crdate' => time(),
-			'tstamp' => time(),
-			'cruser_id' => $cruser_id,
-			'feuser' => $userId ? intval($userId ) : 0,
-			'tofeuser' => intval($tofeuserid),
-			'room' => $roomId,
-			'entry' => $msg,
-			'hidden' => ($hidden ? '1' : '0'),
-			'style' => (int)$style,
-			'pid' => $this->extCONF['pids.']['entries'] ?? 0,
-			);
+		$data = ['crdate' => time(), 'tstamp' => time(), 'cruser_id' => $cruser_id, 'feuser' => $userId ? intval($userId ) : 0, 'tofeuser' => intval($tofeuserid), 'room' => $roomId, 'entry' => $msg, 'hidden' => ($hidden ? '1' : '0'), 'style' => (int)$style, 'pid' => $this->extCONF['pids.']['entries'] ?? 0];
         $queryBuilder->insert('tx_jvchat_entry')->values($data)->executeStatement() ;
 
 	}
@@ -687,9 +670,9 @@ class DbRepository {
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         // $this->debugQuery($queryBuilder) ;
-        $entries = array() ;
+        $entries = [] ;
         $rows = $queryBuilder->executeQuery() ;
-        while ( $row = $rows->fetch() ) {
+        while ( $row = $rows->fetchAssociative() ) {
             /** @var Entry $entry */
             $entry = GeneralUtility::makeInstance(Entry::class);
             $entry->fromArray($row);
@@ -714,7 +697,7 @@ class DbRepository {
         }
         $time = time() - $seconds ;
         if( $this->extCONF['serverTimeOffset'] ) {
-            $time = strtotime($this->extCONF['serverTimeOffset'], $time);
+            $time = strtotime((string) $this->extCONF['serverTimeOffset'], $time);
         }
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_entry') ;
@@ -743,7 +726,7 @@ class DbRepository {
         }
         $time = time() - $seconds ;
         if( $this->extCONF['serverTimeOffset'] ) {
-            $time = strtotime($this->extCONF['serverTimeOffset'], $time);
+            $time = strtotime((string) $this->extCONF['serverTimeOffset'], $time);
         }
         return $this->getEntries($room, 0    , $time , 999 , $cruser_id , $noHidden , $noPrivate )  ;
 
@@ -775,7 +758,7 @@ class DbRepository {
         $queryBuilder->getRestrictions()->removeAll()
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
-        $row = $queryBuilder->executeQuery()->fetch() ;
+        $row = $queryBuilder->executeQuery()->fetchAssociative() ;
 
         if( $row ) {
             return ( $row['uid'] - 1) ;
@@ -790,7 +773,7 @@ class DbRepository {
             ->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
         // $this->debugQuery($queryBuilder) ;
-        $row = $queryBuilder->executeQuery()->fetch() ;
+        $row = $queryBuilder->executeQuery()->fetchAssociative() ;
         if( $row ) {
             return ( $row['uid'] - 1) ;
         }
@@ -810,17 +793,7 @@ class DbRepository {
 		if(!is_numeric($start) || !is_numeric($end))
 			return 'DB: firstId and lastId have to be integer values';
 
-		$data = array(
-			'startid'	=> $start,
-			'endid' => $end,
-			'crdate' => $this->getTime(),
-			'tstamp' => $this->getTime(),
-			'pid' => intval($this->extCONF['pids.']['sessions']),
-			'name' => $name,
-			'description' => $description,
-			'hidden' => $hidden,
-			'room' => $roomId
-		);
+		$data = ['startid'	=> $start, 'endid' => $end, 'crdate' => $this->getTime(), 'tstamp' => $this->getTime(), 'pid' => intval($this->extCONF['pids.']['sessions']), 'name' => $name, 'description' => $description, 'hidden' => $hidden, 'room' => $roomId];
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_session') ;
         $queryBuilder->insert('tx_jvchat_session')->values($data)->executeStatement() ;
 
@@ -829,7 +802,7 @@ class DbRepository {
 	}
 	
 	function getFeUserByName($username) {
-        $username = trim(strip_tags($username));
+        $username = trim(strip_tags((string) $username));
 		if(!$username) {
             return NULL;
         }
@@ -840,7 +813,7 @@ class DbRepository {
                 $queryBuilder->createNamedParameter( $username , Connection::PARAM_STR )) )
         ;
 
-        return $queryBuilder->executeQuery()->fetch() ;
+        return $queryBuilder->executeQuery()->fetchAssociative() ;
 
 	}
 
@@ -868,7 +841,7 @@ class DbRepository {
 		$time = $this->getTime()  - intval($time);
 		/** @var QueryBuilder $queryBuilder */
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_entry') ;
-		return $queryBuilder->delete('tx_jvchat_entry')->where($queryBuilder->expr()->lte('tstamp', $queryBuilder->createNamedParameter($time), Connection::PARAM_INT))->executeStatement() ;
+		return $queryBuilder->delete('tx_jvchat_entry')->where($queryBuilder->expr()->lte('tstamp', $queryBuilder->createNamedParameter($time)))->executeStatement() ;
 	}
 	
 	function getEntry($entryId , $asArray = false ) {
@@ -883,7 +856,7 @@ class DbRepository {
 
         $rows = $queryBuilder->executeQuery() ;
 
-		if( $row = $rows->fetch() ) {
+		if( $row = $rows->fetchAssociative() ) {
             if( $asArray ) {
                 return $row ;
             }
@@ -928,7 +901,7 @@ class DbRepository {
             ->where( $queryBuilder->expr()->eq('uid_local', $queryBuilder->createNamedParameter( intval($roomId) , Connection::PARAM_INT )) )
             ->andWhere( $queryBuilder->expr()->eq('uid_foreign', $queryBuilder->createNamedParameter( intval($userId) , Connection::PARAM_INT )) ) ;
         //$this->debugQuery( $queryBuilder ) ;
-        $row = $queryBuilder->executeQuery()->fetch() ;
+        $row = $queryBuilder->executeQuery()->fetchAssociative() ;
         if( $row && array_key_exists( $statusLabel , $row)) {
             return $row[$statusLabel];
         }
@@ -981,6 +954,7 @@ class DbRepository {
      */
     function redeemUser($roomId, $userId) {
 
+        $element = null;
         if(!$roomId || !$userId) {
             return false;
         }
@@ -991,9 +965,7 @@ class DbRepository {
         $room = $this->getRoom($roomId);
 
         // is banned? remove from banned list
-        $bannedusers = implode(',', array_filter(explode(',', $room->bannedusers), function ($item) use ($element) {
-            return $element == $item;
-        }));
+        $bannedusers = implode(',', array_filter(explode(',', (string) $room->bannedusers), fn($item) => $element == $item));
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_room') ;
 
@@ -1047,7 +1019,8 @@ class DbRepository {
      * @param bool $add
      * @return Statement|int
      */
-	function changeRoomMembership( $room , $userId , $field , $add=true   ) {
+	function changeRoomMembership( mixed $room , $userId , $field , $add=true   ) {
+        $element = null;
         $userId = intval($userId);
 
 	    $list = $room->$field;
@@ -1055,9 +1028,7 @@ class DbRepository {
         if ( $add ) {
             $newList = StringUtility::uniqueList($list.','.$userId);
         } else {
-            $newList = implode(',', array_filter(explode(',', $list), function ($item) use ($element) {
-                return $element == $item;
-            }));
+            $newList = implode(',', array_filter(explode(',', (string) $list), fn($item) => $element == $item));
         }
 
         if($newList != $list) {
@@ -1108,7 +1079,7 @@ class DbRepository {
      * @param bool $getHidden
      * @return array
      */
-	function _getRooms($pidList = NULL, $getPrivate = false, $isSuperuser = false, $getHidden = false) {
+	function _getRooms(mixed $pidList = NULL, $getPrivate = false, $isSuperuser = false, $getHidden = false) {
 
 		$this->cleanUpRooms();
 
@@ -1151,8 +1122,8 @@ class DbRepository {
         // die;
         $rows = $queryBuilder->executeQuery() ;
 
-		$rooms = array();
-		while($row = $rows->fetch() ) {
+		$rooms = [];
+		while($row = $rows->fetchAssociative() ) {
             /** @var Room $room */
             $room = GeneralUtility::makeInstance(Room::class);
 			if (!$row) {
@@ -1181,7 +1152,7 @@ class DbRepository {
             )
         ;
         $rows = $queryBuilder->executeQuery() ;
-        while($row = $rows->fetch() ) {
+        while($row = $rows->fetchAssociative() ) {
             // clean up, no messages and a longer idle time
             $this->cleanUpUserInRoom($row['uid'], $this->extCONF['maxAwayTime'], false);
             // look for private empty rooms
@@ -1228,8 +1199,8 @@ class DbRepository {
         /** @var Statement $rows */
         $rows = $queryBuilder->executeQuery() ;
         // $this->debugQuery( $queryBuilder ) ;
-        $users = array();
-        while (($row = $rows->fetch()) != null) {
+        $users = [];
+        while (($row = $rows->fetchAssociative()) != null) {
             $this->leaveRoom($roomId, $row['uid'], $systemMessageOnLeaving, $leaveMessage);
         }
         if($removeSystemMessagsOlderThan) {
@@ -1301,7 +1272,7 @@ class DbRepository {
             ->andWhere( $queryBuilder->expr()->gt('tstamp', $queryBuilder->createNamedParameter( intval($this->getTime()) , Connection::PARAM_INT )) ) ;
 
         // $this->debugQuery( $queryBuilder ) ;
-        $row = $queryBuilder->executeQuery()->fetch() ;
+        $row = $queryBuilder->executeQuery()->fetchAssociative() ;
         if( $row ) {
             return round(($row['tstamp'] - $this->getTime()) / 60);
         }
@@ -1341,7 +1312,7 @@ class DbRepository {
 		$time = intval($time);
 
 		// get entries of all sessions
-		$entries = array();
+		$entries = [];
 		foreach($sessions as $session) {
 			$sessionEntries = $this->getEntriesOfSession($session);
 			foreach($sessionEntries as $sessionEntry)
@@ -1382,8 +1353,8 @@ class DbRepository {
 
         $rows = $queryBuilder->executeQuery() ;
 
-        $sessions = array();
-        while($row = $rows->fetch() ) {
+        $sessions = [];
+        while($row = $rows->fetchAssociative() ) {
             /** @var Session $session */
             $session = GeneralUtility::makeInstance(Session::class);
             $session->fromArray($row);
@@ -1429,6 +1400,7 @@ class DbRepository {
      * @return array|null
      */
     function getFeUsersMayAccessRoom($room ) {
+        $users = [];
         if(!$room) {
             return NULL;
         }
@@ -1451,7 +1423,7 @@ class DbRepository {
             return NULL;
         }
         $uids = GeneralUtility::trimExplode("," , $room->notifyme , true ) ;
-        $users = array() ;
+        $users = [] ;
         foreach ( $uids as $uid ) {
           //  if( GeneralUtility::inList( $room->members , $uid ) ||  $room->owner == $uid ) {
                 if( $user = $this->getFeUser($uid) ) {
@@ -1480,7 +1452,7 @@ class DbRepository {
 		if(!$roomId) {
             return NULL;
         }
-        return  $this->getUserList($roomId, false  , true , $getHidden , array('moderators' , 'experts') ) ;
+        return  $this->getUserList($roomId, false  , true , $getHidden , ['moderators', 'experts'] ) ;
 	}
 	
 	function getOnlineExperts($roomId, $getHidden = false) {
@@ -1500,13 +1472,12 @@ class DbRepository {
 
     /**
      * @param integer $roomId
-     * @param mixed $userType
      * @param bool $inroom
      * @param bool $getHidden
      * @param mixed $notuserType array of fields that user should not be in
      * @return array
      */
-    function getUserList($roomId, $userType = false , $inroom = true , $getHidden = false , $notuserTypeArray = false ) {
+    function getUserList($roomId, mixed $userType = false , $inroom = true , $getHidden = false , $notuserTypeArray = false ) {
         $roomId = intval($roomId);
 
         /** @var  QueryBuilder $queryBuilder */
@@ -1533,8 +1504,8 @@ class DbRepository {
         /** @var Statement $rows */
         $rows = $queryBuilder->executeQuery() ;
         // $this->debugQuery( $queryBuilder ) ;
-        $users = array();
-        while (($row = $rows->fetch()) != null) {
+        $users = [];
+        while (($row = $rows->fetchAssociative()) != null) {
             if($row['invisible'] && !$getHidden)
                 continue;
 
@@ -1610,7 +1581,7 @@ class DbRepository {
 
 	    // $users = $this->getFeUsersOfRoom($room, true);
 
-		$newStatus = array();
+		$newStatus = [];
 
 		switch($statusLabel) {
 			case 'hidden':
@@ -1665,7 +1636,7 @@ class DbRepository {
             )->setMaxResults(1)->executeQuery();
 
 
-        return $rows->fetchColumn(0) ;
+        return $rows->fetchFirstColumn() ;
 	}
 	
 	function setMessageStyle($user, $style) {
@@ -1717,10 +1688,12 @@ class DbRepository {
             )->setMaxResults(1)->executeQuery();
 
 
-		return $rows->fetch() ;
+		return $rows->fetchAssociative() ;
 	}
 
     function debugQuery($query) {
+        $search = [];
+        $replace = [];
         // new way to debug typo3 db queries
 
         if( ( method_exists( $query , 'getSQL') )) {
@@ -1743,7 +1716,7 @@ class DbRepository {
             $replace[] = "'$value'" ;
 
         }
-        echo str_replace( $search , $replace , $querystr ) ;
+        echo str_replace( $search , $replace , (string) $querystr ) ;
 
         die;
     }

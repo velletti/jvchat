@@ -1,13 +1,17 @@
 <?php
 namespace JV\Jvchat\Utility;
 
-use FluidTYPO3\Vhs\Service\PageService;
+use TYPO3\CMS\Backend\Utility\BackendUtility;
+use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
-class TyposcriptUtility{
+use TYPO3\CMS\Core\Utility\RootlineUtility;
+use TYPO3\CMS\Extbase\Mvc\Request;
+
+class TyposcriptUtility
+{
 
     /**
      * Loads the typoscript from scratch
-     * @author Peter Benke <pbenke@allplan.com>
      * @param int $pageUid
      * @param string $extKey
      * @param mixed $conditions array with Constants Conditions if needed
@@ -19,62 +23,59 @@ class TyposcriptUtility{
      *
      *                          or ( this is tested)
      *                          b) the exact Condition from YOUR Constants.ts file
-     *                          As this must be an array, also multiple Conditions can be handed over:
+     *
+     *                           this must be an array, also multiple Conditions can be handed over:
      *
      * @param bool $getConstants default=false,  will return  Constants (all or those from an extension) instaed of Setup
      * @return array
+     * @author Peter Benke <pbenke@allplan.com>
+     * @deprecated V12  Maybe creating a new Reuest does not work. .. better use direct calling  !!
      */
-    public static function loadTypoScriptFromScratch($pageUid = 0, $extKey = '' , $conditions = false , $getConstants = false  ) {
+    public static function loadTypoScriptFromScratch($pageUid = 0, $extKey = '', mixed $conditions = false, $getConstants = false, $request = null)
+    {
+        if (!$request) {
+            /** @var Request $request */
+            $request = GeneralUtility::makeInstance(Request::class);
+            $request->withArguments(['uid' => $pageUid]);
 
-        /**
-         * @var $pageRepository \FluidTYPO3\Vhs\Service\PageService
-         * @var $extendedTemplateService \TYPO3\CMS\Core\TypoScript\ExtendedTemplateService
-         */
-        $pageService =  GeneralUtility::makeInstance(PageService::class);
-
-        $rootLine = $pageService->getRootLine($pageUid);
-
-        $extendedTemplateService = GeneralUtility::makeInstance('TYPO3\CMS\Core\TypoScript\ExtendedTemplateService');
-
-        $extendedTemplateService->tt_track = 0;
-        // $extendedTemplateService->init();
-
-        // To get static files also
-        $extendedTemplateService->setProcessExtensionStatics(true);
-        $extendedTemplateService->runThroughTemplates($rootLine);
-        if( $conditions) {
-            $extendedTemplateService->matchAlternative = $conditions ;
         }
-        $extendedTemplateService->generateConfig();
-        if( $getConstants ) {
-            if(!empty($extKey)){
-                $typoScript = self::removeDotsFromTypoScriptArray($extendedTemplateService->setup_constants['plugin.'][$extKey . '.']);
-            }else{
-                $typoScript = self::removeDotsFromTypoScriptArray($extendedTemplateService->setup_constants);
+        return self::loadTypoScriptFromRequest($request, $extKey = '', $conditions = false);
+    }
+
+    public static function loadTypoScriptFromRequest($request, $extKey = '', $getConstants = false)
+    {
+
+        $ts = $request->getAttribute('frontend.typoscript')->getSetupArray();
+
+        if ($getConstants) {
+            // Todo get Constants  is untestet
+            if (!empty($extKey)) {
+                $ts = self::removeDotsFromTypoScriptArray($ts['config.'][$extKey . '.']);
+            } else {
+                $ts = self::removeDotsFromTypoScriptArray($ts['config.']);
             }
         } else {
-            if(!empty($extKey)){
-                $typoScript = self::removeDotsFromTypoScriptArray($extendedTemplateService->setup['plugin.'][$extKey . '.']);
-            }else{
-                $typoScript = self::removeDotsFromTypoScriptArray($extendedTemplateService->setup);
+            if (!empty($extKey)) {
+                $ts = self::removeDotsFromTypoScriptArray($ts['plugin.'][$extKey . '.']);
+            } else {
+                $ts = self::removeDotsFromTypoScriptArray($ts['plugin.']);
             }
         }
-
-        return $typoScript;
-
+        return $ts;
     }
 
     /**
      * Removes the dots from an typoscript array
-     * @author Peter Benke <pbenke@allplan.com>
      * @param $array
      * @return array
+     * @author Peter Benke <pbenke@allplan.com>
      */
-    private static function removeDotsFromTypoScriptArray($array) {
+    private static function removeDotsFromTypoScriptArray($array)
+    {
 
-        $newArray = Array();
+        $newArray = [];
 
-        if(is_array($array)){
+        if (is_array($array)) {
 
             foreach ($array as $key => $val) {
 

@@ -64,15 +64,15 @@
                                <f:if condition="{room.isNotifyMeEnabled}">
                                    <f:then>
                                         <span class="col-1 position-absolute position-right chatNotifyme cursor-pointer">
-                                            <a class="chatIconColor" href="/index.php?id={setup.settings.currentPid}&tx_jvchat_pi1[notifyRoom]={room.uid}&L={setup.settings.currentLng}" title="{f:translate(key:'leave_chat')}">
+                                            <a class="chatIconColor" href="/index.php?id={setup.settings.currentPid}&tx_jvchat_pi1[notifyRoom]={room.uid}&L={setup.settings.currentLng}" title="{f:translate(key:'command_notifyme_enabled')}">
                                                 <i class="fas fa-bell" title="{f:translate(key: 'command_notifyme_enabled')}"></i> <span class="tx-jvchat-notifymecount" title="users">({room.notifymecount})</span>
                                             </a>
                                         </span>
                                    </f:then>
                                    <f:else>
                                          <span class="col-1 position-absolute position-right chatNotifyme cursor-pointer">
-                                             <a class="chatIconColor" href="/index.php?id={setup.settings.currentPid}&tx_jvchat_pi1[notifyRoom]={room.uid}&L={setup.settings.currentLng}" title="{f:translate(key:'leave_chat')}">
-                                                <i class="fas fa-bell-slash" title="{f:translate(key: 'command_notifyme_enabled')}"></i> <span class="tx-jvchat-notifymecount" title="users">({room.notifymecount})</span>
+                                             <a class="chatIconColor" href="/index.php?id={setup.settings.currentPid}&tx_jvchat_pi1[notifyRoom]={room.uid}&L={setup.settings.currentLng}" title="{f:translate(key:'command_notifyme_disabled')}">
+                                                <i class="fas fa-bell-slash" title="{f:translate(key: 'command_notifyme_disabled')}"></i> <span class="tx-jvchat-notifymecount" title="users">({room.notifymecount})</span>
                                             </a>
                                         </span>
                                    </f:else>

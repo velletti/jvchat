@@ -33,12 +33,12 @@
                             <f:if condition="{room.private}">
                                 <f:then>
                                      <span class="chatIconColor">
-                                        <i class="fas fa-user-lock" title="{f:translate(key: 'chatbutton.email')}"></i>
+                                        <i class="fas fa-user-lock" title="{f:translate(key: 'LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:chatbutton.email')}"></i>
                                     </span>
                                 </f:then>
                                 <f:else>
                                      <span class="chatIconColor">
-                                        <i class="fas fa-users" title="{f:translate(key: 'chatbutton.email')}"></i>
+                                        <i class="fas fa-users" title="{f:translate(key: 'LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:chatbutton.email')}"></i>
                                     </span>
                                 </f:else>
 
@@ -47,7 +47,7 @@
                         <span class="col-10">
                             <span class="p-2 big">
 
-                                <a href="/index.php?id={targetPage}&tx_jvchat_pi1[uid]={room.uid}&tx_jvchat_pi1[view]=chat&L={setup.settings.currentLng}" title="{f:translate(key:'command_enter_room')}">
+                                <a href="/index.php?id={targetPage}&tx_jvchat_pi1[uid]={room.uid}&tx_jvchat_pi1[view]=chat&L={setup.settings.currentLng}" title="{f:translate(key:'LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:command_enter_room')}">
                                     {room.name} >>
                                 </a>
                             </span>
@@ -56,7 +56,7 @@
                             <f:then>
                                  <span class="col-1 position-absolute position-right  cursor-pointer">
                                      <span class="chatIconColor" data-toggle="collapse" data-target="#chat-del-{room.uid}">
-                                        <i class="fas fa-trash" title="{f:translate(key: 'leave_chat')}"></i> <span class="tx-jvchat-notifymecount" title="users">({room.notifymecount})</span>
+                                        <i class="fas fa-trash" title="{f:translate(key: 'LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:leave_chat')}"></i> <span class="tx-jvchat-notifymecount" title="users">({room.notifymecount})</span>
                                     </span>
                                 </span>
                             </f:then>
@@ -64,15 +64,15 @@
                                <f:if condition="{room.isNotifyMeEnabled}">
                                    <f:then>
                                         <span class="col-1 position-absolute position-right chatNotifyme cursor-pointer">
-                                            <a class="chatIconColor" href="/index.php?id={setup.settings.currentPid}&tx_jvchat_pi1[notifyRoom]={room.uid}&L={setup.settings.currentLng}" title="{f:translate(key:'command_notifyme_enabled')}">
-                                                <i class="fas fa-bell" title="{f:translate(key: 'command_notifyme_enabled')}"></i> <span class="tx-jvchat-notifymecount" title="users">({room.notifymecount})</span>
+                                            <a class="chatIconColor" href="/index.php?id={setup.settings.currentPid}&tx_jvchat_pi1[notifyRoom]={room.uid}&L={setup.settings.currentLng}" title="{f:translate(key:'LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:command_notifyme_enabled')}">
+                                                <i class="fas fa-bell" title="{f:translate(key: 'LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:command_notifyme_enabled')}"></i> <span class="tx-jvchat-notifymecount" title="users">({room.notifymecount})</span>
                                             </a>
                                         </span>
                                    </f:then>
                                    <f:else>
                                          <span class="col-1 position-absolute position-right chatNotifyme cursor-pointer">
-                                             <a class="chatIconColor" href="/index.php?id={setup.settings.currentPid}&tx_jvchat_pi1[notifyRoom]={room.uid}&L={setup.settings.currentLng}" title="{f:translate(key:'command_notifyme_disabled')}">
-                                                <i class="fas fa-bell-slash" title="{f:translate(key: 'command_notifyme_disabled')}"></i> <span class="tx-jvchat-notifymecount" title="users">({room.notifymecount})</span>
+                                             <a class="chatIconColor" href="/index.php?id={setup.settings.currentPid}&tx_jvchat_pi1[notifyRoom]={room.uid}&L={setup.settings.currentLng}" title="{f:translate(key:'LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:command_notifyme_disabled')}">
+                                                <i class="fas fa-bell-slash" title="{f:translate(key: 'LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:command_notifyme_disabled')}"></i> <span class="tx-jvchat-notifymecount" title="users">({room.notifymecount})</span>
                                             </a>
                                         </span>
                                    </f:else>
@@ -87,20 +87,20 @@
                         <div class="position-absolute position-right" data-toggle="collapse" data-target="#chat-del-{room.uid}">
                             <i class="fas fa-arrow-circle-up" title="X"></i>
                         </div>
-                        <f:translate key="leave_chat_remove_entries">
+                        <f:translate key="LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:leave_chat_remove_entries">
                             Sind Sie sicher? Wenn Sie den Chat verlassen, verschwindet der Chat Raum aus ihrer Liste und sie haben keinen Zugriff mehr auf.
                         </f:translate>
                         <br>
                         <br>
 
-                        <a class="btn btn-outline-danger" href="/index.php?id={setup.settings.currentPid}&tx_jvchat_pi1[leaveRoom]={room.uid}&L={setup.settings.currentLng}" title="{f:translate(key:'leave_chat')}">
-                            {f:translate(key:'leave_chat')}
+                        <a class="btn btn-outline-danger" href="/index.php?id={setup.settings.currentPid}&tx_jvchat_pi1[leaveRoom]={room.uid}&L={setup.settings.currentLng}" title="{f:translate(key:'LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:leave_chat')}">
+                            {f:translate(key:'LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:leave_chat')}
                         </a>
                     </div>
                     <div class="tx-cat-rooms-list-row card-body p-2 small">
                         <f:if condition="{room.private} || {room.isPrivate}">
                             <f:then>
-                                    <f:translate key="room_is_private">Privater Raum</f:translate>
+                                    <f:translate key="LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:room_is_private">Privater Raum</f:translate>
                             </f:then>
                             <f:else>
                                     {room.description}

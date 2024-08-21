@@ -38,14 +38,14 @@
 
                                 <div class="tx-jvchat-commit" id="tx-jvchat-entry-commitlink-{entry.uid}">
                                     <a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.commitEntry('{entry.uid}');">
-                                        <f:translate key="commit_message"></f:translate>
+                                        <f:translate key="LLL:EXT:jv_chat/Resources/Private/Language/locallang_db.xlf:commit_message"></f:translate>
                                     </a> |
                                     <a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.hideEntry('{entry.uid}');">
-                                        <f:translate key="hide_message"></f:translate>
+                                        <f:translate key="LLL:EXT:jv_chat/Resources/Private/Language/locallang_db.xlf:hide_message"></f:translate>
                                     </a>
                                     <span id="tx-jvchat-storelink-{entry.uid}">|
                                         <a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.storeEntry('{entry.uid}');">
-                                            <f:translate key="store_message"></f:translate>
+                                            <f:translate key="LLL:EXT:jv_chat/Resources/Private/Language/locallang_db.xlf:store_message"></f:translate>
                                         </a>
                                     </span>
                                 </div>
@@ -128,7 +128,7 @@
 
             </f:then>
             <f:else>
-                <f:translate key="system_name">ChatBot</f:translate>
+                <f:translate key="LLL:EXT:jv_chat/Resources/Private/Language/locallang_db.xlf:system_name">ChatBot</f:translate>
             </f:else>
         </f:if>
     </f:spaceless>

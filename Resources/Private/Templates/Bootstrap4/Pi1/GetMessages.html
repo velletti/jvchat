@@ -29,14 +29,14 @@
 
                                 <div class="tx-jvchat-commit" id="tx-jvchat-entry-commitlink-{entry.uid}">
                                     <a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.commitEntry('{entry.uid}');">
-                                        <f:translate key="commit_message"></f:translate>
+                                        <f:translate key="LLL:EXT:jv_chat/Resources/Private/Language/locallang_db.xlf:commit_message"></f:translate>
                                     </a> |
                                     <a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.hideEntry('{entry.uid}');">
-                                        <f:translate key="hide_message"></f:translate>
+                                        <f:translate key="LLL:EXT:jv_chat/Resources/Private/Language/locallang_db.xlf:hide_message"></f:translate>
                                     </a>
                                     <span id="tx-jvchat-storelink-{entry.uid}">|
                                         <a class="tx-jvchat-actionlink" onClick="javascript:chat_instance.storeEntry('{entry.uid}');">
-                                            <f:translate key="store_message"></f:translate>
+                                            <f:translate key="LLL:EXT:jv_chat/Resources/Private/Language/locallang_db.xlf:store_message"></f:translate>
                                         </a>
                                     </span>
                                 </div>
@@ -69,7 +69,7 @@
                     <f:if condition="{ownMsg}">
                         <f:then>
                             <span class="tx-jvchat-entry-text"><f:format.raw>{entryText}</f:format.raw></span> | &nbsp;
-                            <a class="small btn btn-sm btn-outline-danger mr-2 " onClick="javascript:chat_instance.hideEntry('#cid{mid}','{entry.uid}');" title="{f:translate(key: 'hide_message')}">
+                            <a class="small btn btn-sm btn-outline-danger mr-2 " onClick="javascript:chat_instance.hideEntry('#cid{mid}','{entry.uid}');" title="{f:translate(key: 'LLL:EXT:jv_chat/Resources/Private/Language/locallang_db.xlf:hide_message')}">
                                 <span class="text-danger fas fa-trash"></span>
                             </a>
                             <span id="msg-{entry.uid}" class="tx-jvchat-time"><f:format.date format="{timeFormat}">{time}</f:format.date></span><span class="tx-jvchat-user tx-jvchat-userid-{entry.uid}">
@@ -78,7 +78,7 @@
                         </f:then>
                         <f:else>
                             <f:if condition="{isModerator}">
-                                <a class="btn btn-sm p-0 px-1  btn-outline-primary mr-2 " onClick="javascript:chat_instance.hideEntry('#cid{mid}','{entry.uid}');" title="{f:translate(key: 'hide_message')}">
+                                <a class="btn btn-sm p-0 px-1  btn-outline-primary mr-2 " onClick="javascript:chat_instance.hideEntry('#cid{mid}','{entry.uid}');" title="{f:translate(key: 'LLL:EXT:jv_chat/Resources/Private/Language/locallang_db.xlf:hide_message')}">
                                     <span class="text-danger fas fa-trash"></span>
                                 </a>
                             </f:if>
@@ -163,7 +163,7 @@
 
             </f:then>
             <f:else>
-                <f:translate key="system_name">ChatBot</f:translate>
+                <f:translate key="LLL:EXT:jv_chat/Resources/Private/Language/locallang_db.xlf:system_name">ChatBot</f:translate>
             </f:else>
         </f:if>
     </f:spaceless>

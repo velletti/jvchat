@@ -22,7 +22,7 @@
 
 
 	# cat=basic; type=string; label=Emoticons: Path to emoticons
-	emoticonsPath = typo3conf/ext/jvchat/pi1/emoticons/
+	emoticonsPath = EXT:jvchat/pi1/emoticons/
 
 	# cat=basic; type=string; label=Show Start Stop Buttons in Chat. Only Needed if Chat with many messages ..
 	enableStartStop = 0

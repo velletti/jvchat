@@ -8,9 +8,9 @@
 
 plugin.tx_jvchat_pi1 {
     view {
-		templateRootPaths.0 = typo3conf/ext/jvchat/Resources/Private/Templates/Bootstrap4/
-		partialRootPaths.0 = typo3conf/ext/jvchat/Resources/Private/Partials/
-		layoutRootPaths.0 = typo3conf/ext/jvchat/Resources/Private/Layouts/
+		templateRootPaths.0 = EXT:jvchat/Resources/Private/Templates/Bootstrap4/
+		partialRootPaths.0 = EXT:jvchat/Resources/Private/Partials/
+		layoutRootPaths.0 = EXT:jvchat/Resources/Private/Layouts/
 	}
 		# if not defined anything in the configuration form
 	pidList = 
@@ -358,11 +358,11 @@ plugin.tx_jvchat_pi1 {
 					# value of gender field : 0 , 1 , 2 etc depending on your setup
 					0 {
 						# male
-						file = typo3conf/ext/jvchat/Resources/Public/Icons/Avatar/Avatar_Male.gif
+						file = EXT:jvchat/Resources/Public/Icons/Avatar/Avatar_Male.gif
 					}
 					1 {
 						# female
-						file = typo3conf/ext/jvchat/Resources/Public/Icons/Avatar/Avatar_Female.gif
+						file = EXT:jvchat/Resources/Public/Icons/Avatar/Avatar_Female.gif
 					}
 				}
 				# Image Sizes
@@ -574,7 +574,7 @@ includeLibs.jvchat = EXT:jvchat/pi1/class.tx_jvchat_userFunctions.php
 
 page {
 	includeJSFooter {
-#		jquery_chat = /typo3conf/ext/jvchat/Resources/Public/Js/tx_jvchat.min.js
+#		jquery_chat = EXT:jvchat/Resources/Public/Js/tx_jvchat.min.js
 	}
     includeCSS {
 #		jvchat = EXT:jvchat/Resources/Public/Css/jvchat.min.css

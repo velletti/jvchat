@@ -43,14 +43,6 @@ add this to the repository section in your composer.json { "type": "vcs", "url":
 	
 call
  
-    composer require velletti/jvchat dev-master
+    composer require velletti/jvchat dev-main
 
-Update the psr-4 and classmapp folders .. (classmap maybe not needed in the near future anymore ) 
-    
-		"psr-4": {
 
-			"JV\\jvchat\\": "http/typo3conf/ext/jvchat/Classes/"
-		},
-		"classmap": [
-			"http/typo3conf/ext/jvchat/pi1"
-		],

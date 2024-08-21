@@ -385,39 +385,22 @@ class LibUtility {
 	}
 
     /**
-  * @param array $settings
-  * @param string $templateDefault
-  * @param string $format
-  * @throws InvalidExtensionNameException if the extension name is not valid
-  * @return StandaloneView
-  */
- static function getRenderer( $settings= []  , $templateDefault='DisplayChatRoom' , $format="html") {
+      * @param array $settings
+      * @param string $templateDefault
+      * @param string $format
+      * @throws InvalidExtensionNameException if the extension name is not valid
+      * @return StandaloneView
+      */
+     static function getRenderer( $settings= []  , $templateDefault='DisplayChatRoom' , $format="html") {
 
 
-     /** @var StandaloneView $renderer */
-     $renderer = new StandaloneView ;
-
-
-     /** @var Request $request */
-     $request = new Request ;
-     try {
-         $request->setControllerExtensionName("jvchat") ;
-         $request->setControllerName('Pi1') ;
-         $request->withPluginName("jvchat") ;
-     }
-     catch (Exception) {
-         // ignore it
-     }
-
-     $renderer->setRequest($request);
+        /** @var StandaloneView $renderer */
+        $renderer = new StandaloneView ;
 
         $layoutPaths = $settings['view']['layoutRootPaths'] ;
-       // var_dump($settings['view']);
-        // echo "<hr>" ;
-        // var_dump($layoutPaths);
 
         if(!$layoutPaths || (is_countable($layoutPaths) ? count($layoutPaths) : 0) < 1) {
-            $layoutPaths = [0 => "typo3conf/ext/jvchat/Resources/Private/Layouts/"] ;
+            $layoutPaths = [0 => "EXT:jvchat/Resources/Private/Layouts/"] ;
         }
         $template = $settings['view']['template'] ?? false ;
         if(!$template) {
@@ -426,18 +409,22 @@ class LibUtility {
 
         $templatePaths = $settings['view']['templateRootPaths'] ?? false ;
         if(!$templatePaths) {
-            $templatePaths = [0 => "typo3conf/ext/jvchat/Resources/Private/Templates/"] ;
+            $templatePaths = [0 => "EXT:jvchat/Resources/Private/Templates/"] ;
         }
         $partialPaths = $settings['view']['partialRootPaths'] ?? false ;
         if(!$partialPaths) {
-            $partialPaths = [0 => "typo3conf/ext/jvchat/Resources/Private/Partials/"] ;
+            $partialPaths = [0 => "EXT:jvchat/Resources/Private/Partials/"] ;
         }
         $renderer->setLayoutRootPaths($layoutPaths);
         $renderer->setTemplateRootPaths($templatePaths);
         $renderer->setPartialRootPaths($partialPaths);
 
         $renderer->setFormat($format) ;
+
         $renderer->setTemplate($template);
+
+        // /var/www/html/vendor/jv/jvchat/Resources/Private/Templates/Bootstrap4/Pi1/DisplayRooms
+        $renderer->setTemplatePathAndFilename($templatePaths[0]."Pi1/" . $template . "." . $format );
         return $renderer ;
     }
 

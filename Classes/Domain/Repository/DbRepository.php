@@ -422,12 +422,19 @@ class DbRepository {
         $showmess = FALSE ;
 
         if( $this->extCONF['showBirthday'] ) {
-            if ( $GLOBALS['TSFE']->fe_user->user['tx_nem_dateofbirth_show']  == "1" ) {
 
-                if ( date( "d.M" , $GLOBALS['TSFE']->fe_user->user['tx_nem_dateofbirth'] )  == date( "d.M"  ) ) {
-                    $showmess = TRUE ;
+            /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
+            $frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
+
+            if ( $frontendUser->user ) {
+                if ( array_key_exists($frontendUser->user['tx_nem_dateofbirth_show'] )  && $frontendUser->user['tx_nem_dateofbirth_show'] == "1" ) {
+
+                    if (array_key_exists($frontendUser->user['tx_nem_dateofbirth'] )  && date( "d.M" , $frontendUser->user['tx_nem_dateofbirth'] )  == date( "d.M"  ) ) {
+                        $showmess = TRUE ;
+                    }
                 }
             }
+
         }
 
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_room_feusers_mm') ;

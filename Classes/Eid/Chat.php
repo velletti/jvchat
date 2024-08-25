@@ -34,6 +34,7 @@ namespace JV\Jvchat\Eid;
 use JV\Jvchat\Domain\Repository\DbRepository;
 use JV\Jvchat\Domain\Model\Room;
 use TYPO3\CMS\Core\Core\Environment;
+use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use JV\Jvchat\Domain\Model\Entry;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
@@ -55,6 +56,10 @@ class Chat {
 
     /** @var DbRepository  */
     var $db;
+
+    var string $baseUrl ;
+    var int $basePid ;
+
 
     var $env;
 
@@ -117,7 +122,7 @@ class Chat {
             $this->languageService  = $GLOBALS['LANG'] ;
         }
         If ( !$this->languageService ) {
-            $this->languageService  = GeneralUtility::makeInstance(LanguageService::class);
+            $this->languageService  = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
         }
 
 		$this->languageService ->init($this->env['LLKey']);
@@ -1272,7 +1277,7 @@ class Chat {
     function sendEmails($entries , $members , $room , $sendall=false , $baseUrl = '' ) {
 
         $entryCount =  count($entries)  ;
-        $server = $this->setBaseUrl($baseUrl) ;
+        $server = $this->setBaseUrl($this->baseUrl) ;
 
 
         if( is_array($members)) {
@@ -1347,35 +1352,16 @@ class Chat {
         }
         return false ;
     }
+
+    function setBasePid($basePid) {
+        $this->basePid = (int)$basePid ;
+    }
     /**
      * @param string $baseUrl
      * @return string
      */
     function setBaseUrl($baseUrl) {
-        return "www.tangomuenchen.de" ;
-        if ( $this->checkBaseUrl($baseUrl) ) {  return $baseUrl ;
-        }
-        $baseUrl = trim( GeneralUtility::getIndpEnv('TYPO3_SITE_URL') , "/" ) ;
-        if ( $this->checkBaseUrl($baseUrl) ) {  return $baseUrl ;         }
-
-        $baseUrl = "https://" . $_SERVER['SERVER_NAME']  ;
-        if ( $this->checkBaseUrl($baseUrl) ) {  return $baseUrl ;         }
-
-        // needed for PHP running via SSh on console !
-        $tempArr = explode("/" , $_SERVER['HOME']) ;
-        $server = $tempArr[ count( $tempArr) - 1 ] ;
-
-        // needed for cronobs to set the Server name
-        if ( $server == "91736_81673" || $server == "" ) {
-            return "https://www.tangomuenchen.de" ;
-        }
-        // needed for cronobs to set the Server name
-        if ( substr( $server, 0 , 6 )  == "connect" ) {
-            return "https://" . $server . ".allplan.com";
-        }
-
-        // maybe other tricks to get a cool base URL ..
-
+        $this->baseUrl = $baseUrl ;
         return $baseUrl ;
     }
 	function _help($params) {

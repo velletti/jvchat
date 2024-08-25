@@ -58,7 +58,20 @@ class NotifyCommand extends Command {
                 'd' ,
                 InputArgument::OPTIONAL,
                 'email Address that should get debug output'
+            )
+            ->addOption(
+                'baseUrl',
+                'u' ,
+                InputArgument::OPTIONAL,
+                'Base URL ... default www.tangomuenchen.de'
+            )->addOption(
+                'basePid',
+                'p' ,
+                InputArgument::OPTIONAL,
+                'PageUID needed for typo Script generation. default: 66 '
             );
+
+
     }
 
     /**
@@ -94,8 +107,22 @@ class NotifyCommand extends Command {
 
         }
 
-            $this->notifyCommand($io , $secondsAmount, $debugEmail  ) ;
-            return 0 ;
+        if ($input->getOption('baseUrl')) {
+            $baseUrl = $input->getOption('baseUrl');
+            $io->writeln('$baseUrl is set to : '. $baseUrl );
+        } else {
+            $baseUrl = "www.tangomuenchen.de" ;
+        }
+
+        if ($input->getOption('basePid')) {
+            $basePid = $input->getOption('basePid');
+            $io->writeln('$basePid is set to : '. $basePid );
+        } else {
+            $basePid = 66 ;
+        }
+
+        $this->notifyCommand($io , $secondsAmount, $debugEmail  , $baseUrl , $basePid ) ;
+        return 0 ;
     }
 
 
@@ -105,14 +132,15 @@ class NotifyCommand extends Command {
      * @param $slugField
      * @param $secondsAmount
      */
-    public function notifyCommand(SymfonyStyle $io , $secondsAmount, $debugEmail   ){
+    public function notifyCommand(SymfonyStyle $io , $secondsAmount, $debugEmail , $baseUrl , $basePid    ){
         $progress = false ;
 
 
         $debug = array() ;
         /** @var Chat $chatLib */
         $chatLib = GeneralUtility::makeInstance(Chat::class);
-        $baseUrl = $chatLib->setBaseUrl("www.tangomuenchen.de") ;
+        $baseUrl = $chatLib->setBaseUrl($baseUrl) ;
+        $baseUrl = $chatLib->setBasePid($basePid) ;
 
         $debug[] = date("d.m.Y H:i:s") . " Started on Server "  . "https://" . $baseUrl  . " ";
 

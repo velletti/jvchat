@@ -38,11 +38,12 @@ class Ajax implements MiddlewareInterface
            // $GLOBALS['TSFE']->set_no_cache();
 
 
-            // Initialize FE user object:
-            /** @var FrontendUserAuthentication $feUserObj */
+            /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
+            $frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
             /** @var Chat $chat */
             $chat = GeneralUtility::makeInstance(Chat::class);
-            $chat->init( $GLOBALS['TSFE']->fe_user, 'utf-8' , false);
+
+            $chat->init( ($frontendUser->user ? $frontendUser : null ) , 'utf-8' , false);
             $result  = $chat->perform();
             $status = 200 ;
             if( $result ) {

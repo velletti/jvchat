@@ -95,7 +95,10 @@ class tx_jvchat_pi1 extends AbstractPlugin {
 
 		$this->pi_setPiVarDefaults();
 		$this->pi_loadLL("EXT:jvchat/Resources/Private/Language/locallang.xlf");
-		$this->user = $GLOBALS['TSFE']->fe_user->user;
+        /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
+        $frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
+
+        $this->user = ($frontendUser->user ?? null ) ;
 
 		$this->loadFLEX();
 

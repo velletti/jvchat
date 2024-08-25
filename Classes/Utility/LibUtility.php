@@ -2,12 +2,14 @@
 namespace JV\Jvchat\Utility;
 
 use JV\Jvchat\Domain\Model\Room;
+use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Extbase\MVC\Request;
 use TYPO3\CMS\Core\Configuration\ExtensionConfiguration;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use Psr\Http\Message\ServerRequestInterface;
+use TYPO3\CMS\Core\Core\SystemEnvironmentBuilder;
 
 class LibUtility {
 
@@ -322,12 +324,16 @@ class LibUtility {
 
     static function getRequest(): ServerRequestInterface
     {
-        return ( $GLOBALS['TYPO3_REQUEST'] ?? new ServerRequestInterface );
+        if ( $GLOBALS['TYPO3_REQUEST'] ) {
+            return $GLOBALS['TYPO3_REQUEST'] ;
+        }
+
+        return (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
     }
 
     static function getSetUp( $pid = 0 ) {
         $request = self::getRequest() ;
-        return TyposcriptUtility::loadTypoScriptFromRequest( $request  , 'tx_jvchat_pi1');
+        return TyposcriptUtility::loadTypoScriptFromRequest( $request  , 'tx_jvchat_pi1' , false , $pid );
     }
 
     static function trimImplode($glue, $array) {

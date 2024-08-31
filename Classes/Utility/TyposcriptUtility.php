@@ -15,58 +15,53 @@ use TYPO3\CMS\Core\Routing\PageArguments;
 class TyposcriptUtility
 {
 
-    /**
-     * Loads the typoscript from scratch
-     * @param int $pageUid
-     * @param string $extKey
-     * @param mixed $conditions array with Constants Conditions if needed
-     *                          this
-     *                          The Condition must be either :
-     *                          a) one of the following Common Vars: (i did not test this, but found it in source !)
-     *                         'usergroup' , 'treeLevel' , PIDupinRootline' or  'PIDinRootline':
-     *                         f.e. : array( 'usergroup=2,4' )
-     *
-     *                          or ( this is tested)
-     *                          b) the exact Condition from YOUR Constants.ts file
-     *
-     *                           this must be an array, also multiple Conditions can be handed over:
-     *
-     * @param bool $getConstants default=false,  will return  Constants (all or those from an extension) instaed of Setup
-     * @return array
-     * @author Peter Benke <pbenke@allplan.com>
-     * @deprecated V12  Maybe creating a new Reuest does not work. .. better use direct calling  !!
-     */
-    public static function loadTypoScriptFromScratch($pageUid = 0, $extKey = '', mixed $conditions = false, $getConstants = false, $request = null)
+    public static function loadTypoScriptviaCurl($path )
     {
-        if (!$request) {
-            /** @var Request $request */
-            $request = GeneralUtility::makeInstance(Request::class);
-            $request->withArguments(['uid' => $pageUid]);
+        $url = trim((string) $path) ;
+        $curl = curl_init();
 
+        curl_setopt_array($curl,
+            [   CURLOPT_URL => $url,
+                CURLOPT_RETURNTRANSFER => true,
+                CURLOPT_ENCODING => '',
+                CURLOPT_MAXREDIRS => 10,
+                CURLOPT_TIMEOUT => 0,
+                CURLOPT_FOLLOWLOCATION => true,
+                CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+                CURLOPT_CUSTOMREQUEST => 'GET'
+            ]);
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+        if( $response ) {
+            return json_decode( $response , true ) ;
         }
-        return self::loadTypoScriptFromRequest($request, $extKey = '', false , $pageUid );
+        return false ;
     }
-
     public static function loadTypoScriptFromRequest($request, $extKey = '', $getConstants = false , $pid = 0 )
     {
+        if ( $request && $pid > 0 ) {
+            $siteFinder = GeneralUtility::makeInstance( SiteFinder::class);
+            $site = $siteFinder->getSiteByPageId($pid);
 
-        $siteFinder = GeneralUtility::makeInstance( SiteFinder::class);
-        $site = $siteFinder->getSiteByPageId($pid);
+            $controller = GeneralUtility::makeInstance(
+                TypoScriptFrontendController::class,
+                GeneralUtility::makeInstance(Context::class),
+                $site,
+                $site->getDefaultLanguage(),
+                new PageArguments($site->getRootPageId(), '0', []),
+                GeneralUtility::makeInstance(FrontendUserAuthentication::class)
+            );
 
-        $controller = GeneralUtility::makeInstance(
-            TypoScriptFrontendController::class,
-            GeneralUtility::makeInstance(Context::class),
-            $site,
-            $site->getDefaultLanguage(),
-            new PageArguments($site->getRootPageId(), '0', []),
-            GeneralUtility::makeInstance(FrontendUserAuthentication::class)
-        );
+            // @extensionScannerIgnoreLine
+            $controller->id = $pid;
+            $controller->determineId($request);
 
-        // @extensionScannerIgnoreLine
-        $controller->id = $pid;
-        $controller->determineId($request);
-
-        $ts = $controller->getFromCache($request)->getAttribute('frontend.typoscript')->getSetupArray();
+            $ts = $controller->getFromCache($request)->getAttribute('frontend.typoscript')->getSetupArray();
+        } else {
+            return false;
+        }
 
 
         if ($getConstants) {

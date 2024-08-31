@@ -58,7 +58,7 @@ class Chat {
     var $db;
 
     var string $baseUrl ;
-    var int $basePid ;
+    var string $basePath ;
 
 
     var $env;
@@ -157,7 +157,8 @@ class Chat {
 		$this->debugMessage('init');
 
 		$this->lastMessageId = $this->env['lastid'];
-        $this->setup = LibUtility::getSetUp( $this->env['pid'] );
+
+        $this->setup = LibUtility::getSetUp( $this->env['pid'] , $this->basePath );
 
 		// init commands
 		$this->initCommands($this->room );
@@ -1240,7 +1241,7 @@ class Chat {
             $renderer->assign("extConf" , $this->extConf ) ;
 
             // $messages[] = $message;
-            $messages  .=   trim( $renderer->render() )  ;
+            $messages  .=  "\n\n" . trim( $renderer->render() )  ;
         }
         return $messages ;
     }
@@ -1292,7 +1293,7 @@ class Chat {
             $params['message'] .= "\n(smilies, images or links are only visible online)" ;
 
 
-            $params['message'] .= "<hr>" . $this->getEntryTextForEmail( $entries , $room ) ;
+            $params['message'] .= "<hr>\n" . $this->getEntryTextForEmail( $entries , $room ) ;
 
 
             $link =  "https://" . $server . "/index.php?id=" . $this->env['pid']
@@ -1353,8 +1354,8 @@ class Chat {
         return false ;
     }
 
-    function setBasePid($basePid) {
-        $this->basePid = (int)$basePid ;
+    function setBasePath($basePath) {
+        $this->basePath = (string)$basePath ;
     }
     /**
      * @param string $baseUrl

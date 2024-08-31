@@ -60,15 +60,15 @@ class NotifyCommand extends Command {
                 'email Address that should get debug output'
             )
             ->addOption(
-                'baseUrl',
-                'u' ,
+                'baseHost',
+                'b' ,
                 InputArgument::OPTIONAL,
-                'Base URL ... default www.tangomuenchen.de'
+                'Base Hostname ... default www.tangomuenchen.de'
             )->addOption(
-                'basePid',
+                'basePath',
                 'p' ,
                 InputArgument::OPTIONAL,
-                'PageUID needed for typo Script generation. default: 66 '
+                'Url, for pagewith typo Script. default: "/", This will call https:// baseurl/ basePath + ?tx_typoscript=tx_jvchat'
             );
 
 
@@ -98,30 +98,30 @@ class NotifyCommand extends Command {
             $io->writeln('Seconds an entry may exist to be sent was set to '. $secondsAmount );
 
         }
-       // Bootstrap::initializeBackendAuthentication();
+        // Bootstrap::initializeBackendAuthentication();
         $debugEmail = false ;
-
         if ($input->getOption('debugEmail')) {
             $debugEmail = $input->getOption('debugEmail');
             $io->writeln('$debugEmail is set to : '. $debugEmail );
-
         }
 
-        if ($input->getOption('baseUrl')) {
-            $baseUrl = $input->getOption('baseUrl');
-            $io->writeln('$baseUrl is set to : '. $baseUrl );
+        if ($input->getOption('baseHost')) {
+            $baseHost = $input->getOption('baseHost');
         } else {
-            $baseUrl = "www.tangomuenchen.de" ;
+            $baseHost = "tangov10.ddev.site" ;
         }
+        $io->writeln('$baseHost is set to : '. $baseHost );
 
-        if ($input->getOption('basePid')) {
-            $basePid = $input->getOption('basePid');
-            $io->writeln('$basePid is set to : '. $basePid );
-        } else {
-            $basePid = 66 ;
+        $basePath = "/de/" ;
+        if ($input->getOption('basePath')) {
+            $basePath = $input->getOption('basePath');
         }
+        $basePath = "https://". $baseHost . $basePath .  "?tx_jvtyposcript=tx_jvchat_pi1" ;
+        $io->writeln('Curl path is set to : '. $basePath );
 
-        $this->notifyCommand($io , $secondsAmount, $debugEmail  , $baseUrl , $basePid ) ;
+        if($this->notifyCommand($io , $secondsAmount, $debugEmail  , $baseHost , $basePath ) ) {
+            return 1 ;
+        }
         return 0 ;
     }
 
@@ -132,15 +132,15 @@ class NotifyCommand extends Command {
      * @param $slugField
      * @param $secondsAmount
      */
-    public function notifyCommand(SymfonyStyle $io , $secondsAmount, $debugEmail , $baseUrl , $basePid    ){
+    public function notifyCommand(SymfonyStyle $io , $secondsAmount, $debugEmail , $baseHost , $basePath    ){
         $progress = false ;
 
 
         $debug = array() ;
         /** @var Chat $chatLib */
         $chatLib = GeneralUtility::makeInstance(Chat::class);
-        $baseUrl = $chatLib->setBaseUrl($baseUrl) ;
-        $baseUrl = $chatLib->setBasePid($basePid) ;
+        $baseUrl = $chatLib->setBaseUrl($baseHost) ;
+        $baseUrl = $chatLib->setBasePath($basePath) ;
 
         $debug[] = date("d.m.Y H:i:s") . " Started on Server "  . "https://" . $baseUrl  . " ";
 

@@ -331,9 +331,13 @@ class LibUtility {
         return (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
     }
 
-    static function getSetUp( $pid = 0 ) {
-        $request = self::getRequest() ;
-        return TyposcriptUtility::loadTypoScriptFromRequest( $request  , 'tx_jvchat_pi1' , false , $pid );
+    static function getSetUp( $pid = 0 , $basePath= ''  ) {
+        if ( $basePath ) {
+            return TyposcriptUtility::loadTypoScriptviaCurl( $basePath );
+        } else {
+            $request = self::getRequest() ;
+            return TyposcriptUtility::loadTypoScriptFromRequest( $request  , 'tx_jvchat_pi1' , false , $pid );
+        }
     }
 
     static function trimImplode($glue, $array) {

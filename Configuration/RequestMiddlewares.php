@@ -1,7 +1,6 @@
 <?php
 
 use JV\Jvchat\Middleware\Ajax;
-use JVelletti\JvTyposcript\Middleware\Typoscript;
 return [
     'frontend' => [
         'jv/jvchat/ajax' => [

@@ -602,11 +602,12 @@ function tx_jvchat_pi1_js_chat() {
 	/* --------------------------------------------- - - - - - - */
 
 	this.getUserlist = function() {
+		let milliseconds = (new Date()).getTime();
 		jQuery.ajax({
 			type:       "get",
 			url:        this.scriptUrl ,
 			cache:      true,
-			data:       'r='+this.roomId+ '&p=' + this.pid+'&a=gu&charset='+this.charset+ "&showJason=0",
+			data:       'r='+this.roomId+ '&p=' + this.pid+'&a=gu&charset='+this.charset+ "&showJason=0&rnd=milliseconds",
 			beforeSend:	function() {
 			},
 			success:    function(result) {

@@ -45,4 +45,8 @@ call
  
     composer require velletti/jvchat dev-main
 
+in V12:    
+
+    composer require velletti/jvchat ^12.4
+
 

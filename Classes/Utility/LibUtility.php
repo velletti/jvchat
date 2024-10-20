@@ -330,6 +330,12 @@ class LibUtility {
 
         return (new ServerRequest())->withAttribute('applicationType', SystemEnvironmentBuilder::REQUESTTYPE_FE);
     }
+    static function getBasePath()
+    {
+        return "https://". GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY') . "/"
+            . ltrim(GeneralUtility::getIndpEnv('TYPO3_SITE_SCRIPT') , "/" ) .   "?tx_jvtyposcript=tx_jvchat_pi1" ;
+
+    }
 
     static function getSetUp( $pid = 0 , $basePath= ''  ) {
         if ( $basePath ) {
@@ -432,9 +438,9 @@ class LibUtility {
         $renderer->setFormat($format) ;
 
         $renderer->setTemplate($template);
-
+         $templatePath =   GeneralUtility::getFileAbsFileName( $templatePaths[0]."Pi1/" . $template . "." . $format );
         // /var/www/html/vendor/jv/jvchat/Resources/Private/Templates/Bootstrap4/Pi1/DisplayRooms
-        $renderer->setTemplatePathAndFilename($templatePaths[0]."Pi1/" . $template . "." . $format );
+        $renderer->setTemplatePathAndFilename( $templatePath );
         return $renderer ;
     }
 

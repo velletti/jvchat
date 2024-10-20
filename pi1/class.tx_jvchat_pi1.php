@@ -798,8 +798,8 @@ class tx_jvchat_pi1 extends AbstractPlugin {
         } else {
             $rooms = $this->getRoomsFromFlexConf();
         }
-        $setup = LibUtility::getSetUp();
 
+        $setup = LibUtility::getSetUp(0 , $basePath = LibUtility::getBasePath());
         /** @var StandaloneView $renderer */
         $renderer = LibUtility::getRenderer($setup , "DisplayRooms" , "html" )  ;
 

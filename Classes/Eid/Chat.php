@@ -57,8 +57,8 @@ class Chat {
     /** @var DbRepository  */
     var $db;
 
-    var string $baseUrl ;
-    var string $basePath ;
+    var string $baseUrl = '';
+    var string $basePath = '';
 
 
     var $env;
@@ -158,7 +158,7 @@ class Chat {
 
 		$this->lastMessageId = $this->env['lastid'];
 
-        $this->setup = LibUtility::getSetUp( $this->env['pid'] , $this->basePath );
+        $this->setup = LibUtility::getSetUp( $this->env['pid'] , ($this->basePath == '' ? $this->basePath : false) ) ;
 
 		// init commands
 		$this->initCommands($this->room );

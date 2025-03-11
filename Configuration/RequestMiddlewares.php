@@ -1,6 +1,6 @@
 <?php
 
-use JV\Jvchat\Middleware\Ajax;
+use JVelletti\Jvchat\Middleware\Ajax;
 return [
     'frontend' => [
         'jv/jvchat/ajax' => [

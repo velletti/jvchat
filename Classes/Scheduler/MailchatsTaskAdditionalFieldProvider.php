@@ -1,5 +1,5 @@
 <?php
-namespace JV\Jvchat\Scheduler;
+namespace JVelletti\Jvchat\Scheduler;
 
 /*
  * This file is part of the TYPO3 CMS project.
@@ -119,7 +119,7 @@ class MailchatsTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
     {
         if (!$task instanceof AbstractTask ) {
             throw new \InvalidArgumentException(
-                'Expected a task of type \JV\Jvchat\Scheduler\MailchatsTask, but got ' . get_class($task),
+                'Expected a task of type JVelletti\Jvchat\Scheduler\MailchatsTask, but got ' . get_class($task),
                 1329219449
             );
         }

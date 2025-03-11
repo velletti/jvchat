@@ -1,7 +1,7 @@
 <?php
-namespace JV\Jvchat\Utility;
+namespace JVelletti\Jvchat\Utility;
 
-use JV\Jvchat\Domain\Model\Room;
+use JVelletti\Jvchat\Domain\Model\Room;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
 use TYPO3\CMS\Fluid\View\StandaloneView;

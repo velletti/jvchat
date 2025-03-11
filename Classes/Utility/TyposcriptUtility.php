@@ -1,5 +1,5 @@
 <?php
-namespace JV\Jvchat\Utility;
+namespace JVelletti\Jvchat\Utility;
 
 use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;

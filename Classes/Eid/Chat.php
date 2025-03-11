@@ -2,7 +2,7 @@
 /** @noinspection PhpUndefinedMethodInspection */
 /** @noinspection PhpUndefinedFieldInspection */
 
-namespace JV\Jvchat\Eid;
+namespace JVelletti\Jvchat\Eid;
 
 /***************************************************************
 *  Copyright notice
@@ -31,15 +31,15 @@ namespace JV\Jvchat\Eid;
  *
  * @author	Vincent Tietz <vincent.tietz@vj-media.de>
  */
-use JV\Jvchat\Domain\Repository\DbRepository;
-use JV\Jvchat\Domain\Model\Room;
+use JVelletti\Jvchat\Domain\Repository\DbRepository;
+use JVelletti\Jvchat\Domain\Model\Room;
+use JVelletti\Jvchat\Utility\LibUtility;
+use JVelletti\Jvchat\Domain\Model\Entry;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Fluid\View\StandaloneView;
-use JV\Jvchat\Domain\Model\Entry;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
 use Velletti\Mailsignature\Service\SignatureService;
-use \JV\Jvchat\Utility\LibUtility;
 use TYPO3\CMS\Core\Imaging\ImageMagickFile;
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\CommandUtility;
@@ -1187,7 +1187,7 @@ class Chat {
 	}
 
     /**
-  * @param array $entries An array with entries of Type \JV\Jvchat\Domain\Model\Entry
+  * @param array $entries An array with entries of Type JVelletti\Jvchat\Domain\Model\Entry
   * @param Room $room An array
   * @return string
   * @throws InvalidExtensionNameException
@@ -1267,7 +1267,7 @@ class Chat {
     }
 
     /**
-     * @param array $entries elements of type  \JV\Jvchat\Domain\Model\Entry
+     * @param array $entries elements of type  JVelletti\Jvchat\Domain\Model\Entry
      * @param array $members type Users
      * @param Room $room
      * @param bool $sendall if false, do not check if currenct login user is post author

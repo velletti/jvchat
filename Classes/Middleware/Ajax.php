@@ -1,9 +1,9 @@
 <?php
 
-namespace JV\Jvchat\Middleware;
+namespace JVelletti\Jvchat\Middleware;
 
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
-use JV\Jvchat\Eid\Chat;
+use JVelletti\Jvchat\Eid\Chat;
 use JVE\JvEvents\Utility\AjaxUtility;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\ServerRequestInterface;
@@ -17,7 +17,7 @@ use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 
 /**
  * Class Ajax
- * @package JV\Jvchat\Middleware
+ * @package JVelletti\Jvchat\Middleware
  */
 class Ajax implements MiddlewareInterface
 {

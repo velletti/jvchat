@@ -1,7 +1,7 @@
 <?php
 
+use JVelletti\Jvchat\Eid\Chat;
 use TYPO3\CMS\Frontend\Utility\EidUtility;
-use JV\Jvchat\Eid\Chat;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 

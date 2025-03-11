@@ -1,7 +1,7 @@
 <?php
 use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
-use JV\Jvchat\Domain\Repository\DbRepository;
-use JV\Jvchat\Domain\Model\Room;
+use JVelletti\Jvchat\Domain\Repository\DbRepository;
+use JVelletti\Jvchat\Domain\Model\Room;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Core\Context\Context;
 /***************************************************************
@@ -32,7 +32,7 @@ use TYPO3\CMS\Core\Context\Context;
  * @author	Vincent Tietz <vincent.tietz@vj-media.de>
  */
 
-use \JV\Jvchat\Utility\LibUtility ;
+use JVelletti\Jvchat\Utility\LibUtility ;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 
 class tx_jvchat_pi1 extends AbstractPlugin {
@@ -103,7 +103,7 @@ class tx_jvchat_pi1 extends AbstractPlugin {
 		$this->loadFLEX();
 
 		/** @var DbRepository db */
-        $this->db = GeneralUtility::makeInstance('JV\Jvchat\Domain\Repository\DbRepository');
+        $this->db = GeneralUtility::makeInstance('JVelletti\Jvchat\Domain\Repository\DbRepository');
 
 
 		if( isset($this->piVars['leaveRoom']) && $this->piVars['leaveRoom'] ) {
@@ -335,7 +335,7 @@ class tx_jvchat_pi1 extends AbstractPlugin {
 
         if( $entryCount > 0 ) {
             $latestEntry = $this->db->getEntries($room, 0 , 0 ,1 , 0 , true, true );
-           //$entry = GeneralUtility::makeInstance('JV\\Jvchat\\Domain\\Model\\Entry');
+           //$entry = GeneralUtility::makeInstance('JVelletti\\Jvchat\\Domain\\Model\\Entry');
            // $entry->fromArray();
            // $entry->entry = LibUtility::formatMessage($entry->entry , $this->db->extCONF->setup['settings']['emoticons'] ,  $room->enableEmoticons );
             $latestEntry[0]->entry =  LibUtility::formatMessage($latestEntry[0]->entry , $this->db->extCONF->setup['settings']['emoticons'] ,  $room->enableEmoticons )
@@ -665,7 +665,7 @@ class tx_jvchat_pi1 extends AbstractPlugin {
 	}
 
 	/*
-	* @param  \JV\Jvchat\Domain\Model\Room $room
+	* @param  JVelletti\Jvchat\Domain\Model\Room $room
 	* @param  fe_user $user
 
 	*/

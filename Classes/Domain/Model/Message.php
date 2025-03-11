@@ -1,5 +1,5 @@
 <?php
-namespace JV\Jvchat\Domain\Model;
+namespace JVelletti\Jvchat\Domain\Model;
 /***************************************************************
 *  Copyright notice
 *

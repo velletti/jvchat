@@ -1,9 +1,9 @@
 <?php
-namespace JV\Jvchat\Command;
+namespace JVelletti\Jvchat\Command;
 
-use JV\Jvchat\Domain\Model\Room;
-use JV\Jvchat\Domain\Repository\DbRepository;
-use JV\Jvchat\Eid\Chat;
+use JVelletti\Jvchat\Domain\Model\Room;
+use JVelletti\Jvchat\Domain\Repository\DbRepository;
+use JVelletti\Jvchat\Eid\Chat;
 use PDO;
 use Symfony\Component\Console\Input\InputOption;
 use TYPO3\CMS\Core\Database\ConnectionPool;

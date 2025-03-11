@@ -1,8 +1,8 @@
 <?php
-namespace JV\Jvchat\Scheduler;
-use JV\Jvchat\Domain\Model\Room;
-use JV\Jvchat\Domain\Repository\DbRepository;
-use JV\Jvchat\Eid\Chat;
+namespace JVelletti\Jvchat\Scheduler;
+use JVelletti\Jvchat\Domain\Model\Room;
+use JVelletti\Jvchat\Domain\Repository\DbRepository;
+use JVelletti\Jvchat\Eid\Chat;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireException;
 use TYPO3\CMS\Core\Locking\Exception\LockAcquireWouldBlockException;
 use TYPO3\CMS\Core\Locking\Exception\LockCreateException;

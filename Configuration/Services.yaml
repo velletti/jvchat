@@ -4,10 +4,10 @@ services:
     autoconfigure: true
     public: false
 
-  JV\Jvchat\:
+  JVelletti\Jvchat\:
     resource: '../Classes/*'
 
-  JV\Jvchat\Command\NotifyCommand:
+  JVelletti\Jvchat\Command\NotifyCommand:
     tags:
       - name: 'console.command'
         command: 'jvchat:notify'

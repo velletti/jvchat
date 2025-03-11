@@ -1,14 +1,14 @@
 <?php
-namespace JV\Jvchat\Domain\Repository;
+namespace JVelletti\Jvchat\Domain\Repository;
 
 
 use TYPO3\CMS\Core\Localization\LanguageService;
 use TYPO3\CMS\Core\Utility\StringUtility;
 use Doctrine\DBAL\Driver\Statement;
-use JV\Jvchat\Domain\Model\Entry;
-use JV\Jvchat\Domain\Model\Room;
-use JV\Jvchat\Domain\Model\Session;
-use JV\Jvchat\Utility\LibUtility;
+use JVelletti\Jvchat\Domain\Model\Entry;
+use JVelletti\Jvchat\Domain\Model\Room;
+use JVelletti\Jvchat\Domain\Model\Session;
+use JVelletti\Jvchat\Utility\LibUtility;
 use TYPO3\CMS\Core\Database\Query\QueryBuilder;
 use TYPO3\CMS\Core\Database\Query\Restriction\FrontendGroupRestriction;
 use TYPO3\CMS\Core\Database\Query\Restriction\QueryRestrictionInterface;

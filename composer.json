@@ -29,7 +29,7 @@
         "jvelletti/jv-typoscript": "11.* || 12.*"
     },
     "replace": {
-        "jvchat": "self.version"
+        "jv/jvchat": "self.version"
     },
 
     "scripts": {

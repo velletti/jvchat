@@ -3,6 +3,7 @@ namespace JVelletti\Jvchat\Utility;
 
 use JVelletti\Jvchat\Domain\Model\Room;
 use TYPO3\CMS\Core\Http\ServerRequest;
+use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Extbase\MVC\Request;
@@ -319,7 +320,13 @@ class LibUtility {
     {
         $request = self::getRequest() ;
         $pageArguments = $request->getAttribute('routing');
-        $pageId = $pageArguments->getPageId();
+        return ( $pageArguments ? $pageArguments->getPageId() : 0) ;
+    }
+
+    static function getlanguage()
+    {
+        $languageAspect = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Context\Context::class)->getAspect('language') ;
+        return ( $languageAspect ? $languageAspect->getId() : 0) ;
     }
 
     static function getRequest(): ServerRequestInterface
@@ -332,14 +339,59 @@ class LibUtility {
     }
     static function getBasePath()
     {
-        return "https://". GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY') . "/"
-            . ltrim(GeneralUtility::getIndpEnv('TYPO3_SITE_SCRIPT') , "/" ) .   "?tx_jvtyposcript=tx_jvchat_pi1" ;
+        $urlArray = parse_url( GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')) ;
+        return "https://" . $urlArray['host'] . "/" . $urlArray['path'] .   "?tx_jvtyposcript=tx_jvchat_pi1" ;
 
+    }
+    static function getTypoScriptPath()
+    {
+        $urlArray = parse_url( GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')) ;
+        if( str_ends_with( $urlArray['path'] , "index.php")) {
+
+            $params = explode("&", $urlArray['query']);
+            $pid = (isset($params['id']) ? (int)$params['id'] : self::getPid());
+            $language = (isset($params['L']) ? (int)$params['L'] : self::getlanguage());
+
+            $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+            $site = $siteFinder->getSiteByPageId($pid);
+            $router = $site->getRouter();
+            $urlArray['path'] = $router->generateUri(
+                $pid,
+                [
+                    '_Language' => $language
+                ],
+            )->getPath();
+        }
+
+        return "https://" . $urlArray['host'] . "/" . $urlArray['path'] .   "?tx_jvtyposcript=tx_jvchat_pi1" ;
+
+    }
+
+    static function getShowRoomUrl($roomId , $pid = 0 , $language = 0 )
+    {
+        $pid = ( $pid ? $pid : self::getPid() ) ;
+        $language = ( $language ? $language : self::getlanguage() ) ;
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        $site = $siteFinder->getSiteByPageId($pid);
+        $router = $site->getRouter();
+
+        $url = $router->generateUri(
+            $pid,
+            [
+                'tx_jvchat_pi1' => ['uid'=> $roomId , 'view'=>'chat'],
+                '_Language' => $language
+            ],
+        )->getPath();
+        return $url ;
     }
 
     static function getSetUp( $pid = 0 , $basePath= ''  ) {
         if ( $basePath ) {
-            return TyposcriptUtility::loadTypoScriptviaCurl( $basePath );
+            $ts = TyposcriptUtility::loadTypoScriptviaCurl( $basePath );
+            if ( isset($ts['tx_jvchat_pi1'] )) {
+                return $ts['tx_jvchat_pi1'] ;
+            }
+            return $ts ;
         } else {
             $request = self::getRequest() ;
             return TyposcriptUtility::loadTypoScriptFromRequest( $request  , 'tx_jvchat_pi1' , false , $pid );
@@ -412,7 +464,9 @@ class LibUtility {
 
         /** @var StandaloneView $renderer */
         $renderer = new StandaloneView ;
-
+        if( isset($settings['tx_jvchat_pi1']) && is_array( $settings['tx_jvchat_pi1'] ) ) {
+            $settings = $settings['tx_jvchat_pi1'] ;
+        }
         $layoutPaths = $settings['view']['layoutRootPaths'] ;
 
         if(!$layoutPaths || (is_countable($layoutPaths) ? count($layoutPaths) : 0) < 1) {

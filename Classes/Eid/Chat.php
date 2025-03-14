@@ -1279,7 +1279,7 @@ class Chat {
 
         $entryCount =  count($entries)  ;
         $server = $this->setBaseUrl($this->baseUrl) ;
-
+        $server = GeneralUtility::getIndpEnv('TYPO3_HOST_ONLY') ;
 
         if( is_array($members)) {
             $memberCount = count( $members) ;
@@ -1296,8 +1296,7 @@ class Chat {
             $params['message'] .= "<hr>\n" . $this->getEntryTextForEmail( $entries , $room ) ;
 
 
-            $link =  "https://" . $server . "/index.php?id=" . $this->env['pid']
-                . "&tx_jvchat_pi1[uid]=" .$this->room->uid . "&tx_jvchat_pi1[view]=chat";
+            $link =  "https://" . $server . LibUtility::getShowRoomUrl($this->room->uid ,$this->env['pid'] ) ;
 
            // $params['message'] .=  " <hr>\n<a href=\""  .$link . "\"> " . $link . "</a>\n" ;
             $params['message'] .=  "\n"  .$link . "\n" ;
@@ -1318,15 +1317,17 @@ class Chat {
                     if( $this->user['email'] != $member['email']   ||  $sendall  ) {
                         if( $member['email'] && GeneralUtility::validEmail($member['email'])) {
                             $params['user']['email'] = $member['email'] ;
-                            $memberCount++ ;
                             $mailService->sentHTMLmailService($params ) ;
+                            $memberCount++ ;
                         }
                     }
 
                 }
             }
             catch(\Exception $e) {
-                // ''  ;
+                if(  str_ends_with( $_SERVER['SERVER_NAME']  , ".ddev.site" ) ) {
+                    return '<div class="tx-jvchat-cmd-help">' . $e->getMessage() . '</div>';
+                }
             }
 
 
@@ -1751,8 +1752,9 @@ class Chat {
 		if(!$params[1]) {
 			$name = sprintf($this->languageService ->getLL('command_newroom_room_default_title'), implode(' ',$params) . " & " . $username);
 		}
-		else
-			$name = implode(' ',$params) .  " & " . $username ;
+		else {
+            $name = implode(' ',$params) .  " & " . $username ;
+        }
 
         /** @var Room $newRoom */
         $newRoom = GeneralUtility::makeInstance(Room::class);

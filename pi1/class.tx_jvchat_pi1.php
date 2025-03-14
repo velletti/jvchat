@@ -143,7 +143,6 @@ class tx_jvchat_pi1 extends AbstractPlugin {
             }
         }
 
-
 		// dynamic view set in frontend
 		if(isset($this->piVars['view']) && $view = $this->piVars['view']) {
             switch($view) {
@@ -294,8 +293,8 @@ class tx_jvchat_pi1 extends AbstractPlugin {
 	function deleteEntry($entryId) {
 		// check rights
 		$entry = $this->db->getEntry($entryId);
-        /** @var Room $newRoom */
-  $room = $this->db->getRoom($entry->room);
+        /** @var Room $room */
+        $room = $this->db->getRoom($entry->room);
 
 		if(!LibUtility::checkAccessToRoom($room, $this->user) || !$this->user['uid'] )
 			return $this->displayErrorMessage($this->pi_getLL('access_denied'));
@@ -317,7 +316,7 @@ class tx_jvchat_pi1 extends AbstractPlugin {
 
 	function displayLatestChat($roomId) {
         $this->db->cleanUpRooms();
-        /** @var Room $newRoom */
+        /** @var Room $room */
         if(!$room = $this->db->getRoom($roomId)) {
             return $this->displayErrorMessage($this->pi_getLL('error_room_not_found'), $this->conf['views.']['chat.']['stdWrap.']);
         }
@@ -328,8 +327,9 @@ class tx_jvchat_pi1 extends AbstractPlugin {
         $seconds = 30 * 24 * 3600 ;
         $entryCount = $this->db->getEntryCount( $room , $seconds );
 
+        $basePath = LibUtility::getTypoScriptPath() ;
+        $setup = LibUtility::getSetUp(0 , $basePath );
         /** @var StandaloneView $renderer */
-        $setup = LibUtility::getSetUp();
         $renderer = LibUtility::getRenderer( $setup, "DisplayLatestChats" , "html" ) ;
         $renderer->assign('entryCount', $entryCount );
 
@@ -362,10 +362,9 @@ class tx_jvchat_pi1 extends AbstractPlugin {
 
 	function displayChatRoom($roomId) {
 
-
 		$this->db->cleanUpRooms();
-        /** @var Room $newRoom */
-  if(!$room = $this->db->getRoom($roomId)) {
+        /** @var Room $room */
+        if(!$room = $this->db->getRoom($roomId)) {
             return $this->displayErrorMessage($this->pi_getLL('error_room_not_found'), $this->conf['views.']['chat.']['stdWrap.']);
         }
         // remove old message entries if set
@@ -407,7 +406,8 @@ class tx_jvchat_pi1 extends AbstractPlugin {
 
 		/* ***********************************   LTS 9 ******************************** */
         /** @var StandaloneView $renderer */
-        $setup = LibUtility::getSetUp();
+        $basePath = LibUtility::getTypoScriptPath() ;
+        $setup = LibUtility::getSetUp(0 , $basePath );
         $renderer = LibUtility::getRenderer( $setup, "DisplayChatRoom" , "html" ) ;
         $renderer->assign('settings', $setup['settings'] );
         $renderer->assign('server',  GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'));
@@ -798,9 +798,8 @@ class tx_jvchat_pi1 extends AbstractPlugin {
         } else {
             $rooms = $this->getRoomsFromFlexConf();
         }
-
-        $setup = LibUtility::getSetUp(0 , $basePath = LibUtility::getBasePath());
-        /** @var StandaloneView $renderer */
+        $basePath = LibUtility::getTypoScriptPath() ;
+        $setup = LibUtility::getSetUp(0 , $basePath );
         $renderer = LibUtility::getRenderer($setup , "DisplayRooms" , "html" )  ;
 
         $setup['settings']['currentPid'] = $GLOBALS['TSFE']->id ;

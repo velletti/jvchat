@@ -1,0 +1,10 @@
+routeEnhancers:
+
+  JvChatPi1:
+    type: Plugin
+    routePath: '/{view}/{uid}'
+    namespace: 'tx_jvchat_pi1'
+    defaults:
+      view: 'chat'
+    requirements:
+      uid: '[0-9]{1,8}'

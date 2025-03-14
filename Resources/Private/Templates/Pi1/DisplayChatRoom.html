@@ -6,7 +6,7 @@
             <f:render partial="DisplayIcons" arguments="{_all}"></f:render>
         </f:then>
         <f:else>
-            <div class="p-2 tx-jvchat-chat-intro" id="tx-jvchat-config" {dataString -> f:format.raw()} >
+            <div class="p-2 tx-jvchat-chat-intro template-pi1" id="tx-jvchat-config" {dataString -> f:format.raw()} >
                 <f:if condition="{room.name}">
                     <h2>{room.name}</h2>
                 </f:if>

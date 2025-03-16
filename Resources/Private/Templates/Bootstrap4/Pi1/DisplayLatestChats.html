@@ -13,17 +13,22 @@
                 <f:variable name="targetPage">{room.page}</f:variable>
             </f:if>
             <div class="alert alert-info">
-                <a href="/index.php?id={targetPage}&tx_jvchat_pi1[uid]={room.uid}&tx_jvchat_pi1[view]=chat&L={setup.settings.currentLng}" title="{f:translate(key:'LLL:EXT:jv_chat/Resources/Private/Language/locallang_db.xlf:command_enter_room')}">
-                    <h3><f:translate key="LLL:EXT:jv_chat/Resources/Private/Language/locallang_db.xlf:latest_entry"/>: {entry.crdate -> f:format.date(format: 'd.M: H:i')} <span class="position-right mr-3" title="{room.name}">(#{entryCount})</span>  </h3>
-                </a>
-                <f:if condition="{user}">
+                <f:link.typolink parameter="t3://page?uid={targetPage}&tx_jvchat_pi1[uid]={room.uid}&tx_jvchat_pi1[view]=chat"
+                                 title="{f:translate(key:'LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:enter_chat')}"
+                >
+                    <h3><f:translate key="LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:latest_entry"/>: {entry.crdate -> f:format.date(format: 'd.M: H:i')} <span class="position-right mr-3" title="{room.name}">(#{entryCount})</span>  </h3>
+                </f:link.typolink>
+
+                  <f:if condition="{user}">
                     <p class="pb-1 m-0 mt-1">
                         <f:format.raw>{entry.entry}</f:format.raw>
                         <span class="position-right mb-3">
-                            <a class="btn btn-xs btn-outline-primary mr-3 px-2 py-1" href="/index.php?id={targetPage}&tx_jvchat_pi1[uid]={room.uid}&tx_jvchat_pi1[view]=chat&L={setup.settings.currentLng}"
-                               title="{f:translate(key:'LLL:EXT:jv_chat/Resources/Private/Language/locallang_db.xlf:command_enter_room')}">
-                                <span class="fa fa-comments">
-                            </a>
+                            <f:link.typolink parameter="t3://page?uid={targetPage}&tx_jvchat_pi1[uid]={room.uid}&tx_jvchat_pi1[view]=chat"
+                                         class="btn btn-xs btn-outline-primary mr-3 px-2 py-1"
+                                         title="{f:translate(key:'LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:enter_chat')}"
+                            >
+                                <span class="fa fa-comments"> </span>
+                            </f:link.typolink>
                         </span>
                         <br>
                     </p>

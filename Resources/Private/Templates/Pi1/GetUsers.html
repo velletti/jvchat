@@ -1,11 +1,11 @@
-{namespace vhs = FluidTYPO3\Vhs\ViewHelpers}
+{namespace jv=JV\Jvchat\ViewHelpers}
 <f:layout name="Ajax" />
 
 <f:section name="main">
-<f:spaceless>
-    <f:format.raw>
-        <f:if condition="{user.hidden}">
-            <f:else>
+    <f:spaceless>
+        <f:format.raw>
+            <f:if condition="{user.hidden}">
+                <f:else>
                     <span id="tx-jvchat-msg-user-{user.uid}" class="tx-jvchat-link-user clearfix"  data-comment="pi1-GetUsers"  data-content="user-{user.uid}" >
                         <f:render section="image" arguments="{showFullNames: showFullNames, user: user , thisUser: thisUser , extConf: extConf , settings: settings }"/>
                         <span class="tx-jvchat-userlist-name">
@@ -17,10 +17,10 @@
                             <f:render section="Infobutton" arguments="{showFullNames: showFullNames, user: user , thisUser: thisUser , extConf: extConf , settings: settings }"/>
                         </span>
                     </span>
-            </f:else>
-        </f:if>
-    </f:format.raw>
-</f:spaceless>
+                </f:else>
+            </f:if>
+        </f:format.raw>
+    </f:spaceless>
 </f:section>
 
 <f:section name="userName">
@@ -49,11 +49,25 @@
             </f:then>
 
         </f:if>
-        <f:if condition="{imgPath}">
-            <f:image alt="I" class="tx_jvchat-avatar" height="{settings.userlist.avatar.height}"
-                     maxHeight="{settings.userlist.avatar.maxheight}"
-                     maxWidth="{settings.userlist.avatar.maxwidth}" src="{imgPath}" title="{imgPath}"
-                     width="{settings.userlist.avatar.width}"></f:image>
+        <f:if condition="{jv:image.fileExists(imagePath: imgPath)}">
+            <f:then>
+                <f:image alt="I" class="tx_jvchat-avatar" height="{settings.userlist.avatar.height}"
+                         maxHeight="{settings.userlist.avatar.maxheight}"
+                         maxWidth="{settings.userlist.avatar.maxwidth}" src="{imgPath}" title="img"
+                         width="{settings.userlist.avatar.width}"></f:image>
+
+            </f:then>
+            <f:else>
+                <f:if condition="{settings.userlist.avatar.gender.0.file}">
+                    <f:then>
+                        <f:image alt="I" class="tx_jvchat-avatar" height="{settings.userlist.avatar.height}"
+                                 maxHeight="{settings.userlist.avatar.maxheight}"cd
+                                 maxWidth="{settings.userlist.avatar.maxwidth}" src="{settings.userlist.avatar.gender.0.file}" title=""
+                                 width="{settings.userlist.avatar.width}"></f:image>
+
+                    </f:then>
+                </f:if>
+            </f:else>
         </f:if>
 
     </f:spaceless>

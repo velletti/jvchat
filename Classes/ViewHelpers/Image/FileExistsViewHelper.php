@@ -1,5 +1,5 @@
 <?php
-namespace JV\Jvchat\ViewHelpers\Image;
+namespace JVelletti\Jvchat\ViewHelpers\Image;
 
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;

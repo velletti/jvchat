@@ -1060,7 +1060,13 @@ function tx_jvchat_resize() {
 		if ( isNaN(inputH ) ) { inputH = 96 ;}
 	}
 	var mainnavH = parseInt( $('#mainnavIcons').height()) ;
-	if ( isNaN(mainnavH ) ) { mainnavH = 0 ;} else { mainnavH = mainnavH + 10 ;}
+	if ( isNaN(mainnavH ) )
+	{ mainnavH = 0 ;}
+	else
+	{
+		mainnavH = mainnavH + 10 ;
+		$(".frame-type-felogin_login").hide();
+	}
 
 	var subnavH = parseInt( $('#jvEventsAjaxMenu').height()) ;
 	if ( isNaN(subnavH ) ) { subnavH = 0 ;}

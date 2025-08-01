@@ -4,6 +4,7 @@ namespace JVelletti\Jvchat\Utility;
 use JVelletti\Jvchat\Domain\Model\Room;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\SiteFinder;
+use TYPO3\CMS\Core\Utility\PathUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Extbase\MVC\Request;
@@ -264,7 +265,8 @@ class LibUtility {
 	}
     static function formatMessageEmoji($code ) {
         if( isset($code['notFontAwesome']) && $code['notFontAwesome'] ) {
-            return $code['html'] ;
+            return '<img src="' . PathUtility::getPublicResourceWebPath($code['html']) . '" alt="' . $code['code'] . '"/>' ;
+
         } else {
             return '<span class="chatIconColor"><i class="' . $code['html'] . '"> </i></span>' ;
         }
@@ -284,9 +286,11 @@ class LibUtility {
 
 
     static function getEmoticonsForChatRoom() {
-		$setup = self::getSetUp();
 
-		if( ! is_array($setup) ) { return '' ;}
+        $basePath = \JVelletti\JvTyposcript\Utility\TyposcriptUtility::getPath( self::getPid(), 0 , 'tx_jvchat_pi1') ;
+		$setup = self::getSetUp(  self::getPid() , $basePath);
+
+		if( ! is_array($setup) ) { return ''   ;}
 		if( ! is_array($setup["settings"]) ) { return '' ;}
 		if( ! is_array($setup["settings"]["emoticons"]) ) { return '' ;}
         $emoticons = $setup["settings"]["emoticons"] ;
@@ -295,7 +299,9 @@ class LibUtility {
 		$out2 = "";
 		foreach($emoticons as $key => $emoji) {
             if ( isset($emoji['notFontAwesome']) && $emoji['notFontAwesome']) {
-                $code = '<span class="'. $emoticonBtnClass .  '" onClick="setValueToInput(\''.$emoji['code'].'\');" alt="emoji-' . $key . '" title="'.self::unicode_encode($emoji['code']).'">'  .  $emoji['html'] . '</span>';
+                $code = '<span class="'. $emoticonBtnClass .  '" onClick="setValueToInput(\''.$emoji['code'].'\');" alt="emoji-' . $key . '" title="'.self::unicode_encode($emoji['code']).'">'.
+                            '<img src="' . PathUtility::getPublicResourceWebPath($emoji['html']) . '" alt="emoji-' . $key . '"/>' .
+                        '</span>';
             } else {
                 $code = '<span class="'. $emoticonBtnClass. '"><span class="' . $emoji['html'] . '" onClick="setValueToInput(\''.$emoji['code'].'\');" alt="emoji-' . $key . '" title="'.self::unicode_encode($emoji['code']).'"> </span></span>';
             }

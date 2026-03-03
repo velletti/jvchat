@@ -491,16 +491,16 @@ class LibUtility {
         if(!$partialPaths) {
             $partialPaths = [0 => "EXT:jvchat/Resources/Private/Partials/"] ;
         }
-        $renderer->setLayoutRootPaths($layoutPaths);
-        $renderer->setTemplateRootPaths($templatePaths);
-        $renderer->setPartialRootPaths($partialPaths);
+        $renderer->getRenderingContext()->getTemplatePaths()->setLayoutRootPaths($layoutPaths);
+        $renderer->getRenderingContext()->getTemplatePaths()->setTemplateRootPaths($templatePaths);
+        $renderer->getRenderingContext()->getTemplatePaths()->setPartialRootPaths($partialPaths);
 
         $renderer->setFormat($format) ;
 
-        $renderer->setTemplate($template);
+        $renderer->getRenderingContext()->setControllerAction($template);
          $templatePath =   GeneralUtility::getFileAbsFileName( $templatePaths[0]."Pi1/" . $template . "." . $format );
         // /var/www/html/vendor/jv/jvchat/Resources/Private/Templates/Bootstrap4/Pi1/DisplayRooms
-        $renderer->setTemplatePathAndFilename( $templatePath );
+        $renderer->getRenderingContext()->getTemplatePaths()->setTemplatePathAndFilename($templatePath);
         return $renderer ;
     }
 

@@ -7,7 +7,7 @@ class Entry {
 
 	}
 
-	function fromArray($array) {
+	function fromArray($array): void {
 		$this->uid = $array['uid'];
 		$this->crdate = $array['crdate'];
 		$this->tstamp = $array['tstamp'];
@@ -48,23 +48,23 @@ class Entry {
 
 	}
 
-	var $uid;
+	var int $uid;
 
 	var $entry;
 
-	var $crdate;
+	var int $crdate;
 
-	var $tstamp;
+	var int $tstamp;
 
 	var $feuser;
 
-	var $tofeuserid;
+	var int $tofeuserid;
 
 	var $room;
 
-	var $hidden;
+	var int $hidden;
 	
-	var $deleted;
+	var int $deleted;
 
 	var $style;
 

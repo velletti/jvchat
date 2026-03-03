@@ -38,26 +38,30 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class tx_jvchat_pi1 extends AbstractPlugin {
 
     /** @var array */
-    public $settings ;
+    public array $settings ;
 
     /** @var string  */
-    var $prefixId = 'tx_jvchat_pi1';
+    var string $prefixId = 'tx_jvchat_pi1';
 
     /** @var string  */
-    var $extKey = 'jvchat';
+    var string $extKey = 'jvchat';
 
-    var $pi_checkCHash = FALSE;
+    var bool $pi_checkCHash = FALSE;
 
     var $chatScript;
 
     /** @var DbRepository  */
-    var $db;
+    var DbRepository $db;
 
     /** @var array  */
-    var $user;
+    var array $user;
 
     /** @var array  */
-    var $extConf;
+    var array $extConf;
+    public function __construct(private readonly \TYPO3\CMS\Core\Context\Context $context)
+    {
+
+    }
 
 	/**
 	 */
@@ -68,7 +72,7 @@ class tx_jvchat_pi1 extends AbstractPlugin {
 
 		$this->settings = $conf;
 
-		$chatScript = 'https://' . $_SERVER['SERVER_NAME'] . '/index.php?id=' . $GLOBALS['TSFE']->id .  '&eIDMW=tx_jvchat_pi1';
+		$chatScript = 'https://' . $_SERVER['SERVER_NAME'] . '/index.php?id=' . $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.page.information')->getId() .  '&eIDMW=tx_jvchat_pi1';
 
 		$GLOBALS['TSFE']->additionalHeaderData['tx_jvchat_inc'] = '
 			<script type="text/javascript">
@@ -188,7 +192,7 @@ class tx_jvchat_pi1 extends AbstractPlugin {
 		return $this->pi_wrapInBaseClass($content);
 	}		// Same as class name
 
-	function loadFLEX() {
+	function loadFLEX(): void {
 
 		$this->pi_initPIflexForm(); // Init FlexForm configuration for plugin
 
@@ -536,7 +540,7 @@ class tx_jvchat_pi1 extends AbstractPlugin {
         $dataString .= ' data-allowtooltipoffset-y="' . $tooltipOffsetXY[1] . '"' ;
         $dataString .= ' data-refreshMessagesTime="' . $this->conf['FLEX']['refreshMessagesTime']*1000 . '"' ;
         $dataString .= ' data-refreshUserListTime="' . $this->conf['FLEX']['refreshUserListTime']*1000 . '"' ;
-        $dataString .= ' data-pid="' . $GLOBALS['TSFE']->id  . '"' ;
+        $dataString .= ' data-pid="' . $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.page.information')->getId()  . '"' ;
 
 
         if( isset($this->piVars['debug']) && $this->piVars['debug'] ) {
@@ -802,9 +806,9 @@ class tx_jvchat_pi1 extends AbstractPlugin {
         $setup = LibUtility::getSetUp(0 , $basePath );
         $renderer = LibUtility::getRenderer($setup , "DisplayRooms" , "html" )  ;
 
-        $setup['settings']['currentPid'] = $GLOBALS['TSFE']->id ;
+        $setup['settings']['currentPid'] = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.page.information')->getId() ;
 
-        $languageAspect = GeneralUtility::makeInstance(Context::class)->getAspect('language') ;
+        $languageAspect = $this->context->getAspect('language') ;
         // (previously known as TSFE->sys_language_uid)
         $setup['settings']['currentLng']  = $languageAspect->getId() ;
 

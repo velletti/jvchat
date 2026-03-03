@@ -98,7 +98,6 @@ class NotifyCommand extends Command {
             $io->writeln('Seconds an entry may exist to be sent was set to '. $secondsAmount );
 
         }
-        // Bootstrap::initializeBackendAuthentication();
         $debugEmail = false ;
         if ($input->getOption('debugEmail')) {
             $debugEmail = $input->getOption('debugEmail');
@@ -140,13 +139,9 @@ class NotifyCommand extends Command {
         /** @var Chat $chatLib */
         $chatLib = GeneralUtility::makeInstance(Chat::class);
         $baseUrl = $chatLib->setBaseUrl($baseHost) ;
-        $baseUrl = $chatLib->setBasePath($basePath) ;
+        $chatLib->setBasePath($basePath) ;
 
         $debug[] = date("d.m.Y H:i:s") . " Started on Server "  . "https://" . $baseUrl  . " ";
-
-        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
-
-        $this->logger->notice('TYPO3 jv_chat notify Command Task: before LOCK  ');
 
         /** @var LockFactory $lockFactory */
         $lockFactory = GeneralUtility::makeInstance(LockFactory::class);
@@ -274,10 +269,10 @@ class NotifyCommand extends Command {
      * @param $slugField
      * @param $slug
      */
-    private function setSlug($table , $uid , $slugField , $slug)
+    private function setSlug($table , $uid , $slugField , $slug): void
     {
         $qb = $this->getQueryBuilder($table) ;
-        $qb->update($table)->set($slugField , $slug)->where($qb->expr()->eq("uid" , $qb->createNamedParameter($uid , PDO::PARAM_INT)))->executeStatement() ;
+        $qb->update($table)->set($slugField , $slug)->where($qb->expr()->eq("uid" , $qb->createNamedParameter($uid , \TYPO3\CMS\Core\Database\Connection::PARAM_INT)))->executeStatement() ;
 
     }
 

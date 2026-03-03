@@ -39,6 +39,7 @@ use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Fluid\View\StandaloneView;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
+use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
 use Velletti\Mailsignature\Service\SignatureService;
 use TYPO3\CMS\Core\Imaging\ImageMagickFile;
 use TYPO3\CMS\Core\Localization\LanguageService;
@@ -50,46 +51,52 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 class Chat {
 
     /** @var LanguageService */
-    var $languageService;
+    var LanguageService $languageService;
 
     var $commands;
 
     /** @var DbRepository  */
-    var $db;
+    var DbRepository $db;
 
     var string $baseUrl = '';
     var string $basePath = '';
 
 
-    var $env;
+    var array $env;
 
-    var $debug = false;
+    var bool $debug = false;
 
     /**********************************************************************************************/
     // GENERAL HELPER FUNCTIONS
     /**********************************************************************************************/
 
-    var $debugMessages = array();
+    var array $debugMessages = array();
 
     /** @var Room $newRoom */
-    var $room;
+    var Room $room;
 
-    var $user;
+    var array|null $user;
 
-    var $lastMessageId;
+    var int $lastMessageId;
 
     /** @var array The typoscript setup includings views cObjects and the settings array  */
-    var $setup = array() ;
+    var array $setup = array() ;
 
     /** @var array  */
-    var $extConf;
+    var array $extConf;
 
-    public function injectLanguageService( LanguageService $languageService)
+    var int $microtime ;
+
+    var LanguageServiceFactory $languageServiceFactory ;
+
+    public function __construct(?LanguageService $languageService = null)
     {
-        $this->languageService  = $languageService;
+        $this->languageServiceFactory = GeneralUtility::makeInstance(LanguageServiceFactory::class);
+        $this->languageService = $languageService;
+
     }
 
-	function init($user, $charset , $room = false ) {
+	function init( ?FrontendUserAuthentication $user, $charset , $room = false ): void {
 		// load language files
 		// at this moment it is impossible to modify this via TypoScript
 		//$LLKey = $GLOBALS['TSFE']->config['config']['language'];
@@ -100,29 +107,29 @@ class Chat {
 
 
 		// get parameters
-		$this->env['user'] = $user->user;
-		$this->env['room_id'] = intval(GeneralUtility::_GP('r'));
+		$this->env['user'] = ($user->user ?? null)  ;
+		$this->env['room_id'] = intval($GLOBALS['TYPO3_REQUEST']->getParsedBody()['r'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['r'] ?? null);
 
 		$this->env['charset'] = $charset;
 
-		$this->env['msg'] = GeneralUtility::_GP('m');
+		$this->env['msg'] = $GLOBALS['TYPO3_REQUEST']->getParsedBody()['m'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['m'] ?? null;
 
 		$this->env['msg'] = $this->env['msg'] ? rawurldecode($this->env['msg']) : '' ;
 		$this->env['msg'] = str_replace('<', '&lt;', $this->env['msg']);
 		$this->env['msg'] = str_replace('>', '&gt;', $this->env['msg']);
 
-		$this->env['action'] = htmlspecialchars(GeneralUtility::_GP('a') ?? '');
-		$this->env['lastid'] = intval(GeneralUtility::_GP('t')?? 0);
-		$this->env['uid'] = intval(GeneralUtility::_GP('uid') ?? 0);
-		$this->env['usercolor'] = intval(GeneralUtility::_GP('uc') ?? '');
-		$this->env['LLKey'] = htmlspecialchars(GeneralUtility::_GP('l') ?? 'en');
+		$this->env['action'] = htmlspecialchars(($GLOBALS['TYPO3_REQUEST']->getParsedBody()['a'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['a'] ?? null) ?? '');
+		$this->env['lastid'] = intval(($GLOBALS['TYPO3_REQUEST']->getParsedBody()['t'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['t'] ?? null)?? 0);
+		$this->env['uid'] = intval(($GLOBALS['TYPO3_REQUEST']->getParsedBody()['uid'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['uid'] ?? null) ?? 0);
+		$this->env['usercolor'] = intval(($GLOBALS['TYPO3_REQUEST']->getParsedBody()['uc'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['uc'] ?? null) ?? '');
+		$this->env['LLKey'] = htmlspecialchars(($GLOBALS['TYPO3_REQUEST']->getParsedBody()['l'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['l'] ?? null) ?? 'en');
 
 
 		If ( !$this->languageService && isset($GLOBALS['LANG'] )  ) {
             $this->languageService  = $GLOBALS['LANG'] ;
         }
         If ( !$this->languageService ) {
-            $this->languageService  = GeneralUtility::makeInstance(LanguageServiceFactory::class)->create('default');
+            $this->languageService  = $this->languageServiceFactory->create('default');
         }
 
 		$this->languageService ->init($this->env['LLKey']);
@@ -132,7 +139,6 @@ class Chat {
 			$this->languageService ->includeLLFile("EXT:jvchat/Resources/Private/Language/"  . $this->env['LLKey'] . ".locallang.xlf"  );
 		}
 
-	        /** @var DbRepository db */
         $this->db = GeneralUtility::makeInstance(DbRepository::class);
 		$this->db->lang = $this->languageService ;
 
@@ -141,7 +147,7 @@ class Chat {
         } else {
             $this->room = $this->db->getRoom($this->env['room_id']);
         }
-        $this->env['pid'] = intval(GeneralUtility::_GP('p'));
+        $this->env['pid'] = intval($GLOBALS['TYPO3_REQUEST']->getParsedBody()['p'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['p'] ?? null);
         if( $this->env['pid'] < 1 ) {
 
             $this->env['pid'] = $this->room->page ;
@@ -151,7 +157,7 @@ class Chat {
             }
         }
 		$this->user = $this->env['user'];
-		if(GeneralUtility::_GP('d') == 'true')
+		if(($GLOBALS['TYPO3_REQUEST']->getParsedBody()['d'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['d'] ?? null) == 'true')
 			$this->debug = true;
 
 		$this->debugMessage('init');
@@ -165,7 +171,7 @@ class Chat {
 
 	}
 
-	function debugMessage($function) {
+	function debugMessage($function): void {
 		$this->debugMessages[] = $function.':'.$this->getMicrotime();
 	}
 
@@ -183,7 +189,7 @@ class Chat {
 		return ((float)$usec + (float)$sec);
 	}
 
-	function initCommands($room) {
+	function initCommands($room): void {
 		$initCmd = array(
 			'help' => array(
 				'callback' => '_help',
@@ -643,7 +649,7 @@ class Chat {
     /**
      * @param $output
      */
-    public function showArrayAsJson($output) {
+    public function showArrayAsJson($output): void {
         $jsonOutput = json_encode($output);
         header('Expires: Mon, 26 Jul 1997 05:00:00 GMT');
         header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');
@@ -653,7 +659,7 @@ class Chat {
         header('Content-Type: application/json; charset=utf-8');
         header('Content-Transfer-Encoding: 8bit');
 
-        $callbackId = GeneralUtility::_GP("callback");
+        $callbackId = $GLOBALS['TYPO3_REQUEST']->getParsedBody()["callback"] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()["callback"] ?? null;
         if ( $callbackId == '' ) {
             echo $jsonOutput;
         } else {
@@ -878,12 +884,12 @@ class Chat {
 	  * @param mixed
 	  * @return string
 	  */
-	function returnMessage($messages, $withId = true) {
+	function returnMessage($messages, $withId = true): void {
 
 		if(!is_array($messages))
 			$messages = array($messages);
 
-		if(GeneralUtility::_GP('d') == 'alltime')  {
+		if(($GLOBALS['TYPO3_REQUEST']->getParsedBody()['d'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['d'] ?? null) == 'alltime')  {
 			$messages[] = "ALL: ".($this->getMicrotimeAsFloat() - $this->getMicrotimeAsFloat( microtime() ));
 		}
 
@@ -893,7 +899,7 @@ class Chat {
 		}
 
 		$out = '';
-		if(GeneralUtility::_GP('showJson') == '1')  {
+		if(($GLOBALS['TYPO3_REQUEST']->getParsedBody()['showJson'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['showJson'] ?? null) == '1')  {
 
 			$jsonMes = array() ;
 			$i = 0 ;
@@ -1355,7 +1361,7 @@ class Chat {
         return false ;
     }
 
-    function setBasePath($basePath) {
+    function setBasePath($basePath): void {
         $this->basePath = (string)$basePath ;
     }
     /**
@@ -1553,7 +1559,8 @@ class Chat {
 	}
 
 
-	function _msg($params) {
+	function _msg($params):?string
+    {
 		$user = $this->getFeUserByInput($params[1]);
 
 		if(!$user)
@@ -1565,7 +1572,8 @@ class Chat {
 
 	}
 
-	function _ban($params) {
+	function _ban($params) :string
+    {
 		$user = $this->getFeUserByInput($params[1]);
 		if(!$user)
 			return sprintf($this->languageService ->getLL('command_error_user_not_found'), $params[1]);
@@ -1589,7 +1597,8 @@ class Chat {
 
 	}
 
-	function _kick($params) {
+	function _kick($params)
+    {
 		$user = $this->getFeUserByInput($params[1]);
 		if(!$user)
 			return sprintf($this->languageService ->getLL('command_error_user_not_found'), $params[1]);

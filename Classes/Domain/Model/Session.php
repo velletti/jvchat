@@ -7,7 +7,7 @@ class Session {
 	function __construct() {
 	}
 
-	function fromArray($array) {
+	function fromArray($array): void {
 		$this->uid = intval($array['uid']);
 		$this->name = $array['name'];
 		$this->description = $array['description'];
@@ -32,17 +32,17 @@ class Session {
 		return $theValue;
 	}
 
-	var $uid;
+	var int $uid;
 
-	var $name;
+	var string $name;
 
-	var $description;
+	var string $description;
 
-	var $public;
+	var int $public;
 
 	var $room;
 
-	var $startid;
+	var int $startid;
 
-	var $endid;
+	var int $endid;
 }

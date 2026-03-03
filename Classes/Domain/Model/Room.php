@@ -11,7 +11,7 @@ class Room {
 
 	}
 
-	function fromArray($array) {
+	function fromArray($array): void {
 		$this->uid = intval($array['uid']);
 		$this->pid = intval($array['pid']);
 		$this->hidden = $array['hidden'] ?  true : false;
@@ -84,7 +84,7 @@ class Room {
 		return $theValue;
 	}
 
-	function setNotifyMe( $user ) {
+	function setNotifyMe( $user ): void {
         $this->isNotifyMeEnabled = GeneralUtility::inList( $this->notifyme , $user ) ;
     }
     function getNotifyMeCount(  ) {
@@ -137,27 +137,27 @@ class Room {
 		}
 	}
 
-	var $uid;
+	var int $uid;
 
-	var $pid;
+	var int $pid;
 
-	var $hidden;
+	var int $hidden;
 
-	var $fe_group;
+	var int $fe_group;
 
-	var $name;
+	var string $name;
 
-	var $description;
+	var string $description;
 
-	var $welcomemessage;
+	var string $welcomemessage;
 
-	var $closed;
+	var int $closed;
 
 	var $mode;
 
-	var $showfullnames;
+	var int $showfullnames;
 
-	var $maxusercount;
+	var int $maxusercount;
 
 	var $owner;
 
@@ -167,7 +167,7 @@ class Room {
 
 	var $groupaccess;
 
-	var $superusergroup;
+	var int $superusergroup;
 
 	var $sessions;
 
@@ -186,8 +186,7 @@ class Room {
 	var $members;
 	var $notifyme = '' ;
 
-	var $notifymecount = 0 ;
-
+	var int $notifymecount = 0 ;
 
 
 	var $page;
@@ -203,14 +202,4 @@ class Room {
      */
 	var $isNotifyMeEnabled = false ;
 
-/*	function getModeratorIDs() {
-		$moderators = array();
-
-		foreach ($this->moderators as $moderator)
-			$moderators[] = $moderator['uid'];
-
-		return implode(',',$moderators);
-
-	}	
-*/
 }

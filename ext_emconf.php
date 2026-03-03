@@ -24,6 +24,4 @@ $EM_CONF['jvchat'] =
                 'conflicts' => [],
                 'suggests' => []
             ]
-        ,
-        '_md5_values_when_last_written' => ''
     ];

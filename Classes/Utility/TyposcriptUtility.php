@@ -1,16 +1,7 @@
 <?php
 namespace JVelletti\Jvchat\Utility;
 
-use TYPO3\CMS\Backend\Utility\BackendUtility;
 use TYPO3\CMS\Core\TypoScript\ExtendedTemplateService;
-use TYPO3\CMS\Core\Utility\GeneralUtility;
-use TYPO3\CMS\Core\Utility\RootlineUtility;
-use TYPO3\CMS\Extbase\Mvc\Request;
-use TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication;
-use TYPO3\CMS\Core\Site\SiteFinder;
-use TYPO3\CMS\Frontend\Controller\TypoScriptFrontendController;
-use TYPO3\CMS\Core\Context\Context;
-use TYPO3\CMS\Core\Routing\PageArguments;
 
 class TyposcriptUtility
 {
@@ -41,28 +32,11 @@ class TyposcriptUtility
     }
     public static function loadTypoScriptFromRequest($request, $extKey = '', $getConstants = false , $pid = 0 )
     {
-        if ( $request && $pid > 0 ) {
-            $siteFinder = GeneralUtility::makeInstance( SiteFinder::class);
-            $site = $siteFinder->getSiteByPageId($pid);
-
-            $controller = GeneralUtility::makeInstance(
-                TypoScriptFrontendController::class,
-                GeneralUtility::makeInstance(Context::class),
-                $site,
-                $site->getDefaultLanguage(),
-                new PageArguments($site->getRootPageId(), '0', []),
-                GeneralUtility::makeInstance(FrontendUserAuthentication::class)
-            );
-
-            // @extensionScannerIgnoreLine
-            $controller->id = $pid;
-            $controller->determineId($request);
-
-            $ts = $controller->getFromCache($request)->getAttribute('frontend.typoscript')->getSetupArray();
+        if ( $request && $pid > 0 && $request->hasAttribute('frontend.typoscript')) {
+            $ts = $request->getAttribute('frontend.typoscript')->getSetupArray();
         } else {
             return false;
         }
-
 
         if ($getConstants) {
             // Todo get Constants  is untestet

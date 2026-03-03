@@ -100,7 +100,7 @@ class MailchatsTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
         } else {
             $this->addMessage(
                 htmlspecialchars ($this->getLanguageService()->sL('LLL:EXT:allplan_ke_search_extended/Resources/Private/Language/locallang_tasks.xlf:indexerTaskErrorStoragePid') ),
-                AbstractMessage::ERROR
+                \TYPO3\CMS\Core\Type\ContextualFeedbackSeverity::ERROR
             );
             $validPeriod = false;
         }
@@ -115,7 +115,7 @@ class MailchatsTaskAdditionalFieldProvider extends AbstractAdditionalFieldProvid
      * @return void
      * @throws \InvalidArgumentException
      */
-    public function saveAdditionalFields(array $submittedData, AbstractTask $task)
+    public function saveAdditionalFields(array $submittedData, AbstractTask $task): void
     {
         if (!$task instanceof AbstractTask ) {
             throw new \InvalidArgumentException(

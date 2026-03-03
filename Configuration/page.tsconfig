@@ -1,0 +1,15 @@
+mod {
+            wizards.newContentElement.wizardItems.plugins {
+                elements {
+                    jvchat {
+                        iconIdentifier = extension-jvchat
+                        title = LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:pi1_title
+                        description = LLL:EXT:jvchat/Resources/Private/Language/locallang.xlf:pi1_plus_wiz_description
+                        tt_content_defValues {
+                            CType = jvchat_pi1
+                        }
+                    }
+                }
+                show = *
+            }
+       }

@@ -11,7 +11,7 @@ class FileExistsViewHelper extends AbstractViewHelper{
 	/**
 	 * InitializeArguments
 	 */
-	public function initializeArguments() {
+	public function initializeArguments(): void {
 		$this->registerArgument('imagePath', 'string', 'Whole path to the image incl. filename');
 	}
 

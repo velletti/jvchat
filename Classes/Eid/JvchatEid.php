@@ -13,9 +13,10 @@ $timer->start('all');
 if (!defined ('TYPO3')) die ('JV Chat (old eId): Could not access this script directly!');
 
 // Initialize FE user object:
+EidUtility::initFeUser();
+
 /** @var FrontendUserAuthentication $feUserObj */
-$feUserObj = EidUtility::initFeUser();
-$charset = 'utf-8';
+$feUserObj = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
 
 // ##################
 // ## HEADER
@@ -49,15 +50,15 @@ if($_GET['d'] == 'timer' || $_POST['d'] == 'timer') {
 
 
 class Timer {
-    var	$timers = array();
+    var array $timers = array();
 
-    var $dec = 1;
+    var int $dec = 1;
 
-    var $precision = 4;
+    var int $precision = 4;
 
-    var $enabled = true;
+    var bool $enabled = true;
 
-    function start($label) {
+    function start($label): void {
 
         if(!$this->enabled)
             return;
@@ -71,7 +72,7 @@ class Timer {
             $this->timers[$label]['line'] = '0'.$this->timers[$label]['line'];
     }
 
-    function stop($label) {
+    function stop($label): void {
         $this->timers[$label]['end'] = microtime();
     }
 

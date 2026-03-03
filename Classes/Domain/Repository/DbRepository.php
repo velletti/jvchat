@@ -114,9 +114,8 @@ class DbRepository {
                 ->add($deleteRestriction)
                 ->add($groupRestriction);
         }
-        /** @var Statement $result */
         $result = $query->executeQuery() ;
-        while ( $row = $result->fetch() ) {
+        while ( $row = $result->fetchAssociative() ) {
 
 
             // $this->debugQuery( $query);
@@ -124,8 +123,6 @@ class DbRepository {
             $room = GeneralUtility::makeInstance(Room::class);
 
             $room->fromArray($row);
-            // set correct Value if notificaton is enabled for this user
-            $room->notifimecount = $room->getNotifyMeCount() ;
             $room->setNotifyMe($userId);
 
             $rooms[] = $room;
@@ -277,7 +274,7 @@ class DbRepository {
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_room') ;
 
         if ( $queryBuilder->insert('tx_jvchat_room')->values($data)->executeStatement() ) {
-            return $connection->lastInsertId('tx_jvchat_room') ;
+            return $connection->lastInsertId() ;
         } else {
             return 0 ;
         }
@@ -613,7 +610,7 @@ class DbRepository {
      * @param int $cruser_id  Created user UID  userfull for backend system messages
      * @param int $tofeuserid  UID for private messages
      */
-	function putMessage($roomId, $msg, $style = 0, mixed $user = NULL, $hidden = false, $cruser_id = 0, $tofeuserid = 0) {
+	function putMessage($roomId, $msg, $style = 0, mixed $user = NULL, $hidden = false, $cruser_id = 0, $tofeuserid = 0): void {
 
 		$userId = is_array($user) ? $user['uid'] : $user;
 
@@ -1149,7 +1146,7 @@ class DbRepository {
 	/**
 	  * removes private rooms
 	  */
-	function cleanUpRooms() {
+	function cleanUpRooms(): void {
         $queryBuilder = $this->connectionPool->getConnectionForTable('tx_jvchat_room')->createQueryBuilder();
         $queryBuilder->getRestrictions()->removeAll()->add(GeneralUtility::makeInstance(DeletedRestriction::class));
 
@@ -1702,7 +1699,7 @@ class DbRepository {
 		return $rows->fetchAssociative() ;
 	}
 
-    function debugQuery($query) {
+    function debugQuery($query): void {
         $search = [];
         $replace = [];
         // new way to debug typo3 db queries

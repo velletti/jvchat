@@ -20,18 +20,29 @@ class MailchatsTask extends AbstractTask
 
 
     /** @var int Amount of Seconds when Mails are send  */
-    private $amount = 300;
+    private int $amount = 300;
 
+    private LogManager $logManager;
+
+    private \TYPO3\CMS\Core\Locking\LockFactory $lockFactory;
 
     /** @var string email Address if set, debug output will be sent  */
-    private $debugmail = '';
+    private string $debugmail = '';
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->logManager = GeneralUtility::makeInstance(LogManager::class);
+        $this->lockFactory = GeneralUtility::makeInstance(\TYPO3\CMS\Core\Locking\LockFactory::class);
+        parent::__construct();
+
+    }
 
     private function fetchConfiguration()
     {
-
         $this->amount = (int) $this->amount;
         $this->debugmail = trim( $this->debugmail) ;
-        // response: skipCertValidation hinzugefügt
 
         return true;
     }
@@ -49,22 +60,24 @@ class MailchatsTask extends AbstractTask
      * @throws LockCreateException
      * @throws InvalidExtensionNameException
      */
-    public function execute()
+    public function execute(): bool
     {
         $debug = array() ;
         /** @var Chat $chatLib */
         $chatLib = GeneralUtility::makeInstance(Chat::class);
+
+        // todo: move hard coded setBaseUrl to ext config, because it is needed for the email links
         $baseUrl = $chatLib->setBaseUrl("www.tangomuenchen.de") ;
 
         $debug[] = date("d.m.Y H:i:s") . " Started on Server "  . "https://" . $baseUrl  . " ";
 
-        $this->logger = GeneralUtility::makeInstance(LogManager::class)->getLogger(__CLASS__);
+        $this->logger = $this->logManager->getLogger(__CLASS__);
 
         $this->fetchConfiguration() ;
         $this->logger->notice('TYPO3 jvchat  Task: after fetch config   ');
 
         /** @var LockFactory $lockFactory */
-        $lockFactory = GeneralUtility::makeInstance(LockFactory::class);
+        $lockFactory = $this->lockFactory;
         $locker = $lockFactory->createLocker('jvchat_mailchats', LockingStrategyInterface::LOCK_CAPABILITY_EXCLUSIVE | LockingStrategyInterface::LOCK_CAPABILITY_NOBLOCK);
 
         // Check if cronjob is already running:
@@ -128,7 +141,7 @@ class MailchatsTask extends AbstractTask
     }
 
 
-    private function outputLine($msg)
+    private function outputLine($msg): void
     {
         $this->logger->error($msg);
     }
@@ -146,7 +159,7 @@ class MailchatsTask extends AbstractTask
     /**
      * @param int $amount
      */
-    public function setAmount($amount)
+    public function setAmount($amount): void
     {
         $this->amount = $amount;
     }
@@ -162,7 +175,7 @@ class MailchatsTask extends AbstractTask
     /**
      * @param string $debugmail
      */
-    public function setDebugmail($debugmail)
+    public function setDebugmail($debugmail): void
     {
         $this->debugmail = $debugmail;
     }

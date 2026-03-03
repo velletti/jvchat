@@ -1,8 +1,7 @@
 {
     "name": "jvelletti/jvchat",
-    "description": "jv chat , made vjchat compatible for TYPO3 LTS 12  ",
+    "description": "jv chat , made vjchat compatible for TYPO3 LTS 13.4  ",
     "type": "typo3-cms-extension",
-    "non-feature-branches": ["development"],
     "support": {
         "issues": "https://github.com/velletti/jvchat/issues"
     },
@@ -25,8 +24,8 @@
     },
 
     "require": {
-        "typo3/cms-core": "^12.4",
-        "jvelletti/jv-typoscript": "11.* || 12.*"
+        "typo3/cms-core": "^13.4",
+        "jvelletti/jv-typoscript": "^13.4"
     },
     "replace": {
         "jv/jvchat": "self.version"

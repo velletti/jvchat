@@ -1,0 +1,28 @@
+name: jvelletti/chatroom
+group: chat
+prefixFields: false
+fields:
+  - identifier: header
+    label: Room name
+    useExistingField: true
+
+  - identifier: bodytext
+    label: Room description
+    rows: 3
+    cols: 40
+    useExistingField: true
+    enableRichtext: true
+    richtextConfiguration: jve_template
+
+  - identifier: pi_flexform
+    label: Chatroom configuration
+    type: FlexForm
+    useExistingField: true
+    fields:
+      - identifier: chatroom
+        label: Chatroom
+        type: Relation
+        allowed: tx_jvchat_room
+        markAsRequired: true
+        relationship: oneToOne
+        maxItems: 1

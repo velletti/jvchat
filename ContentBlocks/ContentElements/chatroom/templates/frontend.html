@@ -1,0 +1,12 @@
+{namespace jve=JVelletti\Jvchat\ViewHelpers}
+
+<jve:room roomId="{data.pi_flexform.chatroom.uid}"></jve:room>
+
+{room.uid} - {room.isPrivate} - {room.name}<br>
+_____
+<f:if condition="{users}">
+    <f:for each="{users}" as="user">
+        {user.uid} <br>
+    </f:for>
+</f:if>
+

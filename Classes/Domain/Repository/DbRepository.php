@@ -531,7 +531,8 @@ class DbRepository {
 
     }
 
-	function getRoom($uid) {
+	function getRoom($uid) : ?Room
+    {
 
 		$uid = intval($uid);
 
@@ -546,7 +547,7 @@ class DbRepository {
 
         $row = $roomQuery->executeQuery()->fetchAssociative() ;
         if ( ! $row ) {
-            return false ;
+            return null ;
         }
         /** @var Room $room */
         $room = GeneralUtility::makeInstance(Room::class);

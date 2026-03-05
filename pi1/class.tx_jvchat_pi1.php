@@ -1,9 +1,5 @@
 <?php
-use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
-use JVelletti\Jvchat\Domain\Repository\DbRepository;
-use JVelletti\Jvchat\Domain\Model\Room;
-use TYPO3\CMS\Fluid\View\StandaloneView;
-use TYPO3\CMS\Core\Context\Context;
+
 /***************************************************************
 *  Copyright notice
 *
@@ -34,8 +30,14 @@ use TYPO3\CMS\Core\Context\Context;
 
 use JVelletti\Jvchat\Utility\LibUtility ;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3\CMS\Frontend\ContentObject\ContentObjectRenderer;
+use TYPO3\CMS\Frontend\Plugin\AbstractPlugin;
+use JVelletti\Jvchat\Domain\Repository\DbRepository;
+use JVelletti\Jvchat\Domain\Model\Room;
+use TYPO3\CMS\Fluid\View\StandaloneView;
+use TYPO3\CMS\Core\Context\Context;
 
-class tx_jvchat_pi1 extends AbstractPlugin {
+class tx_jvchat_pi1 {
 
     /** @var array */
     public array $settings ;
@@ -58,8 +60,18 @@ class tx_jvchat_pi1 extends AbstractPlugin {
 
     /** @var array  */
     var array $extConf;
-    public function __construct(private readonly \TYPO3\CMS\Core\Context\Context $context)
+
+    var ContentObjectRenderer $cObj;
+
+    var Context $context;
+
+    public function __construct()
     {
+        $this->cObj = GeneralUtility::makeInstance(ContentObjectRenderer::class);
+        // set $this->cObj->data from context, as it is usually set by the parent class in the old days, but we don't have a parent class anymore
+        $this->cObj->data = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.contentObject.data') ?? [];
+        var_dump($GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.contentObject'));
+        $this->context = GeneralUtility::makeInstance(Context::class);
 
     }
 
@@ -94,17 +106,20 @@ class tx_jvchat_pi1 extends AbstractPlugin {
 		$this->chatScript = $chatScript;
 
 
-		$this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it's a USER_INT object!
-		$GLOBALS['TSFE']->set_no_cache(); // disable frontend caching on this page
+		// $this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it's a USER_INT object!
+		// $GLOBALS['TSFE']->set_no_cache(); // disable frontend caching on this page
 
-		$this->pi_setPiVarDefaults();
+        $this->loadFLEX();
+        var_dump($this->conf['FLEX']);
+        die;
+
 		$this->pi_loadLL("EXT:jvchat/Resources/Private/Language/locallang.xlf");
         /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
         $frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
 
         $this->user = ($frontendUser->user ?? null ) ;
 
-		$this->loadFLEX();
+
 
 		/** @var DbRepository db */
         $this->db = GeneralUtility::makeInstance('JVelletti\Jvchat\Domain\Repository\DbRepository');
@@ -194,104 +209,57 @@ class tx_jvchat_pi1 extends AbstractPlugin {
 
 	function loadFLEX(): void {
 
-		$this->pi_initPIflexForm(); // Init FlexForm configuration for plugin
+        // FlexForm-Daten auslesen (TYPO3 v13, ohne AbstractPlugin)
+        $flexFormData = $this->cObj->data['pi_flexform'] ?? [];
+        if (is_string($flexFormData)) {
+            $flexFormData = \TYPO3\CMS\Core\Utility\GeneralUtility::xml2array($flexFormData);
+        }
+        $getFF = function ($field, $sheet = 'sDEF') use ($flexFormData) {
+            if (!isset($flexFormData['data'][$sheet][$field]['vDEF'])) {
+                return null;
+            }
+            return $flexFormData['data'][$sheet][$field]['vDEF'];
+        };
 
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'display', 'sDEF');
-		$this->conf['FLEX']['display'] = $value ? $value : 'rooms';
+        $this->conf['FLEX']['display'] = $getFF('display', 'sDEF') ?: 'rooms';
+        $this->conf['FLEX']['chatroom'] = $getFF('chatroom', 'sDEF');
+        $this->conf['FLEX']['initChatWithMessagesBefore'] = $getFF('initChatWithMessagesBefore', 'chatDEF') ?: 10;
+        $this->conf['FLEX']['reloadTimeIfRoomFull'] = $getFF('reloadTimeIfRoomFull', 'chatDEF') ?: 30;
+        $this->conf['FLEX']['refreshMessagesTime'] = $getFF('refreshMessagesTime', 'chatDEF') ?: 5;
+        $this->conf['FLEX']['refreshUserListTime'] = $getFF('refreshUserListTime', 'chatDEF') ?: 15;
+        $this->conf['FLEX']['showFormatting'] = $getFF('showFormatting', 'chatDEF');
+        $this->conf['FLEX']['showEmoticons'] = $getFF('showEmoticons', 'chatDEF');
+        $this->conf['FLEX']['showStyles'] = $getFF('showStyles', 'chatDEF');
+        $this->conf['FLEX']['chatwindow'] = $getFF('chatwindow', 'sDEF') ?: ($this->conf['defaultChatpopupPid'] ?? null);
+        $this->conf['FLEX']['pluginRoomlistPid'] = $this->conf['pluginRoomlistPid'] ?? null;
+        $this->conf['FLEX']['targetwindow'] = $getFF('targetwindow', 'sDEF') ?: ($this->conf['targetwindow'] ?? '');
+        $this->conf['FLEX']['colorizeNicks'] = $getFF('colorizeNicks', 'chatDEF');
+        $this->conf['FLEX']['showTime'] = $getFF('showTime', 'chatDEF');
+        $this->conf['FLEX']['enableSound'] = $getFF('enableSound', 'chatDEF');
+        $this->conf['FLEX']['showSendButton'] = $getFF('showSendButton', 'chatDEF');
+        $this->conf['FLEX']['maxUserCount'] = $getFF('maxUserCount', 'sDEF');
+        $this->conf['FLEX']['hideEmptyRooms'] = $getFF('hideEmptyRooms', 'sDEF');
+        $this->conf['FLEX']['hideClosedRooms'] = $getFF('hideClosedRooms', 'sDEF');
+        $this->conf['FLEX']['hidePrivateRooms'] = $getFF('hidePrivateRooms', 'sDEF');
+        $this->conf['FLEX']['showModerators'] = $getFF('showModerators', 'sDEF');
+        $this->conf['FLEX']['showUsers'] = $getFF('showUsers', 'sDEF');
+        $this->conf['FLEX']['showExperts'] = $getFF('showExperts', 'sDEF');
+        $this->conf['FLEX']['showUserCount'] = $getFF('showUserCount', 'sDEF');
+        $this->conf['FLEX']['showDescription'] = $getFF('showDescription', 'sDEF');
+        $this->conf['FLEX']['showDescriptionInChat'] = $getFF('showDescriptionInChat', 'chatDEF');
+        $this->conf['tsRooms'] = $getFF('typoscriptRoomsTemplate', 'sDEF') ?: 'rooms';
 
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'chatroom', 'sDEF');
-		$this->conf['FLEX']['chatroom'] = $value;
+        if ($this->conf['tsRooms'] === 'custom') {
+            $this->conf['tsRooms'] = $getFF('typoscriptRoomsTemplateCustom', 'sDEF') ?: 'rooms';
+        }
 
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'initChatWithMessagesBefore', 'chatDEF');
-		$this->conf['FLEX']['initChatWithMessagesBefore'] = $value ? $value : 10;
+        $this->conf['FLEX']['chatrooms'] = $getFF('chatrooms', 'sDEF') ?: null;
 
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'reloadTimeIfRoomFull', 'chatDEF');
-		$this->conf['FLEX']['reloadTimeIfRoomFull'] = $value ? $value : 30;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'refreshMessagesTime', 'chatDEF');
-		$this->conf['FLEX']['refreshMessagesTime'] = $value ? $value : 5;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'refreshUserListTime', 'chatDEF');
-		$this->conf['FLEX']['refreshUserListTime'] = $value ? $value : 15;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'showFormatting', 'chatDEF');
-		$this->conf['FLEX']['showFormatting'] = $value;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'showEmoticons', 'chatDEF');
-		$this->conf['FLEX']['showEmoticons'] = $value;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'showStyles', 'chatDEF');
-		$this->conf['FLEX']['showStyles'] = $value;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'chatwindow', 'sDEF');
-		$value = $value ? $value : $this->conf['defaultChatpopupPid'];
-        $this->conf['FLEX']['chatwindow'] = $value;
-
-        $this->conf['FLEX']['pluginRoomlistPid'] = $this->conf['pluginRoomlistPid'] ;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'targetwindow', 'sDEF');
-		$value = $value ? $value : ($this->conf['targetwindow'] ?? '' );
-		$this->conf['FLEX']['targetwindow'] = $value;
-
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'colorizeNicks', 'chatDEF');
-		$this->conf['FLEX']['colorizeNicks'] = $value;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'showTime', 'chatDEF');
-		$this->conf['FLEX']['showTime'] = $value;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'enableSound', 'chatDEF');
-		$this->conf['FLEX']['enableSound'] = $value;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'showSendButton', 'chatDEF');
-		$this->conf['FLEX']['showSendButton'] = $value;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'maxUserCount', 'sDEF');
-		$this->conf['FLEX']['maxUserCount'] = $value;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'hideEmptyRooms', 'sDEF');
-		$this->conf['FLEX']['hideEmptyRooms'] = $value;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'hideClosedRooms', 'sDEF');
-		$this->conf['FLEX']['hideClosedRooms'] = $value;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'hidePrivateRooms', 'sDEF');
-		$this->conf['FLEX']['hidePrivateRooms'] = $value;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'showModerators', 'sDEF');
-		$this->conf['FLEX']['showModerators'] = $value;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'showUsers', 'sDEF');
-		$this->conf['FLEX']['showUsers'] = $value;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'showExperts', 'sDEF');
-		$this->conf['FLEX']['showExperts'] = $value;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'showUserCount', 'sDEF');
-		$this->conf['FLEX']['showUserCount'] = $value;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'showDescription', 'sDEF');
-		$this->conf['FLEX']['showDescription'] = $value;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'showDescriptionInChat', 'chatDEF');
-		$this->conf['FLEX']['showDescriptionInChat'] = $value;
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'typoscriptRoomsTemplate', 'sDEF');
-		$this->conf['tsRooms'] = $value ? $value : 'rooms';
-
-		if($this->conf['tsRooms'] == 'custom') {
-			$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'typoscriptRoomsTemplateCustom', 'sDEF');
-			$this->conf['tsRooms'] = $value ? $value : 'rooms';
-		}
-
-		$value = $this->pi_getFFvalue($this->cObj->data['pi_flexform'], 'chatrooms', 'sDEF');
-		$this->conf['FLEX']['chatrooms'] = $value ? $value : null;
-
-		if(!$this->conf['FLEX']['chatrooms']) {
-			$value = $this->cObj->data['pages'] ? $this->pi_getPidList($this->cObj->data['pages'], $this->cObj->data['recursive']) : null;
-			$this->conf['pidList'] = $value ? $value : $this->conf['pidList'];
-
-		}
+        if (!$this->conf['FLEX']['chatrooms']) {
+            $pages = $this->cObj->data['pages'] ?? null;
+            $recursive = $this->cObj->data['recursive'] ?? 0;
+            $this->conf['pidList'] = $pages ? $this->pi_getPidList($pages, $recursive) : ($this->conf['pidList'] ?? null);
+        }
 	}
 
 	function deleteEntry($entryId) {

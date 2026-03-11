@@ -109,9 +109,6 @@ class tx_jvchat_pi1 {
 		// $this->pi_USER_INT_obj=1;	// Configuring so caching is not expected. This value means that no cHash params are ever set. We do this, because it's a USER_INT object!
 		// $GLOBALS['TSFE']->set_no_cache(); // disable frontend caching on this page
 
-        $this->loadFLEX();
-        var_dump($this->conf['FLEX']);
-        die;
 
 		$this->pi_loadLL("EXT:jvchat/Resources/Private/Language/locallang.xlf");
         /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */

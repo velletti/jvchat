@@ -8,6 +8,7 @@
 namespace JVelletti\Jvchat\ViewHelpers;
 
 use JVelletti\Jvchat\Domain\Repository\DbRepository;
+use JVelletti\Jvchat\Utility\LibUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
@@ -41,12 +42,27 @@ class RoomViewHelper extends AbstractViewHelper
         $room = $db->getRoom( $roomId ) ;
         // todo: check if room is full and user has access
 
-        // todo: add user to list of users in room
+        $user = null ;
+        /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
+        $frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
+
+        $user = ($frontendUser->user ?? null ) ;
+        if ( $user ) {
+            // ToDO: tranlate message user_enters_chat
+            $db->updateUserInRoom($room->uid, $user['uid'], LibUtility::isSuperuser($room, $user), 'translate user_enters_chat' );
+
+        }
 
         if ( !$room ) {
             $room = ["msg" => "room: " . $this->arguments['room'] .  " not found", "error" => TRUE  ] ;
         }
+        $extConf = LibUtility::getExtConf() ;
+        $dataString = LibUtility::getDataString($user, $room, $extConf, $db) ;
+        $this->renderingContext->getVariableProvider()->add('extConf', $extConf);
         $this->renderingContext->getVariableProvider()->add('room', $room);
+        $this->renderingContext->getVariableProvider()->add('dataString', $dataString);
+        $this->renderingContext->getVariableProvider()->add('isFull', $db->isRoomFull($room) && !LibUtility::isSuperuser($room, $user) && !$db->isMemberOfRoom($room->uid, $user['uid']));
+        $this->renderingContext->getVariableProvider()->add('user', $user );
         $this->renderingContext->getVariableProvider()->add('users', $db->getUserList($roomId));
         $this->renderingContext->getVariableProvider()->add('server', GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'));
 
@@ -59,4 +75,6 @@ class RoomViewHelper extends AbstractViewHelper
     {
         return 'room';
     }
+
+
 }

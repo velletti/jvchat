@@ -2,6 +2,7 @@
 namespace JVelletti\Jvchat\Utility;
 
 use JVelletti\Jvchat\Domain\Model\Room;
+use JVelletti\Jvchat\Domain\Repository\DbRepository;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -321,6 +322,106 @@ class LibUtility {
     static function getExtConf() {
        return GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('jvchat');
 	}
+    static function getDataString(array $user, Room $room , array $extConf , DbRepository $db) {
+        
+        $dataString  = ' data-roomid="' . $room->uid  . '"' ;
+        $dataString .= ' data-userid="' . $user['uid']  . '"' ;
+        $userName = $user['username']  ;
+        if( $extConf['usernameField1']) {
+            $userName = $user[$extConf['usernameField1']]  ;
+        }
+        if( $room->showFullNames() ) {
+            if( $extConf['usernameField1']) {
+                $userName = $user[$extConf['usernameField1']]  ;
+            }
+            if( $extConf['usernameField2']) {
+                $userName .= "_" .$user[$extConf['usernameField2']]  ;
+
+            }
+        }
+
+        $dataString .= ' data-username="' . $userName . '"' ;
+
+
+
+        $dataString .= ' data-lang="' . $GLOBALS['TSFE']->config['config']['language']  . '"' ;
+
+        $time = $db->getTime()-($extConf['initChatWithMessagesBefore']*60);
+
+        $dataString .= ' data-initialid="' . $db->getLatestEntryId($room, $time)  . '"' ;
+
+
+        // seperators for splits
+        $dataString .= ' data-usernameglue="'       . LibUtility::getUserNamesGlue()  . '"' ;
+        $dataString .= ' data-messagesglue="'       . LibUtility::getMessagesGlue()  . '"' ;
+        $dataString .= ' data-usernamesfieldglue="' . LibUtility::getUserNamesFieldGlue()  . '"' ;
+        $dataString .= ' data-idglue="'             . LibUtility::getIdGlue()  . '"' ;
+
+        /*
+        if($extConf['chatwindow']) {
+            $newwindowurl = $extConf['chatwindow'] ? $this->pi_linkTP_keepPIvars_url(array(), 0, true, $extConf['chatwindow']) : $marker['LEAVEURL'];
+        } else {
+            $newwindowurl= ($this->pi_linkTP_keepPIvars_url(array(), 0, true)).'&type='.($extConf['chatwindow.']['typeNum']);
+        }
+        if ( substr( $newwindowurl , 0 , 4 ) != "http") {
+            $newwindowurl = GeneralUtility::getIndpEnv('TYPO3_SITE_URL'). $newwindowurl ;
+        }
+        */
+
+
+        $dataString .= ' data-newwindowurl="' . $newwindowurl . '"';
+        $dataString .= ' data-scripturl="' . $chatScript  . '"' ;
+        // $dataString .= ' data-leaveurl="' . $this->pi_linkTP_keepPIvars_url(array(), 0, true)  . '"' ;
+
+        if( $extConf['showTime'] ) {
+            $dataString .= ' data-showtime="true"' ;
+        } else {
+            $dataString .= ' data-showtime="false"' ;
+        }
+        if( $extConf['showEmoticons'] ) {
+            $dataString .= ' data-showemoticons="true"' ;
+        } else {
+            $dataString .= ' data-showemoticons="false"' ;
+        }
+        if( $extConf['showStyles'] ) {
+            $dataString .= ' data-showstyles="true"' ;
+        } else {
+            $dataString .= ' data-showstyles="false"' ;
+        }
+
+        if( $db->extCONF['allowPrivateRooms'] ) {
+            $dataString .= ' data-allowPrivateRooms="true"' ;
+            $dataString .= ' data-privateroomcode="'. $extConf['privateRoomCode'] . '"' ;
+        } else {
+            $dataString .= ' data-allowPrivateRooms="false"' ;
+        }
+        if( $db->extCONF['allowPrivateMessages'] ) {
+            $dataString .= ' data-allowPrivateMessages="true"' ;
+            $dataString .= ' data-privatemsgcode="'. $extConf['privateMsgCode'] . '"' ;
+        } else {
+            $dataString .= ' data-allowPrivateMessages="false"' ;
+        }
+        if( $$extConf['popup']  ) {
+            $dataString .= ' data-ispopup="true"' ;
+        } else {
+            $dataString .= ' data-ispopup="false"' ;
+        }
+        $dataString .= ' data-popupparams="' . $extConf['chatPopupJSWindowParams']  . '"' ;
+      //  $dataString .= ' data-talkToNewRoomName="' . $this->slashJS($this->pi_getLL('talktoroomname'))  . '"' ;
+
+        $tooltipOffsetXY = GeneralUtility::trimExplode(',', ($extConf['tooltipOffsetXY'] ?? '20,10'));
+        $dataString .= ' data-allowtooltipoffset-x="' . $tooltipOffsetXY[0] . '"' ;
+        $dataString .= ' data-allowtooltipoffset-y="' . $tooltipOffsetXY[1] . '"' ;
+        $dataString .= ' data-refreshMessagesTime="' . $extConf['refreshMessagesTime']*1000 . '"' ;
+        $dataString .= ' data-refreshUserListTime="' . $extConf['refreshUserListTime']*1000 . '"' ;
+        $dataString .= ' data-pid="' . $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.page.information')->getId()  . '"' ;
+
+
+        if( 1==2) {
+            $dataString .= ' data-debug="true"' ;
+        }
+        return $dataString ;
+    }
 
     static function getPid()
     {

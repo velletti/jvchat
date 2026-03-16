@@ -85,14 +85,14 @@ class Chat {
     /** @var array  */
     var array $extConf;
 
-    var int $microtime ;
+    var string $microtime ;
 
     var LanguageServiceFactory $languageServiceFactory ;
 
-    public function __construct(?LanguageService $languageService = null)
+    public function __construct()
     {
         $this->languageServiceFactory = GeneralUtility::makeInstance(LanguageServiceFactory::class);
-        $this->languageService = $languageService;
+        $this->languageService = $this->languageServiceFactory->create('default');
 
     }
 
@@ -193,13 +193,13 @@ class Chat {
 		$initCmd = array(
 			'help' => array(
 				'callback' => '_help',
-				'description' => $this->languageService ->getLL('command_help'),
+				'description' => $this->languageService ->sL('command_help'),
 				'rights' => '1111',
 			),
 
 			'smilies' => array(
 				'callback' => '_smilies',
-				'description' => $this->languageService ->getLL('command_smileys'),
+				'description' => $this->languageService ->sL('command_smileys'),
 				'rights' => '1111',
                 'parameters' => array(
                     'group' => array(
@@ -212,10 +212,10 @@ class Chat {
 
 			'quit' => array(
 				'callback' => '_quit',
-				'description' => $this->languageService ->getLL('command_quit'),
+				'description' => $this->languageService ->sL('command_quit'),
 				'parameters' => array(
 					'msg' => array(
-						'description' => $this->languageService ->getLL('command_param_reason'),
+						'description' => $this->languageService ->sL('command_param_reason'),
 						'required' => 0,
 					),
 				),
@@ -224,27 +224,27 @@ class Chat {
 
 			'restart' => array(
 				'callback' => '_restart',
-				'description' => $this->languageService ->getLL('command_restart'),
+				'description' => $this->languageService ->sL('command_restart'),
 				'rights' => '1111',
 			),
 			'stop' => array(
 				'callback' => '_stop',
-				'description' => $this->languageService ->getLL('command_stop'),
+				'description' => $this->languageService ->sL('command_stop'),
 				'rights' => '1111',
 			),
 
 			'roomlist' => array(
 				'callback' => '_roomlist',
-				'description' => $this->languageService ->getLL('command_roomlist'),
+				'description' => $this->languageService ->sL('command_roomlist'),
 				'rights' => '1111'
 				),
 			'invite' => array(
 				'callback' => '_invite',
-				'description' => $this->languageService ->getLL('command_invite'),
+				'description' => $this->languageService ->sL('command_invite'),
 				'parameters' => array(
 					'name' => array(
 						'regExp' =>'/.(.*)/i',
-						'description' => $this->languageService ->getLL('command_param_userid'),
+						'description' => $this->languageService ->sL('command_param_userid'),
 						'required' => 0,
 					),
 				),
@@ -253,15 +253,15 @@ class Chat {
 			'msg' => array(
 					'callback' => '_msg',
 					'hidefeedback' => '1',
-					'description' => $this->languageService ->getLL('command_msg'),
+					'description' => $this->languageService ->sL('command_msg'),
 					'parameters' => array(
 						'userId' => array(
 							'regExp' =>'/(#([0-9]*)|[alphanum])?/i',
-							'description' => $this->languageService ->getLL('command_param_userid'),
+							'description' => $this->languageService ->sL('command_param_userid'),
 							'required' => 1,
 						),
 						'message' => array(
-							'description' => $this->languageService ->getLL('command_param_message'),
+							'description' => $this->languageService ->sL('command_param_message'),
 							'required' => 1,
 						),
 					),
@@ -271,26 +271,26 @@ class Chat {
                     'callback' => '_notifyme',
                     'hidefeedback' => '1',
                     'hideinhelp' => '1',
-                    'description' => $this->languageService ->getLL('command_notifyme') ,
+                    'description' => $this->languageService ->sL('command_notifyme') ,
                     'rights' =>  ( $this->room->private ? '0001' : '1111' ) ,
                 ),
 				'kick' => array(
 					'callback' => '_kick',
-					'description' => $this->languageService ->getLL('command_kick'),
+					'description' => $this->languageService ->sL('command_kick'),
 					'parameters' => array(
 						'userId' => array(
 							'regExp' =>'/(#([0-9]*)|[alphanum])?/i',
-							'description' => $this->languageService ->getLL('command_param_userid'),
+							'description' => $this->languageService ->sL('command_param_userid'),
 							'required' => 1,
 						),
 						'time' => array(
 							'regExp' =>'/[0-9]*/',
-							'description' => $this->languageService ->getLL('command_kick_param_time'),
+							'description' => $this->languageService ->sL('command_kick_param_time'),
 							'required' => 0,
 							'default' => 20,
 						),
 						'reason' => array(
-							'description' => $this->languageService ->getLL('command_param_reason'),
+							'description' => $this->languageService ->sL('command_param_reason'),
 							'required' => 0,
 						),
 					),
@@ -298,15 +298,15 @@ class Chat {
 				),
 				'ban' => array(
 					'callback' => '_ban',
-					'description' => $this->languageService ->getLL('command_ban'),
+					'description' => $this->languageService ->sL('command_ban'),
 					'parameters' => array(
 						'userId' => array(
 							'regExp' =>'/(#([0-9]*)|[alphanum])?/i',
-							'description' => $this->languageService ->getLL('command_param_userid'),
+							'description' => $this->languageService ->sL('command_param_userid'),
 							'required' => 1,
 						),
 						'reason' => array(
-							'description' => $this->languageService ->getLL('command_param_reason'),
+							'description' => $this->languageService ->sL('command_param_reason'),
 							'required' => 0,
 						),
 					),
@@ -314,15 +314,15 @@ class Chat {
 				),
 				'redeem' => array(
 					'callback' => '_redeem',
-					'description' => $this->languageService ->getLL('command_redeem'),
+					'description' => $this->languageService ->sL('command_redeem'),
 					'parameters' => array(
 						'userId' => array(
 							'regExp' =>'/(#([0-9]*)|[alphanum])?/i',
-							'description' => $this->languageService ->getLL('command_param_userid'),
+							'description' => $this->languageService ->sL('command_param_userid'),
 							'required' => 1,
 						),
 						'reason' => array(
-							'description' => $this->languageService ->getLL('command_param_reason'),
+							'description' => $this->languageService ->sL('command_param_reason'),
 							'required' => 0,
 						),
 					),
@@ -330,11 +330,11 @@ class Chat {
 				),
                 'whois' => array(
                     'callback' => '_whois',
-                    'description' => $this->languageService ->getLL('command_who_is'),
+                    'description' => $this->languageService ->sL('command_who_is'),
                     'parameters' => array(
                         'userId' => array(
                             'regExp' =>'/(#([0-9]*)|[alphanum])?/i',
-                            'description' => $this->languageService ->getLL('command_param_userid'),
+                            'description' => $this->languageService ->sL('command_param_userid'),
                             'required' => 1,
                         ),
                     ),
@@ -343,27 +343,27 @@ class Chat {
 
                 'email' => array(
                     'callback' => '_email',
-                    'description' => $this->languageService ->getLL('command_email'),
+                    'description' => $this->languageService ->sL('command_email'),
                     'rights' => '1111',
                 ),
 
 				'makesession' => array(
 					'callback' => '_makesession',
-					'description' => $this->languageService ->getLL('command_makesession'),
+					'description' => $this->languageService ->sL('command_makesession'),
 					'parameters' => array(
 						'firstId' => array(
 							'regExp' => '/^[0-9]*$/',
-							'description' => $this->languageService ->getLL('command_makesession_param_firstid'),
+							'description' => $this->languageService ->sL('command_makesession_param_firstid'),
 							'required' => 1,
 						),
 						'lastId' => array(
 							'regExp' => '/^[0-9]*$/',
-							'description' => $this->languageService ->getLL('command_makesession_param_lastid'),
+							'description' => $this->languageService ->sL('command_makesession_param_lastid'),
 							'required' => 1,
 						),
 						'name' => array(
 							'regExp' =>'/.(.*)/i',
-							'description' => $this->languageService ->getLL('command_makesession_param_name'),
+							'description' => $this->languageService ->sL('command_makesession_param_name'),
 							'required' => 1,
 						),
 					),
@@ -371,11 +371,11 @@ class Chat {
 				),
 				'makeexpert' => array(
 					'callback' => '_makeexpert',
-					'description' => $this->languageService ->getLL('command_makeexpert'),
+					'description' => $this->languageService ->sL('command_makeexpert'),
 					'parameters' => array(
 						'name' => array(
 							'regExp' =>'/.(.*)/i',
-							'description' => $this->languageService ->getLL('command_param_userid'),
+							'description' => $this->languageService ->sL('command_param_userid'),
 							'required' => 1,
 						),
 					),
@@ -383,11 +383,11 @@ class Chat {
 				),
 				'makeuser' => array(
 					'callback' => '_makeuser',
-					'description' => $this->languageService ->getLL('command_makeuser'),
+					'description' => $this->languageService ->sL('command_makeuser'),
 					'parameters' => array(
 						'name' => array(
 							'regExp' =>'/.(.*)/i',
-							'description' => $this->languageService ->getLL('command_param_userid'),
+							'description' => $this->languageService ->sL('command_param_userid'),
 							'required' => 1,
 						),
 					),
@@ -395,26 +395,26 @@ class Chat {
 				),
 				'cleanup' => array(
 					'callback' => '_cleanuproom',
-					'description' => $this->languageService ->getLL('command_cleanup'),
+					'description' => $this->languageService ->sL('command_cleanup'),
 					'rights' => $this->extConf['createSessions'] ? '0011' : '0000',
 				),
 				'cleanupall' => array(
 					'callback' => '_cleanupall',
-					'description' => $this->languageService ->getLL('command_cleanupall'),
+					'description' => $this->languageService ->sL('command_cleanupall'),
 					'rights' => '0001',
 				),
 				'switch' => array(
 					'callback' => '_togglestatus',
-					'description' => $this->languageService ->getLL('command_setstatus'),
+					'description' => $this->languageService ->sL('command_setstatus'),
 					'parameters' => array(
 						'name' => array(
 							'regExp' =>'/.(.*)/i',
-							'description' => $this->languageService ->getLL('command_param_userid'),
+							'description' => $this->languageService ->sL('command_param_userid'),
 							'required' => 0,
 						),
 						'status' => array(
 							'regExp' =>'/.(.*)/i',
-							'description' => $this->languageService ->getLL('command_param_status'),
+							'description' => $this->languageService ->sL('command_param_status'),
 							'required' => 1,
 						),
 					),
@@ -425,11 +425,11 @@ class Chat {
 					'callback' => '_newroom',
                     'hidefeedback' => '1',
                     'hideinhelp' => '1',
-					'description' => $this->languageService ->getLL('command_newroom'),
+					'description' => $this->languageService ->sL('command_newroom'),
 					'parameters' => array(
 						'name' => array(
 							'regExp' =>'/.(.*)/i',
-							'description' => $this->languageService ->getLL('command_newroom_param_name'),
+							'description' => $this->languageService ->sL('command_newroom_param_name'),
 							'required' => 0,
 						),
 					),
@@ -440,16 +440,16 @@ class Chat {
                     'callback' => '_talkTo',
                  //   'hidefeedback' => '1',
                  //   'hideinhelp' => '1',
-                    'description' => $this->languageService ->getLL('command_talkto'),
+                    'description' => $this->languageService ->sL('command_talkto'),
                     'parameters' => array(
                         'uid' => array(
                             'regExp' =>'/[0-9]*)/i',
-                            'description' => $this->languageService ->getLL('command_talkto_param_uid'),
+                            'description' => $this->languageService ->sL('command_talkto_param_uid'),
                             'required' => 0,
                         ),
                         'name' => array(
                             'regExp' =>'/.(.*)/i',
-                            'description' => $this->languageService ->getLL('command_talkto_param_name'),
+                            'description' => $this->languageService ->sL('command_talkto_param_name'),
                             'required' => 0,
                         ),
                     ),
@@ -459,11 +459,11 @@ class Chat {
 				'recentinvite' => array(
 					'callback' => '_recentinvite',
                     'hidefeedback' => '1',
-					'description' => $this->languageService ->getLL('command_recentinvite'),
+					'description' => $this->languageService ->sL('command_recentinvite'),
 					'parameters' => array(
 						'name' => array(
 							'regExp' =>'/.(.*)/i',
-							'description' => $this->languageService ->getLL('command_param_userid'),
+							'description' => $this->languageService ->sL('command_param_userid'),
 							'required' => 0,
 						),
 					),
@@ -472,11 +472,11 @@ class Chat {
 				),
 				'switchroomstatus' => array(
 					'callback' => '_toggleroomstatus',
-					'description' => $this->languageService ->getLL('command_setroomstatus'),
+					'description' => $this->languageService ->sL('command_setroomstatus'),
 					'parameters' => array(
 						'status' => array(
 							'regExp' =>'/.(.*)/i',
-							'description' => $this->languageService ->getLL('command_param_status'),
+							'description' => $this->languageService ->sL('command_param_status'),
 							'required' => 1,
 						),
 					),
@@ -543,14 +543,15 @@ class Chat {
         }
 
         // +++ 2020 j.v. : check if detault path exists, add Date to path as subfolder !
-        $pathSite = (class_exists(Environment::class) ? (Environment::getPublicPath() . '/') : Environment::getPublicPath() . '/') ;
+        $pathSite = Environment::getPublicPath()  ;
         if (! is_dir ( $pathSite . $uploadDir  )) {
             mkdir( $pathSite . $uploadDir  ) ;
             $handle = fopen($pathSite . $uploadDir . "/index.html" , "w") ;
             if ( $handle) {
                 fputs( $handle , "<html><head><title>no direct access</title></head><body>nodirect access</body></html>") ;
+                fclose( $handle) ;
             }
-            fclose( $handle) ;
+
         }
         $uploadDir .= date("Y-m") ;
         if (! is_dir ( $pathSite . $uploadDir  )) {
@@ -558,16 +559,18 @@ class Chat {
             $handle = fopen($pathSite . $uploadDir . "/index.html" , "w") ;
             if ( $handle) {
                 fputs( $handle , "<html><head><title>no direct access</title></head><body>nodirect access</body></html>") ;
+                fclose( $handle) ;
             }
-            fclose( $handle) ;
+
         }
         if (! is_dir ( $pathSite . $uploadDir . "/thumbnail" )) {
             mkdir( $pathSite . $uploadDir . "/thumbnail"  ) ;
             $handle = fopen($pathSite . $uploadDir . "/index.html" , "w") ;
             if ( $handle) {
                 fputs( $handle , "<html><head><title>no direct access</title></head><body>nodirect access</body></html>") ;
+                fclose( $handle) ;
             }
-            fclose( $handle) ;
+
         }
         $uploadDir .= "/" ;
 
@@ -600,7 +603,17 @@ class Chat {
             $this->putMessage( "[img=" .$answer['files']['url'] . "]" . $targetFilePath . "[/img]", $this->lastMessageId) ;
 
         } else {
-            $answer = false ;
+            if ( $_ENV["TYPO3_CONTEXT"] == "Development" ) {
+
+                $result = move_uploaded_file($fileArray['tmp_name']['uploaded'], $pathSite . $uploadDir . $destinationFileName);
+                $answer =  [ "is_uploaded_file" => (is_uploaded_file($fileArray['tmp_name']['uploaded']) ? "YES" : "NO") ,
+                    "move_uploaded_file" => ( $result ? "YES" : "NO") ,
+                    "Files" => $_FILES , "Types" => $types , "TypesMeta" => $typesMeta , "MaxSize" => $maxSize , "uploadedFile" => $fileArray['tmp_name']['uploaded'] , "destinationFile" => $pathSite . $uploadDir . $destinationFileName ] ;
+            } else {
+
+                $answer = false ;
+            }
+
         }
         $this->showArrayAsJson($answer) ;
 
@@ -676,12 +689,12 @@ class Chat {
         $room = $this->db->getRoom($entry->room);
 
         if(!LibUtility::checkAccessToRoom($room, $this->user) || !$this->user['uid'] ) {
-            echo __LINE__ . "-" . $this->languageService ->getLL('access_denied') ;
+            echo __LINE__ . "-" . $this->languageService ->sL('access_denied') ;
         }
 
         if( ! $entry->feuser == $this->user['uid'] ) {
             if(!LibUtility::isModerator($room, $this->user['uid'])) {
-                echo __LINE__ . $this->languageService ->getLL('access_denied') ;
+                echo __LINE__ . $this->languageService ->sL('access_denied') ;
             }
         }
 
@@ -703,28 +716,28 @@ class Chat {
         if(!LibUtility::isSuperuser($this->room, $this->user)) {
             // check if user is banned
             if(LibUtility::isBanned($this->room, $this->user['uid']))
-                return $this->returnMessage(array('<span class="tx-jvchat-error">'.$this->languageService ->getLL('error_banned').'</span>', '/quit'));
+                return $this->returnMessage(array('<span class="tx-jvchat-error">'.$this->languageService ->sL('error_banned').'</span>', '/quit'));
 
             // check if user is kicked
             if($res = $this->db->isUserKicked($this->room->uid, $this->user['uid']))
-                return $this->returnMessage(array('<span class="tx-jvchat-error">'.sprintf($this->languageService ->getLL('error_kicked'),$res).'</span>', '/quit'));
+                return $this->returnMessage(array('<span class="tx-jvchat-error">'.sprintf($this->languageService ->sL('error_kicked'),$res).'</span>', '/quit'));
 
             // check if this is a private room and if the user is an invited member
             if($this->room->private && !LibUtility::isMember($this->room, $this->user['uid']))
-                return $this->returnMessage(array('<span class="tx-jvchat-error">'.$this->languageService ->getLL('error_not_invited').'</span>', '/quit'));
+                return $this->returnMessage(array('<span class="tx-jvchat-error">'.$this->languageService ->sL('error_not_invited').'</span>', '/quit'));
 
             // remove user who left room and remove system messages
-        //    $this->db->cleanUpUserInRoom($this->room->uid, 20, true, $this->languageService ->getLL('user_leaves_chat'));
+        //    $this->db->cleanUpUserInRoom($this->room->uid, 20, true, $this->languageService ->sL('user_leaves_chat'));
 
             // check if user is allowed to put a message into this room
             if(!LibUtility::checkAccessToRoom($this->room, $this->user))
-                return $this->returnMessage(array('<span class="tx-jvchat-error">'.$this->languageService ->getLL('error_room_access_denied').'</span>','/quit'));
+                return $this->returnMessage(array('<span class="tx-jvchat-error">'.$this->languageService ->sL('error_room_access_denied').'</span>','/quit'));
 
         }
 
         // updateUserData
         // if user not already in room try to add
-        $resUpdate = $this->db->updateUserInRoom($this->room->uid, $this->user['uid'], LibUtility::isSuperuser($this->room, $this->user), $this->languageService ->getLL('user_enters_chat'));
+        $resUpdate = $this->db->updateUserInRoom($this->room->uid, $this->user['uid'], LibUtility::isSuperuser($this->room, $this->user), $this->languageService ->sL('user_enters_chat'));
 
         // quit here if room is full
         if($resUpdate === "full") {
@@ -858,7 +871,7 @@ class Chat {
 
             // 2019 j.v. : the translation setting in rendering Template is not setup Correctly .
             // as workaround do translation in php ..
-            $this->extConf['LLL']['command_invite'] = $this->languageService ->getLL('command_invite')  ;
+            $this->extConf['LLL']['command_invite'] = $this->languageService ->sL('command_invite')  ;
 
             $renderer->assign("showFullNames" , $this->room->showFullNames() ) ;
             $renderer->assign("extConf" , $this->extConf ) ;
@@ -871,7 +884,7 @@ class Chat {
         if($resUpdate === "entered") {
             // welcome message
             $messages[] = $this->room->welcomemessage;
-            $messages[] = $this->languageService ->getLL('after_welcome_message');
+            $messages[] = $this->languageService ->sL('after_welcome_message');
         }
         // $messages[] = " JVEDEBUG: --- " . $resUpdate . " --- " ;
 
@@ -977,15 +990,15 @@ class Chat {
 
 			// check if user is allowed to put message into this room
 			if(!LibUtility::checkAccessToRoom($this->room, $this->user))
-				return $this->returnMessage('<span class="tx-jvchat-error">'.$this->languageService ->getLL('error_room_access_denied').'</span>');
+				return $this->returnMessage('<span class="tx-jvchat-error">'.$this->languageService ->sL('error_room_access_denied').'</span>');
 
 			// check if user is kicked
 			if($res = $this->db->isUserKicked($this->room->uid, $this->user['uid']))
-				return $this->returnMessage(array('<span class="tx-jvchat-error">'.sprintf($this->languageService ->getLL('error_kicked'),$res).'</span>', '/quit'));
+				return $this->returnMessage(array('<span class="tx-jvchat-error">'.sprintf($this->languageService ->sL('error_kicked'),$res).'</span>', '/quit'));
 
 			// check if user is banned
 			if(LibUtility::isBanned($this->room, $this->user['uid']))
-				return $this->returnMessage(array('<span class="tx-jvchat-error">'.$this->languageService ->getLL('error_banned').'</span>', '/quit'));
+				return $this->returnMessage(array('<span class="tx-jvchat-error">'.$this->languageService ->sL('error_banned').'</span>', '/quit'));
 
 		}
 
@@ -1011,7 +1024,7 @@ class Chat {
 	
 	function performCommand($lines) {
 		if(!LibUtility::checkAccessToRoom($this->room, $this->env['user']))
-			return $this->languageService ->getLL('error_room_access_denied');
+			return $this->languageService ->sL('error_room_access_denied');
 
 		$lines = GeneralUtility::trimExplode(chr(10), $lines);
 
@@ -1028,7 +1041,7 @@ class Chat {
 					// check rights
 					unset($parts[0]);
                    if(!$this->grantAccessToCommand($command, $this->env['user'])) {
-						$out .= $this->returnMessage('<span class="tx-jvchat-error">'.$this->languageService ->getLL('error_access_denied').'</span>');
+						$out .= $this->returnMessage('<span class="tx-jvchat-error">'.$this->languageService ->sL('error_access_denied').'</span>');
 						continue;
 					}
                     if ( ! $this->room->isPrivate() && $command == "email") {
@@ -1061,7 +1074,7 @@ class Chat {
 			}
 
 			if(!$found)
-				$out .= '<span class="tx-jvchat-error">'.sprintf($this->languageService ->getLL('command_not_found'),$parts[0]).'</span>';
+				$out .= '<span class="tx-jvchat-error">'.sprintf($this->languageService ->sL('command_not_found'),$parts[0]).'</span>';
 
 		}
 
@@ -1100,7 +1113,7 @@ class Chat {
 		$number = 1;
 		foreach($data as $name => $paramData) {
 			if($paramData['regExp'] && !preg_match($paramData['regExp'], $params[$number]))
-				return sprintf($this->languageService ->getLL('command_wrong_parameter'), $name, $paramData['description']);
+				return sprintf($this->languageService ->sL('command_wrong_parameter'), $name, $paramData['description']);
 			$number++;
 		}
 		return true;
@@ -1115,7 +1128,7 @@ class Chat {
 
 		// check if user is allowed to put message in this room
 		if(!LibUtility::checkAccessToRoom($room, $this->user))
-			return $this->returnMessage($this->languageService ->getLL('error_room_access_denied'));
+			return $this->returnMessage($this->languageService ->sL('error_room_access_denied'));
 
 		//$messages = $this->getUserNamesOfRoom($room);
 		$messages = $this->getUserlistOfRoom($room, $roomlistMode);
@@ -1184,12 +1197,12 @@ class Chat {
 	function commitMessage($entryId) {
 
 		if(!LibUtility::isModerator($this->room, $this->user['uid']))
-			return $this->returnMessage('<span class="tx-jvchat-error">'.$this->languageService ->getLL('error_room_access_denied').'</span>');
+			return $this->returnMessage('<span class="tx-jvchat-error">'.$this->languageService ->sL('error_room_access_denied').'</span>');
 
 		if($this->db->commitMessage($entryId))
-			return $this->returnMessage('<span class="tx-jvchat-ok">'.sprintf($this->languageService ->getLL('message_committed'),$entryId).'</span>');
+			return $this->returnMessage('<span class="tx-jvchat-ok">'.sprintf($this->languageService ->sL('message_committed'),$entryId).'</span>');
 		else
-			return $this->returnMessage('<span class="tx-jvchat-error">'.$this->languageService ->getLL('error_commit').'</span>');
+			return $this->returnMessage('<span class="tx-jvchat-error">'.$this->languageService ->sL('error_commit').'</span>');
 	}
 
     /**
@@ -1255,10 +1268,10 @@ class Chat {
     function _notifyme() {
         if ( GeneralUtility::inList($this->notifyme , $this->user['uid'] ) ) {
             $this->db->removeNotifymeToRoom($this->room , $this->user['uid'] ) ;
-            return '<div class="tx-jvchat-cmd-success">' . $this->languageService ->getLL( 'command_notifyme_disabled')  . ' </div>' ;
+            return '<div class="tx-jvchat-cmd-success">' . $this->languageService ->sL( 'command_notifyme_disabled')  . ' </div>' ;
         } else {
             $this->db->addNotifymeToRoom($this->room , $this->user['uid'] ) ;
-            return '<div class="tx-jvchat-cmd-success">' . $this->languageService ->getLL( 'command_notifyme_enabled') . '</div>' ;
+            return '<div class="tx-jvchat-cmd-success">' . $this->languageService ->sL( 'command_notifyme_enabled') . '</div>' ;
         }
     }
 
@@ -1375,8 +1388,8 @@ class Chat {
 	function _help($params) {
 
 		$out = array();
-		$out[] = $this->languageService ->getLL('command_title').'<br />';
-		$out[] = $this->languageService ->getLL('command_header');
+		$out[] = $this->languageService ->sL('command_title').'<br />';
+		$out[] = $this->languageService ->sL('command_header');
 		foreach($this->commands as $name => $data) {
 		    // the _email Command is only available in private Rooms
             if ( ! $this->room->isPrivate() && $name == "email") {
@@ -1463,7 +1476,7 @@ class Chat {
 				if ($this->room->uid != $room->uid && !$room->closed && LibUtility::checkAccessToRoom($room, $this->user)) {
 					$roomUsers = array();
 					$roomUsers = $this->getUserlistOfRoom($room, true);
-					$htmlOut.='<div class="tx-jvchat-cmd-roomlist-room"><div class="tx-jvchat-cmd-room-title">'.$room->name.' <span class="tx-jvchat-cmd-roomlist-usercount">('.count($roomUsers).' Users) <a href="javascript:openChatWindow('.$room->uid.');">'.$this->languageService ->getLL('command_invite_enter_room').'</a></span></div>';
+					$htmlOut.='<div class="tx-jvchat-cmd-roomlist-room"><div class="tx-jvchat-cmd-room-title">'.$room->name.' <span class="tx-jvchat-cmd-roomlist-usercount">('.count($roomUsers).' Users) <a href="javascript:openChatWindow('.$room->uid.');">'.$this->languageService ->sL('command_invite_enter_room').'</a></span></div>';
 					if (count($roomUsers) >0) {
 						$htmlOut .='<ul class=tx-jvchat-cmd-roomlist-userlist">';
 						foreach($roomUsers as $user)
@@ -1540,7 +1553,7 @@ class Chat {
 			//return '-'.$params[1].'-';
 			$user = $this->getFeUserByInput($params[1]);
 			if(!$user)
-				return sprintf($this->languageService ->getLL('command_error_user_not_found'), $params[1]);
+				return sprintf($this->languageService ->sL('command_error_user_not_found'), $params[1]);
 			return implode(', ',$this->getUserInfo($this->room, $user, ': '));
 		}
 	}
@@ -1564,7 +1577,7 @@ class Chat {
 		$user = $this->getFeUserByInput($params[1]);
 
 		if(!$user)
-			return sprintf($this->languageService ->getLL('command_error_user_not_found'), $params[1]);
+			return sprintf($this->languageService ->sL('command_error_user_not_found'), $params[1]);
 
 		unset($params[1]);
 		$message = implode(' ',$params);
@@ -1576,13 +1589,13 @@ class Chat {
     {
 		$user = $this->getFeUserByInput($params[1]);
 		if(!$user)
-			return sprintf($this->languageService ->getLL('command_error_user_not_found'), $params[1]);
+			return sprintf($this->languageService ->sL('command_error_user_not_found'), $params[1]);
 
 		// send a system notification message
-		$systemmessage = sprintf($this->languageService ->getLL('command_ban_ok'), $user['username'], $this->user['username']);
+		$systemmessage = sprintf($this->languageService ->sL('command_ban_ok'), $user['username'], $this->user['username']);
 		unset($params[1]);
 		unset($params[2]);
-		$systemmessage .= $params[3] ? (' '.sprintf($this->languageService ->getLL('command_ban_reason'), implode(' ',$params))) : '';
+		$systemmessage .= $params[3] ? (' '.sprintf($this->languageService ->sL('command_ban_reason'), implode(' ',$params))) : '';
 		$this->db->putMessage($this->env['room_id'], $systemmessage);
 
 		sleep(5);
@@ -1601,15 +1614,15 @@ class Chat {
     {
 		$user = $this->getFeUserByInput($params[1]);
 		if(!$user)
-			return sprintf($this->languageService ->getLL('command_error_user_not_found'), $params[1]);
+			return sprintf($this->languageService ->sL('command_error_user_not_found'), $params[1]);
 
 		$time = $params[2] ? $params[2] : $this->commands['kick']['parameters']['time']['default'];
 
 		// send a system notification message
-		$systemmessage = sprintf($this->languageService ->getLL('command_kick_ok'), $user['username'], $this->user['username'], $time);
+		$systemmessage = sprintf($this->languageService ->sL('command_kick_ok'), $user['username'], $this->user['username'], $time);
 		unset($params[1]);
 		unset($params[2]);
-		$systemmessage .= $params[3] ? (' '.sprintf($this->languageService ->getLL('command_kick_reason'), implode(' ',$params))) : '';
+		$systemmessage .= $params[3] ? (' '.sprintf($this->languageService ->sL('command_kick_reason'), implode(' ',$params))) : '';
 	// die anderen müsssen ja nich tsehen wenn jemand gekckt wird !
 	//	$this->db->putMessage($this->env['room_id'], $systemmessage);
 
@@ -1627,14 +1640,14 @@ class Chat {
 	function _redeem($params) {
 		$user = $this->getFeUserByInput($params[1]);
 		if(!$user)
-			return sprintf($this->languageService ->getLL('command_error_user_not_found'), $params[1]);
+			return sprintf($this->languageService ->sL('command_error_user_not_found'), $params[1]);
 
 		$this->db->redeemUser($this->env['room_id'], $user['uid']);
 
 		// send a system notification message
-		$systemmessage = sprintf($this->languageService ->getLL('command_redeem_ok'), $user['username'], $this->user['username']);
+		$systemmessage = sprintf($this->languageService ->sL('command_redeem_ok'), $user['username'], $this->user['username']);
 		unset($params[1]);
-		$systemmessage .= $params[2] ? (' '.sprintf($this->languageService ->getLL('command_redeem_reason'), implode(' ',$params))) : '';
+		$systemmessage .= $params[2] ? (' '.sprintf($this->languageService ->sL('command_redeem_reason'), implode(' ',$params))) : '';
 		$this->db->putMessage($this->env['room_id'], $systemmessage);
 
 		return 'OK';
@@ -1643,8 +1656,8 @@ class Chat {
 	function _quit($params) {
 
 		// send a system notification message
-		$systemmessage = sprintf($this->languageService ->getLL('command_quit_ok'), $this->user['username']);
-		$systemmessage .= $params[1] ? (' '.sprintf($this->languageService ->getLL('command_quit_reason'), implode(' ',$params))) : '';
+		$systemmessage = sprintf($this->languageService ->sL('command_quit_ok'), $this->user['username']);
+		$systemmessage .= $params[1] ? (' '.sprintf($this->languageService ->sL('command_quit_reason'), implode(' ',$params))) : '';
 		$this->db->putMessage($this->env['room_id'], $systemmessage);
 		sleep(2);
 
@@ -1690,7 +1703,7 @@ class Chat {
 	function _makeexpert($params) {
 		$user = $this->getFeUserByInput($params[1]);
 		if(!$user)
-			return sprintf($this->languageService ->getLL('command_error_user_not_found'), $params[1]);
+			return sprintf($this->languageService ->sL('command_error_user_not_found'), $params[1]);
 
 		$res = $this->db->makeExpert($this->room, $user['uid']);
 		if($res) {
@@ -1707,7 +1720,7 @@ class Chat {
 	function _makeuser($params) {
 		$user = $this->getFeUserByInput($params[1]);
 		if(!$user)
-			return sprintf($this->languageService ->getLL('command_error_user_not_found'), $params[1]);
+			return sprintf($this->languageService ->sL('command_error_user_not_found'), $params[1]);
 
 		$res = $this->db->makeUser($this->room, $user['uid']);
 		if($res) {
@@ -1735,7 +1748,7 @@ class Chat {
 		if($params[2]) {
 			$user = $this->getFeUserByInput($params[1]);
 			if(!$user)
-				return sprintf($this->languageService ->getLL('command_error_user_not_found'), $params[1]);
+				return sprintf($this->languageService ->sL('command_error_user_not_found'), $params[1]);
 
 			$res = $this->db->setUserStatus($this->room, $user, $params[2]);
 		}
@@ -1759,7 +1772,7 @@ class Chat {
 		$username = $this->getUsername();
 
 		if(!$params[1]) {
-			$name = sprintf($this->languageService ->getLL('command_newroom_room_default_title'), implode(' ',$params) . " & " . $username);
+			$name = sprintf($this->languageService ->sL('command_newroom_room_default_title'), implode(' ',$params) . " & " . $username);
 		}
 		else {
             $name = implode(' ',$params) .  " & " . $username ;
@@ -1772,7 +1785,7 @@ class Chat {
 
 		$newRoom->name = $this->db->getUniqueRoomName($name);
 		$newRoom->superusergroup = $this->room->superusergroup;
-		$newRoom->description = sprintf($this->languageService ->getLL('command_newroom_room_default_description'), $username);
+		$newRoom->description = sprintf($this->languageService ->sL('command_newroom_room_default_description'), $username);
 		$newRoom->welcomemessage = $this->room->welcomemessage;
 		$newRoom->owner = $this->user['uid'];
 		$newRoom->moderators = $this->user['uid'];
@@ -1801,9 +1814,9 @@ class Chat {
 		    // this is done when user really enteres !
 			// $this->db->updateUserInRoom($roomId, $this->user['uid']);
 
-			$msg = sprintf($this->languageService ->getLL('command_newroom_ok'), $newRoom->name) ;
+			$msg = sprintf($this->languageService ->sL('command_newroom_ok'), $newRoom->name) ;
 			$msg .= ' <br/><a href="javascript:openChatWindow('.$roomId.');" onClick="javascript:openChatWindow('.$roomId.'); return false;">'
-				.$this->languageService ->getLL('command_invite_enter_room') . " (id: " . $roomId  . ")" .'</a>' ;
+				.$this->languageService ->sL('command_invite_enter_room') . " (id: " . $roomId  . ")" .'</a>' ;
 			// $msg .= '<script language="JavaScript" type="text/javascript">openChatWindow('.$roomId. ');</script>';
 
             if ( $returnRoom ) {
@@ -1833,7 +1846,7 @@ class Chat {
 		$user = $this->getFeUserByInput($params[1]);
 
 		if(!$user)
-			return sprintf($this->languageService ->getLL('command_error_user_not_found'), $params[1]);
+			return sprintf($this->languageService ->sL('command_error_user_not_found'), $params[1]);
 
 		return $this->_do_invite($user, $this->room , $params);
 	}
@@ -1842,10 +1855,10 @@ class Chat {
 	    $user = $this->getFeUserByInput($params[1]);
 
         if(!$user) {
-            return sprintf($this->languageService ->getLL('command_error_user_not_found'), $params[1]);
+            return sprintf($this->languageService ->sL('command_error_user_not_found'), $params[1]);
         }
         if(!$this->user) {
-            return sprintf($this->languageService ->getLL('command_error_user_not_found'), $this->user['uid']);
+            return sprintf($this->languageService ->sL('command_error_user_not_found'), $this->user['uid']);
         }
         $debug[] = "Ich: " . $this->user['uid'] . " anderer: " . $user['uid'] ;
         $room = $this->db->getLatestPrivateRoomOfUsers($this->user['uid'] , $user['uid']) ;
@@ -1861,14 +1874,14 @@ class Chat {
 	
 	function _do_invite($user, $room , $params = null ) {
 		$this->db->addMemberToRoom($room, $user['uid']);
-        $enterRoom = ' <a href="javascript:openChatWindow('.$room->uid.');">'.$this->languageService ->getLL('command_invite_enter_room').'</a>' ;
+        $enterRoom = ' <a href="javascript:openChatWindow('.$room->uid.');">'.$this->languageService ->sL('command_invite_enter_room').'</a>' ;
         $this->db->putMessage($room->uid, $enterRoom, 0, $this->user, true, 0, $user['uid']);
 		if($params[2]) {
 			unset($params[1]);
 			$msg = implode(' ',$params);
 		}
 		else {
-			$msg = sprintf($this->languageService ->getLL('command_invite_default_message'), $this->getUsername(), $this->getUsername($user) , $room->name);
+			$msg = sprintf($this->languageService ->sL('command_invite_default_message'), $this->getUsername(), $this->getUsername($user) , $room->name);
 		}
 
 		// $msg = $msg. "Uid User: " . $this->user['uid'] . " toUser: " . $user['uid'] ;
@@ -1886,7 +1899,7 @@ class Chat {
                     $this->db->putMessage($otherroom->uid, $msg, 0, $this->user , false, 0,  $user['uid'] );
                 }
             }
-            return "#" . $room->uid . " -> " . sprintf($this->languageService ->getLL('command_invite_enter_room_ok'), $this->getUsername($user), count($rooms)) . $enterRoom ;
+            return "#" . $room->uid . " -> " . sprintf($this->languageService ->sL('command_invite_enter_room_ok'), $this->getUsername($user), count($rooms)) . $enterRoom ;
 
         } else {
 		    return "Invited user is Offline. " . $enterRoom ;
@@ -1899,7 +1912,7 @@ class Chat {
 		$user = $this->getFeUserByInput($params[1]);
 
 		if(!$user)
-			return sprintf($this->languageService ->getLL('command_error_user_not_found'), $params[1]);
+			return sprintf($this->languageService ->sL('command_error_user_not_found'), $params[1]);
 
 		$rooms = $this->db->getRoomsOfUserAsOwner($this->user['uid']);
 

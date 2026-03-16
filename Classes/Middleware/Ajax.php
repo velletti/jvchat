@@ -2,6 +2,7 @@
 
 namespace JVelletti\Jvchat\Middleware;
 
+use JVelletti\Jvchat\Utility\LibUtility;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
 use JVelletti\Jvchat\Eid\Chat;
 use JVE\JvEvents\Utility\AjaxUtility;
@@ -42,7 +43,9 @@ class Ajax implements MiddlewareInterface
             $frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
             /** @var Chat $chat */
             $chat = GeneralUtility::makeInstance(Chat::class);
-
+            $Url = $request->getUri()->getScheme() . '://' . $request->getUri()->getHost() . $request->getUri()->getPath();
+            $chat->setBasePath( LibUtility::getBasePath());
+            $chat->setBaseUrl( $Url);
             $chat->init( ($frontendUser->user ? $frontendUser : null ) , 'utf-8' , false);
             $result  = $chat->perform();
             $status = 200 ;

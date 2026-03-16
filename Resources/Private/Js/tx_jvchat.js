@@ -222,6 +222,9 @@ function tx_jvchat_pi1_js_chat() {
 
 
 		if(!noSetTimeout) {
+			if ( !this.refreshMessagesTime || this.refreshMessagesTime < 5000) {
+				this.refreshMessagesTime = 5000;
+			}
 			this.runningto = window.setTimeout("tx_jvchat_pi1_js_chat_instance.getMessages()", this.refreshMessagesTime);
 		}
 	}
@@ -617,6 +620,9 @@ function tx_jvchat_pi1_js_chat() {
 			on404: handleAjax404
 
 		});
+		if ( !this.refreshUserlistTime || this.refreshUserlistTime < 50000) {
+			this.refreshUserlistTime = 60000;
+		}
 
 		this.runningTOul = window.setTimeout("tx_jvchat_pi1_js_chat_instance.getUserlist()", this.refreshUserlistTime);
 	}

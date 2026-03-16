@@ -3,6 +3,8 @@ namespace JVelletti\Jvchat\Utility;
 
 use JVelletti\Jvchat\Domain\Model\Room;
 use JVelletti\Jvchat\Domain\Repository\DbRepository;
+use TYPO3\CMS\Core\Context\Context;
+use TYPO3\CMS\Core\Context\LanguageAspect;
 use TYPO3\CMS\Core\Http\ServerRequest;
 use TYPO3\CMS\Core\Site\SiteFinder;
 use TYPO3\CMS\Core\Utility\PathUtility;
@@ -322,7 +324,40 @@ class LibUtility {
     static function getExtConf() {
        return GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('jvchat');
 	}
-    static function getDataString(array $user, Room $room , array $extConf , DbRepository $db) {
+    static function getDataString(array $user, Room $room , array $extConf , DbRepository $db) : string
+    {
+
+        /*
+        <div class="p-2 tx-jvchat-chat-intro template-pi1" id="tx-jvchat-config"
+        data-roomid="1"
+        data-userid="353"
+        data-username="jvelletti"
+        data-lang="de"
+        data-initialid="517627"
+        data-usernameglue="&lt;user&gt;"
+        data-messagesglue="&lt;msg&gt;"
+        data-usernamesfieldglue=": "
+        data-idglue="&lt;id&gt;"
+        data-newwindowurl="https://connect.allplan.com//de/forum/chat.html?no_cache=1"
+        data-scripturl="https://connect.allplan.com/index.php?id=862&amp;eIDMW=tx_jvchat_pi1"
+        data-leaveurl="/de/forum/chat.html?no_cache=1"
+        data-showtime="true"
+        data-showemoticons="true"
+        data-showstyles="false"
+        data-allowprivaterooms="true"
+        data-privateroomcode="&lt;span class='btn btn-default tx-jvchat-pr-link'&gt;&lt;span class='fas fa-user-plus'&gt;&lt;/span&gt;&lt;/span&gt;"
+        data-allowprivatemessages="true"
+        data-privatemsgcode="&lt;span class='btn btn-default tx-jvchat-pm-link'&gt;&lt;span class='fa fa-comment-alt'&gt;&lt;/span&gt;&lt;/span&gt;"
+        data-ispopup="false"
+        data-popupparams="width=600,height=760,status=1,resizable=1,location=1"
+        data-talktonewroomname="Privater Raum mit %s" data-allowtooltipoffset-x="20"
+        data-allowtooltipoffset-y="10"
+        data-refreshmessagestime="10000"
+        data-refreshuserlisttime="60000"
+        data-pid="862">
+        */
+
+        $pid = self::getPid()  ;
         
         $dataString  = ' data-roomid="' . $room->uid  . '"' ;
         $dataString .= ' data-userid="' . $user['uid']  . '"' ;
@@ -343,8 +378,9 @@ class LibUtility {
         $dataString .= ' data-username="' . $userName . '"' ;
 
 
+        $language = (isset($params['L']) ? (int)$params['L'] : self::getlanguage());
 
-        $dataString .= ' data-lang="' . $GLOBALS['TSFE']->config['config']['language']  . '"' ;
+        $dataString .= ' data-lang="' . self::getlanguageCode($pid , $language )  . '"' ;
 
         $time = $db->getTime()-($extConf['initChatWithMessagesBefore']*60);
 
@@ -356,6 +392,18 @@ class LibUtility {
         $dataString .= ' data-messagesglue="'       . LibUtility::getMessagesGlue()  . '"' ;
         $dataString .= ' data-usernamesfieldglue="' . LibUtility::getUserNamesFieldGlue()  . '"' ;
         $dataString .= ' data-idglue="'             . LibUtility::getIdGlue()  . '"' ;
+
+
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        $site = $siteFinder->getSiteByPageId($pid);
+        $router = $site->getRouter();
+        $BaseUrl = $router->generateUri(
+            $pid,
+            [
+                '_Language' => $language
+            ],
+        )->getPath();
+        $chatScript = $BaseUrl . '?eIDMW=tx_jvchat_pi1&id=' . $pid  ;
 
         /*
         if($extConf['chatwindow']) {
@@ -369,8 +417,9 @@ class LibUtility {
         */
 
 
-        $dataString .= ' data-newwindowurl="' . $newwindowurl . '"';
+     //   $dataString .= ' data-newwindowurl="' . $newwindowurl . '"';
         $dataString .= ' data-scripturl="' . $chatScript  . '"' ;
+        $dataString .= ' data-newwindowurl="?test"' ;
         // $dataString .= ' data-leaveurl="' . $this->pi_linkTP_keepPIvars_url(array(), 0, true)  . '"' ;
 
         if( $extConf['showTime'] ) {
@@ -412,9 +461,9 @@ class LibUtility {
         $tooltipOffsetXY = GeneralUtility::trimExplode(',', ($extConf['tooltipOffsetXY'] ?? '20,10'));
         $dataString .= ' data-allowtooltipoffset-x="' . $tooltipOffsetXY[0] . '"' ;
         $dataString .= ' data-allowtooltipoffset-y="' . $tooltipOffsetXY[1] . '"' ;
-        $dataString .= ' data-refreshMessagesTime="' . $extConf['refreshMessagesTime']*1000 . '"' ;
-        $dataString .= ' data-refreshUserListTime="' . $extConf['refreshUserListTime']*1000 . '"' ;
-        $dataString .= ' data-pid="' . $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.page.information')->getId()  . '"' ;
+        $dataString .= ' data-refreshMessagesTime="' . ( isset($extConf['refreshMessagesTime']) ? $extConf['refreshMessagesTime']*1000 : 10000 ) . '"' ;
+        $dataString .= ' data-refreshUserListTime="' . ( isset($extConf['refreshUserListTime']) ? $extConf['refreshUserListTime']*1000 : 60000 )  . '"' ;
+        $dataString .= ' data-pid="' . $pid  . '"' ;
 
 
         if( 1==2) {
@@ -434,6 +483,20 @@ class LibUtility {
     {
         $languageAspect = \TYPO3\CMS\Core\Utility\GeneralUtility::makeInstance(\TYPO3\CMS\Core\Context\Context::class)->getAspect('language') ;
         return ( $languageAspect ? $languageAspect->getId() : 0) ;
+    }
+    static function getlanguageCode($pid , $langId ): string
+    {
+
+        $siteFinder = GeneralUtility::makeInstance(SiteFinder::class);
+        $site = $siteFinder->getSiteByPageId($pid);
+
+        $context = GeneralUtility::makeInstance(Context::class);
+
+        $language = $site->getLanguageById($langId);
+        if ( !$language ) {
+            return "en" ;
+        }
+        return ($language->getLocale() ?? "en" );
     }
 
     static function getRequest(): ServerRequestInterface
@@ -493,14 +556,18 @@ class LibUtility {
     }
 
     static function getSetUp( $pid = 0 , $basePath= ''  ) {
-        if ( $basePath ) {
-            $ts = TyposcriptUtility::loadTypoScriptviaCurl( $basePath );
-            if ( isset($ts['tx_jvchat_pi1'] )) {
-                return $ts['tx_jvchat_pi1'] ;
-            }
+        if ( !$basePath ) {
+            $basePath = self::getBasePath() ;
+        }
+        $ts = TyposcriptUtility::loadTypoScriptviaCurl( $basePath );
+        if ( isset($ts['tx_jvchat_pi1'] )) {
+            return $ts['tx_jvchat_pi1'] ;
+        }
+        if ( is_array($ts) && count($ts) > 0 ) {
             return $ts ;
         } else {
             $request = self::getRequest() ;
+
             return TyposcriptUtility::loadTypoScriptFromRequest( $request  , 'tx_jvchat_pi1' , false , $pid );
         }
     }

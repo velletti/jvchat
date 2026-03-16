@@ -16,7 +16,6 @@ use TYPO3\CMS\Core\Utility\GeneralUtility;
 use TYPO3\CMS\Core\Database\Connection;
 use TYPO3\CMS\Core\Database\ConnectionPool;
 use TYPO3\CMS\Core\Database\Query\Restriction\DeletedRestriction ;
-use TYPO3\CMS\Extbase\Object\ObjectManagerInterface;
 use \TYPO3\CMS\Extbase\Persistence\Generic\Storage\Typo3DbQueryParser ;
 
 // was : class.tx_jvchat_db.php
@@ -28,10 +27,6 @@ class DbRepository {
      */
     public $extCONF;
 
-    /**
-     * @var ObjectManagerInterface
-     */
-    protected $objectManager;
 
     /** @var LanguageService $lang */
     public $lang;

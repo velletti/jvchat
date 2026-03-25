@@ -77,7 +77,7 @@
                 <div class="tx-jvchat-type-{userType}">
                     <f:if condition="{ownMsg}">
                         <f:then>
-                            <span class="tx-jvchat-entry-text"><f:format.raw>{entryText}</f:format.raw></span> | &nbsp;
+                            <span class="tx-jvchat-entry-text" data-template-name="pi1"><f:format.raw>{entryText}</f:format.raw></span> | &nbsp;
                             <span id="msg-{entry.uid}" class="tx-jvchat-time"><f:format.date format="{timeFormat}">{time}</f:format.date></span><span class="tx-jvchat-user tx-jvchat-userid-{entry.uid}">
                                 <f:render section="userName" arguments="{showFullNames: showFullNames, user: entryUser , entry: entry , extConf: extConf, ownMsg: ownMsg}"/>
                             </span>
@@ -85,7 +85,7 @@
                         <f:else>
                             <span id="msg-{entry.uid}" class="tx-jvchat-time"><f:format.date format="{timeFormat}">{time}</f:format.date></span><span class="tx-jvchat-user tx-jvchat-userid-{entry.uid}">
                                 <f:render section="userName" arguments="{showFullNames: showFullNames, user: entryUser , entry: entry , extConf: extConf, ownMsg: ownMsg}"/>
-                            </span>  &nbsp; | <span class="tx-jvchat-entry-text"><f:format.raw>{entryText}</f:format.raw></span>
+                            </span>  &nbsp; |  &nbsp; <span class="tx-jvchat-entry-text"><f:format.raw>{entryText}</f:format.raw></span>
                         </f:else>
                     </f:if>
 

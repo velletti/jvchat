@@ -35,6 +35,8 @@ use JVelletti\Jvchat\Domain\Repository\DbRepository;
 use JVelletti\Jvchat\Domain\Model\Room;
 use JVelletti\Jvchat\Utility\LibUtility;
 use JVelletti\Jvchat\Domain\Model\Entry;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Core\Core\Environment;
 use TYPO3\CMS\Core\Localization\LanguageServiceFactory;
 use TYPO3\CMS\Fluid\View\StandaloneView;
@@ -107,6 +109,7 @@ class Chat {
 
 
 		// get parameters
+        $this->env['pid'] = intval($GLOBALS['TYPO3_REQUEST']->getParsedBody()['p'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['p'] ?? null);
 		$this->env['user'] = ($user->user ?? null)  ;
 		$this->env['room_id'] = intval($GLOBALS['TYPO3_REQUEST']->getParsedBody()['r'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['r'] ?? null);
 
@@ -125,7 +128,10 @@ class Chat {
 		$this->env['LLKey'] = htmlspecialchars(($GLOBALS['TYPO3_REQUEST']->getParsedBody()['l'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['l'] ?? null) ?? 'en');
 
 
-		If ( !$this->languageService && isset($GLOBALS['LANG'] )  ) {
+
+
+
+        If ( !$this->languageService && isset($GLOBALS['LANG'] )  ) {
             $this->languageService  = $GLOBALS['LANG'] ;
         }
         If ( !$this->languageService ) {
@@ -147,7 +153,7 @@ class Chat {
         } else {
             $this->room = $this->db->getRoom($this->env['room_id']);
         }
-        $this->env['pid'] = intval($GLOBALS['TYPO3_REQUEST']->getParsedBody()['p'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['p'] ?? null);
+
         if( $this->env['pid'] < 1 ) {
 
             $this->env['pid'] = $this->room->page ;
@@ -814,6 +820,8 @@ class Chat {
             if($entry->isPrivate()) {
                 $recipient = $this->db->getFeUser($entry->tofeuserid);
             }
+            $ownMsg = ( isset($entryUser['uid'])  && isset($this->user['uid']) && $entryUser['uid'] == $this->user['uid'] ) ? 1 : 0 ;
+
             $entryText = LibUtility::formatMessage($entry->entry, $this->setup['settings']['emoticons'] );
 
             $id = "";
@@ -850,7 +858,8 @@ class Chat {
                 $renderer->assign("needsModeration" , true ) ;
             }
 
-            $ownMsg = ( isset($entryUser['uid'])  && isset($this->user['uid']) && $entryUser['uid'] == $this->user['uid'] ) ? 1 : 0 ;
+
+
             $renderer->assign("id" , $id ) ;
             $renderer->assign("mid" , $mid ) ;
             $renderer->assign("entry" , $entry ) ;
@@ -921,6 +930,7 @@ class Chat {
 				$ii = 0 ;
 				foreach($jsonSub as $jsonSubMes) {
 					$tempMes = trim( strip_tags( $jsonSubMes )) ;
+
 					$jsonMes[$i][$ii] = $tempMes ;
 					if ( $ii == 0) {
 						$timeId = $jsonMes[$i][$ii] ;
@@ -952,7 +962,6 @@ class Chat {
 			foreach($messages as $message) {
 				$out .= '<msg><![CDATA['.$message.']]></msg>' .chr(10);
 			}
-
 			$id = $withId ? ' id="'.$this->lastMessageId.'"' : '';
 			$returnMsg = '<?xml version="1.0" encoding="'.($this->env['charset']).'"?>'.chr(10)  .'<returnmsg'.$id.'>'.$out.'</returnmsg>';
 

@@ -258,6 +258,9 @@ class LibUtility {
         $text = preg_replace('/\[s\](.*?)\[\/s\]/i', '<span class="tx-jvchat-stroke">\1</span>', $text);
         $text = preg_replace('/(\*.*?\*)/i', '<span class="tx-jvchat-bold">\1</span>', $text);
 
+        // make https links clickable
+        $text = preg_replace('/((http|https)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?)/i', '<a href="\1" target="_blank">\1</a>', $text);
+
 
 
         // j.v. Link to image
@@ -286,12 +289,13 @@ class LibUtility {
 		return $theValue;
 
 	}
+    static function getSettings() {
+        return self::getSetUp( self::getPid() , self::getBasePath() ) ;
+    }
 
 
-    static function getEmoticonsForChatRoom() {
-
-        $basePath = \JVelletti\JvTyposcript\Utility\TyposcriptUtility::getPath( self::getPid(), 0 , 'tx_jvchat_pi1') ;
-		$setup = self::getSetUp(  self::getPid() , $basePath);
+    static function getEmoticonsForChatRoom(?array $settings = null ) {
+		$setup = ($settings ?? self::getSettings() );
 
 		if( ! is_array($setup) ) { return ''   ;}
 		if( ! is_array($setup["settings"]) ) { return '' ;}
@@ -324,6 +328,25 @@ class LibUtility {
     static function getExtConf() {
        return GeneralUtility::makeInstance(ExtensionConfiguration::class)->get('jvchat');
 	}
+    static function getSnippet($room, $user , $thisUser) {
+        $setup = self::getSetUp();
+        $extConf = self::getExtConf() ;
+
+        $renderer = self::getRenderer($setup , "GetUsers" , "html" )  ;
+        $renderer->assign("showFullNames" , $room->showFullNames() ) ;
+        if( $setup['settings']['userlist']['avatar']['useNemUserImgPath']) {
+            $setup['settings']['userlist']['avatar']['nemUserImgPath']  = 'uploads/tx_feusers_img/' . $subPath = substr( "0000" . intval( round( $user['uid'] / 1000 , 0 )) , -4 , 4 ) . "/"  ;
+        }
+
+        $renderer->assign("thisUser" , $thisUser ) ;
+        $renderer->assign("extConf" , $extConf ) ;
+        $renderer->assign("settings" , $setup['settings'] ) ;
+
+        $renderer->assign("user" , $user ) ;
+        return $renderer->render() ;
+
+    }
+
     static function getDataString(array $user, Room $room , array $extConf , DbRepository $db) : string
     {
 

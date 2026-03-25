@@ -161,59 +161,6 @@ plugin.tx_jvchat_pi1 {
 
 		}
 
-		sessions {
-			oneSession < plugin.tx_jvchat_pi1.cObjects.session
-
-			stdWrap.preCObject = COA
-			stdWrap.preCObject {
-				1 = TEXT
-				1.dataWrap = <h2>{field:room.name}</h2><p>{field:room.description}</p>
-
-				2 = TEXT
-				2.data = LLL:EXT:jvchat/pi1/locallang.php:back_to_rooms
-				2.typolink.parameter.data = page:uid
-				2.wrap = <p>|</p>
-			}
-
-			stdWrap.wrap = <div class="tx-jvchat-sessions">|<br /><br /></div>
-			stdWrap.insertData = 1
-
-		}
-
-		# additional available fields are roomName, roomDescription
-		session {
-			oneEntry < plugin.tx_jvchat_pi1.cObjects.entry
-
-
-			# this will be prepended to content
-			stdWrap.preCObject = COA
-			stdWrap.preCObject {
-
-				10 = TEXT
-				10.value = <h2>{field:room.name}</h2>
-				10.insertData = 1
-
-				20 = TEXT
-				20.dataWrap = <p>{field:room.description}</p>
-				20.if.isTrue.field = room.description
-
-				30 = TEXT
-				30.data = LLL:EXT:jvchat/pi1/locallang.php:back_to_sessions
-				30.typolink.parameter.data = page:uid
-				30.typolink.additionalParams = &tx_jvchat_pi1[uid]={field:room.uid}&tx_jvchat_pi1[view]=sessions
-				30.typolink.additionalParams.insertData = 1
-				30.wrap = <p>|</p>
-
-				# use CObject session, but clear the typolink
-				40 < plugin.tx_jvchat_pi1.cObjects.session
-				40.40 >
-
-			}
-
-			stdWrap.wrap = <div class="tx-jvchat-session">|<br /></div>
-
-		}
-
 		chat {
 
 			stdWrap.preCObject = COA
@@ -267,18 +214,6 @@ plugin.tx_jvchat_pi1 {
 
 			stdWrap.wrap 	=  <div class="tx-jvchat-chat text">|<br /></div>
 		}
-
-		# this is the view when 'overallusercount' is choosen from flexform
-		# available fields are overallChatUserCount and targetpid
-		overallChatUserCount = COA
-		overallChatUserCount {
-			1 = TEXT
-			1.value = {field:overallChatUserCount} Users are chatting now.
-			1.insertData = 1
-			1.if.isTrue.field = overallChatUserCount
-			1.typolink.parameter.field = targetpid
-		}
-
 
 	}
 
@@ -347,6 +282,8 @@ plugin.tx_jvchat_pi1 {
 
 	}
 	settings {
+		showSendButton = 0
+		showUserlist = 1
 		userlist {
 			avatar {
 				genderField = tx_nem_gender
@@ -357,17 +294,16 @@ plugin.tx_jvchat_pi1 {
 				gender {
 					# value of gender field : 0 , 1 , 2 etc depending on your setup
 					0 {
-						# male
-						file = typo3conf/ext/jvchat/Resources/Public/Icons/Avatar/avatar-2025.svg
+						# male, female , but since divers all gender show the same image
+						file = EXT:jvchat/Resources/Public/Icons/Avatar/avatar-2025.svg
 					}
-					1 {
-						# female
-						file = typo3conf/ext/jvchat/Resources/Public/Icons/Avatar/avatar-2025.svg
-					}
+					1 < 0
+					2 < 0
+{
 				}
 				# Image Sizes
 				maxwidth  = 32px
-				maxheight = 30px
+				maxheight = 32px
 				width     = 32
 				height    = 32c
 			}
@@ -571,16 +507,6 @@ chatwindow < plugin.tx_jvchat_pi1.chatwindow
 
 
 includeLibs.jvchat = EXT:jvchat/pi1/class.tx_jvchat_userFunctions.php
-
-page {
-	includeJSFooter {
-		#		jquery_chat = /typo3conf/ext/jvchat/Resources/Public/Js/tx_jvchat.min.js
-	}
-	includeCSS {
-		#		jvchat = EXT:jvchat/Resources/Public/Css/jvchat.min.css
-
-	}
-}
 
 
 # [usergroup = 4,5,22,16]

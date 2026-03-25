@@ -68,7 +68,7 @@
                 <div class="tx-jvchat-type-{userType}">
                     <f:if condition="{ownMsg}">
                         <f:then>
-                            <span class="tx-jvchat-entry-text"><f:format.raw>{entryText}</f:format.raw></span> | &nbsp;
+                            <span class="tx-jvchat-entry-text" data-template-name="default"><f:format.raw>{entryText}</f:format.raw></span> | &nbsp;
                             <a class="small btn btn-sm btn-outline-danger mr-2 " onClick="javascript:chat_instance.hideEntry('#cid{mid}','{entry.uid}');" title="{f:translate(key: 'LLL:EXT:jv_chat/Resources/Private/Language/locallang_db.xlf:hide_message')}">
                                 <span class="text-danger fas fa-trash"></span>
                             </a>

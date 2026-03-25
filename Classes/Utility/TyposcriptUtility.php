@@ -33,7 +33,7 @@ class TyposcriptUtility
     public static function loadTypoScriptFromRequest($request, $extKey = '', $getConstants = false , $pid = 0 )
     {
         if ( $request && $pid > 0 && $request->hasAttribute('frontend.typoscript')) {
-            $ts = $request->getAttribute('frontend.typoscript')->getSetupArray();
+            $ts = ($request->getAttribute('frontend.typoscript')->hasSetup() ? $request->getAttribute('frontend.typoscript')->getSetupArray() : false );
         } else {
             return false;
         }

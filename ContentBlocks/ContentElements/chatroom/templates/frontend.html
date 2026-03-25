@@ -53,11 +53,6 @@
 
     </div>
 
-    <f:if condition="{marker.isFull}">
-        <f:else>
-            <div id="tx-jvchat-userlist" class="collapse alert alert-info"></div>
-        </f:else>
-    </f:if>
 </div>
 
 <f:if condition="{marker.isFull}">
@@ -70,14 +65,25 @@
         <div id="tx-jvchat-loadinginfo">
             <div class="text-center">
                 <span class="fa fa-spin fa-spinner fa-4x"></span><br>
-                <f:format.raw>{marker.LOADING_MESSAGE}</f:format.raw>
+                <f:format.raw><p><f:translate key="LLL:EXT:jvchat/pi1/locallang.php:loading_message"></f:translate></p></f:format.raw>
             </div>
 
         </div>
 
         <div id="tx-jvchat-container" class="container">
             <div id="tx-jvchat-content" class="row">
-                <div id="tx-jvchat-messages" class="col-12 small" style="height: 100%; display:none;"></div>
+                <f:if condition="{settings.showUserlist}">
+                    <f:then>
+                        <div id="tx-jvchat-userlist" class="collapse in col-sm-3" style="height:auto;" aria-expanded="true"></div>
+                        <div id="tx-jvchat-messages" class="col-xs-12 col-sm-9" style="height: 100%; display:none;"></div>
+
+                    </f:then>
+                    <f:else>
+                        <div id="tx-jvchat-messages" class="col-12 small" style="height: 100%; display:none;"></div>
+                    </f:else>
+                </f:if>
+
+
             </div>
 
             <div id="tx-jvchat-tools-container" class="row" style="display:none;">
@@ -149,9 +155,9 @@
                 </div>
 
                 <div id="tx-jvchat-emoticons" style="display:none;" class="chatIconColor">
-                                <span class="{settings.emoticonBtnClass}">
-                                    <i class="fa fa-lg fa-bars" onClick="javascript:chat_instance.sendMessage('/smilies');"></i>
-                                </span>
+                    <span class="{settings.emoticonBtnClass}">
+                        <i class="fa fa-lg fa-bars" onClick="javascript:chat_instance.sendMessage('/smilies');"></i>
+                    </span>
                     <f:format.raw>{emoticons}</f:format.raw>
                 </div>
             </div>

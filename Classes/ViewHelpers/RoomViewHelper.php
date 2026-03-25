@@ -10,6 +10,7 @@ namespace JVelletti\Jvchat\ViewHelpers;
 use JVelletti\Jvchat\Domain\Repository\DbRepository;
 use JVelletti\Jvchat\Utility\LibUtility;
 use TYPO3\CMS\Core\Utility\GeneralUtility;
+use TYPO3Fluid\Fluid\Core\Variables\VariableProviderInterface;
 use TYPO3Fluid\Fluid\Core\ViewHelper\AbstractViewHelper;
 
 /**
@@ -57,15 +58,26 @@ class RoomViewHelper extends AbstractViewHelper
             $room = ["msg" => "room: " . $this->arguments['room'] .  " not found", "error" => TRUE  ] ;
         }
         $extConf = LibUtility::getExtConf() ;
+        $settings = LibUtility::getSettings() ;
         $dataString = LibUtility::getDataString($user, $room, $extConf, $db) ;
-        $this->renderingContext->getVariableProvider()->add('extConf', $extConf);
-        $this->renderingContext->getVariableProvider()->add('room', $room);
-        $this->renderingContext->getVariableProvider()->add('dataString', $dataString);
-        $this->renderingContext->getVariableProvider()->add('isFull', $db->isRoomFull($room) && !LibUtility::isSuperuser($room, $user) && !$db->isMemberOfRoom($room->uid, $user['uid']));
-        $this->renderingContext->getVariableProvider()->add('user', $user );
-        $this->renderingContext->getVariableProvider()->add('users', $db->getUserList($roomId));
-        $this->renderingContext->getVariableProvider()->add('server', GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'));
 
+        // try to add user
+        $db->updateUserInRoom($room->uid, $user['uid'], LibUtility::isSuperuser($room, $user), 'user_enters_chat');
+
+        // prepare the user's snippets
+        $db->setUserlistSnippet($room->uid, $user['uid'], LibUtility::getSnippet($room, $user , $user));
+
+
+        $interface = $this->renderingContext->getVariableProvider() ;
+        $interface->add('extConf', $extConf);
+        $interface->add('room', $room);
+        $interface->add('dataString', $dataString);
+        $interface->add('isFull', $db->isRoomFull($room) && !LibUtility::isSuperuser($room, $user) && !$db->isMemberOfRoom($room->uid, $user['uid']));
+        $interface->add('user', $user );
+        $interface->add('users', $db->getUserList($roomId));
+        $interface->add('server', GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'));
+        $interface->add('emoticons', LibUtility::getEmoticonsForChatRoom($settings) );
+        $interface->add('settings', ($settings['settings'] ?? [])  );
     }
 
     /**

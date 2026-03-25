@@ -3,6 +3,8 @@
 namespace JVelletti\Jvchat\Middleware;
 
 use JVelletti\Jvchat\Utility\LibUtility;
+use TYPO3\CMS\Core\Cache\CacheManager;
+use TYPO3\CMS\Core\Cache\Frontend\FrontendInterface;
 use TYPO3\CMS\Extbase\Mvc\Exception\InvalidExtensionNameException;
 use JVelletti\Jvchat\Eid\Chat;
 use JVE\JvEvents\Utility\AjaxUtility;
@@ -38,9 +40,28 @@ class Ajax implements MiddlewareInterface
         if( is_array($_gp) && key_exists("eIDMW" ,$_gp ) && $_gp['eIDMW'] == 'tx_jvchat_pi1' ) {
            // $GLOBALS['TSFE']->set_no_cache();
 
+            $request = $request
+                ->withAttribute('no_cache', true)
+                ->withAttribute('noCache', true);
+            $GLOBALS['TYPO3_REQUEST'] = $request ;
+
+
+            $routing = $request->getAttribute('routing');
+
+            if ($routing !== null) {
+                $pid = $routing->getPageId();   // ← hier bekommst du die PID
+                /** @var FrontendInterface $cache */
+                $cache = GeneralUtility::makeInstance(CacheManager::class)->getCache('pages');
+
+                // Cache-Tag löschen
+                $cache->flushByTag('pageId_' . (int)$pid);
+
+            }
+
 
             /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
             $frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
+
             /** @var Chat $chat */
             $chat = GeneralUtility::makeInstance(Chat::class);
             $Url = $request->getUri()->getScheme() . '://' . $request->getUri()->getHost() . $request->getUri()->getPath();

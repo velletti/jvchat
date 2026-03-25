@@ -115,7 +115,6 @@ function tx_jvchat_pi1_js_chat() {
 
 		// set current id to initial id
 		this.id = this.initialId;
-		// console.log( "user: " +  this.userId + " Id: " +  this.initialId + " xharset =" + this.charset 	+ " test " +  $('#tx-jvchat-config').data('messagesGlue') ) ;
 
 
 		$('#txjvchatnewMessage').keypress(function( event ) {
@@ -634,17 +633,17 @@ function tx_jvchat_pi1_js_chat() {
 	this.lastULResponse = "";
 
 	this.parseUserlist = function(string) {
-
 		// update only if something has changed
-		if(string == this.lastULResponse)
+		if(string == this.lastULResponse) {
+			console.log("is same : " ) ;
 			return;
+		}
 
 		this.lastULResponse = string;
 		var x = this.parseString(string);
-
-		if(x == null)
+		if(x == null) {
 			return;
-
+		}
 
 		// remove previous userlist
 		$('#tx-jvchat-userlist').html('') ;
@@ -652,6 +651,7 @@ function tx_jvchat_pi1_js_chat() {
 		var userCount = 0 ;
 		// go through all Users and add them to the userlist window by calling createNewUserNode()
 		for (i = 0; i<x.childNodes.length; i++) {
+
 			if(!x.childNodes[i])
 				continue;
 			if(!x.childNodes[i].firstChild)
@@ -685,14 +685,14 @@ function tx_jvchat_pi1_js_chat() {
 		var id = parts[2];
 		var username = parts[3];
 
+		const div = document.createElement("div");
+
+		div.className = "tx-jvchat-userlist-item tx-jvchat-userlist-" + type;
+		div.innerHTML = userObj;
+		div.id = "userid-" + id;
+
+		document.querySelector("#tx-jvchat-userlist").appendChild(div);
 		userList["userid-"+id] = value;
-
-		jQuery('<div/>', {
-			class: "tx-jvchat-userlist-item tx-jvchat-userlist-" +type ,
-			html: userObj,
-			id: 'userid-' + id
-
-		}).appendTo( '#tx-jvchat-userlist' );
 
 		if( parseInt( this.userId ) == parseInt(id )) {
 			$('#userid-'+ id +" .tx-jvchat-userlist-buttons").hide() ;

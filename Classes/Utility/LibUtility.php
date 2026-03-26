@@ -259,7 +259,9 @@ class LibUtility {
         $text = preg_replace('/(\*.*?\*)/i', '<span class="tx-jvchat-bold">\1</span>', $text);
 
         // make https links clickable
-        $text = preg_replace('/((http|https)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?)/i', '<a href="\1" target="_blank">\1</a>', $text);
+        if ( is_string($text) && ! str_contains($text , "target=") &&  ! str_contains($text , "<a ") ) {
+            $text = preg_replace('/((http|https)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?)/i', '<a href="\1" target="_blank">\1</a>', $text);
+        }   
 
 
 

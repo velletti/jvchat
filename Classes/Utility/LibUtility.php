@@ -533,6 +533,9 @@ class LibUtility {
     static function getBasePath()
     {
         $urlArray = parse_url( GeneralUtility::getIndpEnv('TYPO3_REQUEST_URL')) ;
+        if ( isset( $GLOBALS['TYPO3_CONF_VARS']['HTTP']['auth'] ) && is_array( $GLOBALS['TYPO3_CONF_VARS']['HTTP']['auth'] )) {
+            $urlArray['host'] = $GLOBALS['TYPO3_CONF_VARS']['HTTP']['auth'][0] . ":" . $GLOBALS['TYPO3_CONF_VARS']['HTTP']['auth'][1] . "@" . $urlArray['host'] ;
+        }
         return "https://" . $urlArray['host'] . "/" . $urlArray['path'] .   "?tx_jvtyposcript=tx_jvchat_pi1" ;
 
     }

@@ -220,6 +220,12 @@ class LibUtility {
 
     static function formatMessage($text, $emoticons , $enableEmoticons = true ) {
 
+        // make https links clickable
+        if ( is_string($text) && ! str_contains($text , "target=") &&  ! str_contains($text , "<a ") ) {
+            $text = strip_tags($text);
+            $text = preg_replace('/((http|https)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?)/i', '<a href="\1" target="_blank">\1</a>', $text);
+        }
+
         // removing HTML Tags will  brake Links from System !! this should be done befor storing to database ..
         //   $text = strip_tags( $text) ;
         // we start with double size 2x as messages as using smaller Fontsize!
@@ -258,10 +264,6 @@ class LibUtility {
         $text = preg_replace('/\[s\](.*?)\[\/s\]/i', '<span class="tx-jvchat-stroke">\1</span>', $text);
         $text = preg_replace('/(\*.*?\*)/i', '<span class="tx-jvchat-bold">\1</span>', $text);
 
-        // make https links clickable
-        if ( is_string($text) && ! str_contains($text , "target=") &&  ! str_contains($text , "<a ") ) {
-            $text = preg_replace('/((http|https)\:\/\/[a-zA-Z0-9\-\.]+\.[a-zA-Z]{2,3}(\/\S*)?)/i', '<a href="\1" target="_blank">\1</a>', $text);
-        }   
 
 
 

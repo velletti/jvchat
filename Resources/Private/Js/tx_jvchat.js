@@ -371,29 +371,35 @@ function tx_jvchat_pi1_js_chat() {
 		var messageParsed = '' ;
 		var start = 0 ;
 		var end = 99999 ;
-		for (ii=0;ii<messageArray.length;ii++) {
-			start = 0 ;
-			end = messageArray[ii].indexOf(" ") ;
-			length = messageArray[ii].length ;
-			if (end < 1 ) {
-				end = length ;
-			}
-			if ( messageArray[ii].substr(0,3) == "://") {
-				start = 3 ;
-			}
+		// massege has  target= "_blank" )
+		if ( message.indexOf("target=") > -1 ) {
+			messageParsed = message ;
+		} else {
+			for (ii=0;ii<messageArray.length;ii++) {
+				start = 0 ;
+				end = messageArray[ii].indexOf(" ") ;
+				length = messageArray[ii].length ;
+				if (end < 1 ) {
+					end = length ;
+				}
+				if ( messageArray[ii].substr(0,3) == "://") {
+					start = 3 ;
+				}
 
-			if ( messageArray[ii].substr(0,4) == "s://" || messageArray[ii].substr(0,4) == "S://" ) {
-				start = 4;
-			}
+				if ( messageArray[ii].substr(0,4) == "s://" || messageArray[ii].substr(0,4) == "S://" ) {
+					start = 4;
+				}
 
-			if (start > 0 ) {
-				messageParsed += '<a target="_blank" class="chatlink" href="http' + messageArray[ii].substr( 0 , end)  + '">' +  messageArray[ii].substr( start, (end-start) ) + '</a>' ;
-				messageParsed += messageArray[ii].substr(end)  ;
-			} else {
-				messageParsed += messageArray[ii] ;
-			}
+				if (start > 0 ) {
+					messageParsed += '<a target="_blank" class="chatlink" href="http' + messageArray[ii].substr( 0 , end)  + '">' +  messageArray[ii].substr( start, (end-start) ) + '</a>' ;
+					messageParsed += messageArray[ii].substr(end)  ;
+				} else {
+					messageParsed += messageArray[ii] ;
+				}
 
+			}
 		}
+
 		if ( mustReadDivs === true ) {
 			message = messageParsed + "</span></div></div>";
 		}

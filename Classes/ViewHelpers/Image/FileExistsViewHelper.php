@@ -20,6 +20,9 @@ class FileExistsViewHelper extends AbstractViewHelper{
 	 * @return boolean
 	 */
 	public function render() {
+        if ( empty($this->arguments['imagePath']) ) {
+            return false ;
+        }
 		$imagePath =GeneralUtility::getFileAbsFileName($this->arguments['imagePath'] );
 		return is_file($imagePath) ;
 

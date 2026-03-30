@@ -57,7 +57,7 @@
 	# cat=basic; type=boolean; label=Change room status: Allows moderators to change the room status (/switchroomstatus hidden, private)
 	moderatorsAllowSwitchRoomStatus = 0
 
-	# cat=basic; type=int; label=Auto Delete Entries: Delete ALL messages that are older than this value (seconds) of any room! If you are using sessions you should disable this option by setting value to 0 (otherwise entries of sessions will be deleted as well) and use the command /cleanup or /cleanuproom to delete unused entries manually.
+	# cat=basic; type=int; label=Auto Delete Entries: Delete ALL messages that are older than this value (seconds) of any room! default setting 0 = you need to use the command /cleanup or /cleanuproom to delete unused entries manually.
 	autoDeleteEntries = 0
 
 	# cat=basic; type=int; label=Max Get Entries: To avoid tunning out of memory get only max 100 Entries per ajax request. If server has more memory, you can enhence this

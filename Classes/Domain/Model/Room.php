@@ -49,7 +49,7 @@ class Room {
 	function toArray() {
 
 		$theValue = array(
-			'uid' => intval($this->uid),
+			'uid' => intval(($this->uid ?? 0)),
 			'pid' => intval($this->pid),
 			'hidden' => $this->hidden ? 1 : 0,
 			'fe_group' => $this->fe_group,
@@ -137,7 +137,7 @@ class Room {
 		}
 	}
 
-	var int $uid;
+	var ?int $uid;
 
 	var int $pid;
 

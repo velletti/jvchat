@@ -482,8 +482,9 @@ class LibUtility {
         } else {
             $dataString .= ' data-ispopup="false"' ;
         }
+
         $dataString .= ' data-popupparams="' . $extConf['chatPopupJSWindowParams']  . '"' ;
-      //  $dataString .= ' data-talkToNewRoomName="' . $this->slashJS($this->pi_getLL('talktoroomname'))  . '"' ;
+
 
         $tooltipOffsetXY = GeneralUtility::trimExplode(',', ($extConf['tooltipOffsetXY'] ?? '20,10'));
         $dataString .= ' data-allowtooltipoffset-x="' . $tooltipOffsetXY[0] . '"' ;

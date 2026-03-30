@@ -24,6 +24,8 @@
 ***************************************************************/
 /**
  * Plugin 'Chat' for the 'jvchat' extension.
+ * obsolete in TYPO3 LTS 13 - will be removed in LTS 14 - use a new chat Content Blocks Element instead
+ * the class is still in repro to be able to check old logic
  *
  * @author	Vincent Tietz <vincent.tietz@vj-media.de>
  */

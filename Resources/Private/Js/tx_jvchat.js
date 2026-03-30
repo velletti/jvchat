@@ -194,7 +194,16 @@ function tx_jvchat_pi1_js_chat() {
 
 
 	this.openChatWindow = function(chatId) {
-		tx_jvchat_openNewChatWindow(this.newWindowUrl, chatId);
+
+		var url = this.newWindowUrl;
+
+		var concatinator = "&";
+		if(url.indexOf("?") == -1) {
+			var concatinator = "?";
+		}
+
+		var vHWindow = window.open(url+concatinator+"tx_jvchat_pi1[uid]="+chatId+"&tx_jvchat_pi1[view]=chat&tx_jvchat_pi1[popup]=1","chatwindow"+chatId,this.popupJSWindowParams);
+		vHWindow.focus();
 	}
 
 

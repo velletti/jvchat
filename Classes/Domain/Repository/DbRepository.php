@@ -420,7 +420,7 @@ class DbRepository {
             /** @var \TYPO3\CMS\Frontend\Authentication\FrontendUserAuthentication $frontendUser */
             $frontendUser = $GLOBALS['TYPO3_REQUEST']->getAttribute('frontend.user');
 
-            if ( $frontendUser->user ) {
+            if ( $frontendUser && is_array($frontendUser->user )) {
                 if ( array_key_exists($frontendUser->user['tx_nem_dateofbirth_show'] )  && $frontendUser->user['tx_nem_dateofbirth_show'] == "1" ) {
 
                     if (array_key_exists($frontendUser->user['tx_nem_dateofbirth'] )  && date( "d.M" , $frontendUser->user['tx_nem_dateofbirth'] )  == date( "d.M"  ) ) {
@@ -449,7 +449,7 @@ class DbRepository {
 
             $queryBuilder->insert('tx_jvchat_room_feusers_mm')->values($data)->executeStatement() ;
 
-            if(!$invisible && $showmess) {
+            if(!$invisible && $showmess && $enterlabel) {
                 $this->putMessage($roomId, sprintf($enterlabel,$user['username']));
             }
             return "entered";

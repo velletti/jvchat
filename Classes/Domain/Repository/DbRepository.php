@@ -617,7 +617,18 @@ class DbRepository {
         /** @var  QueryBuilder $queryBuilder */
         $queryBuilder = $this->connectionPool->getQueryBuilderForTable('tx_jvchat_entry') ;
 
-		$data = ['crdate' => time(), 'tstamp' => time(), 'cruser_id' => $cruser_id, 'feuser' => $userId ? intval($userId ) : 0, 'tofeuser' => intval($tofeuserid), 'room' => $roomId, 'entry' => $msg, 'hidden' => ($hidden ? '1' : '0'), 'style' => (int)$style, 'pid' => $this->extCONF['pids.']['entries'] ?? 0];
+		$data = [
+            'crdate' => time(),
+            'tstamp' => time(),
+            'cruser_id' => $cruser_id,
+            'feuser' => $userId ? intval($userId ) : 0,
+            'tofeuser' => intval($tofeuserid),
+            'room' => $roomId,
+            'entry' => $msg,
+            'hidden' => ($hidden ? '1' : '0'),
+            'style' => (int)$style,
+            'pid' => $this->extCONF['pids.']['entries'] ?? 0
+        ];
         $connection = $this->connectionPool->getConnectionForTable('tx_jvchat_entry') ;
         $queryBuilder->insert('tx_jvchat_entry')->values($data)->executeStatement() ;
 

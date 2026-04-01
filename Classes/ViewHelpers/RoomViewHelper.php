@@ -44,6 +44,10 @@ class RoomViewHelper extends AbstractViewHelper
         $db = GeneralUtility::makeInstance('JVelletti\Jvchat\Domain\Repository\DbRepository');
         $roomId = intval($this->arguments['roomId'] )  ;
         // TOdo: Overwrite from query arguments ???
+        $getParams = ($GLOBALS['TYPO3_REQUEST']->getQueryParams()['tx_jvchat_pi1'] ?? null ) ;
+        if ( $getParams && isset($getParams['uid']) ) {
+            $roomId = intval($getParams['uid'] )  ;
+        }
         $room = $db->getRoom( $roomId ) ;
         // todo: check if user has access
 

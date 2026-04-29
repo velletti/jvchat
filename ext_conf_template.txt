@@ -66,3 +66,12 @@
 
 	# cat=basic; type=int; label=Maximum user idle time (seconds): When a user does not fetch any messages during this period of time it is assumed that the user has left the chat and a message is shown.
 	maxAwayTime = 60
+
+	# cat=basic; type=string; label=Email addres- normal noreply@<yourserver>.com
+	replyToEmail = noreply@yourserver.com
+
+	# cat=basic; type=strin; label=name of the sender of the email, e.g. "Your Company Name" or "CHAT" or something else
+	fromEmailName = Chat
+
+	# cat=basic; type=strin; label=name of the sender of the email, e.g. "Your Company Name" or "CHAT" or something else
+	baseUrl = www.yourserver.com

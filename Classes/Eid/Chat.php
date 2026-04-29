@@ -108,28 +108,30 @@ class Chat {
 
 		$this->extConf = LibUtility::getExtConf();
 
+        $body = ($GLOBALS['TYPO3_REQUEST'] ? $GLOBALS['TYPO3_REQUEST']->getParsedBody() : []) ;
+        $query = ($GLOBALS['TYPO3_REQUEST'] ? $GLOBALS['TYPO3_REQUEST']->getQueryParams() : []) ;
 
 
 		// get parameters
-        $this->env['pid'] = intval($GLOBALS['TYPO3_REQUEST']->getParsedBody()['p'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['p'] ?? null);
+        $this->env['pid'] = intval($body['p'] ?? $query['p'] ?? null);
 		$this->env['user'] = ($user->user ?? null)  ;
         $this->user = $this->env['user'] ;
 
-		$this->env['room_id'] = intval($GLOBALS['TYPO3_REQUEST']->getParsedBody()['r'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['r'] ?? null);
+		$this->env['room_id'] = intval($body['r'] ?? $query['r'] ?? null);
 
 		$this->env['charset'] = $charset;
 
-		$this->env['msg'] = $GLOBALS['TYPO3_REQUEST']->getParsedBody()['m'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['m'] ?? null;
+		$this->env['msg'] = $body['m'] ?? $query['m'] ?? null;
 
 		$this->env['msg'] = $this->env['msg'] ? rawurldecode($this->env['msg']) : '' ;
 		$this->env['msg'] = str_replace('<', '&lt;', $this->env['msg']);
 		$this->env['msg'] = str_replace('>', '&gt;', $this->env['msg']);
 
-		$this->env['action'] = htmlspecialchars(($GLOBALS['TYPO3_REQUEST']->getParsedBody()['a'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['a'] ?? null) ?? '');
-		$this->env['lastid'] = intval(($GLOBALS['TYPO3_REQUEST']->getParsedBody()['t'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['t'] ?? null)?? 0);
-		$this->env['uid'] = intval(($GLOBALS['TYPO3_REQUEST']->getParsedBody()['uid'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['uid'] ?? null) ?? 0);
-		$this->env['usercolor'] = intval(($GLOBALS['TYPO3_REQUEST']->getParsedBody()['uc'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['uc'] ?? null) ?? '');
-		$this->env['LLKey'] = htmlspecialchars(($GLOBALS['TYPO3_REQUEST']->getParsedBody()['l'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['l'] ?? null) ?? 'en');
+		$this->env['action'] = htmlspecialchars(($body['a'] ?? $query['a'] ?? null) ?? '');
+		$this->env['lastid'] = intval(($body['t'] ?? $query['t'] ?? null)?? 0);
+		$this->env['uid'] = intval(($body['uid'] ?? $query['uid'] ?? null) ?? 0);
+		$this->env['usercolor'] = intval(($body['uc'] ?? $query['uc'] ?? null) ?? '');
+		$this->env['LLKey'] = htmlspecialchars(($body['l'] ?? $query['l'] ?? null) ?? 'en');
 
 
         If ( !$this->languageService && isset($GLOBALS['LANG'] )  ) {
@@ -166,7 +168,7 @@ class Chat {
             }
         }
 
-		if(($GLOBALS['TYPO3_REQUEST']->getParsedBody()['d'] ?? $GLOBALS['TYPO3_REQUEST']->getQueryParams()['d'] ?? null) == 'true') {
+		if(($body['d'] ?? $query['d'] ?? null) == 'true') {
             $this->debug = true;
         }
 
@@ -1034,6 +1036,9 @@ class Chat {
         }
 
 		$this->db->putMessage($this->room->uid, $msg, $this->user['tx_jvchat_chatstyle'], $this->user, $isHiddenMessage, $this->user['uid'], $tofeuserid);
+        if ( $isHiddenMessage) {
+            $this->db->putMessage($this->room->uid, $msg, $this->user['tx_jvchat_chatstyle'], $this->user, $isHiddenMessage, $tofeuserid , $this->user['uid'], );
+        }
 		return $this->getMessages($lastid);
 
 	}
@@ -1352,8 +1357,8 @@ class Chat {
             $params['message'] .=  "\n"  .$link . "\n" ;
 
             $params['message'] .= " <hr>\n" ;
-            $params['email_from'] = "noreply@tangomuenchen.de" ;
-            $params['email_fromName'] = "TangoMünchen" ;
+            $params['email_from'] = ($this->extConf["replyToEmail"] ?? "noreply@tangomuenchen.de" ) ;
+            $params['email_fromName'] = ($this->extConf["fromEmailName"] ?? "TangoMünchen" )   ;
             $params['sendCCmail'] = false  ;
 
             /** @var SignatureService $mailService */

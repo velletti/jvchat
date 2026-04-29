@@ -186,8 +186,9 @@ class NotifyCommand extends Command {
             /** @var SignatureService $mailService */
             $mailService = GeneralUtility::makeInstance(SignatureService::class);
             $params = array() ;
-            $params['email_fromName'] = "Debug Tangomuenchen";
-            $params['email_from'] = "info@tangomuenchen.de";
+            $params['email_from'] = ($this->extConf["replyToEmail"] ?? "noreply@tangomuenchen.de" ) ;
+            $params['email_fromName'] = ($this->extConf["fromEmailName"] ?? "TangoMünchen" )   ;
+
             $params['user']['email'] = trim( $debugEmail );
             $params['sendCCmail'] = false  ;
 

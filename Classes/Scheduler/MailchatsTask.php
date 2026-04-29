@@ -67,7 +67,7 @@ class MailchatsTask extends AbstractTask
         $chatLib = GeneralUtility::makeInstance(Chat::class);
 
         // todo: move hard coded setBaseUrl to ext config, because it is needed for the email links
-        $baseUrl = $chatLib->setBaseUrl("www.tangomuenchen.de") ;
+        $baseUrl = $chatLib->setBaseUrl(($this->extConf["baseUrl"] ?? "www.tangomuenchen.de" ) ) ;
 
         $debug[] = date("d.m.Y H:i:s") . " Started on Server "  . "https://" . $baseUrl  . " ";
 
@@ -127,8 +127,8 @@ class MailchatsTask extends AbstractTask
             /** @var SignatureService $mailService */
             $mailService = GeneralUtility::makeInstance(SignatureService::class);
             $params = array() ;
-            $params['email_fromName'] = "Debug Tangomuenchen";
-            $params['email_from'] = "info@tangomuenchen.de";
+            $params['email_from'] = ($this->extConf["replyToEmail"] ?? "noreply@tangomuenchen.de" ) ;
+            $params['email_fromName'] = ($this->extConf["fromEmailName"] ?? "TangoMünchen" )   ;
             $params['user']['email'] = trim( $this->getDebugmail());
             $params['sendCCmail'] = false  ;
 

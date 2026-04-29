@@ -35,7 +35,7 @@ class TyposcriptUtility
         if ( $request && $pid > 0 &&  method_exists($request , "getAttribute") && $request->getAttribute('frontend.typoscript')) {
             $ts = ($request->getAttribute('frontend.typoscript')->hasSetup() ? $request->getAttribute('frontend.typoscript')->getSetupArray() : false );
         } else {
-            return false;
+            return [];
         }
 
         if ($getConstants) {

@@ -299,7 +299,7 @@ plugin.tx_jvchat_pi1 {
 					}
 					1 < 0
 					2 < 0
-{
+
 				}
 				# Image Sizes
 				maxwidth  = 32c

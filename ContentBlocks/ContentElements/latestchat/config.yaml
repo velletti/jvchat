@@ -1,0 +1,29 @@
+name: jvelletti/latestchat
+description: Show the latest entries from a chatroom
+group: chat
+prefixFields: false
+fields:
+  - identifier: header
+    label: Room name
+    useExistingField: true
+
+  - identifier: pi_flexform
+    label: Chatroom configuration
+    type: FlexForm
+    useExistingField: true
+    fields:
+      - identifier: chatroom
+        label: Chatroom
+        description: Select the chatroom to show the latest entries from
+        type: Relation
+        allowed: tx_jvchat_room
+        markAsRequired: true
+        relationship: oneToOne
+        maxItems: 1
+
+      - identifier: amount
+        label: Show only entries during last xxx days
+        type: Number
+        min: 1
+        max: 999
+        defaultValue: 30

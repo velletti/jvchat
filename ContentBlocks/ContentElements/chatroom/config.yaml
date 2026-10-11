@@ -1,4 +1,5 @@
 name: jvelletti/chatroom
+description: Show a single chatroom
 group: chat
 prefixFields: false
 fields:

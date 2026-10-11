@@ -729,6 +729,13 @@ class DbRepository {
             ->andWhere($queryBuilder->expr()->gte('crdate', $queryBuilder->createNamedParameter( intval($time) , Connection::PARAM_INT )) );
         ;
         $rows = $queryBuilder->executeQuery() ;
+
+        // echo "Query : " . $queryBuilder->getSQL() . "<br>" ;
+        // echo "Room : " . $room->uid . "<br>" ;
+        // echo "After Time : " . date("Y-m-d H:i:s" , $time) . " ($time)  <br>" ;
+
+        // echo "Count : " . $rows->rowCount() . "<br>" ;
+        // die;
         return $rows->rowCount() ;
 
     }

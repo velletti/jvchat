@@ -1,0 +1,9 @@
+name: jvelletti/myrooms
+description: Show the list of chat Rooms the user is part of. (public and private)
+group: chat
+prefixFields: false
+fields:
+  - identifier: header
+    label: Headline
+    useExistingField: true
+

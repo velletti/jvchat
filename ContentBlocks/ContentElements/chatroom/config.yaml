@@ -15,15 +15,99 @@ fields:
     enableRichtext: true
     richtextConfiguration: jve_template
 
+
   - identifier: pi_flexform
     label: Chatroom configuration
-    type: FlexForm
     useExistingField: true
+    type: FlexForm
     fields:
-      - identifier: chatroom
-        label: Chatroom
-        type: Relation
-        allowed: tx_jvchat_room
-        markAsRequired: true
-        relationship: oneToOne
-        maxItems: 1
+
+
+      - identifier: sDEF
+        type: Sheet
+        label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.sheet_general'
+        fields:
+          - identifier: chatroom
+            type: Relation
+            label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.chatroom'
+            allowed: tx_jvchat_room
+            size: 1
+            maxitems: 1
+          - identifier: chatwindow
+            type: Relation
+            label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.chat_window'
+            allowed: pages
+            size: 1
+            maxitems: 1
+      # roomsDEF: Im alten Plugin war für "chat" nur typoscriptRoomsTemplate sichtbar.
+      # Wird es im Chat-Modus nicht gebraucht, kann das Sheet ganz entfallen.
+      - identifier: roomsDEF
+        type: Sheet
+        label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.sheet_roomlist'
+        fields:
+          - identifier: typoscriptRoomsTemplate
+            type: Select
+            renderType: selectSingle
+            label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.typoscriptRoomsTemplate'
+            default: rooms
+            items:
+              - label: 'Rooms (rooms.)'
+                value: rooms
+              - label: 'RoomsShort (Teaser) (roomsShort.)'
+                value: roomsShort
+      - identifier: chatDEF
+        type: Sheet
+        label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.sheet_chatroom'
+        fields:
+          - identifier: initChatWithMessagesBefore
+            type: Number
+            label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.initChatWithMessagesBefore'
+            size: 5
+            default: 60
+          - identifier: reloadTimeIfRoomFull
+            type: Number
+            label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.reloadTimeIfRoomFull'
+            size: 5
+            default: 10
+          - identifier: refreshMessagesTime
+            type: Number
+            label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.refreshMessagesTime'
+            size: 5
+            default: 5
+          - identifier: refreshUserListTime
+            type: Number
+            label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.refreshUserListTime'
+            size: 5
+            default: 5
+          - identifier: showFormatting
+            type: Checkbox
+            label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showFormatting'
+            default: 1
+          - identifier: showEmoticons
+            type: Checkbox
+            label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showEmoticons'
+            default: 1
+          - identifier: showStyles
+            type: Checkbox
+            label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showStyles'
+            default: 1
+          - identifier: colorizeNicks
+            type: Checkbox
+            label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.colorizeNicks'
+            default: 1
+          - identifier: enableSound
+            type: Checkbox
+            label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.enableSound'
+            default: 1
+          - identifier: showTime
+            type: Checkbox
+            label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showTime'
+            default: 1
+          - identifier: showSendButton
+            type: Checkbox
+            label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showSendButton'
+            default: 0
+          - identifier: showDescriptionInChat
+            type: Checkbox
+            label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.showDescriptionInChat'
+            default: 1

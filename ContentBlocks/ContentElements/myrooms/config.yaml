@@ -7,3 +7,37 @@ fields:
     label: Headline
     useExistingField: true
 
+  - identifier: pi_flexform
+    useExistingField: true
+    type: FlexForm
+    fields:
+      - identifier: sDEF
+        type: Sheet
+        label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.sheet_general'
+        fields:
+          - identifier: chatwindow
+            type: Relation
+            label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.chat_window'
+            allowed: pages
+            size: 1
+            maxitems: 1
+      - identifier: roomsDEF
+        type: Sheet
+        label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.sheet_roomlist'
+        fields:
+          - identifier: chatrooms
+            type: Relation
+            label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.chatrooms'
+            allowed: tx_jvchat_room
+            size: 10
+            maxitems: 100
+          - identifier: typoscriptRoomsTemplate
+            type: Select
+            renderType: selectSingle
+            label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.typoscriptRoomsTemplate'
+            default: rooms
+            items:
+              - label: 'Rooms (rooms.)'
+                value: rooms
+              - label: 'RoomsShort (Teaser) (roomsShort.)'
+                value: roomsShort

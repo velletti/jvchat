@@ -1,14 +1,13 @@
 {namespace jve=JVelletti\Jvchat\ViewHelpers}
 
-<jve:latest roomId="{data.pi_flexform.chatroom.uid}" amount="{data.pi_flexform.amount}"></jve:latest>
-
+<jve:latest roomId="{data.pi_flexform.chatroom.0.uid}" amount="{data.pi_flexform.amount}"></jve:latest>
     <f:if condition="{room}">
         <f:if condition="{entryCount}">
             <f:if condition="{setup.settings.currentPid}">
                 <f:variable name="targetPage">{setup.settings.currentPid}</f:variable>
             </f:if>
             <f:if condition="{confFLEX.chatwindow}">
-                <f:variable name="targetPage">{flex.chatwindow}</f:variable>
+                <f:variable name="targetPage">{data.pi_flexform.chatwindow}</f:variable>
             </f:if>
             <f:if condition="{room.page}">
                 <f:variable name="targetPage">{room.page}</f:variable>

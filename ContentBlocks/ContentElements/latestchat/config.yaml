@@ -9,21 +9,28 @@ fields:
 
   - identifier: pi_flexform
     label: Chatroom configuration
-    type: FlexForm
     useExistingField: true
+    type: FlexForm
     fields:
-      - identifier: chatroom
-        label: Chatroom
-        description: Select the chatroom to show the latest entries from
-        type: Relation
-        allowed: tx_jvchat_room
-        markAsRequired: true
-        relationship: oneToOne
-        maxItems: 1
-
-      - identifier: amount
-        label: Show only entries during last xxx days
-        type: Number
-        min: 1
-        max: 999
-        defaultValue: 30
+      - identifier: sDEF
+        type: Sheet
+        label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.sheet_general'
+        fields:
+          - identifier: chatroom
+            type: Relation
+            label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.chatroom'
+            allowed: tx_jvchat_room
+            size: 1
+            maxitems: 1
+          - identifier: chatwindow
+            type: Relation
+            label: 'LLL:EXT:jvchat/Resources/Private/Language/locallang_db.xlf:tt_content.pi_flexform.chat_window'
+            allowed: pages
+            size: 1
+            maxitems: 1
+          - identifier: amount
+            label: Show only entries during last xxx days
+            type: Number
+            min: 1
+            max: 999
+            defaultValue: 30

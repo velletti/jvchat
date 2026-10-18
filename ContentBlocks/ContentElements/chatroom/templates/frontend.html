@@ -169,8 +169,8 @@
                 </div>
             </div>
 
-            <div id="tx-jvchat-input-container" class="row" style="display:none;">
-                <form action="#" method="post" id="txjvchat-form">
+            <div id="tx-jvchat-input-container" class="row mt-1 p-0" style="display:none;">
+                <form action="#" method="post" id="txjvchat-form" class="col-9 m-0 p-0">
                     <textarea id="txjvchatnewMessage" name="txjvchatnewMessage" rows="3" cols="40"></textarea>
                     <f:if condition="{settings.showSendButton}">
                         <button onClick="chat_instance.submitMessage()">{f:translate(key: 'LLL:EXT:jv_chat/Resources/Private/Language/locallang_db.xlf:submit_message')}</button>

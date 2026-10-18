@@ -443,10 +443,19 @@ class LibUtility {
         }
         */
 
+        //generate Newwindow url based on current  language and room->getPage or if not set on current page
 
-     //   $dataString .= ' data-newwindowurl="' . $newwindowurl . '"';
+        $newwindowurl = $router->generateUri(
+            ($room->page > 0 ? $room->page : $pid),
+            [
+                '_Language' => $language
+            ],
+        )->getPath();
+
+
+        $dataString .= ' data-newwindowurl="' . $newwindowurl . '"';
         $dataString .= ' data-scripturl="' . $chatScript  . '"' ;
-        $dataString .= ' data-newwindowurl="?test"' ;
+     //   $dataString .= ' data-newwindowurl="?test"' ;
         // $dataString .= ' data-leaveurl="' . $this->pi_linkTP_keepPIvars_url(array(), 0, true)  . '"' ;
 
         if( $extConf['showTime'] ) {

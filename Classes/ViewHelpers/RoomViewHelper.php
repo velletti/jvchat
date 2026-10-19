@@ -60,39 +60,44 @@ class RoomViewHelper extends AbstractViewHelper
             $db->updateUserInRoom($room->uid, $user['uid'], LibUtility::isSuperuser($room, $user), $languageService->sL('LLL:EXT:jvchat/Resources/Private/Language/lcallang.xlf:user_enters_chat' ));
 
         }
+        $extConf = LibUtility::getExtConf() ;
+        $settings = LibUtility::getSettings() ;
+        $interface = $this->renderingContext->getVariableProvider();
 
         if ( !$room ) {
             $room = ["msg" => "room: " . $this->arguments['room'] .  " not found", "error" => TRUE  ] ;
+            $dataString = ' data-debugRoomId="' . $roomId .'" ' ;
+        } else {
+            $dataString = LibUtility::getDataString($user, $room, $extConf, $db);
+
+
+            $dataString .= ' data-talkToNewRoomName="' . $this->slashJS($languageService->sL('LLL:EXT:jvchat/Resources/Private/Language/lcallang.xlf:talktoroomname')) . '"';
+
+            // try to add user
+            $db->updateUserInRoom($room->uid, $user['uid'], LibUtility::isSuperuser($room, $user), 'user_enters_chat');
+
+            // remove old message entries if set
+            if ($extConf['autoDeleteEntries']) {
+                $db->deleteEntries($extConf['autoDeleteEntries']);
+            }
+
+            // remove user who left room and remove system messages
+            $db->cleanUpUserInRoom($room->uid, 60, false);
+
+
+            // prepare the user's snippets
+            $db->setUserlistSnippet($room->uid, $user['uid'], LibUtility::getSnippet($room, $user, $user));
+
+
+
+            $interface->add('dataString', $dataString);
+            $interface->add('isFull', $db->isRoomFull($room) && !LibUtility::isSuperuser($room, $user) && !$db->isMemberOfRoom($room->uid, $user['uid']));
+            $interface->add('users', $db->getUserList($roomId));
         }
-        $extConf = LibUtility::getExtConf() ;
-        $settings = LibUtility::getSettings() ;
-        $dataString = LibUtility::getDataString($user, $room, $extConf, $db) ;
 
-        $dataString .= ' data-talkToNewRoomName="' . $this->slashJS( $languageService->sL('LLL:EXT:jvchat/Resources/Private/Language/lcallang.xlf:talktoroomname'))  . '"' ;
-
-        // try to add user
-        $db->updateUserInRoom($room->uid, $user['uid'], LibUtility::isSuperuser($room, $user), 'user_enters_chat');
-
-        // remove old message entries if set
-        if($extConf['autoDeleteEntries']) {
-            $db->deleteEntries($extConf['autoDeleteEntries']);
-        }
-
-        // remove user who left room and remove system messages
-        $db->cleanUpUserInRoom($room->uid, 60, false );
-
-
-        // prepare the user's snippets
-        $db->setUserlistSnippet($room->uid, $user['uid'], LibUtility::getSnippet($room, $user , $user));
-
-
-        $interface = $this->renderingContext->getVariableProvider() ;
         $interface->add('extConf', $extConf);
         $interface->add('room', $room);
-        $interface->add('dataString', $dataString);
-        $interface->add('isFull', $db->isRoomFull($room) && !LibUtility::isSuperuser($room, $user) && !$db->isMemberOfRoom($room->uid, $user['uid']));
         $interface->add('user', $user );
-        $interface->add('users', $db->getUserList($roomId));
         $interface->add('server', GeneralUtility::getIndpEnv('TYPO3_REQUEST_HOST'));
         $interface->add('emoticons', LibUtility::getEmoticonsForChatRoom($settings) );
         $interface->add('settings', ($settings['settings'] ?? [])  );

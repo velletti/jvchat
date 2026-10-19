@@ -1219,14 +1219,14 @@ class Chat {
         if ( !$field1) {
             $field1 = 'name' ;
         }
-        $return = $user[$field1] ;
+        $return = ($user[$field1] ?? $user['uid'] );
         if( $this->room->showFullNames() ) {
             $field2 = $this->extConf['usernameField2'] ;
             if ( $field2) {
-                $return .= " " . Substr( $user[$field2], 0, 1 ) . "." ;
+                $return .= " " . Substr( $user[$field2] ?? "-" , 0, 1 ) . "." ;
             }
         }
-        return $return ;
+        return $return ?? 'uid: ' . $user['uid'] ;
 
 	}
 	
@@ -1803,17 +1803,14 @@ class Chat {
 		return $this->db->setMessageStyle($this->user, $params[1]) ? 'Style '.$params[1].'.' : '<span class="tx-jvchat-error tx-jvchat-error-' . __LINE__ . '">ERROR</span>';
 	}
 
-	function _newroom($params , $returnRoom = false , mixed $members = 0 ): Room|string
+	function _newroom($user , $returnRoom = false , mixed $members = 0 ): Room|string
     {
-
+        // Inviting user is the owner of the new room
 		$username = $this->getUsername();
+        //invited user is the second user
+		$username2 = $this->getUsername($user);
 
-		if(!$params[1]) {
-			$name = sprintf($this->languageService->sL($this->prefixtoFile  . 'command_newroom_room_default_title'), implode(' ',$params) . " & " . $username);
-		}
-		else {
-            $name = implode(' ',$params) .  " & " . $username ;
-        }
+        $name = sprintf($this->languageService->sL($this->prefixtoFile  . 'command_newroom_room_default_title'), $username2  . " & " . $username);
 
         /** @var Room $newRoom */
         $newRoom = GeneralUtility::makeInstance(Room::class);
@@ -1890,6 +1887,7 @@ class Chat {
 	}
 
     function _talkTo($params) {
+        $debug[] = "Params: " . var_export($params, true) ;
 	    $user = $this->getFeUserByInput($params[1]);
 
         if(!$user) {
@@ -1903,7 +1901,7 @@ class Chat {
         $debug[] = "Room: " . $room->uid ;
 
         if ( !$room) {
-            $room = $this->_newroom($params , true, $user['uid']) ;
+            $room = $this->_newroom($user , true, $user['uid']) ;
             $debug[] = $room->uid ;
         }
         return  $this->_do_invite($user, $room , $params);
